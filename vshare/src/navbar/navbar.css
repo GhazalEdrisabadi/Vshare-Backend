@@ -1,0 +1,31 @@
+.navbar{
+position : fixed;
+/*top:0;
+left:0;*/
+width:100%;
+background: #521751;
+height:56px;
+}
+/*.navbar_nav{
+    display:flex;
+    align-items:center;
+
+    padding :-2 2rem;
+}*/
+.navbar_nav_item a{
+    color : white;
+    text-decoration: none;
+}
+.navbar_nav_item a:hover,
+.navbar_nav_item a:active{
+    color: #fa923f;
+}
+/*.navbar_nav_item ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+}*/
+/*.navbar_nav_item li{
+    padding
+}*/
