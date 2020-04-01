@@ -62,7 +62,7 @@ class UserLogin(APIView):
 			return Response({'token': token.key, 'username':user.username}, status=HTTP_200_OK)
 		return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
-class UserById(generics.RetrieveUpdateDestroyAPIView):
+class UserByUsername(generics.RetrieveUpdateDestroyAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
     lookup_field = 'username'
