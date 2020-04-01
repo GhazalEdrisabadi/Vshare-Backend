@@ -62,22 +62,8 @@ class UserLogin(APIView):
 			return Response({'token': token.key, 'username':user.username}, status=HTTP_200_OK)
 		return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
-# @api_view(['POST',])
-# def registration_view(request):
-# 	if request.method == 'POST':
-# 		serializer = RegistrationSerializer(data=request.data)
-# 		data = {}
-# 		if serializer.is_valid():
-# 			users = serializer.save()
-# 			data["response"] = "successfuly registered a new user."
-# 			data["photo"] = users.photo
-# 			data["firstname"] = users.firstname
-# 			data["lastname"] = users.lastname
-# 			data["email"] = users.email
-# 			data["username"] = users.username
-
-# 			#token = Token.objects.get(user=users).key
-# 			#data['token'] = token
-# 		else:
-# 			data = serializer.errors
-# 		return Response(data)
+class UserById(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
+    lookup_field = 'username'
+    permission_classes = [AllowAny]
