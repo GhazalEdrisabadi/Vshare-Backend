@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['localhost','127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+	'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -131,6 +132,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'vshare.wsgi.application'
+ASGI_APPLICATION = 'vshare.routing.application'
 
 
 # Database
@@ -146,6 +148,26 @@ DATABASES = {
         'PORT' : '5432',
     }
 }
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'asgi_redis.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],
+        },
+        'ROUTING': 'vshare.routing.channel_routing',
+    }
+}
+
+# CHANNEL_LAYERS = {
+# 	'default': {
+# 		'BACKEND': 'channels_redis.core.RedisChannelLayer',
+# 		'CONFIG': {
+# 			"hosts": [CHANNEL_REDIS_HOST],
+# 			"symmetric_encryption_keys": [SECRET_KEY],
+#         },
+#     },
+# }
 
 
 # Password validation
