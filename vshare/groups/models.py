@@ -7,7 +7,7 @@ from pygments.styles import get_all_styles
 from django.conf import settings
 from django.core.validators import RegexValidator
 from django import forms
-from multiselectfield import MultiSelectField
+# from multiselectfield import MultiSelectField
 from django.contrib.postgres.fields import ArrayField
 alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
 
