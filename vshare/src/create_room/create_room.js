@@ -122,19 +122,39 @@ class create_room extends Component {
                 </div>
             
                 <div className="formback">
-                    <legend className="title">Create new group!</legend>
+                    <legend className="title">Create new group</legend>
                 <input value={this.state.name_gp} onChange={this.change_name} type="text"
-                    className="input1" placeholder="name ..." style={{
+                    className="input1" placeholder="name" style={{
                     height: '40px',
                     width: '290px'
                     }} />
                 <input value={this.state.id_gp} onChange={this.change_id} type="text"
-                    className="input2" placeholder="id ..." style={{
+                    className="input2" placeholder="id" style={{
                     height: '40px',
                     width: '290px'
                     }} />
+                    <div classname ="search">
+
+                    { <input   
+                    className="input3" 
+                    style={{
+                        height: '40px',
+                        width: '290px'
+                        }} />
+                    } 
+
+
+                    <button id = "btn"  
+
+                    >search</button>
+
+                    </div>
+                   
+                    
+
+                  
                 <textarea value={this.state.bio} onChange={this.change_bio} type="text"
-                    className="textarea" placeholder=" bio ..." style={{
+                    className="textarea" placeholder=" bio" style={{
                     height: '60px',
                     width: '290px'
                     }} />
@@ -146,7 +166,11 @@ class create_room extends Component {
                 <button id="create" className="button" variant="raised"
                     
                     >next</button>
+
+
+                
                 </div>
+
             </form>
 
             )

@@ -3,7 +3,7 @@
     position: fixed;
     display: flex;
     flex-direction: column;
-    background-color:darkslateblue;
+    background-color:		teal;
     height: 100%;
     width: 100%;
     position: fixed;
@@ -16,12 +16,13 @@
 }
 .formback {
     background-color: #e9e1cc;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     padding:  50px;
-    
+    height: 70%;
     text-align: center;
 }
 
@@ -29,20 +30,55 @@
 .input1{
    
     margin:15px;
+    border: groove;
+    text-align:center;
         
 }
 .input2 {
     margin: 15px;
+    border: groove ;
+    text-align: center;
+}
+.input3{
+    margin: 10px;
+    border: groove ;
+    text-align:center;
+    position: relative;
+    width: 20   0%;
+
 }
 .textarea {
     position: relative;
     margin: 15px;
+    border: groove;
+    text-align:center;
 }
 .textarea1 {
     margin: 15px;
+    border: groove;
+    text-align:center;
+
+
+    
+}
+.search{
+    
+}
+
+#btn {
+    /* position:absoulute ; */
+    /* float: right; */
+    /* margin:15px; */
+    /* margin-top: 20px; */
+    margin-left: 20px;
+    /* margin-right: 10px; */
+    padding:15px ;
+    width: 20%;
+    
 }
 .button {
     margin: 15px;
+    
 }
 .button1 {
     margin: 15px;
@@ -51,10 +87,12 @@
     margin:10px;
     color:black;
 }
+
 #homepagebtn{
-    height:50px;
-    width:100px;
-    background-color:orange;
+    height:35px;
+    width:120px;
+    background-color:rgb(243, 157, 29);
+    border-radius: 100px;
     font-size:x-large large;
    color:black;
 
