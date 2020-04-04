@@ -27,15 +27,15 @@
 }
 
 
-.input1{
-   
-    margin:15px;
+.input1 {
+    /*margin-left: -112px;*/
+    margin: 15px;
     border: groove;
-    text-align:center;
-        
+    text-align: center;
 }
 .input2 {
     margin: 15px;
+    margin-left:-32px;
     border: groove ;
     text-align: center;
 }
@@ -43,6 +43,7 @@
     margin: 10px;
     border: groove ;
     text-align:center;
+    margin-left:52px;
     position: relative;
     width: 20   0%;
 
@@ -51,18 +52,17 @@
     position: relative;
     margin: 15px;
     border: groove;
-    text-align:center;
+    margin-left: -32px;
+    text-align: center;
 }
 .textarea1 {
     margin: 15px;
     border: groove;
-    text-align:center;
-
-
-    
+    text-align: center;
+    margin-left: -32px;
 }
-.search{
-    
+.search {
+    flex-direction: row
 }
 
 #btn {
@@ -70,7 +70,7 @@
     /* float: right; */
     /* margin:15px; */
     /* margin-top: 20px; */
-    margin-left: 20px;
+    /*margin-left: 20px;*/
     /* margin-right: 10px; */
     padding:15px ;
     width: 20%;
