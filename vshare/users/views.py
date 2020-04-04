@@ -8,6 +8,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.decorators import api_view
 from users.serializers import *
+from groups.serializers import GroupSerializer
 from rest_framework.authtoken.models import Token
 
 from users.models import *

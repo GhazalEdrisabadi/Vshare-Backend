@@ -1,5 +1,6 @@
 from rest_framework import generics
 from .models import Group
+from users.models import Account
 from .serializers import GroupRegistrationSerializer
 from .serializers import GroupSerializer
 from rest_framework import filters
@@ -30,6 +31,15 @@ class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'groupid'
     permission_classes = [AllowAny]
 
+
+'''
+class GroupsOfUser(generics.ListCreateAPIView):
+	queryset = Group.objects.all()
+	queryset.account_set.all()
+	serializer_class = GroupSerializer
+	lookup_field = 'Account.username'
+	permission_classes = [AllowAny]
+'''
 @api_view(['POST',])
 @permission_classes([AllowAny])
 @csrf_protect
