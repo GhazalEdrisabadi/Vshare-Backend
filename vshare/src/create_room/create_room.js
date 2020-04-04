@@ -5,7 +5,10 @@ import jQuery from 'jquery'
 import { Cookies } from 'js-cookie'
 class create_room extends Component {
     
+
     componentDidMount() {
+        
+      
         function getCSRFToken() {
             var cookieValue = null;
             if (document.cookie && document.cookie != '') {
@@ -21,8 +24,13 @@ class create_room extends Component {
             return cookieValue;
         }
         var csrftoken = getCSRFToken();
+      
+
        // var csrftoken = Cookies.get('csrftoken');
         $(document).ready(function () {
+
+       
+
             console.log(window.localStorage.getItem('token'));
             $("#homepagebtn").click(function () {
                 window.location.replace("/homepage");
@@ -88,6 +96,10 @@ class create_room extends Component {
                 // Window.location="/account/menu/"
 
             });
+       
+     var htmlcode='';
+     var counter=0;
+
             $(".btn").click(function () {
                 var member = $(".input3").val();;
                
@@ -104,7 +116,7 @@ class create_room extends Component {
                         console.log("noooooooo");
                     },
                     success: function () {
-                        console.log("yeeeeeees");
+                        
                     },
                     "headers": {
                         'X-CSRFToken': csrftoken,
@@ -129,15 +141,28 @@ class create_room extends Component {
                     console.log(response);
                     console.log(response.status);
                     console.log("1");
-                    //if (response.status === 404) {
-                    //    console.log("no");
-                    //}
-                    //if (response.status===200) {
-                    //    console.log("yes");
-                    //}
-                    //if (response.o)
-                    //  console.log(responseDisplay);
-                    // console.log(response.status.);
+
+                    if (response.status === 400) {
+                        console.log("no");
+                    }
+                    else {
+                        htmlcode='';
+                        htmlcode += '<p className="pp" id=' + '"c' + counter + '">' + response.username+'</p>';
+                        var s="document.getElementById('close"+counter+"')";
+                        var ss=s+".remove()";
+                        var a="document.getElementById('c"+counter+"')";
+                        var aa=a+".remove()";
+                    
+                        var d="document.getElementById('h"+counter+"')";
+                        var dd=d+".remove()";
+                    
+
+                        htmlcode += '<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close' + counter + '">&times;</span>';
+                        
+                        htmlcode += '<hr class="line" id=' + '"h' + counter + '">';
+                        $('.members').append(htmlcode);
+                        counter++;
+                    }
                 });
 
 
@@ -147,35 +172,10 @@ class create_room extends Component {
             });
         });
         $(document).ready(function () {
-            $(".button1").click(function () {
-                console.log("1111111111111")
-                window.location.replace("/homepage");
-            })
+        
         })
     };
-    constructor(props) {
-        super(props);
-        this.state={
-            id_gp:'',
-            name_gp:'',
-            bio: '',
-            user: '',
-          
-        }
-        
-    }
-    change_name = e => {
-        this.setState({ name_gp: e.target.value })
-    }
-    change_id = e => {
-        this.setState({ id_gp: e.target.value })
-    }
-    change_bio = e => {
-        this.setState({ bio: e.target.value })
-    }
-    change_user = e => {
-        this.setState({ user: e.target.value })
-    }
+    
 
  
     render() {
@@ -187,13 +187,13 @@ class create_room extends Component {
             
                 <div className="formback">
                     <legend className="title">Create new group</legend>
-                <input value={this.state.name_gp} onChange={this.change_name} type="text"
+                <input  type="text"
                     className="input1" placeholder="name" style={{
                     height: '40px',
                         width: '290px',
                         marginLeft:'-30px'
                     }} />
-                <input value={this.state.id_gp} onChange={this.change_id} type="text"
+                <input  type="text"
                     className="input2" placeholder="id" style={{
                     height: '40px',
                     width: '290px'
@@ -202,29 +202,23 @@ class create_room extends Component {
 
                      <input   className="input3"  style={{
                         height: '40px',
-                        width: '290px'
-                            }} placeholder="id of member example :ali,hossein "/>
-       
-                        <button id="btn" className="btn" >search</button>
+                        width: '225px'
+                            }} placeholder="id of member  "/>
+          
+                        <div id="btn" className="btn" >add member</div>
 
                     </div>
                    
                     
 
                   
-                <textarea value={this.state.bio} onChange={this.change_bio} type="text"
+                <textarea  type="text"
                     className="textarea" placeholder=" bio" style={{
                     height: '60px',
                     width: '290px'
                     }} />
-                <textarea value={this.state.user} onChange={this.change_user} type="text"
-                    className="textarea1"  style={{
-                        height: '60px',
-                        width: '290px'
-                    }} />
-                <button id="create" className="button" variant="raised"
-                    
-                    >next</button>
+                <div className='members' style={{width: '290px'}}>Members : <hr></hr></div>
+                <button id="create" className="button" variant="raised">next</button>
 
 
                 
@@ -234,5 +228,6 @@ class create_room extends Component {
 
             )
     }
+
 }
 export default create_room;
