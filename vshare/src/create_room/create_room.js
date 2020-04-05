@@ -29,7 +29,10 @@ class create_room extends Component {
        // var csrftoken = Cookies.get('csrftoken');
         $(document).ready(function () {
 
-       
+            var mem = [];
+            var mem2=[];
+            var htmlcode='';
+            var counter=0;
 
             console.log(window.localStorage.getItem('token'));
             $("#homepagebtn").click(function () {
@@ -37,11 +40,29 @@ class create_room extends Component {
             });
             
             $(".button").click(function () {
+                console.log("ccc : " + $('#c0').html());
+              
+                    
+for(var cc=0;cc<counter;cc++){
+    console.log(cc+ " aaaaaaaaaa : " +$('#c'+cc).html());
+
+    mem.push($('#c'+cc).html());
+    
+}
+for(var j=0;j<mem.length;j++){
+if(mem[j]!=undefined)
+    mem2.push(mem[j]);
+}
+console.log(mem2.length);
+console.log("mem2 : " +mem2);
+
+
+                
                 var id = $(".input1").val();;
                 var name = $(".input2").val();
                 var bio = $(".textarea").val();
                 var user = $(".textarea1").val();
-                var mem = ["milad"];
+                
                 console.log(id + " " + name + " " + bio);
                 console.log(csrftoken)
                 var token = window.localStorage.getItem('token');
@@ -69,8 +90,7 @@ class create_room extends Component {
                         "title": name,
                         "describtion": bio,
                         "invite_only": true,
-                      
-                        "members": mem
+                        "members": mem2,
                     }
 ),
                 };
@@ -95,59 +115,38 @@ class create_room extends Component {
                 //    window.location.replace("/account/menu/");
                 // Window.location="/account/menu/"
 
-            });
+               });
        
-     var htmlcode='';
-     var counter=0;
+  
 
             $(".btn").click(function () {
                 var member = $(".input3").val();;
-               
+                console.log(member);
                 //console.log(id + " " + name + " " + bio);
                 //console.log(csrftoken)
-                var token = window.localStorage.getItem('token');
-                console.log(token);
-
+                var form = new FormData();
                 var settings = {
-                    "url": "http://127.0.0.1:8000/user/"+ member+"",
+                    "url": "http://127.0.0.1:8000/user/"+member,
                     "method": "GET",
                     "timeout": 0,
-                    error: function () {
-                        console.log("noooooooo");
-                    },
-                    success: function () {
-                        
-                    },
-                    "headers": {
-                        'X-CSRFToken': csrftoken,
-                        "accept": "application/json",
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Headers": "*",
-                        "Content-Type": "application/json"
-                    },
-                    //"data": JSON.stringify({
-                    //    "userid": id,
-                    //    "title": name,
-                    //    "describtion": bio,
-                    //    "invite_only": true,
-                    //    "created_by": 1,
-                    //    "members": [user]
-                    //}
-                    //),
-                };
-                console.log(settings.headers);
-                console.log(settings.method);
-                $.ajax(settings).done(function (response) {
+                    "processData": false,
+                    "mimeType": "multipart/form-data",
+                    "contentType": false,
+                    "data": form,
+                    error:function(){
+                        alert("User not found");
+                    }
+                  };
+                  
+                  $.ajax(settings).done(function (response) {
                     console.log(response);
-                    console.log(response.status);
-                    console.log("1");
-
+                  
                     if (response.status === 400) {
-                        console.log("no");
+                        alert("User not found");
                     }
                     else {
                         htmlcode='';
-                        htmlcode += '<p className="pp" id=' + '"c' + counter + '">' + response.username+'</p>';
+                        htmlcode += '<p className="pp" id=' + '"c' + counter + '">' + member+'</p>';
                         var s="document.getElementById('close"+counter+"')";
                         var ss=s+".remove()";
                         var a="document.getElementById('c"+counter+"')";
@@ -214,11 +213,11 @@ class create_room extends Component {
                   
                 <textarea  type="text"
                     className="textarea" placeholder=" bio" style={{
-                    height: '60px',
+                    height: '150px',
                     width: '290px'
                     }} />
                 <div className='members' style={{width: '290px'}}>Members : <hr></hr></div>
-                <button id="create" className="button" variant="raised">next</button>
+                <div id="create" className="button" variant="raised">next</div>
 
 
                 

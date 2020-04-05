@@ -55,16 +55,34 @@
     margin-left: -32px;
     text-align: center;
 }
-.textarea1 {
-    margin: 15px;
-    border: groove;
-    text-align: center;
-    margin-left: -32px;
-}
+
 .search {
     flex-direction: row
 }
 
+
+.button{
+    
+    border-radius: 20px;
+    background-color: #FF4B2B;
+     position:absoulute ; 
+     float: right; 
+    margin-top: 7px;
+  height: 40px;
+    width: fit-content;
+    
+  text-align: center;
+	border: 1px solid #FF4B2B;
+	color: #FFFFFF;
+	font-size: 12px;
+    font-weight: bold;
+   cursor: pointer;
+	padding: 12px 28px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    
+}
 #btn {
     
     border-radius: 20px;
