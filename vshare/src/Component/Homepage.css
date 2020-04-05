@@ -35,6 +35,18 @@
     height:85px;
     width:85px;
 }
+
+.groupsShow{
+    border: red double thick;
+    margin-left:  60px;
+    margin-top: 100px;
+    color: black;
+    text-align: center;
+    padding: 5px;
+    width: 300px;
+    height: 600px;
+    background-color: gray;
+}
 /*.button_create{
     background-image
 }*/

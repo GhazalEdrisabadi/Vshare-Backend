@@ -8,7 +8,31 @@ import Backdrop from '../Backdrop/Backdrop'
 import Create from '../create_room/create_room'
 import Plus from '../pngguru.com.png'
 import zare from '../zare.png'
+import $ from 'jquery';
+import jQuery from 'jquery'
+
 class Homepage extends Component {
+
+    componentDidMount(){
+        $(document).ready(function () {
+            if (localStorage.getItem('token') == null) {
+                alert("Login please !");
+                window.location.replace("/login/");
+            }
+            console.log("aa");
+            var token=window.localStorage.getItem('token');
+            var username=window.localStorage.getItem('username');
+            $('.groupsShow').append('<h4> Your Groups </h4>');
+            $('.groupsShow').append("<h5> User: "+username+"</h5>");
+            $('.groupsShow').append("<hr>");
+            
+            $(".logout").click(function () {
+                window.localStorage.clear();
+                window.location.replace("/login/");
+            });
+
+        });
+    }
 
     constructor(props) {
         super(props);
@@ -47,8 +71,9 @@ class Homepage extends Component {
             backdrop = <Backdrop click={this.backdropclickhandeler} />;
         }
         return (
-            <div className="Homepage"
-            >
+            <div className="Homepage">
+                 <button className="logout">logout</button>
+              
                 <Navbar drawerClickHandeler={this.drawertoggleclickhandler} />
                 {sidedrawer}
                 {backdrop}
@@ -57,6 +82,8 @@ class Homepage extends Component {
                 <input value={this.state.value} onChange={this.handleChange} type="text"
                         className="zare" />
                 </div>
+                <div className="groupsShow">
+                    </div>
                 <div><a href="/create"><img src={Plus} className="create" /></a></div>
              
             </div>
