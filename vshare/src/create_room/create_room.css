@@ -22,7 +22,7 @@
     justify-content: center;
     flex-direction: column;
     padding:  50px;
-    height: 70%;
+    height: 80%;
     text-align: center;
 }
 
@@ -45,7 +45,7 @@
     text-align:center;
     margin-left:52px;
     position: relative;
-    width: 20   0%;
+    width: 200%;
 
 }
 .textarea {
@@ -54,6 +54,7 @@
     border: groove;
     margin-left: -32px;
     text-align: center;
+    background-color: whitesmoke
 }
 
 .search {
@@ -115,7 +116,8 @@
     margin: 15px;
 }
 .title {
-    margin:10px;
+    top : 10px;
+    margin-bottom:30px;
     color:black;
 }
 .members{
@@ -125,11 +127,11 @@
     margin: 15px;
     margin-right: 95px;
     border: groove ;
-    text-align: left;
+    text-align: center;
     margin-left:52px;
     position: relative;
     width: 290px;
-    height: fit-content;
+    height: 100px;
     padding: 5px;
 }
 
