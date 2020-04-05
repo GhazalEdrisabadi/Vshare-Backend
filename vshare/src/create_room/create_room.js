@@ -34,17 +34,17 @@ class create_room extends Component {
             var htmlcode='';
             var counter=0;
 
-            console.log(window.localStorage.getItem('token'));
+           
             $("#homepagebtn").click(function () {
                 window.location.replace("/homepage");
             });
             
             $(".button").click(function () {
-                console.log("ccc : " + $('#c0').html());
+               
               
                     
 for(var cc=0;cc<counter;cc++){
-    console.log(cc+ " aaaaaaaaaa : " +$('#c'+cc).html());
+ 
 
     mem.push($('#c'+cc).html());
     
@@ -62,11 +62,9 @@ console.log("mem2 : " +mem2);
                 var name = $(".input2").val();
                 var bio = $(".textarea").val();
                 var user = $(".textarea1").val();
-                
-                console.log(id + " " + name + " " + bio);
-                console.log(csrftoken)
+           
                 var token = window.localStorage.getItem('token');
-                console.log(token);
+              
                 
                 var settings = {
                     "url": "http://localhost:8000/groups/",
@@ -94,12 +92,10 @@ console.log("mem2 : " +mem2);
                     }
 ),
                 };
-                console.log(settings.headers);
-                console.log(settings.method);
+             
                 $.ajax(settings).done(function (response) {
                     console.log(response);
-                    console.log(response.status);
-                    console.log("1");
+      
                     if (response.status === 400) {
                         console.log("no");
                     }
@@ -121,7 +117,7 @@ console.log("mem2 : " +mem2);
 
             $(".btn").click(function () {
                 var member = $(".input3").val();;
-                console.log(member);
+          
                 //console.log(id + " " + name + " " + bio);
                 //console.log(csrftoken)
                 var form = new FormData();
