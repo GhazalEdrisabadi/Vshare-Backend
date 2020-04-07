@@ -1,10 +1,11 @@
 from rest_framework import generics
-from .models import Group
+from .models import Group , Membership
 from users.models import Account
-#from .serializers import GroupRegistrationSerializer
-from .serializers import GroupSerializer
+from .serializers import GroupRegistrationSerializer
+from .serializers import GroupSerializer , MembershipSerializer
 from rest_framework import filters
 from rest_framework import status
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import api_view 
 from rest_framework.decorators import permission_classes
@@ -34,6 +35,15 @@ class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GroupSerializer
     lookup_field = 'groupid'
     permission_classes = [AllowAny]
+
+class MembershipList(generics.ListCreateAPIView):
+    queryset = Membership.objects.all()
+    serializer_class = MembershipSerializer
+    permission_classes = [AllowAny]
+    def perform_create(self, serializer):
+        req = serializer.context['request']
+        serializer.save(the_member=req.user)
+
 
 
 '''

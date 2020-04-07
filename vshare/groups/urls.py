@@ -5,7 +5,7 @@ from groups import views
 urlpatterns = [
     path('groups/', views.GroupList.as_view()),
     path('groups/<str:groupid>/', views.GroupDetail.as_view()),
-    #path('',views.GroupRegistration, name='register')
+    path('join/',views.MembershipList.as_view(), name='membership')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
