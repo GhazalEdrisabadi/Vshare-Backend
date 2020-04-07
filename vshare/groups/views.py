@@ -1,7 +1,6 @@
 from rest_framework import generics
 from .models import Group
-from .serializers import GroupRegistrationSerializer
-from .serializers import GroupSerializer
+from .serializers import *
 from rest_framework import filters
 from rest_framework import status
 from rest_framework.response import Response
@@ -30,24 +29,23 @@ class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'groupid'
     permission_classes = [AllowAny]
 
-@api_view(['POST',])
-@permission_classes([AllowAny])
-@csrf_protect
-def GroupRegistration(request):
-    #context = RequestContext(request)
-    if request.method =='POST':
-        serializer_class = GroupRegistrationSerializer(data=request.data)
-        data = {}
-        if serializer_class.is_valid():
-            account = serializer_class.save()
-            data['response'] = 'Successfully created'
-            data['groupid'] = account.groupid
-            data['title'] = account.title
-            data['describtion'] = account.describtion
-            data['invite_only'] = account.invite_only
-            data['created_by'] = account.created_by
-            data['members'] = account.members
-        else:
-            data = serializer_class.errors
-        return Response(data)
-            
+# @api_view(['POST',])
+# @permission_classes([AllowAny])
+# @csrf_protect
+# def GroupRegistration(request):
+#     #context = RequestContext(request)
+#     if request.method =='POST':
+#         serializer_class = GroupRegistrationSerializer(data=request.data)
+#         data = {}
+#         if serializer_class.is_valid():
+#             account = serializer_class.save()
+#             data['response'] = 'Successfully created'
+#             data['groupid'] = account.groupid
+#             data['title'] = account.title
+#             data['describtion'] = account.describtion
+#             data['invite_only'] = account.invite_only
+#             data['created_by'] = account.created_by
+#             data['members'] = account.members
+#         else:
+#             data = serializer_class.errors
+#         return Response(data)
