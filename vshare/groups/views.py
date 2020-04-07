@@ -1,13 +1,16 @@
 from rest_framework import generics
-from .models import Group
+from .models import Group , Membership
+from users.models import Account
 from .serializers import GroupRegistrationSerializer
-from .serializers import GroupSerializer
+from .serializers import GroupSerializer , MembershipSerializer
 from rest_framework import filters
 from rest_framework import status
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import api_view 
 from rest_framework.decorators import permission_classes
 from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.models import User
 
 from rest_framework.permissions import (
 		AllowAny,
@@ -23,6 +26,9 @@ class GroupList(generics.ListCreateAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [AllowAny]
+    def perform_create(self, serializer):
+        req = serializer.context['request']
+        serializer.save(created_by=req.user)
 
 class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Group.objects.all()
@@ -30,6 +36,24 @@ class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'groupid'
     permission_classes = [AllowAny]
 
+class MembershipList(generics.ListCreateAPIView):
+    queryset = Membership.objects.all()
+    serializer_class = MembershipSerializer
+    permission_classes = [AllowAny]
+    def perform_create(self, serializer):
+        req = serializer.context['request']
+        serializer.save(the_member=req.user)
+
+
+
+'''
+class GroupsOfUser(generics.ListCreateAPIView):
+	queryset = Group.objects.all()
+	queryset.account_set.all()
+	serializer_class = GroupSerializer
+	lookup_field = 'Account.username'
+	permission_classes = [AllowAny]
+'''
 @api_view(['POST',])
 @permission_classes([AllowAny])
 @csrf_protect
@@ -50,4 +74,3 @@ def GroupRegistration(request):
         else:
             data = serializer_class.errors
         return Response(data)
-            
