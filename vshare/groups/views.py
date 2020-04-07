@@ -44,6 +44,22 @@ class MembershipList(generics.ListCreateAPIView):
         req = serializer.context['request']
         serializer.save(the_member=req.user)
 
+class AddMembershipList(generics.ListCreateAPIView):
+    queryset = Membership.objects.all()
+    serializer_class = MembershipSerializer
+    permission_classes = [AllowAny]
+
+#class JoinedGroups(generics.RetrieveUpdateDestroyAPIView):
+   # search_fields = ['the_member']
+   # filter_backends = (filters.SearchFilter,)
+   # queryset = Membership.objects.all()
+   # serializer_class = MembershipSerializer
+   # permission_classes = [AllowAny]
+   # def perform_create(self, serializer):
+        #req = serializer.context['request']
+       # serializer.save(created_by=req.user)
+
+
 
 
 '''
