@@ -36,5 +36,5 @@ class Membership(models.Model):
 
     class Meta:
         ordering = ['date_joined']
-        unique_together = ("the_group", "the_group")
+        unique_together = ("the_group", "the_member")
 
