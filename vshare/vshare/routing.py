@@ -1,10 +1,16 @@
-from channels.routing import ProtocolTypeRouter
+from django.urls import path
+
+from channels.http import AsgiHandler
+from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.auth import AuthMiddlewareStack
+
+from groups.consumers import VideoConsumer
+
 
 application = ProtocolTypeRouter({
-    # Empty for now (http->django views is added by default)
+	"websocket": AuthMiddlewareStack(
+		URLRouter([
+			path("group/stream/", VideoConsumer),  
+		]),
+	),
 })
-
-# from channels.routing import ProtocolTypeRouter, URLRouter
-# from my_proj.game.routing import websocketsapplication = ProtocolTypeRouter({
-#     "websocket": websockets,
-# })
