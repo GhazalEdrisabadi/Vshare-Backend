@@ -26,7 +26,7 @@ class Group(models.Model):
         ordering = ['since']
     
     def __str__(self):
-        return self.title
+        return self.groupid
 
 
 class Membership(models.Model):
@@ -36,4 +36,5 @@ class Membership(models.Model):
 
     class Meta:
         ordering = ['date_joined']
+        unique_together = ("the_group", "the_group")
 
