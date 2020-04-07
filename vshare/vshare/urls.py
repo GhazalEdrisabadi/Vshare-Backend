@@ -1,5 +1,4 @@
 """vshare URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.0/topics/http/urls/
 Examples:
@@ -22,6 +21,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('users.urls')),
+    path('', include('groups.urls')),
 ]
 
 if settings.DEBUG:

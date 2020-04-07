@@ -18,13 +18,8 @@ class Group(models.Model):
     title = models.CharField(max_length=100, blank=True, default='No Name')
     describtion = models.TextField(blank=True)
     invite_only = models.BooleanField(default=False)
-    created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        verbose_name='Created by',
-        blank=True, null=True,
-        related_name="%(app_label)s_%(class)s_created",
-        on_delete=models.SET_NULL)
-    members = models.ManyToManyField(settings.AUTH_USER_MODEL,blank=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name='owner')
+    members = models.ManyToManyField(settings.AUTH_USER_MODEL,blank=True,related_name='joined_groups')
     #upper field should be modified. because right now, it's pointing to django's default superuser model
     
     
