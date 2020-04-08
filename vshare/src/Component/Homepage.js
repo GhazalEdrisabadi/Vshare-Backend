@@ -55,8 +55,27 @@ class Homepage extends Component {
                 console.log(settings.headers);
                 console.log(settings.method);
                 $.ajax(settings).done(function (response) {
-                    console.log(response);
-                    console.log(response.status);
+                   // console.log(response);
+                    //   console.log(response.status);
+                 //   console
+                    console.log("1");
+                    if (response.status === 400) {
+                        alert("گروه وجود ندارد")
+                    }
+                    if (response =="500 Internal Server Error") {
+                        alert("شما در این گروه عضو هستید")
+                    }
+                    else {
+                        console.log("qq");
+                    }
+
+                    //  console.log(responseDisplay);
+                    // console.log(response.status.);
+                });
+                $.ajax(settings).fail(function (response) {
+                    // console.log(response);
+                    //   console.log(response.status);
+                    //   console
                     console.log("1");
                     if (response.status === 400) {
                         alert("گروه وجود ندارد")
@@ -64,15 +83,11 @@ class Homepage extends Component {
                     if (response.status === 500) {
                         alert("شما در این گروه عضو هستید")
                     }
-                    else {
-                       
-                    }
+               
 
                     //  console.log(responseDisplay);
                     // console.log(response.status.);
                 });
-
-
                 //    window.location.replace("/account/menu/");
                 // Window.location="/account/menu/"
 
