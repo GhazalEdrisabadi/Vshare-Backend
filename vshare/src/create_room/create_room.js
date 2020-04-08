@@ -28,12 +28,12 @@ class create_room extends Component {
                 window.location.replace("/homepage");
             });
             
-            $(".button").click(function () {
+            $(".next1").click(function () {
                 var id = $(".input1").val();;
                 var name = $(".input2").val();
                 var bio = $(".textarea").val();
                 var user = $(".textarea1").val();
-                var mem = ["milad"];
+                var mem = [];
                 console.log(id + " " + name + " " + bio);
                 console.log(csrftoken)
                 var token = window.localStorage.getItem('token');
@@ -47,11 +47,14 @@ class create_room extends Component {
                         console.log("");
                     },
                     success: function () {
+                        window.localStorage.setItem('id_group', id);
+                        window.location.replace("/add");
                         alert("done");
                     },
                     "headers": {
                         'X-CSRFToken': csrftoken,
-                       "accept": "application/json",
+                        "accept": "application/json",
+                        "Authorization": "token " + token,
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Allow-Headers": "*",
                         "Content-Type": "application/json"
@@ -61,7 +64,7 @@ class create_room extends Component {
                         "title": name,
                         "describtion": bio,
                         "invite_only": true,
-                      
+                       //"created_by": "milad",
                         "members": mem
                     }
 ),
@@ -197,17 +200,9 @@ class create_room extends Component {
                     className="input2" placeholder="id" style={{
                     height: '40px',
                     width: '290px'
-                    }} />
-                    <div classname ="search">
-
-                     <input   className="input3"  style={{
-                        height: '40px',
-                        width: '290px'
-                            }} placeholder="id of member example :ali,hossein "/>
-       
-                        <button id="btn" className="btn" >search</button>
-
-                    </div>
+                        }} />
+                    
+        
                    
                     
 
@@ -217,14 +212,10 @@ class create_room extends Component {
                     height: '60px',
                     width: '290px'
                     }} />
-                <textarea value={this.state.user} onChange={this.change_user} type="text"
-                    className="textarea1"  style={{
-                        height: '60px',
-                        width: '290px'
-                    }} />
-                <button id="create" className="button" variant="raised"
-                    
-                    >next</button>
+          
+                <dev id="create" className="next1" variant="raised"
+
+                    >next</dev>
 
 
                 

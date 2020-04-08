@@ -1,40 +1,64 @@
+
+
 .Homepage {
     width: 100%;
     background-color: #282c34;
-   height: 100%;
-    position:fixed;
-    left:0;
+    height: 100%;
+    position: fixed;
+    left: 0;
     align-items: center;
-   top:0;
+    top: 0;
     justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
 }
+
+
+
 .zare {
-    margin-top: 70px;
+    margin-top: 120px;
     float: right;
-    height:24px;
-   
+    height: 24px;
     width: 33.33%; /* three containers (use 25% for four, and 50% for two, etc) */
-    padding: 1px ;
+    padding: 1px;
 }
-.input {
-    margin-top: 0px;
-    margin-left: 400px;
+
+.input_input {
+    float: right;
+    color: black;
     font-size: 20px;
     height: 40px;
     width: 500px;
-    padding:0;
-    top:0;
-    left:0;
-    flex-direction:row
+    padding: 1px;
+    margin-top: 120px;
+    margin-left: 70px;
+    margin-right: 50px;
+    flex-direction: row
 }
-.create{
-    margin-top:590px;
-    margin-left:1270px;
-    height:85px;
-    width:85px;
+
+.create {
+    position: absolute;
+    left: 1500px;
+    top: 730px;
+    height: 120px;
+    width: 120px;
 }
+
+
+
+.groupsShow {
+    border: red double thick;
+    margin-left: 600px;
+    margin-top: 250px;
+    color: black;
+    text-align: center;
+    padding: 15px;
+    width: 350px;
+    height: 600px;
+    background-color: gray;
+}
+
 /*.button_create{
-    background-image
-}*/
+
+    background
+*/
