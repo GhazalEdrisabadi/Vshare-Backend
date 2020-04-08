@@ -23,20 +23,23 @@
     border-color: black;
 
 }
-.input {
-    padding: 10px ;
+
+.input_input {
+    padding: 10px;
     float: right;
     color: seashell;
     font-size: 20px;
     height: 40px;
     width: 500px;
     margin-top: 140px;
-    margin-left: 150px; 
-    border-top: solid ;
+    margin-left: 150px;
+    border-top: solid;
     border-left: solid;
     border-bottom: solid;
     border-color: black;
-    flex-direction:row
+    flex-direction: row;
+    color:black;
+
 }
 .create{
     position: absolute;
