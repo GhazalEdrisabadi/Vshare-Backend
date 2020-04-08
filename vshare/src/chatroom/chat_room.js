@@ -50,7 +50,9 @@ class chat_room extends Component {
 
                 </div>
                 <div className="formback_info">
-
+                    <legend className="title_gp">info of group</legend>
+                    <textarea className="textarea_member" />
+                    <textarea className="textarea_bio"/>
                 </div>
             </form>
             )
