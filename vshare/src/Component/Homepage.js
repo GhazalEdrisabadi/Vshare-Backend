@@ -11,9 +11,12 @@ import zare from '../zare.png'
 import $ from 'jquery';
 import jQuery from 'jquery'
 
-class Homepage extends Component {
 
-    componentDidMount(){
+const name = window.$name;
+class Homepage extends Component {
+    
+    componentDidMount() {
+        const { id } = this.props.match.params
         $(document).ready(function () {
             // if (localStorage.getItem('token') == null) {
             //     alert("Login please !");
@@ -31,13 +34,13 @@ class Homepage extends Component {
                     "url": "http://127.0.0.1:8000/group/join/",
                     "method": "POST",
                     "timeout": 0,
-                    error: function () {
+                    //error: function () {
                         
-                    },
-                    success: function () {
-                     //   window.location.replace("/add");
-                        window.location.replace("/" + 12233 + "");
-                    },
+                    //},
+                    //success: function () {
+                    // //   window.location.replace("/add");
+                    //    window.location.replace("/" + 12233 + "");
+                    //},
                     "headers": {
                         //'X-CSRFToken': csrftoken,
                         "Authorization": "token " + token,
@@ -58,16 +61,31 @@ class Homepage extends Component {
                    // console.log(response);
                     //   console.log(response.status);
                  //   console
-                    console.log("1");
-                    if (response.status === 400) {
-                        alert("گروه وجود ندارد")
-                    }
-                    if (response =="500 Internal Server Error") {
-                        alert("شما در این گروه عضو هستید")
-                    }
-                    else {
-                        console.log("qq");
-                    }
+                    var settings = {
+                        "url": "http://127.0.0.1:8000/groups/"+id+"",
+                        "method": "GET",
+                        "timeout": 0,
+                        "headers": {
+                            //'X-CSRFToken': csrftoken,
+                          //  "Authorization": "token " + token,
+                            "accept": "application/json",
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Headers": "*",
+                            "Content-Type": "application/json"
+                        }
+                    };
+
+                    $.ajax(settings).done(function (response_) {
+                        console.log("111111")
+                        console.log(response_)
+                       
+                        window.localStorage.setItem('groupid', response_.groupid)
+                        console.log(response_.groupid);
+
+                      //  window.location.replace("/" + response_.groupid+"");
+                       
+                           
+                    });
 
                     //  console.log(responseDisplay);
                     // console.log(response.status.);
@@ -82,6 +100,9 @@ class Homepage extends Component {
                     }
                     if (response.status === 500) {
                         alert("شما در این گروه عضو هستید")
+                    }
+                    else {
+                        console.log("ll")
                     }
                
 

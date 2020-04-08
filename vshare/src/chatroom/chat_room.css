@@ -1,0 +1,12 @@
+.back {
+    width: 100%;
+    background-color: teal;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    align-items: center;
+    top: 0;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
