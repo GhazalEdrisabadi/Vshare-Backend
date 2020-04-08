@@ -137,14 +137,14 @@ WSGI_APPLICATION = 'vshare.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'vshare',
-        'USER' : 'admin',
-        'PASSWORD' : 'vshare5432',
+        'NAME': 'vshare2',
+        'USER' : 'mobinsh_20',
+        'PASSWORD' : 'momlifelove',
         'HOST' : 'localhost',
         'PORT' : '5432',
-    }
+    }'
 }
 
 

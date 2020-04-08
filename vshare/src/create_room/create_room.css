@@ -21,9 +21,11 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+
     
     height: 70%;
     width:28%;
+
     text-align: center;
 }
 
@@ -44,6 +46,7 @@
     text-align: center;
 }
 
+
 .textarea {
     position: relative;
     margin: 15px;
@@ -52,42 +55,95 @@
     border-radius: 20px;
     background-color:whitesmoke;
     text-align: center;
+    background-color: whitesmoke
 }
-.textarea1 {
-    margin: 15px;
-    border: groove;
-    text-align: center;
-    margin-left: -32px;
-}
+
 .search {
     flex-direction: row
 }
 
-#btn {
-    /* position:absoulute ; */
-    /* float: right; */
-    /* margin:15px; */
-    /* margin-top: 20px; */
-    /*margin-left: 20px;*/
-    /* margin-right: 10px; */
-    padding:15px ;
-    width: 20%;
+
+.button{
+    
+    border-radius: 20px;
+    background-color: #FF4B2B;
+     position:absoulute ; 
+     float: right; 
+    margin-top: 7px;
+  height: 40px;
+    width: fit-content;
+    
+  text-align: center;
+	border: 1px solid #FF4B2B;
+	color: #FFFFFF;
+	font-size: 12px;
+    font-weight: bold;
+   cursor: pointer;
+	padding: 12px 28px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
     
 }
+#btn {
+    
+    border-radius: 20px;
+    background-color: #FF4B2B;
+     position:absoulute ; 
+     float: right; 
+    margin-top: 7px;
+  height: 40px;
+    width: fit-content;
+    
+  text-align: center;
+	border: 1px solid #FF4B2B;
+	color: #FFFFFF;
+	font-size: 12px;
+    font-weight: bold;
+   cursor: pointer;
+	padding: 12px 28px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+
+}
 .button {
+    cursor: pointer;
     margin: 15px;
     
 }
 .button1 {
+    cursor: pointer;
     margin: 15px;
 }
 .title {
+
     margin-bottom:50px;
  
+
     color:black;
 }
+.members{
+    background-color: whitesmoke;
+    color: black;
+    font-size: 16px;
+    margin: 15px;
+    margin-right: 95px;
+    border: groove ;
+    text-align: center;
+    margin-left:52px;
+    position: relative;
+    width: 290px;
+    height: 100px;
+    padding: 5px;
+}
 
+.closes{
+    font-size: xx-large;
+    cursor: pointer;
+}
 #homepagebtn{
+    cursor: pointer;
     height:35px;
     width:120px;
     background-color:rgb(243, 157, 29);

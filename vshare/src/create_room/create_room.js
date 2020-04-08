@@ -1,11 +1,15 @@
+﻿
 import React, { Component } from 'react'
 import $ from 'jquery';
 import './create_room.css'
 import jQuery from 'jquery'
 import { Cookies } from 'js-cookie'
 class create_room extends Component {
-    
+
+
     componentDidMount() {
+
+
         function getCSRFToken() {
             var cookieValue = null;
             if (document.cookie && document.cookie != '') {
@@ -21,24 +25,36 @@ class create_room extends Component {
             return cookieValue;
         }
         var csrftoken = getCSRFToken();
-       // var csrftoken = Cookies.get('csrftoken');
+
+
+        // var csrftoken = Cookies.get('csrftoken');
         $(document).ready(function () {
-            console.log(window.localStorage.getItem('token'));
+
+            var mem = [];
+            var mem2 = [];
+            var htmlcode = '';
+            var counter = 0;
+
+
             $("#homepagebtn").click(function () {
                 window.location.replace("/homepage");
             });
+
             
             $(".next1").click(function () {
+
                 var id = $(".input1").val();;
                 var name = $(".input2").val();
                 var bio = $(".textarea").val();
                 var user = $(".textarea1").val();
+
                 var mem = [];
                 console.log(id + " " + name + " " + bio);
                 console.log(csrftoken)
+
                 var token = window.localStorage.getItem('token');
-                console.log(token);
-                
+
+
                 var settings = {
                     "url": "http://localhost:8000/groups/",
                     "method": "POST",
@@ -54,7 +70,9 @@ class create_room extends Component {
                     "headers": {
                         'X-CSRFToken': csrftoken,
                         "accept": "application/json",
+
                         "Authorization": "token " + token,
+
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Allow-Headers": "*",
                         "Content-Type": "application/json"
@@ -64,17 +82,17 @@ class create_room extends Component {
                         "title": name,
                         "describtion": bio,
                         "invite_only": true,
+
                        //"created_by": "milad",
                         "members": mem
+
                     }
-),
+                    ),
                 };
-                console.log(settings.headers);
-                console.log(settings.method);
+
                 $.ajax(settings).done(function (response) {
                     console.log(response);
-                    console.log(response.status);
-                    console.log("1");
+
                     if (response.status === 400) {
                         console.log("no");
                     }
@@ -91,56 +109,51 @@ class create_room extends Component {
                 // Window.location="/account/menu/"
 
             });
+
+            
             $(".btn").click(function () {
                 var member = $(".input3").val();;
-               
+
                 //console.log(id + " " + name + " " + bio);
                 //console.log(csrftoken)
-                var token = window.localStorage.getItem('token');
-                console.log(token);
-
+                var form = new FormData();
                 var settings = {
-                    "url": "http://127.0.0.1:8000/user/"+ member+"",
+                    "url": "http://127.0.0.1:8000/user/" + member,
                     "method": "GET",
                     "timeout": 0,
+                    "processData": false,
+                    "mimeType": "multipart/form-data",
+                    "contentType": false,
+                    "data": form,
                     error: function () {
-                        console.log("noooooooo");
-                    },
-                    success: function () {
-                        console.log("yeeeeeees");
-                    },
-                    "headers": {
-                        'X-CSRFToken': csrftoken,
-                        "accept": "application/json",
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Headers": "*",
-                        "Content-Type": "application/json"
-                    },
-                    //"data": JSON.stringify({
-                    //    "userid": id,
-                    //    "title": name,
-                    //    "describtion": bio,
-                    //    "invite_only": true,
-                    //    "created_by": 1,
-                    //    "members": [user]
-                    //}
-                    //),
+                        alert("User not found");
+                    }
                 };
-                console.log(settings.headers);
-                console.log(settings.method);
+
                 $.ajax(settings).done(function (response) {
                     console.log(response);
-                    console.log(response.status);
-                    console.log("1");
-                    //if (response.status === 404) {
-                    //    console.log("no");
-                    //}
-                    //if (response.status===200) {
-                    //    console.log("yes");
-                    //}
-                    //if (response.o)
-                    //  console.log(responseDisplay);
-                    // console.log(response.status.);
+
+                    if (response.status === 400) {
+                        alert("User not found");
+                    }
+                    else {
+                        htmlcode = '';
+                        htmlcode += '<p className="pp" id=' + '"c' + counter + '">' + member + '</p>';
+                        var s = "document.getElementById('close" + counter + "')";
+                        var ss = s + ".remove()";
+                        var a = "document.getElementById('c" + counter + "')";
+                        var aa = a + ".remove()";
+
+                        var d = "document.getElementById('h" + counter + "')";
+                        var dd = d + ".remove()";
+
+
+                        htmlcode += '<span onclick="' + ss + ',' + aa + ',' + dd + '"class="closes" id="close' + counter + '">&times;</span>';
+
+                        htmlcode += '<hr class="line" id=' + '"h' + counter + '">';
+                        $('.members').append(htmlcode);
+                        counter++;
+                    }
                 });
 
 
@@ -150,46 +163,22 @@ class create_room extends Component {
             });
         });
         $(document).ready(function () {
-            $(".button1").click(function () {
-                console.log("1111111111111")
-                window.location.replace("/homepage");
-            })
+
         })
     };
-    constructor(props) {
-        super(props);
-        this.state={
-            id_gp:'',
-            name_gp:'',
-            bio: '',
-            user: '',
-          
-        }
-        
-    }
-    change_name = e => {
-        this.setState({ name_gp: e.target.value })
-    }
-    change_id = e => {
-        this.setState({ id_gp: e.target.value })
-    }
-    change_bio = e => {
-        this.setState({ bio: e.target.value })
-    }
-    change_user = e => {
-        this.setState({ user: e.target.value })
-    }
 
- 
+
+
     render() {
         return (
             <form className="form" >
                 <div id="homepagebtn">
                     <p>Homepage</p>
                 </div>
-            
+
                 <div className="formback">
                     <legend className="title">Create new group</legend>
+
                 <input value={this.state.name_gp} onChange={this.change_name} type="text"
                     className="input1" placeholder="name" style={{
                     height: '40px',
@@ -219,11 +208,13 @@ class create_room extends Component {
 
 
                 
+
                 </div>
 
             </form>
 
-            )
+        )
     }
+
 }
 export default create_room;
