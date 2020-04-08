@@ -30,7 +30,88 @@ class Homepage extends Component {
                 window.localStorage.clear();
                 window.location.replace("/login/");
             });
+                var groups=[];
+                var mygroups=[];
 
+ 
+                var settings = {
+                    "url": "http://127.0.0.1:8000/group/owned_groups/",
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+                      "Authorization": "Token "+token
+                    },
+                  };
+                  
+                  $.ajax(settings).done(function (response) {
+                    console.log(response);
+                    for(var counter=0;counter<response.length;counter++)
+                    mygroups.push(response[counter].title);
+   
+                    console.log("mygroups :"+mygroups);
+                    var counter1=0;
+                    var htmlcode='';
+                    while(counter1<mygroups.length){
+                               
+                                var s="document.getElementById('close"+counter1+"')";
+                                var ss=s+".remove()";
+                                var a="document.getElementById('c"+counter1+"')";
+                                var aa=a+".remove()";
+                            
+                                var d="document.getElementById('h"+counter1+"')";
+                                var dd=d+".remove()";
+                            
+                                htmlcode += '<p class="mygroups" id=' + '"c' + counter1 + '">' + mygroups[counter1]+'</p>'+'<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close' + counter1 + '">&times;</span>';
+                           
+                                
+                                htmlcode += '<hr class="line" id=' + '"h' + counter1 + '">';
+                                $('.groupsShow').append(htmlcode);
+                                counter1++;
+                    }
+                    
+                  });
+
+
+
+            var settings = {
+                "url": "http://127.0.0.1:8000/group/joined_groups/",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+                    "Authorization": "Token "+token
+                },
+              };
+              
+              $.ajax(settings).done(function (response) {
+                console.log(response);
+                for(var counter=0;counter<response.length;counter++)
+                 groups.push(response[counter].the_group);
+
+                 console.log("groups :"+groups);
+                                 
+                 var counter1=0;
+                 var htmlcode='';
+                 while(counter1<groups.length){
+                             
+                             var s="document.getElementById('close2"+counter1+"')";
+                             var ss=s+".remove()";
+                             var a="document.getElementById('c2"+counter1+"')";
+                             var aa=a+".remove()";
+                         
+                             var d="document.getElementById('h2"+counter1+"')";
+                             var dd=d+".remove()";
+                         
+                             htmlcode += '<p class="pp" id=' + '"c2' + counter1 + '">' + groups[counter1]+'</p>'+'<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close2' + counter1 + '">&times;</span>';
+                         
+                             
+                             htmlcode += '<hr class="line" id=' + '"h2' + counter1 + '">';
+                             $('.groupsShow').append(htmlcode);
+                             counter1++;
+                 }
+                 
+              });
+
+           
         });
     }
 
