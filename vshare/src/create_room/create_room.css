@@ -21,48 +21,46 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding:  50px;
+    
     height: 70%;
+    width:28%;
     text-align: center;
 }
 
 
-.input1{
-   
-    margin:15px;
-    border: groove;
-    text-align:center;
-        
+.input1 {
+    /*margin-left: -112px;*/
+    margin-left: 10px;
+    margin: 15px;
+    border: solid;
+    border-radius: 20px;
+    text-align: center;
 }
 .input2 {
     margin: 15px;
-    border: groove ;
+    margin-left: 10px;
+    border: solid;
+    border-radius: 20px;
     text-align: center;
 }
-.input3{
-    margin: 10px;
-    border: groove ;
-    text-align:center;
-    position: relative;
-    width: 20   0%;
 
-}
 .textarea {
     position: relative;
     margin: 15px;
-    border: groove;
-    text-align:center;
+    border: solid;
+    margin-left: 50px;
+    border-radius: 20px;
+    background-color:whitesmoke;
+    text-align: center;
 }
 .textarea1 {
     margin: 15px;
     border: groove;
-    text-align:center;
-
-
-    
+    text-align: center;
+    margin-left: -32px;
 }
-.search{
-    
+.search {
+    flex-direction: row
 }
 
 #btn {
@@ -70,7 +68,7 @@
     /* float: right; */
     /* margin:15px; */
     /* margin-top: 20px; */
-    margin-left: 20px;
+    /*margin-left: 20px;*/
     /* margin-right: 10px; */
     padding:15px ;
     width: 20%;
@@ -84,7 +82,8 @@
     margin: 15px;
 }
 .title {
-    margin:10px;
+    margin-bottom:50px;
+ 
     color:black;
 }
 
@@ -98,4 +97,14 @@
 
     position:center;
     margin:20px;
+}
+.next1 {
+    height: 35px;
+    width: 120px;
+    background-color: rgb(243, 157, 29);
+    border-radius: 100px;
+    font-size: x-large large;
+    color: black;
+    position: center;
+    margin: 20px;
 }
