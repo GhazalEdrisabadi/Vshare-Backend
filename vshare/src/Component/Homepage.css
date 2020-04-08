@@ -1,6 +1,6 @@
 .Homepage {
     width: 100%;
-    background-color: #282c34;
+    background-color: teal;
    height: 100%;
     position:fixed;
     left:0;
@@ -10,43 +10,52 @@
     font-size: calc(10px + 2vmin);
     color: white;
 }
+
 .zare {
-    margin-top: 70px;
+    margin-top: 140px;
     float: right;
     height:24px;
-   
-    width: 33.33%; /* three containers (use 25% for four, and 50% for two, etc) */
-    padding: 1px ;
+    margin-right: 750px;
+    width: 33.33%; /* three containers (use 25% for four, and 50% for two, etc) */ 
+    border-top: solid ;
+    border-right: solid;
+    border-bottom: solid;
+    border-color: black;
+
 }
 .input {
-    margin-top: 0px;
-    margin-left: 400px;
+    padding: 10px ;
+    float: right;
+    color: seashell;
     font-size: 20px;
     height: 40px;
     width: 500px;
-    padding:0;
-    top:0;
-    left:0;
+    margin-top: 140px;
+    margin-left: 150px; 
+    border-top: solid ;
+    border-left: solid;
+    border-bottom: solid;
+    border-color: black;
     flex-direction:row
 }
 .create{
-    margin-top:590px;
-    margin-left:1270px;
-    height:85px;
-    width:85px;
+    position: absolute;
+    left: 92%;
+    top: 82%;
+    height:120px;
+    width:120px;
 }
 
 .groupsShow{
-    border: red double thick;
-    margin-left:  60px;
-    margin-top: 100px;
+    border-radius: 50px;
+    box-shadow: 15PX 15PX gray;
+    
+    margin-left:  37%;
+    margin-top: 12%;
     color: black;
     text-align: center;
-    padding: 5px;
-    width: 300px;
-    height: 600px;
-    background-color: gray;
+    padding:20px;
+    width: 350px;
+    height: 650px;
+    background-color: whitesmoke;
 }
-/*.button_create{
-    background-image
-}*/
