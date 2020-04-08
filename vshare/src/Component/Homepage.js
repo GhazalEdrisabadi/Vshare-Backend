@@ -15,10 +15,10 @@ class Homepage extends Component {
 
     componentDidMount(){
         $(document).ready(function () {
-            if (localStorage.getItem('token') == null) {
-                alert("Login please !");
-                window.location.replace("/login/");
-            }
+            // if (localStorage.getItem('token') == null) {
+            //     alert("Login please !");
+            //     window.location.replace("/login/");
+            // }
             console.log("aa");
             var token=window.localStorage.getItem('token');
             var username=window.localStorage.getItem('username');
@@ -153,19 +153,24 @@ class Homepage extends Component {
         }
         return (
             <div className="Homepage">
-                 <button className="logout">logout</button>
-              
+                  {/* <button className="logout">logout</button>  */}
+                  
                 <Navbar drawerClickHandeler={this.drawertoggleclickhandler} />
                 {sidedrawer}
                 {backdrop}
+               
+
                 <div style={{ alignContent:"center" }}>
-                <img style={{ width: '30px', height: '27px' }} src={zare} className="zare" onClick={this.handleSubmit} />
-                <input value={this.state.value} onChange={this.handleChange} type="text"
-                        className="zare" />
+                <img style={{ width: '50px', height: '40px' }} src={zare} className="zare" onClick={this.handleSubmit} />
+                <input style={{ width: '500px', height: '40px' }} value={this.state.value} onChange={this.handleChange} type="text"
+                        className="input" />
+                    
                 </div>
+                <div><a href="/create"><img src={Plus} className="create" /></a></div>
                 <div className="groupsShow">
                     </div>
-                <div><a href="/create"><img src={Plus} className="create" /></a></div>
+                    
+                
              
             </div>
        
