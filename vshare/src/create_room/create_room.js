@@ -40,29 +40,17 @@ class create_room extends Component {
                 window.location.replace("/homepage");
             });
 
-            $(".button").click(function () {
-
-
-
-                for (var cc = 0; cc < counter; cc++) {
-
-
-                    mem.push($('#c' + cc).html());
-
-                }
-                for (var j = 0; j < mem.length; j++) {
-                    if (mem[j] != undefined)
-                        mem2.push(mem[j]);
-                }
-                console.log(mem2.length);
-                console.log("mem2 : " + mem2);
-
-
+            
+            $(".next1").click(function () {
 
                 var id = $(".input1").val();;
                 var name = $(".input2").val();
                 var bio = $(".textarea").val();
                 var user = $(".textarea1").val();
+
+                var mem = [];
+                console.log(id + " " + name + " " + bio);
+                console.log(csrftoken)
 
                 var token = window.localStorage.getItem('token');
 
@@ -75,11 +63,16 @@ class create_room extends Component {
                         console.log("");
                     },
                     success: function () {
+                        window.localStorage.setItem('id_group', id);
+                        window.location.replace("/add");
                         alert("done");
                     },
                     "headers": {
                         'X-CSRFToken': csrftoken,
                         "accept": "application/json",
+
+                        "Authorization": "token " + token,
+
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Allow-Headers": "*",
                         "Content-Type": "application/json"
@@ -89,7 +82,10 @@ class create_room extends Component {
                         "title": name,
                         "describtion": bio,
                         "invite_only": true,
-                        "members": mem2,
+
+                       //"created_by": "milad",
+                        "members": mem
+
                     }
                     ),
                 };
@@ -182,42 +178,36 @@ class create_room extends Component {
 
                 <div className="formback">
                     <legend className="title">Create new group</legend>
-                    <input type="text"
-                        className="input1" placeholder="name" style={{
-                            height: '40px',
-                            width: '290px',
-                            marginLeft: '-30px'
+
+                <input value={this.state.name_gp} onChange={this.change_name} type="text"
+                    className="input1" placeholder="name" style={{
+                    height: '40px',
+                        width: '290px',
+                        marginLeft:'-30px'
+                    }} />
+                <input value={this.state.id_gp} onChange={this.change_id} type="text"
+                    className="input2" placeholder="id" style={{
+                    height: '40px',
+                    width: '290px'
                         }} />
-                    <input type="text"
-                        className="input2" placeholder="id" style={{
-                            height: '40px',
-                            width: '290px'
-                        }} />
-                    <div classname="search">
+                    
+        
+                   
+                    
 
-                        <input className="input3" style={{
-                            height: '40px',
-                            width: '225px'
-                        }} placeholder="id of member  " />
+                  
+                <textarea value={this.state.bio} onChange={this.change_bio} type="text"
+                    className="textarea" placeholder=" bio" style={{
+                    height: '60px',
+                    width: '290px'
+                    }} />
+          
+                <dev id="create" className="next1" variant="raised"
 
-                        <div id="btn" className="btn" >add member</div>
-
-                    </div>
-
-
+                    >next</dev>
 
 
-                    <textarea type="text"
-                        className="textarea" placeholder=" bio" style={{
-                            height: '50px',
-                            width: '290px'
-                        }} />
-                    <div className='members' style={{ maxHeight: '200px' , overflow: 'scroll', width: '290px' }}>Members : <hr></hr></div>
-
-
-                    <div id="create" className="button" variant="raised">next</div>
-
-
+                
 
                 </div>
 

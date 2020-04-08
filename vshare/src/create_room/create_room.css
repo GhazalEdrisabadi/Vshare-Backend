@@ -21,38 +21,39 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding:  50px;
-    height: 80%;
+
+    
+    height: 70%;
+    width:28%;
+
     text-align: center;
 }
 
 
 .input1 {
     /*margin-left: -112px;*/
+    margin-left: 10px;
     margin: 15px;
-    border: groove;
+    border: solid;
+    border-radius: 20px;
     text-align: center;
 }
 .input2 {
     margin: 15px;
-    margin-left:-32px;
-    border: groove ;
+    margin-left: 10px;
+    border: solid;
+    border-radius: 20px;
     text-align: center;
 }
-.input3{
-    margin: 10px;
-    border: groove ;
-    text-align:center;
-    margin-left:52px;
-    position: relative;
-    width: 200%;
 
-}
+
 .textarea {
     position: relative;
     margin: 15px;
-    border: groove;
-    margin-left: -32px;
+    border: solid;
+    margin-left: 50px;
+    border-radius: 20px;
+    background-color:whitesmoke;
     text-align: center;
     background-color: whitesmoke
 }
@@ -116,8 +117,10 @@
     margin: 15px;
 }
 .title {
-    top : 10px;
-    margin-bottom:30px;
+
+    margin-bottom:50px;
+ 
+
     color:black;
 }
 .members{
@@ -150,4 +153,14 @@
 
     position:center;
     margin:20px;
+}
+.next1 {
+    height: 35px;
+    width: 120px;
+    background-color: rgb(243, 157, 29);
+    border-radius: 100px;
+    font-size: x-large large;
+    color: black;
+    position: center;
+    margin: 20px;
 }
