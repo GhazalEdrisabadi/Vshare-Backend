@@ -12,7 +12,7 @@ const App = () => {
                 <Route path="/create" component={Create} />
                 <Route path="/homepage" component={Homepage} />
                 <Route path="/login" component={Login} />
-                <Route path="/:id"  component={Chat} />
+                <Route exact path="/group/:id"  component={Chat} />
             </div>
         </BrowserRouter>
  

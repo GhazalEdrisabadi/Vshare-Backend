@@ -58,49 +58,23 @@ class Homepage extends Component {
                 console.log(settings.headers);
                 console.log(settings.method);
                 $.ajax(settings).done(function (response) {
-                   // console.log(response);
-                    //   console.log(response.status);
-                 //   console
-                    var settings = {
-                        "url": "http://127.0.0.1:8000/groups/"+id+"",
-                        "method": "GET",
-                        "timeout": 0,
-                        "headers": {
-                            //'X-CSRFToken': csrftoken,
-                          //  "Authorization": "token " + token,
-                            "accept": "application/json",
-                            "Access-Control-Allow-Origin": "*",
-                            "Access-Control-Allow-Headers": "*",
-                            "Content-Type": "application/json"
-                        }
-                    };
-
-                    $.ajax(settings).done(function (response_) {
-                        console.log("111111")
-                        console.log(response_)
-                       
-                        window.localStorage.setItem('groupid', response_.groupid)
-                        console.log(response_.groupid);
-
-                      //  window.location.replace("/" + response_.groupid+"");
-                       
-                           
-                    });
-
-                    //  console.log(responseDisplay);
-                    // console.log(response.status.);
+                    console.log("done")
+                    console.log(response);
+                    console.log(response.status);
+                    window.localStorage.setItem('id_gp', id);
+                        window.location.replace("/group/" + id+"");
                 });
                 $.ajax(settings).fail(function (response) {
                     // console.log(response);
                     //   console.log(response.status);
                     //   console
-                    console.log("1");
+                    console.log("fail");
                     if (response.status === 400) {
                         alert("گروه وجود ندارد")
                     }
-                    if (response.status === 500) {
-                        alert("شما در این گروه عضو هستید")
-                    }
+                    //if (response.status === 500) {
+                    //    alert("شما در این گروه عضو هستید")
+                    //}
                     else {
                         console.log("ll")
                     }
