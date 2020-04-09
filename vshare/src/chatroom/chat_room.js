@@ -29,32 +29,21 @@ class chat_room extends Component {
                     console.log("111111")
                     console.log(response)
                     for (var i = 0; i < response.members.length; i++) {
+                      var  htmlcode = '';
+                        htmlcode += '<p className="pp" id=' + '"c' + i + '">' + response.members[i] + '</p>';
+                        $(".textarea_member").append(htmlcode);
                         console.log("2")
-                        $(".textarea_member").append(response.members[i] + "\n")
+                        //$(".textarea_member").append(response.members[i] + "\n")
 
                     }
                     $(".textarea_bio").append(response.describtion + "\n")
 
                 });
-           
-
         });
     }
     render() {
         return (
-            <form className="back">
-                <div className="formback_text">
-                
-                </div>
-                <div className="formback_movie">
-
-                </div>
-                <div className="formback_info">
-                    <legend className="title_gp">info of group</legend>
-                    <textarea className="textarea_member" />
-                    <textarea className="textarea_bio"/>
-                </div>
-            </form>
+            <form className="back">                <div className="formback_movie">                </div>                <div className="back_coulom">                    <div className="formback_info" style={{ width: '115%', height: '410px' }}>                        <legend className="title_gp">info of group</legend>                        <textarea className="textarea_member" />                        <textarea className="textarea_bio" />                    </div>                    <div className="formback_text" style={{ width: '115%', height: '410px' }} >                    </div>                </div>            </form>
             )
     }
 }
