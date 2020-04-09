@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import './Homepage.css'
 import Fontawesome from 'react-fontawesome'
 import Navbar from '../navbar/navbar'
 import Sidedrawer from '../SideDrawe/Sidedrawer'
-import { BrowserRouter, Route } from 'react-router-dom'
+import {BrowserRouter, Route} from 'react-router-dom'
 import Backdrop from '../Backdrop/Backdrop'
 import Create from '../create_room/create_room'
 import Plus from '../pngguru.com.png'
@@ -15,11 +15,14 @@ class Homepage extends Component {
 
     componentDidMount() {
         $(document).ready(function () {
+
             window.localStorage.removeItem('numbergp1');
-            // if (localStorage.getItem('token') == null) {
-            //     alert("Login please !");
-            //     window.location.replace("/login/");
-            // }
+
+            if (window.localStorage.getItem('token') == null) {
+                alert("Login first !");
+                window.location.replace("/login/");
+            }
+
             console.log("aa");
             var token = window.localStorage.getItem('token');
             var username = window.localStorage.getItem('username');
@@ -35,7 +38,6 @@ class Homepage extends Component {
             var mygroups = [];
 
 
-
             var settings = {
                 "url": "http://127.0.0.1:8000/group/owned_groups/",
                 "method": "GET",
@@ -48,7 +50,7 @@ class Homepage extends Component {
             $.ajax(settings).done(function (response) {
                 console.log(response);
                 for (var counter = 0; counter < response.length; counter++)
-                    mygroups.push({ name: response[counter].title, id: response[counter].groupid });
+                    mygroups.push({name: response[counter].title, id: response[counter].groupid});
 
 
                 var htmlcode = '';
@@ -60,12 +62,13 @@ class Homepage extends Component {
                     var s = "document.getElementById('myModal')";
                     var ss = s + ".style.display = 'block'";
                     var a = "window.localStorage.setItem('numbergp1','" + mygroups[counter1].id + "')";
-
+                    var d = "document.getElementById('myModal2')";
+                    var dd = d + ".style.display = 'block'";
                     /*    var s="document.getElementById('close"+counter1+"')";
                         var ss=s+".remove()";
                         var a="document.getElementById('c"+counter1+"')";
                         var aa=a+".remove()";
-                    
+
                         var d="document.getElementById('h"+counter1+"')";
                         var dd=d+".remove()";
                         htmlcode+='<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close' + counter1 + '">&times;</span>';*/
@@ -75,14 +78,14 @@ class Homepage extends Component {
 
                     /*     var hoverout='onMouseOut="this.style.color=';
                          var hoverrout=hoverout+"'red'";
- 
+
                          var hover='onMouseOver="this.style.color=';
                          var hoverr=hover+"'green'";*/
 
                     htmlcode += '<p class="mygroups" id=' + '"c' + counter1 + '">' + mygroups[counter1].name + '</p>';
                     htmlcode += '<div class="buttonsforgp">';
                     htmlcode += '<div class="admin" >*</div>';
-                    htmlcode += '<div class="leave"  >leave</div>';
+                    htmlcode += '<div  onclick="' + a + "," + dd + '" class="leave"  >leave</div>';
                     htmlcode += '<div  onclick="' + a + "," + ss + '" class="edit">edit</div>';
                     htmlcode += '</div>';
                     htmlcode += '</br>';
@@ -93,88 +96,124 @@ class Homepage extends Component {
 
             });
 
-            $('.modal-content').mouseover(function(){
-                var gpid=window.localStorage.getItem("numbergp1");
-                
+
+            $('.modal2').mouseover(function () {
+                var gpid = window.localStorage.getItem("numbergp1");
+                console.log(gpid);
                 var settings = {
-                    "url": "http://127.0.0.1:8000/groups/"+gpid,
+                    "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
                     "method": "GET",
                     "timeout": 0,
                     "Content-Type": "application/json",
-                  
+
                 };
-/*
+                /*
+                                var settings = {
+                                    "url": "http://127.0.0.1:8000/groups/"+gpid,
+                                    "method": "GET",
+                                    "timeout": 0,
+                                    "processData": false,
+                                    "mimeType": "multipart/form-data",
+                                    "contentType": false,
+
+                                  };*/
+
+                $.ajax(settings).done(function (response) {
+                    // console.log(response.title);
+                    $('.deleteTEXT').text("Are you sure you want to leave The " + response.title + "  ? ");
+                });
+
+
+            });
+
+
+            $('.dltno').click(function () {
+                $('.modal2').fadeOut('slow');
+            });
+
+            $('.modal').mouseover(function () {
+                var gpid = window.localStorage.getItem("numbergp1");
+
                 var settings = {
-                    "url": "http://127.0.0.1:8000/groups/"+gpid,
+                    "url": "http://127.0.0.1:8000/groups/" + gpid,
                     "method": "GET",
                     "timeout": 0,
-                    "processData": false,
-                    "mimeType": "multipart/form-data",
-                    "contentType": false,
-                  
-                  };*/
-                  
-                  $.ajax(settings).done(function (response) {
-                   // console.log(response.title);
-                    $('.texx').text("Edit "+response.title+" details");
-                  });
+                    "Content-Type": "application/json",
 
-               
+                };
+                /*
+                                var settings = {
+                                    "url": "http://127.0.0.1:8000/groups/"+gpid,
+                                    "method": "GET",
+                                    "timeout": 0,
+                                    "processData": false,
+                                    "mimeType": "multipart/form-data",
+                                    "contentType": false,
+
+                                  };*/
+
+                $.ajax(settings).done(function (response) {
+                    // console.log(response.title);
+                    $('.texx').text("Edit " + response.title + " details");
+                });
+
+
             });
-            
+
             console.log("shomarash : " + window.localStorage.getItem('numbergp1'));
             $('.submitedit').click(function () {
 
-                var gpid=window.localStorage.getItem("numbergp1");
-                
-               
+                var gpid = window.localStorage.getItem("numbergp1");
 
 
                 var idd = $('#editid').val();
                 var title = $('#edittitle').val();
                 var des = $('#editdes').val();
-              //  console.log('edit : ' + edit + ' title : ' + title + 'des : ' + des);
-               
-              //  console.log("//////");
+                // console.log('id : ' + idd + ' title : ' + title + ' des : ' + des);
+
+                //  console.log("//////");
                 console.log(gpid);
                 var form = new FormData();
-                form.append("groupid", idd );
+                form.append("groupid", idd);
                 form.append("title", title);
                 form.append("describtion", des);
-            
 
 
                 var settings = {
-                    "url": "http://127.0.0.1:8000/groups/"+gpid+'/',
+                    "url": "http://127.0.0.1:8000/groups/" + gpid + '/',
                     "method": "PUT",
                     "timeout": 0,
-                    "data": JSON.stringify({"groupid":idd,"title":title,"describtion":des}),
+                    "data": JSON.stringify({"groupid": idd, "title": title, "describtion": des}),
                 };
                 $.ajax(settings).done(function (response) {
                     console.log(response);
                 });
 
-/*
-                var settings = {
-                    "url": "http://127.0.0.1:8000/groups/"+gpid+'/',
-                    "method": "PUT",
-                    "timeout": 0,
-                    "processData": false,
-                    "mimeType": "multipart/form-data",
-                    "contentType": false,
-                    "data": form
-                };
-
-                $.ajax(settings).done(function (response) {
-                    console.log(response);
-                });*/
+                /*
+                                var settings = {
+                                    "url": "http://127.0.0.1:8000/groups/"+gpid+'/',
+                                    "method": "PUT",
+                                    "timeout": 0,
+                                    "processData": false,
+                                    "mimeType": "multipart/form-data",
+                                    "contentType": false,
+                                    "data": form
+                                };
+                                $.ajax(settings).done(function (response) {
+                                    console.log(response);
+                                });*/
 
 
             })
 
             window.onclick = function (event) {
                 if (event.target == document.getElementById("myModal")) {
-                    document.getElementById("myModal").style.display = "none";
+                    $('.modal').fadeOut("slow");
+               //     document.getElementById("myModal").style.display = "none";
+                }
+                if (event.target == document.getElementById("myModal2")) {
+                     $('.modal2').fadeOut("slow");
+                  //  document.getElementById("myModal2").style.display = "none";
                 }
             }
 
@@ -189,34 +228,59 @@ class Homepage extends Component {
 
             $.ajax(settings).done(function (response) {
                 console.log(response);
-                for (var counter = 0; counter < response.length; counter++)
-                    groups.push(response[counter].the_group);
+                for (var counter = 0; counter < response.length; counter++) {
+                    var gpid2 = response[counter].the_group;
+                    var settings2 = {
+                        "url": "http://127.0.0.1:8000/groups/" + gpid2 + "/",
+                        "method": "GET",
+                        "timeout": 0,
+                        "Content-Type": "application/json",
 
-                console.log("groups :" + groups);
+                    };
 
-                var counter2 = 0;
-                var htmlcode2 = '';
-                while (counter2 < groups.length) {
+                    $.ajax(settings2).done(function (response2) {
+                        console.log(response2);
+                        groups.push({name: response2.title, id: response2.groupid});
+                        //  groups.push(response2.title);
+                        //  $('.deleteTEXT').text("Are you sure you want to leave The " + response.title + "  ? ");
+                    });
 
-                    /*    var s="document.getElementById('close2"+counter1+"')";
-                        var ss=s+".remove()";
-                        var a="document.getElementById('c2"+counter1+"')";
-                        var aa=a+".remove()";
-                    
-                        var d="document.getElementById('h2"+counter1+"')";
-                        var dd=d+".remove()";
-                    htmlcode+=+'<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close2' + counter1 + '">&times;</span>';*/
-                    htmlcode2 += '<p class="mygroups" id=' + '"c2' + counter2 + '">' + groups[counter2] + '</p>';
-                    htmlcode2 += '<div class="buttonsforgp">';
+                    // groups.push(response[counter].the_group);
 
-                    htmlcode2 += '<div class="leave" >leave</div>';
 
-                    htmlcode2 += '</div>';
-                    htmlcode2 += '</br>';
-                    $('.groupsShow').append(htmlcode2);
-                    counter2++;
-                    htmlcode2 = '';
                 }
+
+
+                setTimeout(function () {
+                    console.log(groups[1]);
+                    var counter2 = 0;
+                    var htmlcode2 = '';
+                    while (counter2 < groups.length) {
+                        var a2 = "window.localStorage.setItem('numbergp1','" + groups[counter2].id + "')";
+                        var d2 = "document.getElementById('myModal2')";
+                        var dd2 = d2 + ".style.display = 'block'";
+                        /*    var s="document.getElementById('close2"+counter1+"')";
+                            var ss=s+".remove()";
+                            var a="document.getElementById('c2"+counter1+"')";
+                            var aa=a+".remove()";
+
+                            var d="document.getElementById('h2"+counter1+"')";
+                            var dd=d+".remove()";
+                        htmlcode+=+'<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close2' + counter1 + '">&times;</span>';*/
+                        htmlcode2 += '<p class="mygroups" id=' + '"c2' + counter2 + '">' + groups[counter2].name + '</p>';
+                        htmlcode2 += '<div class="buttonsforgp">';
+
+                        htmlcode2 += '<div onclick="' + a2 + "," + dd2 + '" class="leave" >leave</div>';
+
+                        htmlcode2 += '</div>';
+                        htmlcode2 += '</br>';
+                        $('.groupsShow').append(htmlcode2);
+                        counter2++;
+                        htmlcode2 = '';
+                    }
+                    console.log("groups :" + groups);
+                }, 500);
+
 
             });
 
@@ -232,38 +296,42 @@ class Homepage extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
     handleChange(event) {
-        this.setState({ value: event.target.value });
+        this.setState({value: event.target.value});
 
     }
+
     handleSubmit(event) {
         alert('A name was submitted: ' + this.state.value);
         event.preventDefault();
     }
+
     state = {
         sidedraweropen: false
     };
 
     drawertoggleclickhandler = () => {
         this.setState((prevState) => {
-            return { sidedraweropen: !prevState.sidedraweropen }
+            return {sidedraweropen: !prevState.sidedraweropen}
 
         });
     };
     backdropclickhandeler = () => {
-        this.setState({ sidedraweropen: false })
+        this.setState({sidedraweropen: false})
     }
+
     render() {
         let sidedrawer;
         let backdrop;
         if (this.state.sidedraweropen) {
-            sidedrawer = <Sidedrawer />;
-            backdrop = <Backdrop click={this.backdropclickhandeler} />;
+            sidedrawer = <Sidedrawer/>;
+            backdrop = <Backdrop click={this.backdropclickhandeler}/>;
         }
         return (
 
 
-            <div className="Homepage">
+            <div class="Homepage">
                 {/* <button className="logout">logout</button>  */}
 
 
@@ -283,31 +351,41 @@ class Homepage extends Component {
                     </div>
 
                 </div>
-                <Navbar drawerClickHandeler={this.drawertoggleclickhandler} />
+
+                <div id="myModal2" className="modal2">
+                    <div className="modal-content2">
+                        <p className='deleteTEXT'>Are you sure you want to leave this group ? </p>
+                        <div className='dltbtns'></div>
+                        <div className='dltyes'>yes</div>
+                        <div className='dltno'>no</div>
+                    </div>
+                </div>
+
+
+                <Navbar drawerClickHandeler={this.drawertoggleclickhandler}/>
                 {sidedrawer}
                 {backdrop}
 
 
-                <div style={{ alignContent: "center" }}>
-                    <img style={{ width: '50px', height: '40px' }} src={zare} className="zare" onClick={this.handleSubmit} />
-                    <input style={{ width: '500px', height: '40px' }} value={this.state.value} onChange={this.handleChange} type="text"
-                        className="input" />
+                <div style={{alignContent: "center"}}>
+                    <img style={{width: '50px', height: '40px'}} src={zare} className="zare"
+                         onClick={this.handleSubmit}/>
+                    <input style={{width: '500px', height: '40px'}} value={this.state.value}
+                           onChange={this.handleChange} type="text"
+                           className="input"/>
 
                 </div>
-                <div><a href="/create"><img src={Plus} className="create" /></a></div>
+                <div><a href="/create"><img src={Plus} className="create"/></a></div>
                 <div className="groupsShow">
                 </div>
 
 
-
-
             </div>
-
-
 
 
         )
     }
 
 }
+
 export default Homepage
