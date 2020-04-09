@@ -1,11 +1,11 @@
 .Homepage {
     width: 100%;
     background-color: teal;
-   height: 100%;
-    position:fixed;
-    left:0;
+    height: 100%;
+    position: fixed;
+    left: 0;
     align-items: center;
-   top:0;
+    top: 0;
     justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
@@ -14,50 +14,54 @@
 .zare {
     margin-top: 140px;
     float: right;
-    height:24px;
+    height: 24px;
     margin-right: 750px;
-    width: 33.33%; /* three containers (use 25% for four, and 50% for two, etc) */ 
-    border-top: solid ;
+    width: 33.33%;
+    /* three containers (use 25% for four, and 50% for two, etc) */
+    border-top: solid;
     border-right: solid;
     border-bottom: solid;
     border-color: black;
-
 }
+
 .input {
-    padding: 10px ;
+    padding: 10px;
     float: right;
     color: seashell;
     font-size: 20px;
     height: 40px;
     width: 500px;
     margin-top: 140px;
-    margin-left: 150px; 
-    border-top: solid ;
+    margin-left: 150px;
+    border-top: solid;
     border-left: solid;
     border-bottom: solid;
     border-color: black;
-    flex-direction:row
+    flex-direction: row
 }
-.create{
+
+.create {
     position: absolute;
     left: 92%;
     top: 82%;
-    height:120px;
-    width:120px;
-}
-.mygroups{
-    color: red;
-    
+    height: 120px;
+    width: 120px;
 }
 
-.leave{
+.mygroups {
+    color: red;
+}
+
+.leave {
+    cursor: pointer;
     padding: 3px;
     float: right;
     border: black solid thin;
     width: fit-content;
     background-color: blanchedalmond;
 }
-.edit{
+
+.edit {
     cursor: pointer;
     padding: 3px;
     float: left;
@@ -65,80 +69,228 @@
     width: fit-content;
     background-color: blanchedalmond;
 }
-.mygroups{
+
+.mygroups {
     font-size: 20px;
     float: left;
 }
-.buttonsforgp{
+
+.buttonsforgp {
     font-size: 15px;
     text-align: right;
     float: right;
     width: 90px;
 }
-.admin{
+
+.admin {
     float: left;
 }
-.groupsShow{
+
+.groupsShow {
+    overflow-y: scroll;
     border-radius: 50px;
     box-shadow: 15PX 15PX gray;
-    
-    margin-left:  37%;
+    margin-left: 37%;
     margin-top: 12%;
     color: black;
     text-align: center;
-    padding:20px;
+    padding: 20px;
     width: 350px;
     height: 650px;
     background-color: whitesmoke;
 }
-.editpage{
+
+.editpage {
     width: 500ox;
     height: 50px;
     background-color: white;
 }
 
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  }
-  
-  /* Modal Content */
-  .modal-content {
-      border-radius: 25px;
-      text-align: center;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+
+/* Modal Content */
+
+.modal-content {
+    border-radius: 25px;
+    text-align: center;
     background-color: #fefefe;
     color: black;
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-  }
+}
 
-  .inputedit{
-text-align: center;
-width: 300px;
-border: black solid thin ;
-border-radius: 25px;
-  }
+.modal2 {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
 
-  .submitedit2{
-      background-color: coral;
-      border: black solid thin;
-      border-radius: 25px;
-      width: 150px;
-      height: 50px;
-      text-align: center;
-      margin-top: 50px;
-      margin-left: 45%;
-      font-size: 20px;
 
-  }
+/* Modal Content */
+
+.modal-content2 {
+    border-radius: 25px;
+    text-align: center;
+    background-color: #fefefe;
+    color: black;
+    margin: auto;
+    padding: 40px;
+    border: 1px solid #888;
+    width: 80%;
+    height: 13%;
+}
+
+.deleteTEXT {
+    font-size: xx-large;
+    float: left;
+    margin-bottom: 5px;
+}
+
+.dltbtns {
+    float: right;
+}
+
+.dltyes {
+    border-radius: 10px;
+    padding: 2px;
+    background-color: green;
+    margin-right: 5px;
+    float: left;
+    cursor: pointer;
+}
+
+.dltno {
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 2px;
+    background-color: red;
+    margin-left: 5px;
+    float: right;
+}
+
+.inputedit {
+    text-align: center;
+    width: 300px;
+    border: black solid thin;
+    border-radius: 25px;
+}
+
+.submitedit2 {
+    background-color: coral;
+    border: black solid thin;
+    border-radius: 25px;
+    width: 150px;
+    height: 50px;
+    text-align: center;
+    margin-top: 50px;
+    margin-left: 45%;
+    font-size: 20px;
+}
+
+.modal2 {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+
+/* Modal Content */
+
+.modal-content2 {
+    border-radius: 25px;
+    text-align: center;
+    background-color: #fefefe;
+    color: black;
+    margin: auto;
+    padding: 40px;
+    border: 1px solid #888;
+    width: 80%;
+    height: 13%;
+}
+
+.deleteTEXT {
+    font-size: xx-large;
+    float: left;
+    margin-bottom: 5px;
+}
+
+.dltbtns {
+    float: right;
+    width: fit-content;
+}
+
+.dltyes {
+    border-radius: 10px;
+    padding: 2px;
+    background-color: green;
+    margin: 5px;
+    float: right;
+    cursor: pointer;
+}
+
+.dltno {
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 2px;
+    background-color: red;
+    margin: 5px;
+    float: right;
+}
