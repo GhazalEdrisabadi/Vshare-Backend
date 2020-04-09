@@ -29,9 +29,15 @@ class chat_room extends Component {
                     console.log("111111")
                     console.log(response)
                     for (var i = 0; i < response.members.length; i++) {
-                      var  htmlcode = '';
-                        htmlcode += '<p className="pp" id=' + '"c' + i + '">' + response.members[i] + '</p>';
+                        var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'white'";
+                        var htmlcode = '';
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
+
+                        htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + '</p>';
                         $(".textarea_member").append(htmlcode);
+                      
                         console.log("2")
                         //$(".textarea_member").append(response.members[i] + "\n")
 
@@ -43,7 +49,7 @@ class chat_room extends Component {
     }
     render() {
         return (
-            <form className="back">                <div className="formback_movie">                </div>                <div className="back_coulom">                    <div className="formback_info" style={{ width: '115%', height: '410px' }}>                        <legend className="title_gp">info of group</legend>                        <textarea className="textarea_member" />                        <textarea className="textarea_bio" />                    </div>                    <div className="formback_text" style={{ width: '115%', height: '410px' }} >                    </div>                </div>            </form>
+            <form className="back">                <div className="formback_movie">                </div>                <div className="back_coulom">                    <div className="formback_info" style={{ width: '115%', height: '410px' }}>                        <legend className="title_gp">info of group</legend>                        <div className="textarea_member" style={{ overflowY: 'scroll' }} />                        <div className="textarea_bio" />                    </div>                    <div className="formback_text" style={{ width: '115%', height: '410px', }} >                    </div>                </div>            </form>
             )
     }
 }
