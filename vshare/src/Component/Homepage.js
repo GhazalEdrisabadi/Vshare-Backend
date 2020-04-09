@@ -13,30 +13,220 @@ import jQuery from 'jquery'
 
 class Homepage extends Component {
 
-    componentDidMount(){
+    componentDidMount() {
         $(document).ready(function () {
+            window.localStorage.removeItem('numbergp1');
             // if (localStorage.getItem('token') == null) {
             //     alert("Login please !");
             //     window.location.replace("/login/");
             // }
             console.log("aa");
-            var token=window.localStorage.getItem('token');
-            var username=window.localStorage.getItem('username');
+            var token = window.localStorage.getItem('token');
+            var username = window.localStorage.getItem('username');
             $('.groupsShow').append('<h4> Your Groups </h4>');
-            $('.groupsShow').append("<h5> User: "+username+"</h5>");
+            $('.groupsShow').append("<h5> User: " + username + "</h5>");
             $('.groupsShow').append("<hr>");
-            
+
             $(".logout").click(function () {
                 window.localStorage.clear();
                 window.location.replace("/login/");
             });
+            var groups = [];
+            var mygroups = [];
+
+
+
+            var settings = {
+                "url": "http://127.0.0.1:8000/group/owned_groups/",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+                    "Authorization": "Token " + token
+                },
+            };
+
+            $.ajax(settings).done(function (response) {
+                console.log(response);
+                for (var counter = 0; counter < response.length; counter++)
+                    mygroups.push({ name: response[counter].title, id: response[counter].groupid });
+
+
+                var htmlcode = '';
+                for (var counter1 = 0; counter1 < mygroups.length; counter1++, htmlcode = '') {
+
+                    // var modal = 'document.getElementById("myModal")';
+                    //   var s=modal+'.style.display = "block"';
+                    //     window.localStorage.setItem('numbergp1',mygroups[counter1])
+                    var s = "document.getElementById('myModal')";
+                    var ss = s + ".style.display = 'block'";
+                    var a = "window.localStorage.setItem('numbergp1','" + mygroups[counter1].id + "')";
+
+                    /*    var s="document.getElementById('close"+counter1+"')";
+                        var ss=s+".remove()";
+                        var a="document.getElementById('c"+counter1+"')";
+                        var aa=a+".remove()";
+                    
+                        var d="document.getElementById('h"+counter1+"')";
+                        var dd=d+".remove()";
+                        htmlcode+='<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close' + counter1 + '">&times;</span>';*/
+                    //      onMouseOver="this.style.color='red'"
+                    //  onMouseOut="this.style.color='green'" >GeeksforGeeks</a>
+
+
+                    /*     var hoverout='onMouseOut="this.style.color=';
+                         var hoverrout=hoverout+"'red'";
+ 
+                         var hover='onMouseOver="this.style.color=';
+                         var hoverr=hover+"'green'";*/
+
+                    htmlcode += '<p class="mygroups" id=' + '"c' + counter1 + '">' + mygroups[counter1].name + '</p>';
+                    htmlcode += '<div class="buttonsforgp">';
+                    htmlcode += '<div class="admin" >*</div>';
+                    htmlcode += '<div class="leave"  >leave</div>';
+                    htmlcode += '<div  onclick="' + a + "," + ss + '" class="edit">edit</div>';
+                    htmlcode += '</div>';
+                    htmlcode += '</br>';
+                    //htmlcode += '<hr class="line" id=' + '"h' + counter1 + '">';
+                    $('.groupsShow').append(htmlcode);
+
+                }
+
+            });
+
+            $('.modal-content').mouseover(function(){
+                var gpid=window.localStorage.getItem("numbergp1");
+                
+                var settings = {
+                    "url": "http://127.0.0.1:8000/groups/"+gpid,
+                    "method": "GET",
+                    "timeout": 0,
+                    "Content-Type": "application/json",
+                  
+                };
+/*
+                var settings = {
+                    "url": "http://127.0.0.1:8000/groups/"+gpid,
+                    "method": "GET",
+                    "timeout": 0,
+                    "processData": false,
+                    "mimeType": "multipart/form-data",
+                    "contentType": false,
+                  
+                  };*/
+                  
+                  $.ajax(settings).done(function (response) {
+                   // console.log(response.title);
+                    $('.texx').text("Edit "+response.title+" details");
+                  });
+
+               
+            });
+            
+            console.log("shomarash : " + window.localStorage.getItem('numbergp1'));
+            $('.submitedit').click(function () {
+
+                var gpid=window.localStorage.getItem("numbergp1");
+                
+               
+
+
+                var idd = $('#editid').val();
+                var title = $('#edittitle').val();
+                var des = $('#editdes').val();
+              //  console.log('edit : ' + edit + ' title : ' + title + 'des : ' + des);
+               
+              //  console.log("//////");
+                console.log(gpid);
+                var form = new FormData();
+                form.append("groupid", idd );
+                form.append("title", title);
+                form.append("describtion", des);
+            
+
+
+                var settings = {
+                    "url": "http://127.0.0.1:8000/groups/"+gpid+'/',
+                    "method": "PUT",
+                    "timeout": 0,
+                    "data": JSON.stringify({"groupid":idd,"title":title,"describtion":des}),
+                };
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                });
+
+/*
+                var settings = {
+                    "url": "http://127.0.0.1:8000/groups/"+gpid+'/',
+                    "method": "PUT",
+                    "timeout": 0,
+                    "processData": false,
+                    "mimeType": "multipart/form-data",
+                    "contentType": false,
+                    "data": form
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                });*/
+
+
+            })
+
+            window.onclick = function (event) {
+                if (event.target == document.getElementById("myModal")) {
+                    document.getElementById("myModal").style.display = "none";
+                }
+            }
+
+            var settings = {
+                "url": "http://127.0.0.1:8000/group/joined_groups/",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+                    "Authorization": "Token " + token
+                },
+            };
+
+            $.ajax(settings).done(function (response) {
+                console.log(response);
+                for (var counter = 0; counter < response.length; counter++)
+                    groups.push(response[counter].the_group);
+
+                console.log("groups :" + groups);
+
+                var counter2 = 0;
+                var htmlcode2 = '';
+                while (counter2 < groups.length) {
+
+                    /*    var s="document.getElementById('close2"+counter1+"')";
+                        var ss=s+".remove()";
+                        var a="document.getElementById('c2"+counter1+"')";
+                        var aa=a+".remove()";
+                    
+                        var d="document.getElementById('h2"+counter1+"')";
+                        var dd=d+".remove()";
+                    htmlcode+=+'<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close2' + counter1 + '">&times;</span>';*/
+                    htmlcode2 += '<p class="mygroups" id=' + '"c2' + counter2 + '">' + groups[counter2] + '</p>';
+                    htmlcode2 += '<div class="buttonsforgp">';
+
+                    htmlcode2 += '<div class="leave" >leave</div>';
+
+                    htmlcode2 += '</div>';
+                    htmlcode2 += '</br>';
+                    $('.groupsShow').append(htmlcode2);
+                    counter2++;
+                    htmlcode2 = '';
+                }
+
+            });
+
 
         });
     }
 
     constructor(props) {
         super(props);
-        this.states ={
+        this.states = {
             value: ''
         }
         this.handleChange = this.handleChange.bind(this);
@@ -44,7 +234,7 @@ class Homepage extends Component {
     }
     handleChange(event) {
         this.setState({ value: event.target.value });
-        
+
     }
     handleSubmit(event) {
         alert('A name was submitted: ' + this.state.value);
@@ -57,7 +247,7 @@ class Homepage extends Component {
     drawertoggleclickhandler = () => {
         this.setState((prevState) => {
             return { sidedraweropen: !prevState.sidedraweropen }
-            
+
         });
     };
     backdropclickhandeler = () => {
@@ -71,29 +261,51 @@ class Homepage extends Component {
             backdrop = <Backdrop click={this.backdropclickhandeler} />;
         }
         return (
+
+
             <div className="Homepage">
-                  {/* <button className="logout">logout</button>  */}
-                  
+                {/* <button className="logout">logout</button>  */}
+
+
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <h2 class="texx">Edit your groups deatails</h2>
+                        <br></br>
+                        <input class="inputedit" id='editid' placeholder="Group ID"></input>
+                        <hr></hr>
+                        <input class="inputedit" id='edittitle' placeholder="Title"></input>
+                        <hr></hr>
+                        <input class="inputedit" id='editdes' placeholder="Description"></input>
+                        <br></br>
+                        <br></br>
+
+                        <button class="submitedit">Submit</button>
+                    </div>
+
+                </div>
                 <Navbar drawerClickHandeler={this.drawertoggleclickhandler} />
                 {sidedrawer}
                 {backdrop}
-               
 
-                <div style={{ alignContent:"center" }}>
-                <img style={{ width: '50px', height: '40px' }} src={zare} className="zare" onClick={this.handleSubmit} />
-                <input style={{ width: '500px', height: '40px' }} value={this.state.value} onChange={this.handleChange} type="text"
+
+                <div style={{ alignContent: "center" }}>
+                    <img style={{ width: '50px', height: '40px' }} src={zare} className="zare" onClick={this.handleSubmit} />
+                    <input style={{ width: '500px', height: '40px' }} value={this.state.value} onChange={this.handleChange} type="text"
                         className="input" />
-                    
+
                 </div>
                 <div><a href="/create"><img src={Plus} className="create" /></a></div>
                 <div className="groupsShow">
-                    </div>
-                    
-                
-             
+                </div>
+
+
+
+
             </div>
-       
-        
+
+
+
+
         )
     }
 
