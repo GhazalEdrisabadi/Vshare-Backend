@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './chat_room.css'
 import $ from 'jquery';
+
 class chat_room extends Component {
     componentDidMount() {
         const { id } = this.props.match.params
