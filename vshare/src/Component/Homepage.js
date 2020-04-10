@@ -326,22 +326,10 @@ class Homepage extends Component {
     render() {
  
         return (
-            <div className="Homepage">
-                {/* <button className="logout">logout</button>  */}
-
-
-                <header className="head">
-                    <div className="zare"> join</div>
-                    <input   type="text"
-                        className="input" />
-
-                    
-                </header>
-               
 
 
             <div class="Homepage">
-                {/* <button className="logout">logout</button>  */}
+               
 
 
                 <div id="myModal" class="modal">
@@ -368,31 +356,23 @@ class Homepage extends Component {
                         <div className='dltyes'>yes</div>
                         <div className='dltno'>no</div>
                     </div>
-
                 </div>
 
-
-
-
-                <div style={{alignContent: "center"}}>
-                    <img style={{width: '50px', height: '40px'}} src={zare} className="zare"
-                         onClick={this.handleSubmit}/>
-                    <input style={{width: '500px', height: '40px'}} value={this.state.value}
-                           onChange={this.handleChange} type="text"
-                           className="input"/>
 
                 
                
 
-                <div id="mySidenav" className="sidenav">
-                     <div className="div_home" ><a href="/homepage"><img src={Home} className="home" /></a></div>
-                    <div className="div_leave" ><a href="/login"><img src={Leave} className="leave" /></a></div>
-                   
-                </div>
-
-             
+                <header className="head">
+                    <div className="zare"> join</div>
+                    <input   type="text"
+                        className="input" />
+                  
                     
-                </div>
+                </header>
+               
+
+
+          
                 <div><a href="/create"><img src={Plus} className="create"/></a></div>
                 <div className="groupsShow">
                     </div>
@@ -406,12 +386,9 @@ class Homepage extends Component {
                    
                 </div>
              
-                </div>
-
-
             </div>
-
-            
+            //<div className="div_home" ><a href="/homepage"><img src={Home} className="home" /></a></div>
+        
         )
     }
 
