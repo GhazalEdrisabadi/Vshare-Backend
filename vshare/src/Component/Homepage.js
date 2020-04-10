@@ -6,11 +6,12 @@ import Sidedrawer from '../SideDrawe/Sidedrawer'
 import { BrowserRouter, Route } from 'react-router-dom'
 import Backdrop from '../Backdrop/Backdrop'
 import Create from '../create_room/create_room'
-import Plus from '../pngguru.com.png'
+import Plus from './plus.png'
 import zare from '../zare.png'
 import $ from 'jquery';
 import jQuery from 'jquery'
-
+import Leave from './leave.png'
+import Home from './home_.png'
 class Homepage extends Component {
 
     componentDidMount(){
@@ -72,24 +73,30 @@ class Homepage extends Component {
         }
         return (
             <div className="Homepage">
-                  {/* <button className="logout">logout</button>  */}
-                  
-                <Navbar drawerClickHandeler={this.drawertoggleclickhandler} />
-                {sidedrawer}
-                {backdrop}
+                {/* <button className="logout">logout</button>  */}
+
+                <header className="head">
+                    <div className="zare"> join</div>
+                    <input   type="text"
+                        className="input" />
+                    
+                </header>
                
 
                 <div style={{ alignContent:"center" }}>
-                <img style={{ width: '50px', height: '40px' }} src={zare} className="zare" onClick={this.handleSubmit} />
-                <input style={{ width: '500px', height: '40px' }} value={this.state.value} onChange={this.handleChange} type="text"
-                        className="input" />
+               
+             
                     
                 </div>
                 <div><a href="/create"><img src={Plus} className="create" /></a></div>
                 <div className="groupsShow">
                     </div>
-                    
-                
+
+                <div id="mySidenav" className="sidenav">
+                     <div className="div_home" ><a href="/homepage"><img src={Home} className="home" /></a></div>
+                    <div className="div_leave" ><a href="/login"><img src={Leave} className="leave" /></a></div>
+                   
+                </div>
              
             </div>
        
