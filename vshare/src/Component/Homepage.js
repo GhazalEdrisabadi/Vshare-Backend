@@ -324,12 +324,7 @@ class Homepage extends Component {
     }
 
     render() {
-        let sidedrawer;
-        let backdrop;
-        if (this.state.sidedraweropen) {
-            sidedrawer = <Sidedrawer/>;
-            backdrop = <Backdrop click={this.backdropclickhandeler}/>;
-        }
+ 
         return (
 
 
@@ -364,9 +359,7 @@ class Homepage extends Component {
                 </div>
 
 
-                <Navbar drawerClickHandeler={this.drawertoggleclickhandler}/>
-                {sidedrawer}
-                {backdrop}
+                
                 {/* <button className="logout">logout</button>  */}
 
                 <header className="head">
@@ -379,14 +372,7 @@ class Homepage extends Component {
                
 
 
-                <div style={{alignContent: "center"}}>
-                    <img style={{width: '50px', height: '40px'}} src={zare} className="zare"
-                         onClick={this.handleSubmit}/>
-                    <input style={{width: '500px', height: '40px'}} value={this.state.value}
-                           onChange={this.handleChange} type="text"
-                           className="input"/>
-
-                </div>
+          
                 <div><a href="/create"><img src={Plus} className="create"/></a></div>
                 <div className="groupsShow">
                     </div>
