@@ -53,18 +53,20 @@
 
 .groupsShow{
     border-radius: 50px;
-    box-shadow: 15PX 15PX gray;
+   
     
     margin-left:  37%;
     margin-top: 12%;
     color: black;
     text-align: center;
     padding:20px;
-    width: 350px;
-    height: 650px;
+    width: 550px;
+    height: 550px;
     background-color: whitesmoke;
 }
-
+.logo{
+    margin-right:20px;
+}
 .sidenav {
     height: 100%; /* 100% Full-height */
     width: 70px; /* 0 width - change this with JavaScript */
@@ -127,6 +129,7 @@
 .div_leave {
     top:0;
     left:0;
+    margin-top:580px;
    margin-left:-20px
     
 }
