@@ -333,10 +333,12 @@ class Homepage extends Component {
             <div className="Homepage">
                 {/* <button className="logout">logout</button>  */}
 
+
                 <header className="head">
                     <div className="zare"> join</div>
                     <input   type="text"
                         className="input" />
+
                     
                 </header>
                
@@ -370,6 +372,7 @@ class Homepage extends Component {
                         <div className='dltyes'>yes</div>
                         <div className='dltno'>no</div>
                     </div>
+
                 </div>
 
 
@@ -384,6 +387,13 @@ class Homepage extends Component {
 
                 
                
+
+                <div id="mySidenav" className="sidenav">
+                     <div className="div_home" ><a href="/homepage"><img src={Home} className="home" /></a></div>
+                    <div className="div_leave" ><a href="/login"><img src={Leave} className="leave" /></a></div>
+                   
+                </div>
+
              
                     
                 </div>
