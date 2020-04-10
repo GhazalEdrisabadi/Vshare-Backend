@@ -1,38 +1,42 @@
 .Homepage {
     width: 100%;
-    background-color: teal;
     height: 100%;
     position: fixed;
     left: 0;
     align-items: center;
     top: 0;
+    background-image: url(./back_first_.jpg);
     justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
+    background-repeat: no-repeat;
+    background-size:cover
 }
 
 .zare {
-    margin-top: 140px;
+    text-align: center;
     float: right;
-    height: 24px;
-    margin-right: 750px;
-    width: 33.33%;
+    border-radius: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+    background-color: rgb(0, 0, 0);
+    height: 30px;
+    font-size:20px;
+    width: 80px;
+    color: white;
     /* three containers (use 25% for four, and 50% for two, etc) */
-    border-top: solid;
-    border-right: solid;
-    border-bottom: solid;
-    border-color: black;
 }
-
 .input {
     padding: 10px;
     float: right;
-    color: seashell;
+    background-color: rgba(220, 240, 239, 0.38);
+    border-radius: 10px;
+
     font-size: 20px;
-    height: 40px;
-    width: 500px;
-    margin-top: 140px;
-    margin-left: 150px;
+    height: 30px;
+    width: 210px;
+    margin-top: 10px;
+    margin-right: 10px;
     border-top: solid;
     border-left: solid;
     border-bottom: solid;
@@ -42,7 +46,7 @@
 
 .create {
     position: absolute;
-    left: 92%;
+    left: 90%;
     top: 82%;
     height: 120px;
     width: 120px;
@@ -98,6 +102,91 @@
     width: 350px;
     height: 650px;
     background-color: whitesmoke;
+}
+
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 70px; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 7%; /* Stay at the top */
+    left: 0;
+    justify-items: left;
+    background: rgba(96, 9, 3, 0.6);
+     /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+    /* The navigation menu links */
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+        /* When you mouse over the navigation links, change their color */
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+    /* Position and style the close button (top right corner) */
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+    transition: margin-left .5s;
+  
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+        .sidenav a {
+            font-size: 18px;
+        }
+}
+.leave{
+    height:50px;
+    width:50px;
+    
+}
+.div_leave {
+    top:0;
+    left:0;
+   margin-left:-20px
+    
+}
+.home {
+    height: 50px;
+    width: 50px;
+
+}
+.div_home {
+    top: 0;
+    left: 0;
+    margin-left: -20px;
+    margin-top:-20px;
+}
+.head {
+    position: fixed;
+    /*top:0;
+left:0;*/
+    width: 100%;
+    background: rgba(96, 9, 3, 0.6);
+    height: 56px;
 }
 
 .editpage {
