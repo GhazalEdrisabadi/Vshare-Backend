@@ -9,8 +9,12 @@ class create_room extends Component {
 
     componentDidMount() {
 
+        document.getElementById("myModel").style.display = "none";
+
+
 
         function getCSRFToken() {
+
             var cookieValue = null;
             if (document.cookie && document.cookie != '') {
                 var cookies = document.cookie.split(';');
@@ -35,9 +39,101 @@ class create_room extends Component {
             var htmlcode = '';
             var counter = 0;
 
+            $(".addbtn").click(function () {
+                var member = $(".inp").val();
+
+                //console.log(id + " " + name + " " + bio);
+                //console.log(csrftoken)
+                var token = window.localStorage.getItem('token');
+                var id_gp = window.localStorage.getItem('id_group')
+                console.log(id_gp)
+                console.log(token);
+
+                var settings = {
+                    "url": "http://127.0.0.1:8000/user/" + member + "",
+                    "method": "GET",
+                    "timeout": 0,
+                    error: function () {
+                        alert("نام کاربری مورد نظر وجود ندارد");
+                    },
+                    success: function () {
+
+                        var settings = {
+                            "url": "http://127.0.0.1:8000/group/add_member/",
+                            "method": "POST",
+                            error: function () {
+                                alert("noooooo");
+                            },
+                            success: function () {
+                                alert("با موفقیت اضافه شد")
+                            },
+                            "timeout": 0,
+                            "headers": {
+                                'X-CSRFToken': csrftoken,
+                                "accept": "application/json",
+                                "Access-Control-Allow-Origin": "*",
+                                "Access-Control-Allow-Headers": "*",
+                                "Content-Type": "application/json"
+                            },
+                            "data": JSON.stringify({
+                                "the_group": id_gp,
+                                "the_member": member
+                            }
+                            ),
+                        };
+
+                        $.ajax(settings).done(function (response) {
+                            console.log(response);
+                        });
+                    },
+                    "headers": {
+                        'X-CSRFToken': csrftoken,
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+                    //"data": JSON.stringify({
+                    //    "userid": id,
+                    //    "title": name,
+                    //    "describtion": bio,
+                    //    "invite_only": true,
+                    //    "created_by": 1,
+                    //    "members": [user]
+                    //}
+                    //),
+                };
+                console.log(settings.headers);
+                console.log(settings.method);
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                    console.log(response.status);
+                    console.log("1");
+                    //if (response.status === 404) {
+                    //    console.log("no");
+                    //}
+                    //if (response.status===200) {
+                    //    console.log("yes");
+                    //}
+                    //if (response.o)
+                    //  console.log(responseDisplay);
+                    // console.log(response.status.);
+                });
+
+
+                //    window.location.replace("/account/menu/");
+                // Window.location="/account/menu/"
+
+            });
+
 
             $("#homepagebtn").click(function () {
                 window.location.replace("/homepage");
+            });
+
+            $(".skipbtn").click(function () {
+                window.location.replace("/homepage");
+
             });
 
             
@@ -63,8 +159,10 @@ class create_room extends Component {
                         console.log("");
                     },
                     success: function () {
+                        document.getElementById("myModel").style.display = 'block'
+
                         window.localStorage.setItem('id_group', id);
-                        window.location.replace("/add");
+                        //window.location.replace("/add");
                         alert("done");
                     },
                     "headers": {
@@ -178,14 +276,14 @@ class create_room extends Component {
 
                 <div className="formback">
                     <legend className="title">Create new group</legend>
+                <input onChange={this.change_name} type="text"
 
-                <input value={this.state.name_gp} onChange={this.change_name} type="text"
                     className="input1" placeholder="name" style={{
                     height: '40px',
                         width: '290px',
                         marginLeft:'-30px'
                     }} />
-                <input value={this.state.id_gp} onChange={this.change_id} type="text"
+                <input  onChange={this.change_id} type="text"
                     className="input2" placeholder="id" style={{
                     height: '40px',
                     width: '290px'
@@ -196,7 +294,7 @@ class create_room extends Component {
                     
 
                   
-                <textarea value={this.state.bio} onChange={this.change_bio} type="text"
+                <textarea  onChange={this.change_bio} type="text"
                     className="textarea" placeholder=" bio" style={{
                     height: '60px',
                     width: '290px'
@@ -206,10 +304,21 @@ class create_room extends Component {
 
                     >next</dev>
 
+                    <div id="myModel" className="modal2" >
+                        <div className="modal-content2">
+                            <p class='tit'>Add your member</p>
+                            <input class='inp'></input>
+                         
+                                <div class='dltbtns'></div>
+                                <div class='addbtn'>Add</div>
+                                <div class='skipbtn'>Skip</div>
+                            
+                        </div>
+                    </div>
 
-                
 
                 </div>
+       
 
             </form>
 

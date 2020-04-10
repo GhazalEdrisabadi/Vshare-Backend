@@ -3,7 +3,10 @@
     position: fixed;
     display: flex;
     flex-direction: column;
-    background-color:		teal;
+
+
+
+    background: linear-gradient(to bottom, #710f01, #000000);
     height: 100%;
     width: 100%;
     position: fixed;
@@ -15,7 +18,7 @@
     border-color:black;
 }
 .formback {
-    background-color: #e9e1cc;
+    background-color: rgba(255, 255, 255, 0.84);
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -163,4 +166,80 @@
     color: black;
     position: center;
     margin: 20px;
+}
+.modal2 {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+.modal-content2 {
+    background: linear-gradient(to bottom, #710f01, #000000);
+    border-radius: 450px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    margin: auto;
+    padding: 40px;
+    border: 1px solid #888;
+    width: 70%;
+    height: 53%;
+}
+.tit {
+    font-size: xx-large;
+    text-align: center;
+    margin-bottom: 5px;
+}
+.addbtn {
+    border-radius: 10px;
+    padding: 2px;
+    background-color: green;
+    margin-top: 30px;
+    /*margin-right: 5px;
+    
+    cursor: pointer;*/
+}
+.skipbtn {
+    margin-top:30px;
+    border-radius: 10px;
+    /*cursor: pointer;*/
+    padding: 2px;
+    background-color: red;
+    /*margin-left: 20px;*/
+    
+}
+.center {
+    align-items: center;
+    margin-top:40px;
+    justify-content: center;
+    flex-direction: row; width:20%
+}
+.inp {
+    margin-top:40px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 50%
+}
+.dltbtns {
+    float: right;
 }
