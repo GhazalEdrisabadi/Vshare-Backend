@@ -13,6 +13,7 @@ import jQuery from 'jquery'
 import Leave from './leave.png'
 import Home from './home_.png'
 import Logo from './log.PNG'
+
 class Homepage extends Component {
 
     componentDidMount() {
@@ -31,7 +32,7 @@ class Homepage extends Component {
             $('.groupsShow').append('<h4> Your Groups </h4>');
             $('.groupsShow').append("<h5> User: " + username + "</h5>");
             $('.groupsShow').append("<hr>");
-            
+
             $(".div_leave").click(function () {
                 window.localStorage.clear();
                 window.location.replace("/login/");
@@ -129,6 +130,34 @@ class Homepage extends Component {
             });
 
 
+            $('.dltyes').click(function () {
+                var gpid = window.localStorage.getItem("numbergp1");
+                var settings = {
+                    "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
+                    "method": "DELETE",
+                    "timeout": 0,
+                    "headers": {
+                        "Authorization": "Token " + token
+                    },
+                    success: function () {
+                        alert("Done");
+                        window.location.replace('/homepage/');
+                    },
+                    error: function (event) {
+                        alert(event.status);
+                    },
+                    "processData": false,
+                    "mimeType": "multipart/form-data",
+                    "contentType": false,
+
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                });
+            });
+
+
             $('.dltno').click(function () {
                 $('.modal2').fadeOut('slow');
             });
@@ -179,14 +208,28 @@ class Homepage extends Component {
                 form.append("groupid", idd);
                 form.append("title", title);
                 form.append("describtion", des);
-
+                // form.append("invite_only", "");
 
                 var settings = {
-                    "url": "http://127.0.0.1:8000/groups/" + gpid + '/',
+                    "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
                     "method": "PUT",
                     "timeout": 0,
-                    "data": JSON.stringify({"groupid": idd, "title": title, "describtion": des}),
+                    "headers": {
+                        "Authorization": "Token " + token
+                    },
+                    success: function () {
+                        alert("Done");
+                        window.location.replace("/homepage/");
+                    },
+                    else: function () {
+                        alert("something went wrong");
+                    },
+                    "processData": false,
+                    "mimeType": "multipart/form-data",
+                    "contentType": false,
+                    "data": form
                 };
+
                 $.ajax(settings).done(function (response) {
                     console.log(response);
                 });
@@ -211,11 +254,11 @@ class Homepage extends Component {
             window.onclick = function (event) {
                 if (event.target == document.getElementById("myModal")) {
                     $('.modal').fadeOut("slow");
-               //     document.getElementById("myModal").style.display = "none";
+                    //     document.getElementById("myModal").style.display = "none";
                 }
                 if (event.target == document.getElementById("myModal2")) {
-                     $('.modal2').fadeOut("slow");
-                  //  document.getElementById("myModal2").style.display = "none";
+                    $('.modal2').fadeOut("slow");
+                    //  document.getElementById("myModal2").style.display = "none";
                 }
             }
 
@@ -324,7 +367,7 @@ class Homepage extends Component {
     }
 
     render() {
- 
+
         return (
 
 
@@ -359,36 +402,31 @@ class Homepage extends Component {
                 </div>
 
 
-                
                 {/* <button className="logout">logout</button>  */}
 
                 <header className="head">
                     <div className="zare"> join</div>
-                    <input   type="text"
-                        className="input" />
-                  
-                    
+                    <input type="text"
+                           className="input"/>
+
+
                 </header>
-               
 
 
-          
                 <div><a href="/create"><img src={Plus} className="create"/></a></div>
                 <div className="groupsShow">
-                    </div>
+                </div>
 
                 <div id="mySidenav" className="sidenav">
-                   
 
-                  
-                  
-                    <div className="div_leave" ><a href="/login"><img src={Leave} className="leave" /></a></div>
-                   
+
+                    <div className="div_leave"><a href="/login"><img src={Leave} className="leave"/></a></div>
+
                 </div>
-             
+
             </div>
             //<div className="div_home" ><a href="/homepage"><img src={Home} className="home" /></a></div>
-        
+
         )
     }
 
