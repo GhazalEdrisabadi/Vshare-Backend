@@ -375,6 +375,7 @@ class Homepage extends Component {
           
                 <div><a href="/create"><img src={Plus} className="create"/></a></div>
                 <div className="groupsShow">
+                    
                     </div>
 
                 <div id="mySidenav" className="sidenav">
