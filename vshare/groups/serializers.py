@@ -7,6 +7,11 @@ class GroupSerializer(serializers.ModelSerializer):
         model = Group
         fields = '__all__'
 
+class GroupUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields =  ['groupid','title','describtion','invite_only',]
+
 class MembershipSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         many = kwargs.pop('many', True)
