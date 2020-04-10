@@ -5,7 +5,7 @@ import Websocket from 'react-websocket';
 class chat_room extends Component {
     componentDidMount() {
         //This will open the connection*
-        var ws = new WebSocket("ws://localhost:8000/group/stream/");
+        var ws = new WebSocket("ws://localhost:8000/user/signup/");
         ws.onopen = function () {
             console.log("Ping");
         };
