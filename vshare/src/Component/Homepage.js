@@ -12,6 +12,7 @@ import $ from 'jquery';
 import jQuery from 'jquery'
 import Leave from './leave.png'
 import Home from './home_.png'
+import Logo from './log.PNG'
 class Homepage extends Component {
 
     componentDidMount() {
@@ -30,8 +31,8 @@ class Homepage extends Component {
             $('.groupsShow').append('<h4> Your Groups </h4>');
             $('.groupsShow').append("<h5> User: " + username + "</h5>");
             $('.groupsShow').append("<hr>");
-
-            $(".logout").click(function () {
+            
+            $(".div_leave").click(function () {
                 window.localStorage.clear();
                 window.location.replace("/login/");
             });
@@ -323,12 +324,7 @@ class Homepage extends Component {
     }
 
     render() {
-        let sidedrawer;
-        let backdrop;
-        if (this.state.sidedraweropen) {
-            sidedrawer = <Sidedrawer/>;
-            backdrop = <Backdrop click={this.backdropclickhandeler}/>;
-        }
+ 
         return (
             <div className="Homepage">
                 {/* <button className="logout">logout</button>  */}
@@ -402,7 +398,10 @@ class Homepage extends Component {
                     </div>
 
                 <div id="mySidenav" className="sidenav">
-                     <div className="div_home" ><a href="/homepage"><img src={Home} className="home" /></a></div>
+                   
+
+                  
+                  
                     <div className="div_leave" ><a href="/login"><img src={Leave} className="leave" /></a></div>
                    
                 </div>

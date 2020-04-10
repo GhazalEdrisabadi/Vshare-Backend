@@ -93,15 +93,33 @@
 .groupsShow {
     overflow-y: scroll;
     border-radius: 50px;
-    box-shadow: 15PX 15PX gray;
-    margin-left: 37%;
+   
+    
+    margin-left:  37%;
     margin-top: 12%;
     color: black;
     text-align: center;
-    padding: 20px;
-    width: 350px;
-    height: 650px;
+    padding:20px;
+    width: 550px;
+    height: 550px;
     background-color: whitesmoke;
+}
+.logo{
+    margin-right:20px;
+}
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 70px; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 7%; /* Stay at the top */
+    left: 0;
+    justify-items: left;
+    background: rgba(96, 9, 3, 0.6);
+     /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
 
 .sidenav {
