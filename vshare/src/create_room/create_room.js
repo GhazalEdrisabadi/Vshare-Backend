@@ -9,7 +9,7 @@ class create_room extends Component {
 
     componentDidMount() {
 
-        document.getElementById("myModel").style.display = "none";
+        document.getElementById("myModel").style.display = "block";
 
 
 
@@ -53,8 +53,10 @@ class create_room extends Component {
                     "url": "http://127.0.0.1:8000/user/" + member + "",
                     "method": "GET",
                     "timeout": 0,
-                    error: function () {
-                        alert("نام کاربری مورد نظر وجود ندارد");
+                    error: function (event) {
+                        if (event.status==404)
+                            alert("نام کاربری مورد نظر وجود ندارد");
+                        
                     },
                     success: function () {
 
@@ -62,7 +64,7 @@ class create_room extends Component {
                             "url": "http://127.0.0.1:8000/group/add_member/",
                             "method": "POST",
                             error: function () {
-                                alert("noooooo");
+                                alert("این کاربر در گروه وجود دارد");
                             },
                             success: function () {
                                 alert("با موفقیت اضافه شد")
@@ -307,11 +309,13 @@ class create_room extends Component {
                     <div id="myModel" className="modal2" >
                         <div className="modal-content2">
                             <p class='tit'>Add your member</p>
-                            <input class='inp'></input>
+                            <input class='inp' placeholder=" enter your id member"></input>
                          
-                                <div class='dltbtns'></div>
+                            <div class='dltbtns'></div>
+                            <div class="center">
                                 <div class='addbtn'>Add</div>
                                 <div class='skipbtn'>Skip</div>
+                            </div>
                             
                         </div>
                     </div>
