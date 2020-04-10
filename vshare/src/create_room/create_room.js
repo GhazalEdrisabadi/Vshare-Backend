@@ -8,8 +8,13 @@ class create_room extends Component {
 
 
     componentDidMount() {
+
         document.getElementById("myModel").style.display = "none";
-         function getCSRFToken() {
+
+
+
+        function getCSRFToken() {
+
             var cookieValue = null;
             if (document.cookie && document.cookie != '') {
                 var cookies = document.cookie.split(';');
@@ -33,6 +38,7 @@ class create_room extends Component {
             var mem2 = [];
             var htmlcode = '';
             var counter = 0;
+
             $(".addbtn").click(function () {
                 var member = $(".inp").val();
 
@@ -120,13 +126,16 @@ class create_room extends Component {
 
             });
 
+
             $("#homepagebtn").click(function () {
                 window.location.replace("/homepage");
             });
+
             $(".skipbtn").click(function () {
                 window.location.replace("/homepage");
 
             });
+
             
             $(".next1").click(function () {
 
@@ -140,7 +149,7 @@ class create_room extends Component {
                 console.log(csrftoken)
 
                 var token = window.localStorage.getItem('token');
-               
+
 
                 var settings = {
                     "url": "http://localhost:8000/groups/",
@@ -267,8 +276,8 @@ class create_room extends Component {
 
                 <div className="formback">
                     <legend className="title">Create new group</legend>
-
                 <input onChange={this.change_name} type="text"
+
                     className="input1" placeholder="name" style={{
                     height: '40px',
                         width: '290px',
@@ -295,7 +304,6 @@ class create_room extends Component {
 
                     >next</dev>
 
-
                     <div id="myModel" className="modal2" >
                         <div className="modal-content2">
                             <p class='tit'>Add your member</p>
@@ -307,6 +315,7 @@ class create_room extends Component {
                             
                         </div>
                     </div>
+
 
                 </div>
        
