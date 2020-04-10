@@ -1,11 +1,18 @@
 import React, { Component } from 'react'
 import './chat_room.css'
 import $ from 'jquery';
-
+import Websocket from 'react-websocket';
 class chat_room extends Component {
     componentDidMount() {
+        //This will open the connection*
+        var ws = new WebSocket("ws://localhost:8000/group/stream/");
+        ws.onopen = function () {
+            console.log("Ping");
+        };
+
         const { id } = this.props.match.params
         $(document).ready(function () {
+
             // if (localStorage.getItem('token') == null) {
             //     alert("Login please !");
             //     window.location.replace("/login/");
@@ -47,10 +54,15 @@ class chat_room extends Component {
 
                 });
         });
+
+
+        //Log the messages that are returned from the server
+  
     }
     render() {
         return (
-            <form className="back">                <div className="formback_movie">                </div>                <div className="back_coulom">                    <div className="formback_info" style={{ width: '115%', height: '410px' }}>                        <legend className="title_gp">info of group</legend>                        <div className="textarea_member" style={{ overflowY: 'scroll' }} />                        <div className="textarea_bio" />                    </div>                    <div className="formback_text" style={{ width: '115%', height: '410px', }} >                    </div>                </div>            </form>
+            <form className="back">                <div className="formback_movie">                </div>                <div className="back_coulom">                    <div className="formback_info" style={{ width: '115%', height: '410px' }}>                        <legend className="title_gp">info of group</legend>                        <div className="textarea_member" style={{ overflowY: 'scroll' }} />                        <div className="textarea_bio" />                    </div>                    <div className="formback_text" style={{ width: '115%', height: '410px', }} >                    </div>                </div>               
+                     />            </form>
             )
     }
 }

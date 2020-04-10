@@ -64,3 +64,12 @@
     height: 650px;
     background-color: whitesmoke;
 }
+.head {
+    position: fixed;
+    /*top:0;
+left:0;*/
+    width: 100%;
+    float:right;
+    background: #701a14;
+    height: 56px;
+}

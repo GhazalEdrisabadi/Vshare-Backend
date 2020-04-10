@@ -34,13 +34,17 @@ class Homepage extends Component {
                     "url": "http://127.0.0.1:8000/group/join/",
                     "method": "POST",
                     "timeout": 0,
-                    //error: function () {
-                        
-                    //},
-                    //success: function () {
-                    // //   window.location.replace("/add");
-                    //    window.location.replace("/" + 12233 + "");
-                    //},
+                    error: function (event) {
+                        if (event.status == 500) {
+                            alert("شما در  این گروه عضو هستید")
+                        }
+                        else
+                            alert("این گروه وجود ندارد")
+                    },
+                    success: function () {
+                        window.localStorage.setItem('id_gp', id);
+                        window.location.replace("/group/" + id + "");
+                    },
                     "headers": {
                         //'X-CSRFToken': csrftoken,
                         "Authorization": "token " + token,
@@ -61,31 +65,7 @@ class Homepage extends Component {
                     console.log("done")
                     console.log(response);
                     console.log(response.status);
-                    window.localStorage.setItem('id_gp', id);
-                        window.location.replace("/group/" + id+"");
                 });
-                $.ajax(settings).fail(function (response) {
-                    // console.log(response);
-                    //   console.log(response.status);
-                    //   console
-                    console.log("fail");
-                    if (response.status === 400) {
-                        alert("گروه وجود ندارد")
-                    }
-                    //if (response.status === 500) {
-                    //    alert("شما در این گروه عضو هستید")
-                    //}
-                    else {
-                        console.log("ll")
-                    }
-               
-
-                    //  console.log(responseDisplay);
-                    // console.log(response.status.);
-                });
-                //    window.location.replace("/account/menu/");
-                // Window.location="/account/menu/"
-
             });
             console.log("aa");
             var token=window.localStorage.getItem('token');
@@ -141,10 +121,7 @@ class Homepage extends Component {
         return (
             <div className="Homepage">
                   {/* <button className="logout">logout</button>  */}
-                  
-                <Navbar drawerClickHandeler={this.drawertoggleclickhandler} />
-                {sidedrawer}
-                {backdrop}
+
                
 
                 <div style={{ alignContent:"center" }}>
