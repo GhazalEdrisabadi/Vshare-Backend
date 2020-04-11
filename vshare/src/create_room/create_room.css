@@ -1,0 +1,63 @@
+.form {
+    align-items: center;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    background-color:darkslateblue;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    border-style:solid;
+    border-color:black;
+}
+.formback {
+    background-color: #e9e1cc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding:  50px;
+    
+    text-align: center;
+}
+
+
+.input1{
+   
+    margin:15px;
+        
+}
+.input2 {
+    margin: 15px;
+}
+.textarea {
+    position: relative;
+    margin: 15px;
+}
+.textarea1 {
+    margin: 15px;
+}
+.button {
+    margin: 15px;
+}
+.button1 {
+    margin: 15px;
+}
+.title {
+    margin:10px;
+    color:black;
+}
+#homepagebtn{
+    height:50px;
+    width:100px;
+    background-color:orange;
+    font-size:x-large large;
+   color:black;
+
+    position:center;
+    margin:20px;
+}

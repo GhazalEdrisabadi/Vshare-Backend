@@ -1,0 +1,211 @@
+.about {
+    width: 100%;
+    background-color: #001A33;
+    
+    height: 100%;
+    position: fixed;
+    left: 0;
+    align-items: center;
+    top: 0;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    background-size: cover
+}
+.mem_team{
+    color:white;
+    text-align:center;
+}
+.div_poria {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    border-radius: 100px;
+    margin-left:15%;
+    margin-top:5%;
+}
+.poria {
+    border-radius: 2200px;
+    height: 200px;
+    width: 200px;
+}
+.div_mobin {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    border-radius: 100px;
+    margin-left: 75%;
+    margin-top: 5%;
+}
+
+.mobin {
+    border-radius: 2200px;
+    height: 200px;
+    width: 200px;
+}
+.div_kamyab {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    border-radius: 100px;
+    margin-left: 45%;
+    margin-top: 5%;
+}
+
+.kamyab {
+    border-radius: 2200px;
+    height: 200px;
+    width: 200px;
+}
+.div_ghazal {
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    margin-top:30%;
+    margin-left:30%;
+    border-radius: 100px;
+}
+
+.ghazal {
+    border-radius: 2200px;
+    height: 200px;
+    width: 200px;
+}
+.div_amin {
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    margin-top: 30%;
+    margin-left: 60%;
+    border-radius: 100px;
+}
+
+.amin {
+    border-radius: 2200px;
+    height: 200px;
+    width: 200px;
+    background-color:black
+}
+.name_poria a {
+    position: absolute;
+    margin-top: 21%;
+    margin-left:18%;
+    font-size:20px;
+    color:white;
+}
+.job_poria a {
+    position: absolute;
+    margin-top: 23%;
+    margin-left: 15%;
+    font-size: 20px;
+    color: white;
+}
+.name_poria a:hover,
+.name_poria a:active {
+    color: #fa923f;
+}
+.job_poria a:hover,
+.job_poria a:active {
+    color: #fa923f;
+}
+.name_kamyab a {
+    position: absolute;
+    margin-top: 21%;
+    margin-left:48%;
+    font-size: 20px;
+    color: white;
+}
+
+.job_kamyab a {
+    position: absolute;
+    margin-top: 23%;
+    margin-left: 45%;
+    font-size: 20px;
+    color: white;
+}
+
+.name_kamyab a:hover,
+.name_kamyab a:active {
+    color: #fa923f;
+}
+
+.job_kamyab a:hover,
+.job_kamyab a:active {
+    color: #fa923f;
+}
+.name_mobin a {
+    position: absolute;
+    margin-top: 21%;
+    margin-left: 79%;
+    font-size: 20px;
+    color: white;
+}
+
+.job_mobin a {
+    position: absolute;
+    margin-top: 23%;
+    margin-left: 76%;
+    font-size: 20px;
+    color: white;
+}
+
+.name_mobin a:hover,
+.name_mobin a:active {
+    color: #fa923f;
+}
+
+.job_mobin a:hover,
+.job_mobin a:active {
+    color: #fa923f;
+}
+
+.name_ghazal a {
+    position: absolute;
+    margin-top: 46%;
+    margin-left: 32%;
+    font-size: 20px;
+    color: white;
+}
+
+.job_ghazal a {
+    position: absolute;
+    margin-top: 48%;
+    margin-left: 30%;
+    font-size: 20px;
+    color: white;
+}
+
+.name_ghazal a:hover,
+.name_ghazal a:active {
+    color: #fa923f;
+}
+
+.job_ghazal a:hover,
+.job_ghazal a:active {
+    color: #fa923f;
+}
+.name_amin a {
+    position: absolute;
+    margin-top: 46%;
+    margin-left: 64%;
+    font-size: 20px;
+    color: white;
+}
+
+.job_amin a {
+    position: absolute;
+    margin-top: 48%;
+    margin-left: 60%;
+    font-size: 20px;
+    color: white;
+}
+
+.name_amin a:hover,
+.name_amin a:active {
+    color: #fa923f;
+}
+
+.job_amin a:hover,
+.job_amin a:active {
+    color: #fa923f;
+}
