@@ -9,10 +9,6 @@ class create_room extends Component {
 
     componentDidMount() {
 
-        document.getElementById("myModel").style.display = "block";
-
-
-
         function getCSRFToken() {
 
             var cookieValue = null;
