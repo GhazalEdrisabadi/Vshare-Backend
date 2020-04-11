@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d0f22248-2259-40b4-8ef3-46314e63d707" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Component/Homepage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Component/Homepage.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Component/Homepage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Component/Homepage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/create_room/create_room.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/create_room/create_room.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +22,13 @@
   </component>
   <component name="ProjectId" id="1aIyQCUHUS5WY3zkKiRUBgY4yaD" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../VShareproject-features-group-backend-channels" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -66,7 +68,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="be99027b-fa40-46b0-af6b-fe982632add0" name="Default Changelist" comment="" />
+      <changelist id="d0f22248-2259-40b4-8ef3-46314e63d707" name="Default Changelist" comment="" />
       <created>1586437383596</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -74,6 +76,7 @@
       <workItem from="1586437395039" duration="2270000" />
       <workItem from="1586440847500" duration="1821000" />
       <workItem from="1586513082016" duration="74000" />
+      <workItem from="1586627116962" duration="3552000" />
     </task>
     <servers />
   </component>

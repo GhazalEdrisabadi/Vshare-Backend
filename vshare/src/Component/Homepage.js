@@ -110,10 +110,11 @@ class Homepage extends Component {
 
             });
 
-
+            var localresponse;
             $('.modal2').mouseover(function () {
                 var gpid = window.localStorage.getItem("numbergp1");
                 console.log(gpid);
+
                 var settings = {
                     "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
                     "method": "GET",
@@ -134,6 +135,7 @@ class Homepage extends Component {
 
                 $.ajax(settings).done(function (response) {
                     // console.log(response.title);
+                    localresponse = response;
                     $('.deleteTEXT').text("Are you sure you want to leave The " + response.title + "  ? ");
                 });
 
@@ -143,29 +145,55 @@ class Homepage extends Component {
 
             $('.dltyes').click(function () {
                 var gpid = window.localStorage.getItem("numbergp1");
-                var settings = {
-                    "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
-                    "method": "DELETE",
-                    "timeout": 0,
-                    "headers": {
-                        "Authorization": "Token " + token
-                    },
-                    success: function () {
-                        alert("Done");
-                        window.location.replace('/homepage/');
-                    },
-                    error: function (event) {
-                        alert(event.status);
-                    },
-                    "processData": false,
-                    "mimeType": "multipart/form-data",
-                    "contentType": false,
+                if (localresponse.created_by == window.localStorage.getItem('username')) {
+                    var settings = {
+                        "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
+                        "method": "DELETE",
+                        "timeout": 0,
+                        "headers": {
+                            "Authorization": "Token " + token
+                        },
+                        success: function () {
+                            alert("Done");
+                            window.location.replace('/homepage/');
+                        },
+                        error: function () {
+                            alert('something went wrong');
+                        },
+                        "processData": false,
+                        "mimeType": "multipart/form-data",
+                        "contentType": false,
 
-                };
+                    };
 
-                $.ajax(settings).done(function (response) {
-                    console.log(response);
-                });
+                    $.ajax(settings).done(function (response) {
+                        console.log(response);
+                    });
+                } else {
+                    var settings = {
+                        "url": "http://127.0.0.1:8000/group/" + gpid + "/leave/",
+                        "method": "DELETE",
+                        "timeout": 0,
+                        "headers": {
+                            "Authorization": "Token " + token
+                        },
+                        success: function () {
+                            alert("Done");
+                            window.location.replace('/homepage/');
+                        },
+                        error: function () {
+                            alert('something went wrong');
+                        },
+                        "processData": false,
+                        "mimeType": "multipart/form-data",
+                        "contentType": false,
+
+                    };
+
+                    $.ajax(settings).done(function (response) {
+                        console.log(response);
+                    });
+                }
             });
 
 
@@ -235,8 +263,11 @@ class Homepage extends Component {
                         alert("Done");
                         window.location.replace("/homepage/");
                     },
-                    error: function () {
-                        alert("something went wrong");
+                    error: function (event) {
+                        if (event.status == 400)
+                            alert("group with this groupid already exists.");
+                        else
+                            alert("something went wrong");
                     },
                     "processData": false,
                     "mimeType": "multipart/form-data",
@@ -454,7 +485,7 @@ class Homepage extends Component {
                 <div id="mySidenav" className="sidenav">
 
                     <div className="profile"><img src={Profile}
-                                                                     style={{width: "45px", height: "45px"}}/></div>
+                                                  style={{width: "45px", height: "45px"}}/></div>
 
                     <div className="div_leave"><a href="/login"><img src={Leave}
                                                                      style={{width: "45px", height: "45px"}}/></a></div>
