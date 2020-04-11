@@ -12,6 +12,7 @@ from django.apps import apps
 from enum import Enum 
 alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
 
+
 class Group(models.Model):
 	since = models.DateTimeField(auto_now_add=True)
 	groupid = models.CharField(max_length=20, blank=False, null=False, validators=[alphanumeric], unique=True, default='')
@@ -51,7 +52,9 @@ class Group(models.Model):
 	def __str__(self):
 		return self.title
 
-	def is_member(self,user):
+	# Check a user is a member of group
+	@property
+	def is_member(self):
 		UserModel = apps.get_model('users', 'Account')
 		user = UserModel.objects.get(username=username)
 		if user in self.members:
@@ -59,7 +62,27 @@ class Group(models.Model):
 		else:
 			return False
 
+	# Check a member is a creator or not
+	@property
+	def is_creator(self):
+		UserModel = apps.get_model('users', 'Account')
+		user = UserModel.objects.get(username=username)
+		if user.is_member and user == self.created_by:
+			return True
+		else:
+			return False
+
 	#Return a unique channels.Group for each group through groupid
 	@property
-	def group_id(self):
-		return "room-%s" % self.groupid
+	def group_name(self):
+		return "room-%s" % self.title
+
+	# def set_state(self, commend):
+	# 	if command == 'video selected by owner':
+	# 		self.STATUS.status = 1
+	# 	elif command == 'check validation':
+	# 		self.STATUS.status = 2
+	# 	elif command == 'video played by owner':
+	# 		self.STATUS.status = 3
+	# 	else
+	# 		self.STATUS.status = 0
