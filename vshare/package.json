@@ -14,7 +14,8 @@
     "react-router-dom": "^4.2.0",
     "react-scripts": "^3.4.0",
     "react-simple-sidenav": "^1.0.1",
-    "react-slick": "^0.25.2"
+    "react-slick": "^0.25.2",
+    "react-websocket": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
