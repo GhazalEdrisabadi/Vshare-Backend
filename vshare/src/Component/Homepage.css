@@ -1,40 +1,75 @@
 .Homepage {
     width: 100%;
-    background-color: #282c34;
-   height: 100%;
-    position:fixed;
-    left:0;
+    background-color: teal;
+    height: 100%;
+    position: fixed;
+    left: 0;
     align-items: center;
-   top:0;
+    top: 0;
     justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
+    background-image: url(./homepage.jpg);
+    background-size: cover;
 }
+
 .zare {
-    margin-top: 70px;
+    margin-top: 140px;
     float: right;
     height:24px;
-   
-    width: 33.33%; /* three containers (use 25% for four, and 50% for two, etc) */
-    padding: 1px ;
+    margin-right: 750px;
+    width: 33.33%; /* three containers (use 25% for four, and 50% for two, etc) */ 
+    border-top: solid ;
+    border-right: solid;
+    border-bottom: solid;
+    border-color: black;
+
 }
-.input {
-    margin-top: 0px;
-    margin-left: 400px;
+
+.input_input {
+    padding: 10px;
+    float: right;
+    color: seashell;
     font-size: 20px;
     height: 40px;
     width: 500px;
-    padding:0;
-    top:0;
-    left:0;
-    flex-direction:row
+    margin-top: 140px;
+    margin-left: 150px;
+    border-top: solid;
+    border-left: solid;
+    border-bottom: solid;
+    border-color: black;
+    flex-direction: row;
+    color:black;
+
 }
 .create{
-    margin-top:590px;
-    margin-left:1270px;
-    height:85px;
-    width:85px;
+    position: absolute;
+    left: 92%;
+    top: 82%;
+    height:120px;
+    width:120px;
 }
-/*.button_create{
-    background-image
-}*/
+
+.groupsShow{
+    border-radius: 50px;
+    box-shadow: 15PX 15PX gray;
+    
+    margin-left:  37%;
+    margin-top: 12%;
+    color: black;
+    text-align: center;
+    padding:20px;
+    width: 350px;
+    height: 650px;
+    background-color: whitesmoke;
+}
+.head {
+    position: fixed;
+    /*top:0;
+left:0;*/
+    width: 100%;
+    float:right;
+    background: #701a14;
+    height: 56px;
+}
