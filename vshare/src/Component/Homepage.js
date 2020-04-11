@@ -92,7 +92,7 @@ class Homepage extends Component {
                     htmlcode += '<p class="mygroups" id=' + '"c' + counter1 + '">' + mygroups[counter1].name + '</p>';
                     htmlcode += '<div class="buttonsforgp">';
                     htmlcode += '<div class="admin"></div>';
-                    htmlcode += '<div  onclick="' + a + "," + dd + '" class="leave" ></div>';
+                    htmlcode += '<div  onclick="' + a + "," + dd + '" class="leave"  style={{ width:45px , height:45px}} ></div>';
                     htmlcode += '<div  onclick="' + a + "," + ss + '" class="edit"></div>';
                     htmlcode += '</div>';
                     htmlcode += '</br>';
@@ -358,14 +358,14 @@ class Homepage extends Component {
                     <div className="modal-content2">
                         <p className='deleteTEXT'>Are you sure you want to leave this group ? </p>
                         <div className='dltbtns'></div>
-                        {<IconButton style={{color: 'green'}} classname="dltyes"  aria-label="delete" >     
+                        {<IconButton style={{color: 'green' ,border: '1px solid green' , margin : '3px'}} classname="dltyes">     
                              <CheckIcon />
                           </IconButton> }
                         {/* <div className='dltyes'>yes</div> */}
 
                         
 
-                        {<IconButton style={{color: 'red'}} classname="dltno"  aria-label="delete" >     
+                        {<IconButton style={{color: 'red' , border: '1px solid red' , margin : '3px'   }} classname="dltno"  >     
                              <CloseIcon />
                           </IconButton> }
                             {/* <div className='dltno'>no</div> */}

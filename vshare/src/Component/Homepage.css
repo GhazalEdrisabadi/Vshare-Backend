@@ -40,6 +40,7 @@
     border-top: solid;
     border-left: solid;
     border-bottom: solid;
+    border-right: solid;
     border-color: black;
     flex-direction: row
 }
@@ -60,34 +61,23 @@
     background-image: url(./exit3NO.png);
     background-repeat: no-repeat;
     cursor: pointer;
-    padding: 3%;
-    float: right;
-    width: 25px;
-    height:25px;
-    border: black solid;
-}
-/* .leave1 {
-    background-image: url(./exit3NO.png);
-    background-repeat: no-repeat;
-    cursor: pointer;
-    left:500px;
+    margin-left: -10px;
     padding: 3px;
     float: right;
     width: 25px;
-    height:25px;
-    border: black solid;
+    height: 25px;
     
-} */
+}
 
 .edit {
     background-image: url(./edit.png);
     background-repeat:no-repeat;
-    margin-left: 9px ;
+    margin-left: 30px ;
     margin-top: 2px;
     float: left;
     width: 25px;
     height: 25px;
-    border: black solid;
+    
     
 }
 
@@ -238,7 +228,8 @@
     border-radius: 10px;
     padding: 2px;
     background-color: green;
-    margin-right: 5px;
+    border:2px solid green;
+    margin-bottom : 2px ;
     float: left;
     cursor: pointer;
 }
@@ -247,6 +238,7 @@
     border-radius: 10px;
     cursor: pointer;
     padding: 2px;
+    border: 2px solid;
     background-color: red;
     margin-left: 5px;
     float: right;
@@ -259,15 +251,16 @@
     border-radius: 25px;
 }
 
-.submitedit2 {
-    background-color: coral;
-    border: black solid thin;
-    border-radius: 25px;
-    width: 150px;
+.submitedit {
+    background-color:rgb(214, 29, 54);
+    border-radius:40px;
+    border: dashed black;
+    width: 162px;
     height: 50px;
-    text-align: center;
+    text-align: left ;
     margin-top: 50px;
-    margin-left: 45%;
+    margin-left: 10%;
+    margin-right: 150px;
     font-size: 20px;
 }
 
@@ -348,11 +341,7 @@
             font-size: 18px;
         }
 }
-.leave{
-    height:50px;
-    width:50px;
-    
-}
+
 .div_leave {
 
     top:0;
@@ -374,8 +363,7 @@
 }
 .head {
     position: fixed;
-    /*top:0;
-left:0;*/
+
     width: 100%;
     background: rgba(96, 9, 3, 0.6);
     height: 56px;
