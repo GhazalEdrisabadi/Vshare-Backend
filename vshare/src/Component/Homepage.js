@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+﻿import React, {Component} from 'react'
 import './Homepage.css'
 import Fontawesome from 'react-fontawesome'
 import Navbar from '../navbar/navbar'
@@ -11,9 +11,10 @@ import zare from '../zare.png'
 import $ from 'jquery';
 import jQuery from 'jquery'
 import Leave from './leave.png'
+import Profile from './profile.png'
 import Home from './home_.png'
 import Logo from './log.PNG'
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
@@ -41,6 +42,12 @@ class Homepage extends Component {
                 window.localStorage.clear();
                 window.location.replace("/login/");
             });
+
+            $(".profile").click(function () {
+                alert("im just a MVP version :)");
+            });
+
+
             var groups = [];
             var mygroups = [];
 
@@ -88,10 +95,10 @@ class Homepage extends Component {
 
                          var hover='onMouseOver="this.style.color=';
                          var hoverr=hover+"'green'";*/
-
+                    htmlcode += '<div class="admin"></div>';
                     htmlcode += '<p class="mygroups" id=' + '"c' + counter1 + '">' + mygroups[counter1].name + '</p>';
                     htmlcode += '<div class="buttonsforgp">';
-                    htmlcode += '<div class="admin"></div>';
+
                     htmlcode += '<div  onclick="' + a + "," + dd + '" class="leave"  style={{ width:45px , height:45px}} ></div>';
                     htmlcode += '<div  onclick="' + a + "," + ss + '" class="edit"></div>';
                     htmlcode += '</div>';
@@ -209,9 +216,12 @@ class Homepage extends Component {
                 //  console.log("//////");
                 console.log(gpid);
                 var form = new FormData();
-                form.append("groupid", idd);
-                form.append("title", title);
-                form.append("describtion", des);
+                if (idd != "")
+                    form.append("groupid", idd);
+                if (title != "")
+                    form.append("title", title);
+                if (des != '')
+                    form.append("describtion", des);
                 // form.append("invite_only", "");
 
                 var settings = {
@@ -225,7 +235,7 @@ class Homepage extends Component {
                         alert("Done");
                         window.location.replace("/homepage/");
                     },
-                    else: function () {
+                    error: function () {
                         alert("something went wrong");
                     },
                     "processData": false,
@@ -376,7 +386,6 @@ class Homepage extends Component {
 
 
             <div class="Homepage">
-               
 
 
                 <div id="myModal" class="modal">
@@ -400,23 +409,33 @@ class Homepage extends Component {
                     <div className="modal-content2">
                         <p className='deleteTEXT'>Are you sure you want to leave this group ? </p>
                         <div className='dltbtns'></div>
-                        {<IconButton style={{color: 'green' ,border: '1px solid green' , marginleft : '20px' ,marginRight:"10px" , marginBottom  : "65px" , marginTop:"-10px"}} classname="dltyes">     
-                             <CheckIcon />
-                          </IconButton> }
+                        {<IconButton style={{
+                            color: 'green',
+                            border: '1px solid green',
+                            marginleft: '20px',
+                            marginRight: "10px",
+                            marginBottom: "65px",
+                            marginTop: "-10px"
+                        }} className="dltyes">
+                            <CheckIcon/>
+                        </IconButton>}
                         {/* <div className='dltyes'>yes</div> */}
 
-                        
 
-                        {<IconButton style={{color: 'red' , border: '1px solid red' ,  marginleft : '10px' ,marginRight:"20px" , marginBottom  : "65px" , marginTop:"-10px"
-                     }} classname="dltno"  >     
-                             <CloseIcon />
-                          </IconButton> }
-                            {/* <div className='dltno'>no</div> */}
+                        {<IconButton style={{
+                            color: 'red',
+                            border: '1px solid red',
+                            marginleft: '10px',
+                            marginRight: "20px",
+                            marginBottom: "65px",
+                            marginTop: "-10px"
+                        }} className="dltno">
+                            <CloseIcon/>
+                        </IconButton>}
+                        {/* <div className='dltno'>no</div> */}
                     </div>
                 </div>
 
-                
-               
 
                 <header className="head">
                     <div className="zare"> join</div>
@@ -427,18 +446,19 @@ class Homepage extends Component {
                 </header>
 
 
-          
                 <div><a href="/create"><img src={plusss2} className="create"/></a></div>
                 <div className="groupsShow">
-                    
-                    </div>
+
+                </div>
 
                 <div id="mySidenav" className="sidenav">
 
-                  
-                  
-                <div className="div_leave" ><a href="/login"><img src={Leave} style ={{ width:"45px" , height:"45px"}}  /></a></div> 
-                   
+                    <div className="profile"><img src={Profile}
+                                                                     style={{width: "45px", height: "45px"}}/></div>
+
+                    <div className="div_leave"><a href="/login"><img src={Leave}
+                                                                     style={{width: "45px", height: "45px"}}/></a></div>
+
                 </div>
 
             </div>

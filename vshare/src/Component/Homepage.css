@@ -77,7 +77,7 @@
     float: left;
     width: 25px;
     height: 25px;
-    
+    cursor: pointer;
     
 }
 
@@ -95,8 +95,8 @@
 
 .admin {
     float: left;
-    margin-left: -120px;
-    margin-top: 5px;
+
+    margin-top: 3px;
     background-image: url(./taj.png);
     background-repeat: no-repeat;
     width: 25px;
@@ -113,7 +113,7 @@
     padding:25px;
     width: 350px;
     height: 700px;
-    background-color:rgba(185, 110, 110, 0.438);
+    background-color: rgba(185, 110, 110, 0.66);
 
 }
 .logo{
@@ -135,6 +135,7 @@
 }
 
 .editpage {
+
     width: 500px;
     height: 50px;
     background-color: white;
@@ -336,7 +337,7 @@
 
     top:0;
     left:0;
-    margin-top:730px;
+    margin-top:1100%;
    margin-left:-20px
     
 } 
@@ -350,6 +351,13 @@
     left: 0;
     margin-left: -20px;
     margin-top:-20px;
+}
+.profile{
+    cursor: pointer;
+    top:0;
+    left:0;
+    margin-top: -50px;
+  margin-left: 10px;
 }
 .head {
     position: fixed;
