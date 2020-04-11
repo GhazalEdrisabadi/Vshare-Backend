@@ -86,7 +86,7 @@ class DeleteMembership(generics.RetrieveUpdateDestroyAPIView):
     lookup_field='the_group'
     def get_queryset(self):
         user = self.request.user
-        group_identifier= self.request.query_params.get('group_id')
+        #group_identifier= self.request.query_params.get('group_id')
         queryset = Membership.objects.filter(the_member=user)
         return queryset
 
