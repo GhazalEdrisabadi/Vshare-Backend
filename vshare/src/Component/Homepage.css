@@ -167,14 +167,14 @@
 
 
 .modal-content {
-    border-radius: 25px;
+    border-radius: 50px;
     text-align: center;
     background-color: #fefefe;
     color: black;
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 43%;
 }
 
 .modal2 {
@@ -202,17 +202,6 @@
 
 
 
-.modal-content2 {
-    border-radius: 25px;
-    text-align: center;
-    background-color: #fefefe;
-    color: black;
-    margin: auto;
-    padding: 40px;
-    border: 1px solid #888;
-    width: 80%;
-    height: 13%;
-}
 
 .deleteTEXT {
     font-size: xx-large;
@@ -260,20 +249,21 @@
     text-align: left ;
     margin-top: 50px;
     margin-left: 10%;
-    margin-right: 150px;
+    margin-right: 50px;
     font-size: 20px;
 }
 
+
 .modal-content2 {
     border-radius: 25px;
-    text-align: center;
+    text-align: right;
     background-color: #fefefe;
     color: black;
     margin: auto;
-    padding: 40px;
+    padding: 35px;
     border: 1px solid #888;
-    width: 80%;
-    height: 13%;
+    width: 55%;
+    height: 12%;
 }
 
 .deleteTEXT {
@@ -346,7 +336,7 @@
 
     top:0;
     left:0;
-    margin-top:660px;
+    margin-top:730px;
    margin-left:-20px
     
 } 

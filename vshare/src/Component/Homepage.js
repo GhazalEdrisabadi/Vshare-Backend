@@ -6,7 +6,7 @@ import Sidedrawer from '../SideDrawe/Sidedrawer'
 import {BrowserRouter, Route} from 'react-router-dom'
 import Backdrop from '../Backdrop/Backdrop'
 import Create from '../create_room/create_room'
-import Plus from './plus.png'
+import plusss2 from './plusss2.png'
 import zare from '../zare.png'
 import $ from 'jquery';
 import jQuery from 'jquery'
@@ -358,14 +358,15 @@ class Homepage extends Component {
                     <div className="modal-content2">
                         <p className='deleteTEXT'>Are you sure you want to leave this group ? </p>
                         <div className='dltbtns'></div>
-                        {<IconButton style={{color: 'green' ,border: '1px solid green' , margin : '3px'}} classname="dltyes">     
+                        {<IconButton style={{color: 'green' ,border: '1px solid green' , marginleft : '20px' ,marginRight:"10px" , marginBottom  : "65px" , marginTop:"-10px"}} classname="dltyes">     
                              <CheckIcon />
                           </IconButton> }
                         {/* <div className='dltyes'>yes</div> */}
 
                         
 
-                        {<IconButton style={{color: 'red' , border: '1px solid red' , margin : '3px'   }} classname="dltno"  >     
+                        {<IconButton style={{color: 'red' , border: '1px solid red' ,  marginleft : '10px' ,marginRight:"20px" , marginBottom  : "65px" , marginTop:"-10px"
+                     }} classname="dltno"  >     
                              <CloseIcon />
                           </IconButton> }
                             {/* <div className='dltno'>no</div> */}
@@ -386,7 +387,7 @@ class Homepage extends Component {
 
 
           
-                <div><a href="/create"><img src={Plus} className="create"/></a></div>
+                <div><a href="/create"><img src={plusss2} className="create"/></a></div>
                 <div className="groupsShow">
                     
                     </div>
