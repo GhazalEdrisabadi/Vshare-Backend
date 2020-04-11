@@ -5,6 +5,13 @@ import Websocket from 'react-websocket';
 import Home from './home.png'
 class chat_room extends Component {
     componentDidMount() {
+        if (window.localStorage.getItem('token') == null) {
+
+            alert("Login first !");
+
+            window.location.replace("/login/");
+
+        }
         //This will open the connection*
         var ws = new WebSocket("ws://localhost:8000/user/signup/");
         ws.onopen = function () {
@@ -13,6 +20,7 @@ class chat_room extends Component {
 
         const { id } = this.props.match.params
         $(document).ready(function () {
+
 
             // if (localStorage.getItem('token') == null) {
             //     alert("Login please !");
