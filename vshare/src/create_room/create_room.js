@@ -1,9 +1,9 @@
-﻿
-import React, { Component } from 'react'
+﻿import React, {Component} from 'react'
 import $ from 'jquery';
 import './create_room.css'
 import jQuery from 'jquery'
-import { Cookies } from 'js-cookie'
+import {Cookies} from 'js-cookie'
+
 class create_room extends Component {
 
 
@@ -24,6 +24,7 @@ class create_room extends Component {
             }
             return cookieValue;
         }
+
         var csrftoken = getCSRFToken();
 
 
@@ -50,9 +51,9 @@ class create_room extends Component {
                     "method": "GET",
                     "timeout": 0,
                     error: function (event) {
-                        if (event.status==404)
-                            alert("نام کاربری مورد نظر وجود ندارد");
-                        
+                        if (event.status == 404)
+                            alert("User not found");
+
                     },
                     success: function () {
 
@@ -60,10 +61,10 @@ class create_room extends Component {
                             "url": "http://127.0.0.1:8000/group/add_member/",
                             "method": "POST",
                             error: function () {
-                                alert("این کاربر در گروه وجود دارد");
+                                alert("this user is already member of this group");
                             },
                             success: function () {
-                                alert("با موفقیت اضافه شد")
+                                alert("Done")
                             },
                             "timeout": 0,
                             "headers": {
@@ -74,9 +75,9 @@ class create_room extends Component {
                                 "Content-Type": "application/json"
                             },
                             "data": JSON.stringify({
-                                "the_group": id_gp,
-                                "the_member": member
-                            }
+                                    "the_group": id_gp,
+                                    "the_member": member
+                                }
                             ),
                         };
 
@@ -134,10 +135,11 @@ class create_room extends Component {
 
             });
 
-            
+
             $(".next1").click(function () {
 
-                var id = $(".input1").val();;
+                var id = $(".input1").val();
+                ;
                 var name = $(".input2").val();
                 var bio = $(".textarea").val();
                 var user = $(".textarea1").val();
@@ -153,8 +155,9 @@ class create_room extends Component {
                     "url": "http://localhost:8000/groups/",
                     "method": "POST",
                     "timeout": 0,
-                    error: function () {
-                        console.log("");
+                    error: function (event) {
+                        if (event.status==400)
+                            alert("group with this groupid already exists");
                     },
                     success: function () {
                         document.getElementById("myModel").style.display = 'block'
@@ -174,15 +177,15 @@ class create_room extends Component {
                         "Content-Type": "application/json"
                     },
                     "data": JSON.stringify({
-                        "groupid": id,
-                        "title": name,
-                        "describtion": bio,
-                        "invite_only": true,
+                            "groupid": id,
+                            "title": name,
+                            "describtion": bio,
+                            "invite_only": true,
 
-                       //"created_by": "milad",
-                        "members": mem
+                            //"created_by": "milad",
+                            "members": mem
 
-                    }
+                        }
                     ),
                 };
 
@@ -191,8 +194,7 @@ class create_room extends Component {
 
                     if (response.status === 400) {
                         console.log("no");
-                    }
-                    else {
+                    } else {
                         console.log("yes");
                     }
 
@@ -206,9 +208,10 @@ class create_room extends Component {
 
             });
 
-            
+
             $(".btn").click(function () {
-                var member = $(".input3").val();;
+                var member = $(".input3").val();
+                ;
 
                 //console.log(id + " " + name + " " + bio);
                 //console.log(csrftoken)
@@ -231,8 +234,7 @@ class create_room extends Component {
 
                     if (response.status === 400) {
                         alert("User not found");
-                    }
-                    else {
+                    } else {
                         htmlcode = '';
                         htmlcode += '<p className="pp" id=' + '"c' + counter + '">' + member + '</p>';
                         var s = "document.getElementById('close" + counter + "')";
@@ -264,61 +266,57 @@ class create_room extends Component {
     };
 
 
-
     render() {
         return (
-            <form className="form" >
+            <form className="form">
                 <div id="homepagebtn">
                     <p>Homepage</p>
                 </div>
 
                 <div className="formback">
                     <legend className="title">Create new group</legend>
-                <input onChange={this.change_name} type="text"
+                    <input onChange={this.change_name} type="text"
 
-                    className="input1" placeholder="name" style={{
-                    height: '40px',
-                        width: '290px',
-                        marginLeft:'-30px'
-                    }} />
-                <input  onChange={this.change_id} type="text"
-                    className="input2" placeholder="id" style={{
-                    height: '40px',
-                    width: '290px'
-                        }} />
-                    
-        
-                   
-                    
+                           className="input1" placeholder="name" style={{
+                        height: '40px',
+                        width: '60%',
+                        marginLeft: '-30px'
+                    }}/>
+                    <input onChange={this.change_id} type="text"
+                           className="input2" placeholder="id" style={{
+                        height: '40px',
+                        width: '60%'
+                    }}/>
 
-                  
-                <textarea  onChange={this.change_bio} type="text"
-                    className="textarea" placeholder=" bio" style={{
-                    height: '60px',
-                    width: '290px'
-                    }} />
-          
-                <dev id="create" className="next1" variant="raised"
 
-                    >next</dev>
+                    <textarea onChange={this.change_bio} type="text"
+                              className="textarea" placeholder=" bio" style={{
+                        height: '60px',
+                        width: '60%'
+                    }}/>
 
-                    <div id="myModel" className="modal2" >
+                    <dev id="create" className="next1" variant="raised"
+
+                    >next
+                    </dev>
+
+                    <div id="myModel" className="modal2">
                         <div className="modal-content2">
                             <p class='tit'>Add your member</p>
-                            <input class='inp' placeholder=" enter your id member"></input>
-                         
-                            <div class='dltbtns'></div>
+                            <input class='inp' placeholder=" enter your user's id"></input>
+
+
                             <div class="center">
                                 <div class='addbtn'>Add</div>
                                 <div class='skipbtn'>Skip</div>
                             </div>
-                            
+
                         </div>
                     </div>
 
 
                 </div>
-       
+
 
             </form>
 
@@ -326,4 +324,5 @@ class create_room extends Component {
     }
 
 }
+
 export default create_room;
