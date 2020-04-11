@@ -1,40 +1,368 @@
 .Homepage {
     width: 100%;
-    background-color: #282c34;
-   height: 100%;
-    position:fixed;
-    left:0;
+    height: 100%;
+    position: fixed;
+    left: 0;
     align-items: center;
-   top:0;
+    top: 0;
+    background-image: url(./back_first_.jpg);
     justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
+    background-repeat: no-repeat;
+    background-size:cover
 }
+
 .zare {
-    margin-top: 70px;
+    text-align: center;
     float: right;
-    height:24px;
-   
-    width: 33.33%; /* three containers (use 25% for four, and 50% for two, etc) */
-    padding: 1px ;
+    border-radius: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+    background-color: rgb(0, 0, 0);
+    height: 30px;
+    font-size:20px;
+    width: 80px;
+    color: white;
+    
 }
 .input {
-    margin-top: 0px;
-    margin-left: 400px;
+    padding: 10px;
+    float: right;
+    background-color: rgba(220, 240, 239, 0.38);
+    border-radius: 10px;
+
     font-size: 20px;
-    height: 40px;
+    height: 30px;
+    width: 210px;
+    margin-top: 10px;
+    margin-right: 10px;
+    border-top: solid;
+    border-left: solid;
+    border-bottom: solid;
+    border-right: solid;
+    border-color: black;
+    flex-direction: row
+}
+
+.create {
+    position: absolute;
+    left: 90%;
+    top: 82%;
+    height: 120px;
+    width: 120px;
+}
+
+.mygroups {
+    color:whitesmoke;
+}
+
+.leave {
+    background-image: url(./exit3NO.png);
+    background-repeat: no-repeat;
+    cursor: pointer;
+    margin-left: -10px;
+    padding: 3px;
+    float: right;
+    width: 25px;
+    height: 25px;
+    
+}
+
+.edit {
+    background-image: url(./edit.png);
+    background-repeat:no-repeat;
+    margin-left: 30px ;
+    margin-top: 2px;
+    float: left;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    
+}
+
+.mygroups {
+    font-size: 20px;
+    float: left;
+}
+
+.buttonsforgp {
+    font-size: 15px;
+    text-align: right;
+    float: right;
+    width: 90px;
+}
+
+.admin {
+    float: left;
+
+    margin-top: 3px;
+    background-image: url(./taj.png);
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+}
+
+.groupsShow {
+    /* overflow-y: scroll; */
+    border-radius: 27px;
+    margin-left:  40%;
+    margin-top: 8%;
+    color:white;
+    text-align: center;
+    padding:25px;
+    width: 350px;
+    height: 700px;
+    background-color: rgba(185, 110, 110, 0.66);
+
+}
+.logo{
+    margin-right:20px;
+}
+.sidenav {
+    height: 100%; 
+    width: 70px; 
+    position: fixed;
+    z-index: 1; 
+    top: 5.9%; 
+    left: 0;
+    justify-items: left;
+    background: rgba(96, 9, 3, 0.6);
+    
+    overflow-x: hidden; 
+    padding-top: 60px; 
+    transition: 0.5s; 
+}
+
+.editpage {
+
     width: 500px;
-    padding:0;
+    height: 50px;
+    background-color: white;
+}
+
+.modal {
+    display: none;
+    
+    position: fixed;
+
+    z-index: 1;
+    
+    padding-top: 100px;
+    
+    left: 0;
+    top: 0;
+    width: 100%;
+    
+    height: 100%;
+    
+    overflow: auto;
+    
+    background-color: rgb(0, 0, 0);
+    
+    background-color: rgba(0, 0, 0, 0.4);
+    
+}
+
+
+
+
+.modal-content {
+    border-radius: 50px;
+    text-align: center;
+    background-color: #fefefe;
+    color: black;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 43%;
+}
+
+.modal2 {
+    display: none;
+    
+    position: fixed;
+    
+    z-index: 1;
+    
+    padding-top: 100px;
+    
+    left: 0;
+    top: 0;
+    width: 100%;
+
+    height: 100%;
+    
+    overflow: auto;
+    
+    background-color: rgb(0, 0, 0);
+    
+    background-color: rgba(0, 0, 0, 0.4);
+
+}
+
+
+
+
+.deleteTEXT {
+    font-size: xx-large;
+    float: left;
+    margin-bottom: 5px;
+}
+
+.dltbtns {
+    float: right;
+}
+
+.dltyes {
+    border-radius: 10px;
+    padding: 2px;
+    background-color: green;
+    border:2px solid green;
+    margin-bottom : 2px ;
+    float: left;
+    cursor: pointer;
+}
+
+.dltno {
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 2px;
+    border: 2px solid;
+    background-color: red;
+    margin-left: 5px;
+    float: right;
+}
+
+.inputedit {
+    text-align: center;
+    width: 300px;
+    border: black solid thin;
+    border-radius: 25px;
+}
+
+.submitedit {
+    background-color:rgb(214, 29, 54);
+    border-radius:40px;
+    border: dashed black;
+    width: 162px;
+    height: 50px;
+    text-align: left ;
+    margin-top: 50px;
+    margin-left: 10%;
+    margin-right: 50px;
+    font-size: 20px;
+}
+
+
+.modal-content2 {
+    border-radius: 25px;
+    text-align: right;
+    background-color: #fefefe;
+    color: black;
+    margin: auto;
+    padding: 35px;
+    border: 1px solid #888;
+    width: 55%;
+    height: 12%;
+}
+
+.deleteTEXT {
+    font-size: xx-large;
+    float: left;
+    margin-bottom: 5px;
+}
+
+.dltbtns {
+    float: right;
+    width: fit-content;
+}
+
+.dltyes {
+    border-radius: 10px;
+    padding: 2px;
+    background-color: green;
+    margin: 5px;
+    float: right;
+    cursor: pointer;
+}
+
+.dltno {
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 2px;
+    background-color: red;
+    margin: 5px;
+    float: right;
+}
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+
+
+#main {
+    transition: margin-left .5s;
+  
+}
+
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+        .sidenav a {
+            font-size: 18px;
+        }
+}
+
+.div_leave {
+
     top:0;
     left:0;
-    flex-direction:row
+    margin-top:1100%;
+   margin-left:-20px
+    
+} 
+.home {
+    height: 50px;
+    width: 50px;
+
 }
-.create{
-    margin-top:590px;
-    margin-left:1270px;
-    height:85px;
-    width:85px;
+.div_home {
+    top: 0;
+    left: 0;
+    margin-left: -20px;
+    margin-top:-20px;
 }
-/*.button_create{
-    background-image
-}*/
+.profile{
+    cursor: pointer;
+    top:0;
+    left:0;
+    margin-top: -50px;
+  margin-left: 10px;
+}
+.head {
+    position: fixed;
+
+    width: 100%;
+    background: rgba(96, 9, 3, 0.6);
+    height: 56px;
+}
