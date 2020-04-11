@@ -9,8 +9,13 @@ class create_room extends Component {
 
     componentDidMount() {
 
-        function getCSRFToken() {
+//console.log(window.localStorage.getItem('token') );
+        if (window.localStorage.getItem('token') == null) {
+            alert("Login first !");
+            window.location.replace("/login/");
+        }
 
+        function getCSRFToken() {
             var cookieValue = null;
             if (document.cookie && document.cookie != '') {
                 var cookies = document.cookie.split(';');
@@ -43,8 +48,8 @@ class create_room extends Component {
                 //console.log(csrftoken)
                 var token = window.localStorage.getItem('token');
                 var id_gp = window.localStorage.getItem('id_group')
-                console.log(id_gp)
-                console.log(token);
+               // console.log(id_gp)
+             //   console.log(token);
 
                 var settings = {
                     "url": "http://127.0.0.1:8000/user/" + member + "",
@@ -102,12 +107,12 @@ class create_room extends Component {
                     //}
                     //),
                 };
-                console.log(settings.headers);
-                console.log(settings.method);
+             //   console.log(settings.headers);
+              //  console.log(settings.method);
                 $.ajax(settings).done(function (response) {
                     console.log(response);
-                    console.log(response.status);
-                    console.log("1");
+                    //console.log(response.status);
+                    //console.log("1");
                     //if (response.status === 404) {
                     //    console.log("no");
                     //}
@@ -145,8 +150,8 @@ class create_room extends Component {
                 var user = $(".textarea1").val();
 
                 var mem = [];
-                console.log(id + " " + name + " " + bio);
-                console.log(csrftoken)
+               // console.log(id + " " + name + " " + bio);
+               // console.log(csrftoken)
 
                 var token = window.localStorage.getItem('token');
 
@@ -156,7 +161,7 @@ class create_room extends Component {
                     "method": "POST",
                     "timeout": 0,
                     error: function (event) {
-                        if (event.status==400)
+                        if (event.status == 400)
                             alert("group with this groupid already exists");
                     },
                     success: function () {
@@ -192,11 +197,7 @@ class create_room extends Component {
                 $.ajax(settings).done(function (response) {
                     console.log(response);
 
-                    if (response.status === 400) {
-                        console.log("no");
-                    } else {
-                        console.log("yes");
-                    }
+
 
                     //  console.log(responseDisplay);
                     // console.log(response.status.);
