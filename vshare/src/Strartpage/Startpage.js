@@ -20,7 +20,7 @@ class startpage extends Component {
                     <div className="text">
                         <p className="txt">We are here</p>
                         <p className="txt">  </p>
-                        <p className="txt">to mak your life</p>
+                        <p className="txt">to make your life</p>
                         <p className="txt">  </p>
                         <p className="txt">more instresting</p>
                     </div>
