@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './chat_room.css'
 import $ from 'jquery';
 import Websocket from 'react-websocket';
+import Home from './home.png'
 class chat_room extends Component {
     componentDidMount() {
         //This will open the connection*
@@ -51,7 +52,7 @@ class chat_room extends Component {
 
                     }
                     $(".textarea_bio").append(response.describtion + "\n")
-
+                    $(".name").append(response.title);
                 });
         });
 
@@ -61,8 +62,18 @@ class chat_room extends Component {
     }
     render() {
         return (
-            <form className="back">                <div className="formback_movie">                </div>                <div className="back_coulom">                    <div className="formback_info" style={{ width: '115%', height: '410px' }}>                        <legend className="title_gp">info of group</legend>                        <div className="textarea_member" style={{ overflowY: 'scroll' }} />                        <div className="textarea_bio" />                    </div>                    <div className="formback_text" style={{ width: '115%', height: '410px', }} >                    </div>                </div>               
-                     />            </form>
+            <div>
+                
+                <form className="back">                    <header className="headers">
+                        <div className="div_center">
+                           
+
+                            <div className="div_icon" ><a href='../homepage'><img src={Home} className="icon" /></a></div>
+                            <div className="name"/>
+                        </div>
+                    </header>                <div className="formback_movie">                </div>                <div className="back_coulom">                    <div className="formback_info" style={{ width: '115%', height: '410px' }}>                        <legend className="title_gp">info of group</legend>                        <div className="textarea_member" style={{ overflowY: 'scroll' }} />                        <div className="textarea_bio" />                    </div>                    <div className="formback_text" style={{ width: '115%', height: '410px', }} >                    </div>                </div>               
+                                 </form>
+            </div>
             )
     }
 }
