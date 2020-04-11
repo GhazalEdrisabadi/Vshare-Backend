@@ -13,6 +13,11 @@ import jQuery from 'jquery'
 import Leave from './leave.png'
 import Home from './home_.png'
 import Logo from './log.PNG'
+import { makeStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
+
 class Homepage extends Component {
 
     componentDidMount() {
@@ -86,9 +91,9 @@ class Homepage extends Component {
 
                     htmlcode += '<p class="mygroups" id=' + '"c' + counter1 + '">' + mygroups[counter1].name + '</p>';
                     htmlcode += '<div class="buttonsforgp">';
-                    htmlcode += '<div class="admin" >*</div>';
-                    htmlcode += '<div  onclick="' + a + "," + dd + '" class="leave"  >leave</div>';
-                    htmlcode += '<div  onclick="' + a + "," + ss + '" class="edit">edit</div>';
+                    htmlcode += '<div class="admin"></div>';
+                    htmlcode += '<div  onclick="' + a + "," + dd + '" class="leave" ></div>';
+                    htmlcode += '<div  onclick="' + a + "," + ss + '" class="edit"></div>';
                     htmlcode += '</div>';
                     htmlcode += '</br>';
                     //htmlcode += '<hr class="line" id=' + '"h' + counter1 + '">';
@@ -272,7 +277,7 @@ class Homepage extends Component {
                         htmlcode2 += '<p class="mygroups" id=' + '"c2' + counter2 + '">' + groups[counter2].name + '</p>';
                         htmlcode2 += '<div class="buttonsforgp">';
 
-                        htmlcode2 += '<div onclick="' + a2 + "," + dd2 + '" class="leave" >leave</div>';
+                        htmlcode2 += '<div onclick="' + a2 + "," + dd2 + '" class="leave" ></div>';
 
                         htmlcode2 += '</div>';
                         htmlcode2 += '</br>';
@@ -353,11 +358,19 @@ class Homepage extends Component {
                     <div className="modal-content2">
                         <p className='deleteTEXT'>Are you sure you want to leave this group ? </p>
                         <div className='dltbtns'></div>
-                        <div className='dltyes'>yes</div>
-                        <div className='dltno'>no</div>
+                        {<IconButton style={{color: 'green'}} classname="dltyes"  aria-label="delete" >     
+                             <CheckIcon />
+                          </IconButton> }
+                        {/* <div className='dltyes'>yes</div> */}
+
+                        
+
+                        {<IconButton style={{color: 'red'}} classname="dltno"  aria-label="delete" >     
+                             <CloseIcon />
+                          </IconButton> }
+                            {/* <div className='dltno'>no</div> */}
                     </div>
                 </div>
-
 
                 
                
@@ -383,7 +396,7 @@ class Homepage extends Component {
 
                   
                   
-                    <div className="div_leave" ><a href="/login"><img src={Leave} className="leave" /></a></div>
+                <div className="div_leave" ><a href="/login"><img src={Leave} style ={{ width:"45px" , height:"45px"}}  /></a></div> 
                    
                 </div>
              
