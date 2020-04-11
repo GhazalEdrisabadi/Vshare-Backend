@@ -13,7 +13,7 @@ class chat_room extends Component {
 
         }
         //This will open the connection*
-        var ws = new WebSocket("ws://localhost:8000/user/signup/");
+        var ws = new WebSocket("ws://localhost:8000/groups/stream/" + window.localStorage.getItem('token')+"/");
         ws.onopen = function () {
             console.log("Ping");
         };
