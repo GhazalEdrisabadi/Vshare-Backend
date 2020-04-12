@@ -3,7 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="d0f22248-2259-40b4-8ef3-46314e63d707" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/About/About.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/About/About.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Component/Homepage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Component/Homepage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/signup-login/signup-login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/signup-login/signup-login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/signup-login/signup-logincss.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/signup-login/signup-logincss.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatroom/chat_room.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatroom/chat_room.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatroom/chat_room.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatroom/chat_room.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/create_room/create_room.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/create_room/create_room.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/create_room/create_room.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/create_room/create_room.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vshare/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/vshare/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +45,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="yarn" />
   </component>
   <component name="RunManager">
     <configuration name="vshare" type="Python.DjangoServer" factoryName="Django server">
@@ -77,6 +86,7 @@
       <workItem from="1586440847500" duration="1821000" />
       <workItem from="1586513082016" duration="74000" />
       <workItem from="1586627116962" duration="3552000" />
+      <workItem from="1586710104115" duration="5686000" />
     </task>
     <servers />
   </component>
