@@ -13,7 +13,7 @@ class startpage extends Component {
 
             })
             $(".contact").click(function () {
-                alert(":))))))")
+                alert("Coming soon!")
 
             })
         })
