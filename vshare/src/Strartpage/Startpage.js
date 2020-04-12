@@ -1,17 +1,31 @@
 import React, { Component } from 'react'
 import './Startpage.css'
+import $ from 'jquery';
 import AwesomeSlider from 'react-awesome-slider'
 import 'react-awesome-slider/dist/styles.css';
 import Home from './homepage.png'
 class startpage extends Component {
+    componentDidMount() {
+
+        $(document).ready(function () {
+            $(".app").click(function () {
+                alert("Coming soon!")
+
+            })
+            $(".contact").click(function () {
+                alert(":))))))")
+
+            })
+        })
+    }
     render() {
         return (
             <div className="start">
                 <header className="head_first">
                     <div className="div_head">
                         <div className="btn_login"><a href='./login'> login/signup</a></div>
-                        <div className="contact"><a href='./contact'>Contact</a></div>
-                        <div className="app"><a href='./application'>Application</a></div>
+                        <div className="contact"><a >Contact</a></div>
+                        <div className="app"><a >Application</a></div>
                         <div className="btn_about"><a href='./about'>About</a></div>
                     </div>
                 </header>
@@ -26,7 +40,7 @@ class startpage extends Component {
                     </div>
                 <AwesomeSlider style={{ height: "500px", width: "500px" , top:"20px" , left:"1%" }}>
                     <div>1</div>
-                    <div ><img src={Home} style={{ height: "700px", width:"900px" }} /></div>
+                    <div >2</div>
                     <div>3</div>
                     <div>4</div>
                     </AwesomeSlider>
