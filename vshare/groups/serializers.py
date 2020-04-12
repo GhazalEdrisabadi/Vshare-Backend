@@ -7,6 +7,7 @@ class GroupSerializer(serializers.ModelSerializer):
         model = Group
         fields = '__all__'
 
+
 class GroupUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group

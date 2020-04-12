@@ -1,3 +1,4 @@
+
 from django.conf import settings
 import django.core.validators
 from django.db import migrations, models
@@ -24,6 +25,7 @@ class Migration(migrations.Migration):
                 ('invite_only', models.BooleanField(default=False)),
 
                 ('created_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='owner', to=settings.AUTH_USER_MODEL)),
+
             ],
             options={
                 'ordering': ['since'],
