@@ -28,7 +28,7 @@ class Homepage extends Component {
 
             if (window.localStorage.getItem('token') == null) {
                 alert("Login first !");
-                window.location.replace("/login/");
+                window.location.replace("/startpage/");
             }
 
             console.log("aa");
@@ -40,7 +40,7 @@ class Homepage extends Component {
 
             $(".div_leave").click(function () {
                 window.localStorage.clear();
-                window.location.replace("/login/");
+                window.location.replace("/startpage/");
             });
 
             $(".profile").click(function () {
@@ -456,7 +456,7 @@ class Homepage extends Component {
                     <div className="profile"><img src={Profile}
                                                                      style={{width: "45px", height: "45px"}}/></div>
 
-                    <div className="div_leave"><a href="/login"><img src={Leave}
+                    <div className="div_leave"><a href="/startpage"><img src={Leave}
                                                                      style={{width: "45px", height: "45px"}}/></a></div>
 
                 </div>
