@@ -1,5 +1,4 @@
 from rest_framework import generics
-
 from .models import Group , Membership
 from users.models import Account
 from .serializers import GroupRegistrationSerializer
@@ -36,7 +35,6 @@ class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GroupSerializer
     lookup_field = 'groupid'
     permission_classes = [AllowAny]
-
 
 class GroupDetailUpdate(generics.RetrieveUpdateDestroyAPIView):
     queryset = Group.objects.all()
@@ -122,3 +120,4 @@ def GroupRegistration(request):
         else:
             data = serializer_class.errors
         return Response(data)
+

@@ -1,8 +1,11 @@
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 from groups import views
+from groups.views import *
 
 urlpatterns = [
+    path('groups/', views.GroupList.as_view()),
+    path('groups/<str:groupid>/', views.GroupDetail.as_view()),
     path('groups/', views.GroupList.as_view(), name='all_groups_and_create'),
     path('groups/<str:groupid>/', views.GroupDetail.as_view(), name='group_detail'),
     path('groups/<str:groupid>/edit/', views.GroupDetailUpdate.as_view(), name='group_detail_with_update'),

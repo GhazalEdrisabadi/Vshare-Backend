@@ -1,12 +1,14 @@
 from rest_framework import serializers
 from .models import Group , Membership
+from django.apps import apps
+
+UserModel = apps.get_model('users', 'Account')
 
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = '__all__'
-
 
 class GroupUpdateSerializer(serializers.ModelSerializer):
     class Meta:
