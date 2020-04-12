@@ -1,3 +1,4 @@
+
 from django.conf import settings
 import django.core.validators
 from django.db import migrations, models
@@ -22,12 +23,16 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(blank=True, default='No Name', max_length=100)),
                 ('describtion', models.TextField(blank=True)),
                 ('invite_only', models.BooleanField(default=False)),
-                ('created_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='owner', to=settings.AUTH_USER_MODEL)),
+
+                ('created_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='groups_group_created', to=settings.AUTH_USER_MODEL, verbose_name='Created by')),
+                ('members', models.ManyToManyField(blank=True, to=settings.AUTH_USER_MODEL)),
+
             ],
             options={
                 'ordering': ['since'],
             },
         ),
+
         migrations.CreateModel(
             name='Membership',
             fields=[
@@ -45,4 +50,5 @@ class Migration(migrations.Migration):
             name='members',
             field=models.ManyToManyField(blank=True, related_name='joined_groups', through='groups.Membership', to=settings.AUTH_USER_MODEL),
         ),
+
     ]

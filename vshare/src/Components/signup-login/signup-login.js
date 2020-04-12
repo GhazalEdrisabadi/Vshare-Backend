@@ -6,7 +6,12 @@ import { Cookies } from 'js-cookie'
 class sl extends Component{
   componentDidMount(){
    $(document).ready(function () {
+          window.localStorage.clear();
+
+
     $(".signupbtn").click(function () {
+
+
         var username = $(".username").val();
         var firstname = $(".firstname").val();
         var lastname = $(".lastname").val();
@@ -126,7 +131,7 @@ window.onload=function(){
 render(){
 return (
 <dev>
-<h2>Welcome to vShare</h2>
+
 <div class="container" id="container">
   <div class="form-container sign-up-container">
     <form action="#">

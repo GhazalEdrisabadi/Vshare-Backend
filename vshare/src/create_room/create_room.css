@@ -131,6 +131,7 @@
 }
 
 .title {
+
     font-size: 43px;
     font-weight: bold;
     font-family: Comic Sans MS;
@@ -275,5 +276,6 @@
     border: solid thin black;
     border-radius: 10px;
     width: 50%
+
 
 }
