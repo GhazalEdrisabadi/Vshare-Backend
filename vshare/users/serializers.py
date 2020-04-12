@@ -77,3 +77,9 @@ class UserLoginSerializer(serializers.ModelSerializer):
 
 		data["user"] = user_obj
 		return data
+
+class AccountSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Account
+        fields = '__all__'
