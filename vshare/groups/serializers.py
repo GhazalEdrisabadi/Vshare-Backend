@@ -7,6 +7,7 @@ class GroupSerializer(serializers.ModelSerializer):
         model = Group
         fields = '__all__'
 
+
 class GroupUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
@@ -20,6 +21,7 @@ class MembershipSerializer(serializers.ModelSerializer):
         model = Membership
         fields = '__all__'   
     
+
 
 class GroupRegistrationSerializer(serializers.ModelSerializer):
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
