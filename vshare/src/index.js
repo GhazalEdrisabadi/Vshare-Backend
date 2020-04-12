@@ -5,6 +5,7 @@ import Create from './create_room/create_room'
 import Homepage from './Component/Homepage'
 import Login from './Components/signup-login/signup-login'
 
+
 import Chat from './chatroom/chat_room'
 
 import Start from './Strartpage/Startpage'
@@ -15,6 +16,7 @@ const App = () => {
         <BrowserRouter>
             <div>
 
+
                 <Route path="/create" component={Create}/>
                 <Route path="/homepage" component={Homepage}/>
                 <Route path="/login" component={Login}/>
@@ -23,6 +25,7 @@ const App = () => {
 
             
                 <Route exact path="/group/:id"  component={Chat} />
+
 
 
 

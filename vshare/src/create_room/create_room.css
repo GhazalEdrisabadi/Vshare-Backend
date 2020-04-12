@@ -3,7 +3,9 @@
     position: fixed;
     display: flex;
     flex-direction: column;
-    background-color:darkslateblue;
+
+
+    background: linear-gradient(to bottom, #710f01, #000000);
     height: 100%;
     width: 100%;
     position: fixed;
@@ -11,53 +13,269 @@
     top: 0;
     font-size: calc(10px + 2vmin);
     color: white;
-    border-style:solid;
-    border-color:black;
+    border-style: solid;
+    border-color: black;
 }
+
 .formback {
-    background-color: #e9e1cc;
+    background-color: rgba(255, 255, 255, 0.46);
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding:  50px;
-    
+
+
+    height: 60%;
+    width: 28%;
+
     text-align: center;
 }
 
 
-.input1{
-   
-    margin:15px;
-        
-}
-.input2 {
+.input1 {
+    font-size: 20px;
+    /*margin-left: -112px;*/
+    background-color: rgba(255, 255, 255, 0.53);
+    margin-left: 10px;
     margin: 15px;
+    border: solid;
+    border-radius: 20px;
+    text-align: center;
 }
+
+.input2 {
+    font-size: 20px;
+     background-color: rgba(255, 255, 255, 0.53);
+    margin: 15px;
+    margin-left: 10px;
+    border: solid;
+    border-radius: 20px;
+    text-align: center;
+}
+
+
 .textarea {
+    font-size: 20px;
+     background-color: rgba(255, 255, 255, 0.53);
     position: relative;
     margin: 15px;
-}
-.textarea1 {
-    margin: 15px;
-}
-.button {
-    margin: 15px;
-}
-.button1 {
-    margin: 15px;
-}
-.title {
-    margin:10px;
-    color:black;
-}
-#homepagebtn{
-    height:50px;
-    width:100px;
-    background-color:orange;
-    font-size:x-large ;
-   color:black;
+    border: solid;
+    margin-left: 50px;
+    border-radius: 20px;
 
-    position:center;
-    margin:20px;
+    text-align: center;
+
+}
+
+.search {
+    flex-direction: row
+}
+
+
+.button {
+
+    border-radius: 20px;
+    background-color: #FF4B2B;
+    position: absolute;
+    float: right;
+    margin-top: 7px;
+    height: 40px;
+    width: fit-content;
+
+    text-align: center;
+    border: 1px solid #FF4B2B;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 12px 28px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+
+}
+
+#btn {
+
+    border-radius: 20px;
+    background-color: #FF4B2B;
+    position: absolute;
+    float: right;
+    margin-top: 7px;
+    height: 40px;
+    width: fit-content;
+
+    text-align: center;
+    border: 1px solid #FF4B2B;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 12px 28px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+
+}
+
+.button {
+    cursor: pointer;
+    margin: 15px;
+
+}
+
+.button1 {
+    cursor: pointer;
+    margin: 15px;
+}
+
+.title {
+
+    font-size: 43px;
+    font-weight: bold;
+    font-family: Comic Sans MS;
+    margin-bottom: 15%;
+
+
+    color: black;
+}
+
+.members {
+    background-color: whitesmoke;
+    color: black;
+    font-size: 16px;
+    margin: 15px;
+    margin-right: 95px;
+    border: groove;
+    text-align: center;
+    margin-left: 52px;
+    position: relative;
+    width: 290px;
+    height: 100px;
+    padding: 5px;
+}
+
+.closes {
+    font-size: xx-large;
+    cursor: pointer;
+}
+
+#homepagebtn {
+    border: black solid thin;
+    cursor: pointer;
+    height: 35px;
+    width: 120px;
+    background-color: lightgoldenrodyellow;
+    border-radius: 100px;
+    font-size: xx-large;
+    color: black;
+    position: center;
+    margin: 20px;
+}
+
+.next1 {
+    cursor: pointer;
+    border: black thin solid;
+    height: 35px;
+    width: 120px;
+    background-color: rgb(243, 157, 29);
+    border-radius: 100px;
+    font-size: x-large;
+    color: black;
+    position: center;
+  margin-top: 13%;
+}
+
+.modal2 {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+.modal-content2 {
+    /*background: linear-gradient(to bottom, #808000, #FFFFFF);*/
+    background-color: #fafce1;
+    text-align: center;
+    border-radius: 450px;
+    justify-content: center;
+    color: black;
+    margin: auto;
+    padding: 40px;
+    border: 1px solid #888;
+    width: 50%;
+    height: 45%;
+}
+
+.tit {
+    font-weight: bold;
+    font-size: 40px;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.addbtn {
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 2px;
+    width: 130px;
+    background-color: green;
+
+    float: left;
+    /*margin-right: 5px;
+    
+    cursor: pointer;*/
+}
+
+.skipbtn {
+    cursor: pointer;
+    border-radius: 10px;
+    width: 130px;
+    float: right;
+    /*cursor: pointer;*/
+    padding: 2px;
+    background-color: red;
+    /*margin-left: 20px;*/
+}
+
+.center {
+    justify-content: center;
+    align-items: center;
+    margin-top: 10%;
+    margin-left: 33%;
+
+    flex-direction: row;
+    width: 300px;
+    height: 200px;
+}
+
+.inp {
+    margin-top: 90px;
+    align-items: center;
+    justify-content: center;
+    border: solid thin black;
+    border-radius: 10px;
+    width: 50%
+
+
 }

@@ -1,3 +1,5 @@
+
+
 .Homepage {
     width: 100%;
 
@@ -8,6 +10,7 @@
     top: 0;
 
     background-image: url(./back_first_.jpg);
+
     justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
@@ -15,6 +18,7 @@
     background-size:cover
 
 }
+
 
 .zare {
     text-align: center;
@@ -90,6 +94,7 @@
 }
 
 .mygroups {
+
     font-size: 20px;
     float: left;
 }
@@ -146,6 +151,7 @@
 .editpage {
 
     width: 500px;
+
     height: 50px;
     background-color: white;
 }
@@ -376,3 +382,4 @@
 
     height: 56px;
 }
+
