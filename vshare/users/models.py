@@ -43,7 +43,7 @@ class Account(AbstractBaseUser):
 	photo = models.ImageField(upload_to='userimage', blank=True)
 	firstname = models.CharField(max_length=50)
 	lastname = models.CharField(max_length=50)
-	username = models.CharField(max_length=20, unique=True)
+	username = models.CharField(max_length=20,primary_key=True )
 	email = models.EmailField(max_length=100)
 	is_admin = models.BooleanField(default=False)	# a superuser
 	is_active = models.BooleanField(default=True)
