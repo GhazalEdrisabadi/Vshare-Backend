@@ -1,4 +1,6 @@
-﻿import React, {Component} from 'react'
+
+﻿import React, { Component } from 'react'
+
 import './Homepage.css'
 import Fontawesome from 'react-fontawesome'
 import Navbar from '../navbar/navbar'
@@ -19,10 +21,65 @@ import IconButton from '@material-ui/core/IconButton';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 
-class Homepage extends Component {
 
+
+const name = window.$name;
+class Homepage extends Component {
+    
     componentDidMount() {
+        const { id } = this.props.match.params
         $(document).ready(function () {
+            // if (localStorage.getItem('token') == null) {
+            //     alert("Login please !");
+            //     window.location.replace("/login/");
+            // }
+            $(".zare").click(function () {
+                var id = $(".input_input").val();;
+           
+               // console.log(id + " " + name + " " + bio);
+                //console.log(csrftoken)
+                var token = window.localStorage.getItem('token');
+                console.log(token);
+
+                var settings = {
+                    "url": "http://127.0.0.1:8000/group/join/",
+                    "method": "POST",
+                    "timeout": 0,
+                    error: function (event) {
+                        if (event.status == 500) {
+                            alert("شما در  این گروه عضو هستید")
+                        }
+                        else
+                            alert("این گروه وجود ندارد")
+                    },
+                    success: function () {
+                        window.localStorage.setItem('id_gp', id);
+                        window.location.replace("/group/" + id + "");
+                    },
+                    "headers": {
+                        //'X-CSRFToken': csrftoken,
+                        "Authorization": "token " + token,
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+                    "data": JSON.stringify({
+                        "the_group": id,
+                        "the_member":"",
+                    }
+                    ),
+                };
+                console.log(settings.headers);
+                console.log(settings.method);
+                $.ajax(settings).done(function (response) {
+                    console.log("done")
+                    console.log(response);
+                    console.log(response.status);
+                });
+            });
+
+
 
             window.localStorage.removeItem('numbergp1');
 
@@ -393,7 +450,7 @@ class Homepage extends Component {
     }
 
     handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.value);
+       // alert('A name was submitted: ' + this.state.value);
         event.preventDefault();
     }
 

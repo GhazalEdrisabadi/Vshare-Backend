@@ -1,16 +1,19 @@
 .Homepage {
     width: 100%;
+
     height: 100%;
     position: fixed;
     left: 0;
     align-items: center;
     top: 0;
+
     background-image: url(./back_first_.jpg);
     justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
     background-repeat: no-repeat;
     background-size:cover
+
 }
 
 .zare {
@@ -26,6 +29,7 @@
     color: white;
     
 }
+
 .input {
     padding: 10px;
     float: right;
@@ -33,16 +37,20 @@
     border-radius: 10px;
 
     font-size: 20px;
+
     height: 30px;
     width: 210px;
     margin-top: 10px;
     margin-right: 10px;
+
     border-top: solid;
     border-left: solid;
     border-bottom: solid;
     border-right: solid;
     border-color: black;
+
     flex-direction: row
+
 }
 
 .create {
@@ -116,6 +124,7 @@
     background-color: rgba(185, 110, 110, 0.66);
 
 }
+
 .logo{
     margin-right:20px;
 }
@@ -364,5 +373,6 @@
 
     width: 100%;
     background: rgba(96, 9, 3, 0.6);
+
     height: 56px;
 }
