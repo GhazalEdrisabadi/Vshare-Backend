@@ -18,20 +18,23 @@
     width:100%
 }
 .btn_login {
+    font-weight: bold;
     border-radius: 20px;
-    background-color: #7031bf;
+    background-color: #bf7a2c;
   float:right;
     text-align: center;
     margin-top:5px;
     width: 130px;
     height: 40px;
-    
+    margin-top: 1%;
+    margin-right: 3%;
     color: white;
 }
 .btn_about {
+     font-weight: bold;
     position: absolute;
     margin-top: 5px;
-
+    font-size: xx-large;
     color: white;
     width: 100px;
     margin-left: 35%;
@@ -41,10 +44,13 @@
     background-image:url(./homepage.png)
 }
 .contact {
+    color: white;
+    cursor: pointer;
     position: absolute;
-    color: white;
+
     margin-top: 5px;
-    color: white;
+     font-weight: bold;
+
     margin-left: 25%;
     width: 100px;
 }
@@ -53,7 +59,8 @@
     float: right;
     width: 57%;
     height: 53px;
-    
+    font-weight: bold;
+
    
     flex-direction: row;
   
@@ -61,6 +68,7 @@
 }
 
 .app {
+    cursor: pointer;
     position: absolute;
     color: white;
     margin-left: 14%;
@@ -86,7 +94,7 @@
     margin-top: 10%;
     font-size: 60px;
     text-align: center;
-    margin-left: 40%;
+    margin-left: 35%;
     font-family:'OCR A';
     width:33%;
     text-overflow:inherit;
