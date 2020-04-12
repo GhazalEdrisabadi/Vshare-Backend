@@ -68,3 +68,4 @@ class UserByUsername(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AccountSerializer
     lookup_field = 'username'
     permission_classes = [AllowAny]
+

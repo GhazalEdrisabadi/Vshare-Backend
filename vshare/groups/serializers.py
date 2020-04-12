@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Group
+from .models import Group , Membership
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -7,8 +7,21 @@ class GroupSerializer(serializers.ModelSerializer):
         model = Group
         fields = '__all__'
 
-         
+
+class GroupUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields =  ['groupid','title','describtion','invite_only',]
+
+class MembershipSerializer(serializers.ModelSerializer):
+    def __init__(self, *args, **kwargs):
+        many = kwargs.pop('many', True)
+        super(MembershipSerializer, self).__init__(many=many, *args, **kwargs)
+    class Meta:
+        model = Membership
+        fields = '__all__'   
     
+
 
 class GroupRegistrationSerializer(serializers.ModelSerializer):
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
@@ -27,5 +40,3 @@ class GroupRegistrationSerializer(serializers.ModelSerializer):
         )
         group.save()
         return group
-        
-     
