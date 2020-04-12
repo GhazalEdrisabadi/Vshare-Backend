@@ -47,6 +47,7 @@ class GroupDetailUpdate(generics.RetrieveUpdateDestroyAPIView):
         req = serializer.context['request']
         serializer.save(the_member=req.user)
 
+
 class MembershipList(generics.ListCreateAPIView):
     queryset = Membership.objects.all()
     serializer_class = MembershipSerializer

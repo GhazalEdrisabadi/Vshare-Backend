@@ -11,8 +11,8 @@ urlpatterns = [
     path('group/joined_groups/',views.GroupsOfUser.as_view(), name='groups_of_user'),
     path('group/owned_groups/',views.GroupsWhichUserIsAdmin.as_view(), name='owned_by_user'),
     path('group/<str:the_group>/leave/',views.DeleteMembership.as_view(), name='leave'),
-
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
 #---
+© 2020 GitHub, Inc.
