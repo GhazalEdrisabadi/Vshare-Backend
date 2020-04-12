@@ -32,19 +32,12 @@ def join_error(user):
 def get_user(headers):
 	try:
 		token_name, token_key = headers[b'authorization'].decode().split()
+		print(headers[b'authorization'])
 		if token_name == 'Token':
 			token = Token.objects.get(key=token_key)
 			return token.user
 	except Token.DoesNotExist:
 		return AnonymousUser()
-
-class TokenAuthMiddleware:
-
-	def __init__(self, inner):
-		self.inner = inner
-
-	def __call__(self, scope):
-		return TokenAuthMiddlewareInstance(scope, self)
 
 """
 
@@ -56,6 +49,14 @@ If so will fetch the user for that and update
 scope['user'] with that value.
 
 """
+class TokenAuthMiddleware:
+
+	def __init__(self, inner):
+		self.inner = inner
+
+	def __call__(self, scope):
+		return TokenAuthMiddlewareInstance(scope, self)
+
 class TokenAuthMiddlewareInstance:
 
 	def __init__(self, scope, middleware):
