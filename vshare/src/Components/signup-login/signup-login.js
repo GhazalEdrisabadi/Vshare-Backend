@@ -6,7 +6,12 @@ import { Cookies } from 'js-cookie'
 class sl extends Component{
   componentDidMount(){
    $(document).ready(function () {
+          window.localStorage.clear();
+
+
     $(".signupbtn").click(function () {
+
+
         var username = $(".username").val();
         var firstname = $(".firstname").val();
         var lastname = $(".lastname").val();
