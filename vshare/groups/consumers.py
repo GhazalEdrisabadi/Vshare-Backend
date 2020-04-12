@@ -1,9 +1,11 @@
 from django.conf import settings
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import AnonymousUser
 from .exceptions import ClientError
-from .utils import *
+from channels.exceptions import DenyConnection
 from .models import *
+import logging
 
 class VideoConsumer(AsyncJsonWebsocketConsumer):
 
@@ -17,28 +19,43 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 	# to all channels in the group.
 
 	async def connect (self):
-
-		try:
-			# token = self.scope['url_route']['kwargs']['token']
-			token = self.scope.get('url_route', {}).get(
-				'kwargs', {}).get('token', False)
-			
-			if not token:
-				await self.close()
-			
-			try:
-				token = Token.objects.select_related('user').get(key=token)
-			except Token.DoesNotExist:
-				await self.close()
-		
-			user = token.user
-			self.user_group_name = 'user_{}'.format(user.id)
-			self.rooms = set()
-			await self.accept()
-			
-
-		except Exception as e:
+		# self.scope["user"] = get_user(self.scope['url_route']['kwargs']['token'])
+		# token = self.scope['url_route']['kwargs']['token']
+		if self.scope["user"] == AnonymousUser():
+			print(1)
 			await self.close()
+		else:
+			print(self.scope["user"].username)
+			print(2)
+			await self.accept()
+
+		self.rooms = set()
+
+		# print(10000)
+		# 
+		# print(20000)
+		# # try:
+		# token = self.scope['url_route']['kwargs']['token']
+		# # token = self.scope.get('url_route', {}).get(
+		# # 	'kwargs', {}).get('token', False)
+		# print(token)
+			
+			# if not token:
+			# 	await self.close()
+			
+			# try:
+			# 	token = Token.objects.select_related('user').get(key=token)
+			# except Token.DoesNotExist:
+			# 	await self.close()
+		
+			# user = token.user
+			# self.user_group_name = 'user_{}'.format(user.id)
+			# self.rooms = set()
+			
+			
+
+		# except Exception as e:
+		# 	await self.close()
 
 	async def receive (self, data):
 
