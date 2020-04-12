@@ -22,12 +22,12 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		# self.scope["user"] = get_user(self.scope['url_route']['kwargs']['token'])
 		# token = self.scope['url_route']['kwargs']['token']
 		if self.scope["user"] == AnonymousUser():
-			print(1)
 			await self.close()
+			print("close")
 		else:
-			print(self.scope["user"].username)
-			print(2)
+			print(self.scope["user"].id)
 			await self.accept()
+			print("accept")
 
 		self.rooms = set()
 

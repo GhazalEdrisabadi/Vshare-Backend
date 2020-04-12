@@ -11,7 +11,7 @@ from groups.consumers import VideoConsumer
 application = ProtocolTypeRouter({
 	"websocket":TokenAuthMiddlewareStack(
 		URLRouter([
-			url(r'^groups/stream/(?P<token>[\w.@+-]+)/$', VideoConsumer),
+			url(r'^groups/stream', VideoConsumer),
 		])
 	)
 })
