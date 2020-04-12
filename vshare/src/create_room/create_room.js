@@ -48,8 +48,8 @@ class create_room extends Component {
                 //console.log(csrftoken)
                 var token = window.localStorage.getItem('token');
                 var id_gp = window.localStorage.getItem('id_group')
-               // console.log(id_gp)
-             //   console.log(token);
+                // console.log(id_gp)
+                //   console.log(token);
 
                 var settings = {
                     "url": "http://127.0.0.1:8000/user/" + member + "",
@@ -107,8 +107,8 @@ class create_room extends Component {
                     //}
                     //),
                 };
-             //   console.log(settings.headers);
-              //  console.log(settings.method);
+                //   console.log(settings.headers);
+                //  console.log(settings.method);
                 $.ajax(settings).done(function (response) {
                     console.log(response);
                     //console.log(response.status);
@@ -150,8 +150,8 @@ class create_room extends Component {
                 var user = $(".textarea1").val();
 
                 var mem = [];
-               // console.log(id + " " + name + " " + bio);
-               // console.log(csrftoken)
+                // console.log(id + " " + name + " " + bio);
+                // console.log(csrftoken)
 
                 var token = window.localStorage.getItem('token');
 
@@ -196,7 +196,6 @@ class create_room extends Component {
 
                 $.ajax(settings).done(function (response) {
                     console.log(response);
-
 
 
                     //  console.log(responseDisplay);
@@ -302,11 +301,9 @@ class create_room extends Component {
                     </dev>
 
                     <div id="myModel" className="modal2">
-                        <div className="modal-content2">
+                        <div id="mymodal2" class="modal-content2">
                             <p class='tit'>Add your member</p>
                             <input class='inp' placeholder=" enter your user's id"></input>
-
-
                             <div class="center">
                                 <div class='addbtn'>Add</div>
                                 <div class='skipbtn'>Skip</div>

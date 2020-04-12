@@ -187,8 +187,8 @@
   margin-top: 13%;
 }
 
-.modal2 {
-    display: none;
+#myModel {
+   display: none;
     /* Hidden by default */
     position: fixed;
     /* Stay in place */
@@ -212,7 +212,7 @@
     /* Black w/ opacity */
 }
 
-.modal-content2 {
+#mymodal2{
     /*background: linear-gradient(to bottom, #808000, #FFFFFF);*/
     background-color: #fafce1;
     text-align: center;

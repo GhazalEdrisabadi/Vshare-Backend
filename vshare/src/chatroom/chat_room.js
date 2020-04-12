@@ -29,7 +29,7 @@ class chat_room extends Component {
         
                 var id = window.localStorage.getItem('id_gp');
                 var settings = {
-                    "url": "http://127.0.0.1:8000/groups/test",
+                    "url": "http://127.0.0.1:8000/groups/"+id+'/',
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -52,7 +52,7 @@ class chat_room extends Component {
                         var hover = 'onMouseOver="this.style.color=';
                         var hoverr = hover + "'red'";
 
-                        htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + '</p>';
+                        htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
                         $(".textarea_member").append(htmlcode);
                       
                         console.log("2")
@@ -72,15 +72,35 @@ class chat_room extends Component {
         return (
             <div>
                 
-                <form className="back">                    <header className="headers">
+                <form className="back">
+                    <header class="header_s">
                         <div className="div_center">
                            
 
                             <div className="div_icon" ><a href='../homepage'><img src={Home} className="icon" /></a></div>
                             <div className="name"/>
                         </div>
-                    </header>                <div className="formback_movie">                </div>                <div className="back_coulom">                    <div className="formback_info" style={{ width: '115%', height: '410px' }}>                        <legend className="title_gp">info of group</legend>                        <div className="textarea_member" style={{ overflowY: 'scroll' }} />                        <div className="textarea_bio" />                    </div>                    <div className="formback_text" style={{ width: '115%', height: '410px', }} >                    </div>                </div>               
-                                 </form>
+                    </header>
+                <div className="formback_movie">
+
+                </div>
+                <div className="back_coulom">
+
+                    <div className="formback_info" style={{ width: '115%', height: '410px' }}>
+                        <legend className="title_gp">info of group</legend>
+                        <div className="textarea_member" style={{ overflowY: 'scroll' }} />
+                        <div className="textarea_bio" />
+                    </div>
+                    <div className="formback_text" style={{ width: '115%', height: '410px', }} >
+
+
+                    </div>
+
+
+                </div>
+               
+                 
+                </form>
             </div>
             )
     }

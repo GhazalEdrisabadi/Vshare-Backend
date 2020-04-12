@@ -37,14 +37,15 @@ const name = window.$name;
 class Homepage extends Component {
     
     componentDidMount() {
-        const { id } = this.props.match.params
+        const { id } = this.props.match.params;
         $(document).ready(function () {
             // if (localStorage.getItem('token') == null) {
             //     alert("Login please !");
             //     window.location.replace("/login/");
             // }
             $(".zare").click(function () {
-                var id = $(".input_input").val();;
+                var id = $(".input").val();
+                console.log("aaaa" + id);
            
                // console.log(id + " " + name + " " + bio);
                 //console.log(csrftoken)
@@ -143,6 +144,7 @@ class Homepage extends Component {
                     var s = "document.getElementById('myModal')";
                     var ss = s + ".style.display = 'block'";
                     var a = "window.localStorage.setItem('numbergp1','" + mygroups[counter1].id + "')";
+                  //  console.log("mygroupssss" + mygroups[counter1].id);
                     var d = "document.getElementById('myModal2')";
                     var dd = d + ".style.display = 'block'";
                     /*    var s="document.getElementById('close"+counter1+"')";
@@ -212,6 +214,7 @@ class Homepage extends Component {
 
             $('.dltyes').click(function () {
                 var gpid = window.localStorage.getItem("numbergp1");
+               // console.log("inee : "+gpid);
                 if (localresponse.created_by == window.localStorage.getItem('username')) {
                     var settings = {
                         "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
@@ -303,16 +306,15 @@ class Homepage extends Component {
                 var gpid = window.localStorage.getItem("numbergp1");
 
 
-                var idd = $('#editid').val();
+             //   var idd = $('#editid').val();
                 var title = $('#edittitle').val();
                 var des = $('#editdes').val();
                 // console.log('id : ' + idd + ' title : ' + title + ' des : ' + des);
 
                 //  console.log("//////");
-                console.log(gpid);
+                console.log("AAAAAA  " + gpid);
                 var form = new FormData();
-                if (idd != "")
-                    form.append("groupid", idd);
+
                 if (title != "")
                     form.append("title", title);
                 if (des != '')
@@ -443,41 +445,17 @@ class Homepage extends Component {
 
 
         });
-    }
 
 
 
-    componentDidMount() {
 
-        function getCSRFToken() {
 
-            var cookieValue = null;
 
-            if (document.cookie && document.cookie != '') {
 
-                var cookies = document.cookie.split(';');
 
-                for (var i = 0; i < cookies.length; i++) {
 
-                    var cookie = jQuery.trim(cookies[i]);
 
-                    if (cookie.substring(0, 10) == ('csrftoken' + '=')) {
 
-                        cookieValue = decodeURIComponent(cookie.substring(10));
-
-                        break;
-
-                    }
-
-                }
-
-            }
-
-            return cookieValue;
-
-        }
-
-        var csrftoken = getCSRFToken();
 
         // var csrftoken = Cookies.get('csrftoken');
 
@@ -490,7 +468,6 @@ class Homepage extends Component {
             //    var id = $(".input_input").val();;
 
 
-
             //    //console.log(id + " " + name + " " + bio);
 
             //    //console.log(csrftoken)
@@ -498,7 +475,6 @@ class Homepage extends Component {
             //    var token = window.localStorage.getItem('token');
 
             //    console.log(token);
-
 
 
             //    var settings = {
@@ -580,22 +556,18 @@ class Homepage extends Component {
             //    });
 
 
-
-
-
             //    //    window.location.replace("/account/menu/");
 
             //    // Window.location="/account/menu/"
 
 
-
             //});
 
-        });
+        })};
 
 
 
-    };
+
 
 
 
@@ -686,8 +658,7 @@ class Homepage extends Component {
                 <div id="myModal" class="modal">
                     <div class="modal-content">
                         <h2 class="texx">Edit your groups deatails</h2>
-                        <br></br>
-                        <input class="inputedit" id='editid' placeholder="Group ID"></input>
+
                         <hr></hr>
                         <input class="inputedit" id='edittitle' placeholder="Title"></input>
                         <hr></hr>
