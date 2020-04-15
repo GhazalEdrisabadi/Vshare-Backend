@@ -17,5 +17,3 @@ urlpatterns = [
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
-#---
-© 2020 GitHub, Inc.
