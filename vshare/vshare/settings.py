@@ -139,11 +139,11 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'vshare',
-        'USER' : 'postgres',
-        'PASSWORD' : '123qwe',
+        'USER' : 'admin',
+        'PASSWORD' : 'vshare5432',
         'HOST' : 'localhost',
         'PORT' : '5432',
-    }'
+    }
 }
 
 redis_host = os.environ.get('REDIS_HOST', 'localhost')
