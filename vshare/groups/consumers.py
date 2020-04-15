@@ -1,3 +1,5 @@
+import asyncio
+import json
 from django.conf import settings
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from rest_framework.authtoken.models import Token
@@ -9,7 +11,7 @@ import logging
 
 class VideoConsumer(AsyncJsonWebsocketConsumer):
 
-	# Help for me
+	# Help
 	# A channel is a mailbox where messages can be sent to. 
 	# Each channel has a name. Anyone who has the name of a 
 	# channel can send a message to the channel.
@@ -19,45 +21,28 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 	# to all channels in the group.
 
 	async def connect (self):
-		# self.scope["user"] = get_user(self.scope['url_route']['kwargs']['token'])
-		# token = self.scope['url_route']['kwargs']['token']
-		if self.scope["user"] == AnonymousUser():
-			await self.close()
-			print("close")
-		else:
-			print(self.scope["user"].id)
-			await self.accept()
-			print("accept")
+		# roomid = self.scope['url_rote']['kwargs']['groupid']
+		# room = get_room_or_error(roomid)
+		user = self.scope["user"]
+		print(user.username)
+		await self.accept()
 
-		self.rooms = set()
+	# async def receive_json(self, content):
 
-		# print(10000)
-		# 
-		# print(20000)
-		# # try:
-		# token = self.scope['url_route']['kwargs']['token']
-		# # token = self.scope.get('url_route', {}).get(
-		# # 	'kwargs', {}).get('token', False)
-		# print(token)
-			
-			# if not token:
-			# 	await self.close()
-			
-			# try:
-			# 	token = Token.objects.select_related('user').get(key=token)
-			# except Token.DoesNotExist:
-			# 	await self.close()
-		
-			# user = token.user
-			# self.user_group_name = 'user_{}'.format(user.id)
-			# self.rooms = set()
-			
-			
 
-		# except Exception as e:
-		# 	await self.close()
 
-	async def receive (self, data):
+
+	async def receive (self, text_data=None):
+		# Called with either text_data or bytes_data for each frame
+		# You can call:
+		await self.send(text_data="Hello world!")
+		# Or, to send a binary frame:
+		await self.send(bytes_data="Hello world!")
+		# Want to force-close the connection? Call:
+		await self.close()
+		# Or add a custom WebSocket error code!
+		await self.close(code=4123)
+
 
 		command = data.get("command", None)
 		try:
@@ -69,7 +54,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		except ClientError as e:
 			await self.send_json({"error": e.code})
 
-	async def disconnect(self):
+	async def disconnect(self, close_code):
 		for room_id in list(self.rooms):
 			try:
 				await self.leave_room(room_id)
