@@ -1,5 +1,4 @@
-
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 
 
 import './Homepage.css'
@@ -10,7 +9,7 @@ import Navbar from '../navbar/navbar'
 
 import Sidedrawer from '../SideDrawe/Sidedrawer'
 
-import { BrowserRouter, Route } from 'react-router-dom'
+import {BrowserRouter, Route} from 'react-router-dom'
 
 
 import Backdrop from '../Backdrop/Backdrop'
@@ -19,7 +18,16 @@ import Create from '../create_room/create_room'
 
 import plusss2 from './plusss2.png'
 import zare from '../zare.png'
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControl from '@material-ui/core/FormControl';
+
+import Grid from '@material-ui/core/Grid';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import AddIcon from '@material-ui/icons/Add';
 import $ from 'jquery';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import jQuery from 'jquery'
 import Leave from './leave.png'
 import Profile from './profile.png'
@@ -29,25 +37,33 @@ import {makeStyles} from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 
-
+import {UserOutlined} from '@ant-design/icons';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import Button from '@material-ui/core/Button';
+import TextField from "@material-ui/core/TextField";
 
 const name = window.$name;
 
 class Homepage extends Component {
-    
+
     componentDidMount() {
-        const { id } = this.props.match.params;
+        const {id} = this.props.match.params;
         $(document).ready(function () {
-            // if (localStorage.getItem('token') == null) {
-            //     alert("Login please !");
-            //     window.location.replace("/login/");
-            // }
+            $('.createnewgp').click(function () {
+                window.location.replace("/create/");
+            });
+
+            if (localStorage.getItem('token') == null) {
+                alert("Login please !");
+                window.location.replace("/login/");
+            }
             $(".zare").click(function () {
                 var id = $(".input").val();
                 console.log("aaaa" + id);
-           
-               // console.log(id + " " + name + " " + bio);
+
+                // console.log(id + " " + name + " " + bio);
                 //console.log(csrftoken)
                 var token = window.localStorage.getItem('token');
                 console.log(token);
@@ -59,8 +75,7 @@ class Homepage extends Component {
                     error: function (event) {
                         if (event.status == 500) {
                             alert("شما در  این گروه عضو هستید")
-                        }
-                        else
+                        } else
                             alert("این گروه وجود ندارد")
                     },
                     success: function () {
@@ -76,9 +91,9 @@ class Homepage extends Component {
                         "Content-Type": "application/json"
                     },
                     "data": JSON.stringify({
-                        "the_group": id,
-                        "the_member":"",
-                    }
+                            "the_group": id,
+                            "the_member": "",
+                        }
                     ),
                 };
                 console.log(settings.headers);
@@ -91,7 +106,6 @@ class Homepage extends Component {
             });
 
 
-
             window.localStorage.removeItem('numbergp1');
 
             if (window.localStorage.getItem('token') == null) {
@@ -100,13 +114,17 @@ class Homepage extends Component {
             }
 
             console.log("aa");
+
+
             var token = window.localStorage.getItem('token');
             var username = window.localStorage.getItem('username');
             $('.groupsShow').append('<h4> Your Groups </h4>');
-            $('.groupsShow').append("<h5> User: " + username + "</h5>");
-            $('.groupsShow').append("<hr>");
+            // $('.groupsShow').append("<h5> User: " + username + "</h5>");
 
-            $(".div_leave").click(function () {
+            // $('.groupsShow').append("</br>");
+            $('.groupsShow').append("<hr>");
+            $('.username').text(username);
+            $(".logout").click(function () {
                 window.localStorage.clear();
                 window.location.replace("/startpage/");
             });
@@ -144,7 +162,7 @@ class Homepage extends Component {
                     var s = "document.getElementById('myModal')";
                     var ss = s + ".style.display = 'block'";
                     var a = "window.localStorage.setItem('numbergp1','" + mygroups[counter1].id + "')";
-                  //  console.log("mygroupssss" + mygroups[counter1].id);
+                    //  console.log("mygroupssss" + mygroups[counter1].id);
                     var d = "document.getElementById('myModal2')";
                     var dd = d + ".style.display = 'block'";
                     /*    var s="document.getElementById('close"+counter1+"')";
@@ -164,14 +182,19 @@ class Homepage extends Component {
 
                          var hover='onMouseOver="this.style.color=';
                          var hoverr=hover+"'green'";*/
+                    htmlcode += '</br>';
+
+                    htmlcode += '<p   style="font-size: 21px" class="mygroups" id=' + '"c' + counter1 + '">' + "&nbsp" + mygroups[counter1].name + '</p>';
                     htmlcode += '<div class="admin"></div>';
-                    htmlcode += '<p class="mygroups" id=' + '"c' + counter1 + '">' + mygroups[counter1].name + '</p>';
+
                     htmlcode += '<div class="buttonsforgp">';
 
                     htmlcode += '<div  onclick="' + a + "," + dd + '" class="leave"  style={{ width:45px , height:45px}} ></div>';
                     htmlcode += '<div  onclick="' + a + "," + ss + '" class="edit"></div>';
                     htmlcode += '</div>';
                     htmlcode += '</br>';
+
+
                     //htmlcode += '<hr class="line" id=' + '"h' + counter1 + '">';
                     $('.groupsShow').append(htmlcode);
 
@@ -214,7 +237,7 @@ class Homepage extends Component {
 
             $('.dltyes').click(function () {
                 var gpid = window.localStorage.getItem("numbergp1");
-               // console.log("inee : "+gpid);
+                // console.log("inee : "+gpid);
                 if (localresponse.created_by == window.localStorage.getItem('username')) {
                     var settings = {
                         "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
@@ -306,7 +329,7 @@ class Homepage extends Component {
                 var gpid = window.localStorage.getItem("numbergp1");
 
 
-             //   var idd = $('#editid').val();
+                //   var idd = $('#editid').val();
                 var title = $('#edittitle').val();
                 var des = $('#editdes').val();
                 // console.log('id : ' + idd + ' title : ' + title + ' des : ' + des);
@@ -426,13 +449,15 @@ class Homepage extends Component {
                             var d="document.getElementById('h2"+counter1+"')";
                             var dd=d+".remove()";
                         htmlcode+=+'<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close2' + counter1 + '">&times;</span>';*/
-                        htmlcode2 += '<p class="mygroups" id=' + '"c2' + counter2 + '">' + groups[counter2].name + '</p>';
+                        htmlcode2 += '</br>';
+                        htmlcode2 += '<p  style="font-size: 21px" class="mygroups" id=' + '"c2' + counter2 + '">' + "&nbsp" + groups[counter2].name + '</p>';
                         htmlcode2 += '<div class="buttonsforgp">';
 
                         htmlcode2 += '<div onclick="' + a2 + "," + dd2 + '" class="leave" ></div>';
 
                         htmlcode2 += '</div>';
                         htmlcode2 += '</br>';
+
                         $('.groupsShow').append(htmlcode2);
                         counter2++;
                         htmlcode2 = '';
@@ -445,16 +470,6 @@ class Homepage extends Component {
 
 
         });
-
-
-
-
-
-
-
-
-
-
 
 
         // var csrftoken = Cookies.get('csrftoken');
@@ -563,24 +578,8 @@ class Homepage extends Component {
 
             //});
 
-        })};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        })
+    };
 
 
     constructor(props) {
@@ -604,8 +603,7 @@ class Homepage extends Component {
     handleChange(event) {
 
 
-        this.setState({ value: event.target.value });
-
+        this.setState({value: event.target.value});
 
 
     }
@@ -627,13 +625,12 @@ class Homepage extends Component {
     };
 
 
-
     drawertoggleclickhandler = () => {
 
         this.setState((prevState) => {
 
 
-            return { sidedraweropen: !prevState.sidedraweropen }
+            return {sidedraweropen: !prevState.sidedraweropen}
 
 
         });
@@ -657,16 +654,23 @@ class Homepage extends Component {
 
                 <div id="myModal" class="modal">
                     <div class="modal-content">
-                        <h2 class="texx">Edit your groups deatails</h2>
+                        <h3 class="texx">Edit your groups deatails</h3>
 
                         <hr></hr>
+
                         <input class="inputedit" id='edittitle' placeholder="Title"></input>
-                        <hr></hr>
+
+
                         <input class="inputedit" id='editdes' placeholder="Description"></input>
                         <br></br>
-                        <br></br>
 
-                        <button class="submitedit">Submit</button>
+                        <Button style={{
+
+                            marginTop: "20px"
+                        }} className="submitedit" variant="contained" color="secondary">
+                            Submit
+                        </Button>
+
                     </div>
 
                 </div>
@@ -704,28 +708,60 @@ class Homepage extends Component {
 
 
                 <header className="head">
-                    <div className="zare"> join</div>
-                    <input type="text"
-                           className="input"/>
+
+                    <div className='leftheader'>
+                        <div className='userprofile'>
+                            <IconButton style={{
+                                color: 'white'
+
+                            }}
+                                        className="profilepic">
+                                <AccountCircleOutlinedIcon fontSize="large"/>
+                            </IconButton>
+
+                            <p className='username'>Username</p>
+                        </div>
+
+                        <div className='searchgp'>
 
 
+                            <input placeholder='Search' className='input'/>
+                            <Button style={{
+                                marginTop: "10px"
+
+                            }} startIcon={<GroupAddIcon/>} className="zare" variant="contained" color="secondary">
+
+                                join
+                            </Button>
+
+                        </div>
+
+
+                    </div>
+                    <div className='logout'>
+                        <p className='logout_text'>Logout</p>
+                        <IconButton style={{
+                            color: 'white'
+                        }}
+                                    className="div_leave">
+                            <ExitToAppIcon fontSize="large"/>
+                        </IconButton>
+                    </div>
                 </header>
 
 
-                <div><a href="/create"><img src={plusss2} className="create"/></a></div>
                 <div className="groupsShow">
 
-                </div>
+                    <Button style={{
+                        marginRight: "10px",
+                        marginTop: "20px"
+                    }} className='createnewgp' startIcon={<AddIcon/>} variant="contained" color="secondary">
 
-                <div id="mySidenav" className="sidenav">
-
-                    <div className="profile"><img src={Profile}
-                                                  style={{width: "45px", height: "45px"}}/></div>
-
-                    <div className="div_leave"><a href="/startpage"><img src={Leave}
-                                                                     style={{width: "45px", height: "45px"}}/></a></div>
+                        Create new group
+                    </Button>
 
                 </div>
+
 
             </div>
             //<div className="div_home" ><a href="/homepage"><img src={Home} className="home" /></a></div>
@@ -734,7 +770,6 @@ class Homepage extends Component {
         )
 
     }
-
 
 
 }
