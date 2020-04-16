@@ -346,7 +346,12 @@
     float: left;
     margin-top: 20px;
 }
-
+.admintext{
+    width: fit-content;
+    text-align: center;
+    margin-left: 15%;
+    font-family: Arial;
+}
 .dltbtns {
     margin-top: 5%;
     margin-right: 38%;

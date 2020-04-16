@@ -233,6 +233,13 @@ class Homepage extends Component {
                     //  $('.deleteTEXT').text("Are you sure \n you want to leave The " + response.title + "  ? ");
                     var obj = $('.deleteTEXT').text("Are you sure  you want to leave \n The  " + response.title + "  ? ");
                     obj.html(obj.html().replace(/\n/g, '<br/>'));
+                      if (localresponse.created_by == window.localStorage.getItem('username')) {
+$('.admintext').text("You are the admin of this group , if you leave , it will be deleted");
+                      }
+                      else
+                          $('.admintext').text("");
+
+
                 });
 
 
@@ -682,7 +689,7 @@ class Homepage extends Component {
                 <div id="myModal2" className="modal2">
                     <div className="modal-content2">
                         <h3 className='deleteTEXT'>Are you sure you want to leave this group ? </h3>
-
+                        <p className='admintext'></p>
                         <div className='dltbtns'>
 
                             <Button style={{backgroundColor: "Red"}} size='large'
