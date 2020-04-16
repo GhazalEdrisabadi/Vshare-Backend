@@ -57,7 +57,7 @@ class Homepage extends Component {
 
             if (localStorage.getItem('token') == null) {
                 alert("Login please !");
-                window.location.replace("/login/");
+                window.location.replace("/startpage/");
             }
             $(".zare").click(function () {
                 var id = $(".input").val();
@@ -74,9 +74,14 @@ class Homepage extends Component {
                     "timeout": 0,
                     error: function (event) {
                         if (event.status == 500) {
-                            alert("شما در  این گروه عضو هستید")
-                        } else
-                            alert("این گروه وجود ندارد")
+                            $('#joinstatus').html('You are already a member of this group !');
+                            $('#joinstatus').toggle('slow');
+                           $('#joinstatus').delay(3000).toggle('slow');
+                        } else {
+                             $('#joinstatus').html('Group not found !');
+                            $('#joinstatus').toggle('slow');
+                           $('#joinstatus').delay(3000).toggle('slow');
+                        }
                     },
                     success: function () {
                         window.localStorage.setItem('id_gp', id);
@@ -108,10 +113,7 @@ class Homepage extends Component {
 
             window.localStorage.removeItem('numbergp1');
 
-            if (window.localStorage.getItem('token') == null) {
-                alert("Login first !");
-                window.location.replace("/startpage/");
-            }
+
 
             console.log("aa");
 
@@ -129,7 +131,7 @@ class Homepage extends Component {
                 window.location.replace("/startpage/");
             });
 
-            $(".profile").click(function () {
+            $(".userprofile").click(function () {
                 alert("im just a MVP version :)");
             });
 
@@ -183,9 +185,9 @@ class Homepage extends Component {
                          var hover='onMouseOver="this.style.color=';
                          var hoverr=hover+"'green'";*/
                     htmlcode += '</br>';
-
-                    htmlcode += '<p   style="font-size: 21px" class="mygroups" id=' + '"c' + counter1 + '">' + "&nbsp" + mygroups[counter1].name + '</p>';
                     htmlcode += '<div class="admin"></div>';
+                    htmlcode += '<p   style="font-size: 21px" class="mygroups" id=' + '"c' + counter1 + '">' + "&nbsp" + mygroups[counter1].name + '</p>';
+
 
                     htmlcode += '<div class="buttonsforgp">';
 
@@ -228,7 +230,9 @@ class Homepage extends Component {
                 $.ajax(settings).done(function (response) {
                     // console.log(response.title);
                     localresponse = response;
-                    $('.deleteTEXT').text("Are you sure you want to leave The " + response.title + "  ? ");
+                    //  $('.deleteTEXT').text("Are you sure \n you want to leave The " + response.title + "  ? ");
+                    var obj = $('.deleteTEXT').text("Are you sure  you want to leave \n The  " + response.title + "  ? ");
+                    obj.html(obj.html().replace(/\n/g, '<br/>'));
                 });
 
 
@@ -247,7 +251,7 @@ class Homepage extends Component {
                             "Authorization": "Token " + token
                         },
                         success: function () {
-                            alert("Done");
+
                             window.location.replace('/homepage/');
                         },
                         error: function () {
@@ -271,7 +275,7 @@ class Homepage extends Component {
                             "Authorization": "Token " + token
                         },
                         success: function () {
-                            alert("Done");
+
                             window.location.replace('/homepage/');
                         },
                         error: function () {
@@ -352,7 +356,7 @@ class Homepage extends Component {
                         "Authorization": "Token " + token
                     },
                     success: function () {
-                        alert("Done");
+
                         window.location.replace("/homepage/");
                     },
                     error: function (event) {
@@ -450,7 +454,7 @@ class Homepage extends Component {
                             var dd=d+".remove()";
                         htmlcode+=+'<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close2' + counter1 + '">&times;</span>';*/
                         htmlcode2 += '</br>';
-                        htmlcode2 += '<p  style="font-size: 21px" class="mygroups" id=' + '"c2' + counter2 + '">' + "&nbsp" + groups[counter2].name + '</p>';
+                        htmlcode2 += '<p  style="font-size: 21px" class="mygroups" id=' + '"c2' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].name + '</p>';
                         htmlcode2 += '<div class="buttonsforgp">';
 
                         htmlcode2 += '<div onclick="' + a2 + "," + dd2 + '" class="leave" ></div>';
@@ -665,10 +669,10 @@ class Homepage extends Component {
                         <br></br>
 
                         <Button style={{
-
+                            backgroundColor: "Red",
                             marginTop: "20px"
-                        }} className="submitedit" variant="contained" color="secondary">
-                            Submit
+                        }} size='large' className="submitedit" variant="contained" color="secondary">
+                            <p>Edit</p>
                         </Button>
 
                     </div>
@@ -677,31 +681,24 @@ class Homepage extends Component {
 
                 <div id="myModal2" className="modal2">
                     <div className="modal-content2">
-                        <p className='deleteTEXT'>Are you sure you want to leave this group ? </p>
-                        <div className='dltbtns'></div>
-                        {<IconButton style={{
-                            color: 'green',
-                            border: '1px solid green',
-                            marginleft: '20px',
-                            marginRight: "10px",
-                            marginBottom: "65px",
-                            marginTop: "-10px"
-                        }} className="dltyes">
-                            <CheckIcon/>
-                        </IconButton>}
-                        {/* <div className='dltyes'>yes</div> */}
+                        <h3 className='deleteTEXT'>Are you sure you want to leave this group ? </h3>
 
+                        <div className='dltbtns'>
 
-                        {<IconButton style={{
-                            color: 'red',
-                            border: '1px solid red',
-                            marginleft: '10px',
-                            marginRight: "20px",
-                            marginBottom: "65px",
-                            marginTop: "-10px"
-                        }} className="dltno">
-                            <CloseIcon/>
-                        </IconButton>}
+                            <Button style={{backgroundColor: "Red"}} size='large'
+                                    className="dltno" variant="contained" color="secondary">
+                                <p>No&nbsp;</p>
+                            </Button>
+
+                            <Button style={{
+                                backgroundColor: 'gray',
+                                marginRight: "4px"
+
+                            }} size='large' className="dltyes" variant="contained" color="secondary">
+                                <p>Yes</p>
+                            </Button>
+
+                        </div>
                         {/* <div className='dltno'>no</div> */}
                     </div>
                 </div>
@@ -725,15 +722,17 @@ class Homepage extends Component {
                         <div className='searchgp'>
 
 
-                            <input placeholder='Search' className='input'/>
+                            <input placeholder='Enter id of the group' className='input'/>
+
                             <Button style={{
-                                marginTop: "10px"
-
+                                marginTop: "10px",
+                                backgroundColor: "Red"
                             }} startIcon={<GroupAddIcon/>} className="zare" variant="contained" color="secondary">
-
                                 join
                             </Button>
-
+                            <div id='joinstatus' className='statusofjoin'>
+                                Group not found !
+                            </div>
                         </div>
 
 
@@ -753,6 +752,7 @@ class Homepage extends Component {
                 <div className="groupsShow">
 
                     <Button style={{
+                        backgroundColor: "Red",
                         marginRight: "10px",
                         marginTop: "20px"
                     }} className='createnewgp' startIcon={<AddIcon/>} variant="contained" color="secondary">

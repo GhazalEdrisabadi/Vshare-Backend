@@ -47,11 +47,13 @@
     float: right;
     margin-right: 10px;
 }
-.logout_text{
-     font-size: 20px;
+
+.logout_text {
+    font-size: 20px;
     float: left;
     margin-top: 14%;
 }
+
 .input {
     color: whitesmoke;
     padding: 10px;
@@ -237,7 +239,7 @@
 .modal-content {
     border-radius: 27px;
     text-align: center;
-  background-color: rgb(35, 35, 35);
+    background-color: rgb(35, 35, 35);
     color: whitesmoke;
     margin: auto;
     padding-left: 30px;
@@ -265,43 +267,32 @@
 
     background-color: rgb(0, 0, 0);
 
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.7);
 
 }
 
 
 .deleteTEXT {
-    font-size: xx-large;
-    float: left;
-    margin-bottom: 5px;
+
+    margin-left: 11%;
+    margin-top: 10%;
 }
 
 .dltbtns {
     float: right;
+
 }
 
 .dltyes {
-    border-radius: 10px;
-    padding: 2px;
-    background-color: green;
-    border: 2px solid green;
-    margin-bottom: 2px;
     float: left;
-    cursor: pointer;
 }
 
 .dltno {
-    border-radius: 10px;
-    cursor: pointer;
-    padding: 2px;
-    border: 2px solid;
-    background-color: red;
-    margin-left: 5px;
     float: right;
 }
 
 .inputedit {
-      color: whitesmoke;
+    color: whitesmoke;
     padding: 10px;
 
     background-color: rgb(215, 215, 215);
@@ -328,48 +319,46 @@
 
 
 .modal-content2 {
-    border-radius: 25px;
-    text-align: right;
-    background-color: #fefefe;
-    color: black;
+    border-radius: 27px;
+    text-align: center;
+    background-color: rgb(35, 35, 35);
+    color: whitesmoke;
     margin: auto;
-    padding: 35px;
+
     border: 1px solid #888;
-    width: 55%;
-    height: 12%;
+    width: 30%;
+    height: 30%;
+    font-family: Arial;
+
+
 }
-.texx{
+
+.texx {
 
     font-size: 30px;
     font-family: Arial;
 }
+
 .deleteTEXT {
-    font-size: xx-large;
+    font-family: Arial;
+    font-size: 30px;
+    line-height: 45px;
     float: left;
-    margin-bottom: 5px;
+    margin-top: 20px;
 }
 
 .dltbtns {
-    float: right;
-    width: fit-content;
+    margin-top: 5%;
+    margin-right: 38%;
 }
 
 .dltyes {
-    border-radius: 10px;
-    padding: 2px;
-    background-color: green;
-    margin: 5px;
-    float: right;
-    cursor: pointer;
+
 }
 
 .dltno {
-    border-radius: 10px;
-    cursor: pointer;
-    padding: 2px;
-    background-color: red;
-    margin: 5px;
-    float: right;
+
+
 }
 
 .sidenav a {
@@ -442,8 +431,23 @@
 }
 
 .userprofile {
+
+    cursor: pointer;
     margin-left: 10px;
     float: left;
+}
+
+.statusofjoin {
+    display: none;
+    position: fixed;
+    font-size: 13px;
+    margin-top: 50px;
+    margin-left: 5px;
+    border-bottom: solid thin red;
+    background-color: rgba(0, 0, 0, 0.76);
+    width: fit-content;
+    height: 25px;
+    text-align: center;
 }
 
 .username {
