@@ -17,7 +17,7 @@
     border-color: black;
 }
 
-.formback {
+/* .formback {
     background-color: rgba(255, 255, 255, 0.46);
     border-radius: 10px;
     display: flex;
@@ -30,7 +30,7 @@
     width: 28%;
 
     text-align: center;
-}
+} */
 
 
 .input1 {
@@ -129,7 +129,7 @@
     cursor: pointer;
     margin: 15px;
 }
-
+/* 
 .title {
 
     font-size: 43px;
@@ -139,7 +139,7 @@
 
 
     color: black;
-}
+} */
 
 .members {
     background-color: whitesmoke;
@@ -179,7 +179,7 @@
     border: black thin solid;
     height: 35px;
     width: 120px;
-    background-color: rgb(243, 157, 29);
+    
     border-radius: 100px;
     font-size: x-large;
     color: black;

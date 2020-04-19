@@ -7,8 +7,6 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Button from '@material-ui/core/Button';
-import Popover from '@material-ui/core/Popover';
-import Typography from '@material-ui/core/Typography';
 
 const name = window.$name;
 
@@ -139,9 +137,6 @@ class Homepage extends Component {
                     htmlcode += '<div  onclick="' + a + "," + ss + '" class="edit"></div>';
                     htmlcode += '</div>';
                     htmlcode += '</br>';
-
-
-                    //htmlcode += '<hr class="line" id=' + '"h' + counter1 + '">';
                     $('.groupsShow').append(htmlcode);
 
                 }
@@ -160,21 +155,10 @@ class Homepage extends Component {
                     "Content-Type": "application/json",
 
                 };
-                /*
-                                var settings = {
-                                    "url": "http://127.0.0.1:8000/groups/"+gpid,
-                                    "method": "GET",
-                                    "timeout": 0,
-                                    "processData": false,
-                                    "mimeType": "multipart/form-data",
-                                    "contentType": false,
-
-                                  };*/
 
                 $.ajax(settings).done(function (response) {
-                    // console.log(response.title);
+                    
                     localresponse = response;
-                    //  $('.deleteTEXT').text("Are you sure \n you want to leave The " + response.title + "  ? ");
                     var obj = $('.deleteTEXT').text("Are you sure  you want to leave \n The  " + response.title + "  ? ");
                     obj.html(obj.html().replace(/\n/g, '<br/>'));
                       if (localresponse.created_by == window.localStorage.getItem('username')) {
@@ -192,7 +176,6 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
 
             $('.dltyes').click(function () {
                 var gpid = window.localStorage.getItem("numbergp1");
-                // console.log("inee : "+gpid);
                 if (localresponse.created_by == window.localStorage.getItem('username')) {
                     var settings = {
                         "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
@@ -259,19 +242,8 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
                     "Content-Type": "application/json",
 
                 };
-                /*
-                                var settings = {
-                                    "url": "http://127.0.0.1:8000/groups/"+gpid,
-                                    "method": "GET",
-                                    "timeout": 0,
-                                    "processData": false,
-                                    "mimeType": "multipart/form-data",
-                                    "contentType": false,
-
-                                  };*/
-
+               
                 $.ajax(settings).done(function (response) {
-                    // console.log(response.title);
                     $('.texx').text("Edit " + response.title + " details");
                 });
 
@@ -282,14 +254,8 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
             $('.submitedit').click(function () {
 
                 var gpid = window.localStorage.getItem("numbergp1");
-
-
-                //   var idd = $('#editid').val();
                 var title = $('#edittitle').val();
                 var des = $('#editdes').val();
-                // console.log('id : ' + idd + ' title : ' + title + ' des : ' + des);
-
-                //  console.log("//////");
                 console.log("AAAAAA  " + gpid);
                 var form = new FormData();
 
@@ -297,7 +263,7 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
                     form.append("title", title);
                 if (des != '')
                     form.append("describtion", des);
-                // form.append("invite_only", "");
+                
 
                 var settings = {
                     "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
@@ -326,31 +292,16 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
                     console.log(response);
                 });
 
-                /*
-                                var settings = {
-                                    "url": "http://127.0.0.1:8000/groups/"+gpid+'/',
-                                    "method": "PUT",
-                                    "timeout": 0,
-                                    "processData": false,
-                                    "mimeType": "multipart/form-data",
-                                    "contentType": false,
-                                    "data": form
-                                };
-                                $.ajax(settings).done(function (response) {
-                                    console.log(response);
-                                });*/
-
-
             })
 
             window.onclick = function (event) {
                 if (event.target == document.getElementById("myModal")) {
                     $('.modal').fadeOut("slow");
-                    //     document.getElementById("myModal").style.display = "none";
+                    
                 }
                 if (event.target == document.getElementById("myModal2")) {
                     $('.modal2').fadeOut("slow");
-                    //  document.getElementById("myModal2").style.display = "none";
+                    
                 }
             }
 
@@ -378,11 +329,10 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
                     $.ajax(settings2).done(function (response2) {
                         console.log(response2);
                         groups.push({name: response2.title, id: response2.groupid});
-                        //  groups.push(response2.title);
-                        //  $('.deleteTEXT').text("Are you sure you want to leave The " + response.title + "  ? ");
+                        
                     });
 
-                    // groups.push(response[counter].the_group);
+                    
 
 
                 }
@@ -434,7 +384,7 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
 
         this.states = {
 
-            anchorPosition:null ,
+            // anchorPosition:null ,
             value: ''
             
 
@@ -486,29 +436,17 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
     
       
     
-      
-     handleClick = (event) => {
-        // this.setState({value: event.target.value});
-        this.setState({anchorPosition: event.currentTarget});
-    };
-      
-        handleClose = () => {
-          this.setState({anchorPosition: null});
-        };
-
-        
+    
     backdropclickhandeler = () => {
 
         this.setState({sidedraweropen: false})
 
     };
     
-    open = Boolean(this.state.anchorPosition);
-    id = this.open ? 'simple-popover' : undefined;
+
 
     render() {
-        this.open = Boolean(this.state.anchorPosition);
-        this.id = this.open ? 'simple-popover' : undefined;
+        
 
 
         return (
@@ -610,33 +548,57 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
                 </header>
 
 
-                <div className="groupsShow">
-                        <div>
-                            <Button  aria-describedby={this.id} variant="contained" color="primary" onClick={this.handleClick}>
-                                Open Popover
-                            </Button>
-                            <Popover 
-                                id={this.id}
-                                open={this.open}
-                                anchorPosition={this.state.anchorPosition}
-                                onClose={this.handleClose}
-                                anchorReference="anchorPosition"
-                                anchorPosition={{ top: 550, left: 950 }}
-                                anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                                }}
-                                transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                                }}
-                                >
-                                    <div>
-                                        <Typography className={Typography}>The content of the Popover.</Typography>
-                                    </div>
-                            </Popover>
+
+                
+                    <div className="formback">
+                    <h4 className="textForm">create new group</h4>
+                    <input onChange={this.change_name} type="text"
+
+                           className="input1" placeholder="name" style={{
+                        height: '40px',
+                        width: '60%',
+                    }}/>
+                    <input onChange={this.change_id} type="text"
+                           className="input2" placeholder="id" style={{
+                        height: '40px',
+                        width: '60%'
+                    }}/>
+
+
+                    <textarea onChange={this.change_bio} type="text"
+                              className="textarea" placeholder=" bio" style={{
+                        height: '60px',
+                        width: '60%',
+                        
+                        
+                    }}/>
+
+                        <Button style={{
+                        backgroundColor: "Red",
+                        marginRight: "40%",
+                        marginTop: "20%"
+                        }} className='createnewgp' variant="contained" color="secondary">
+                        next
+                        </Button>
+
+                    {/* <div id="myModel" className="modal2">
+                        <div id="mymodal2" class="modal-content2">
+                            <p class='tit'>Add your member</p>
+                            <input class='inp' placeholder=" enter your user's id"></input>
+                            <div class="center">
+                                <div class='addbtn'>Add</div>
+                                <div class='skipbtn'>Skip</div>
+                            </div>
 
                         </div>
+                    </div> */}
+
+
+                    </div>
+
+
+                    <div className="groupsShow">
+                        
                        
                     <Button style={{
                         backgroundColor: "Red",
@@ -647,11 +609,12 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
                         Create new group
                     </Button>
 
-                </div>
+                    </div>
+                
 
 
             </div>
-            //<div className="div_home" ><a href="/homepage"><img src={Home} className="home" /></a></div>
+            
 
 
         )
