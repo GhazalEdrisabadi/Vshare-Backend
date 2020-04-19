@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'groups.apps.GroupsConfig',
     'users',
+    'stream',
 	'corsheaders',
 ]
 

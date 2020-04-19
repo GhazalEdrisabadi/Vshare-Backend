@@ -1,13 +1,10 @@
-from django.db import close_old_connections
-from django.conf import settings
-from urllib.parse import parse_qs
-# from django.http import HttpResponseForbidden
 from rest_framework.authtoken.models import Token
+from django.conf import settings
 from channels.db import database_sync_to_async
-import asyncio
+from urllib.parse import parse_qs
 from channels.auth import AuthMiddlewareStack
 from django.contrib.auth.models import AnonymousUser
-from django.forms.models import model_to_dict
+import asyncio
 
 @database_sync_to_async
 def get_user(token):

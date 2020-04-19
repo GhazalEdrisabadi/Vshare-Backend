@@ -4,12 +4,13 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 from stream.middlewares import TokenAuthMiddlewareStack
 from stream.consumers import VideoConsumer
+from groups.models import *
 
 application = ProtocolTypeRouter({
 	"websocket":TokenAuthMiddlewareStack(
 		URLRouter(
 			[
-				url(r'^stream/groups/(?P<groupid>[\w.@+-]+/$', VideoConsumer),
+				url(r'^stream/groups/(?P<groupid>[\w.@+-]+)/$', VideoConsumer),
 			]
 		)
 	)
