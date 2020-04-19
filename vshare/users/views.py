@@ -14,6 +14,7 @@ from rest_framework.authtoken.models import Token
 from users.models import *
 from rest_framework import generics
 
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
@@ -47,9 +48,6 @@ class Registration(generics.ListCreateAPIView):
 	serializer_class = RegistrationSerializer
 
 class UserLogin(APIView):
-	# throttle_classes = ()
-	# parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
-	# renderer_classes = (renderers.JSONRenderer,)
 	permission_classes = [AllowAny]
 	serializer_class = UserLoginSerializer
 
@@ -57,10 +55,16 @@ class UserLogin(APIView):
 		data = request.data
 		serializer = UserLoginSerializer(data=data)
 		if serializer.is_valid(raise_exception=True):
-		#new_data = serializer.data
 			user = serializer.validated_data['user']
-			token, created = Token.objects.get_or_create(user=user)
-			return Response({'token': token.key, 'username':user.username}, status=HTTP_200_OK)
+			token = Token.objects.get(user=user) 
+			return Response(
+				{
+					'token': token.key, 
+					'username':user.username,
+					'email': user.email
+				}, status=HTTP_200_OK
+			)
+
 		return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 class UserByUsername(generics.RetrieveUpdateDestroyAPIView):

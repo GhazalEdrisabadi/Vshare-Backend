@@ -25,48 +25,28 @@ class Group(models.Model):
 	
 	#upper field should be modified. because right now, it's pointing to django's default superuser model
 	
-	class STATUS(Enum):
-		initial = (0, 'no action')
-		selected = (1, 'video selected by owner')
-		validation = (2, 'check validation')
-		played = (3, 'video played by owner')
+	# class STATUS(Enum):
+	# 	initial = (0, 'no action')
+	# 	selected = (1, 'video selected by owner')
+	# 	validation = (2, 'check validation')
+	# 	played = (3, 'video played by owner')
 
-		@classmethod
-		def get_value(cls, member):
-			return member.value[0]
+	# 	@classmethod
+	# 	def get_value(cls, member):
+	# 		return member.value[0]
 
-	status = models.CharField(
-		max_length=32,
-		choices=[x.value for x in STATUS],
-		default=STATUS.get_value(STATUS.initial)
-	)
+	# status = models.CharField(
+	# 	max_length=32,
+	# 	choices=[x.value for x in STATUS],
+	# 	default=STATUS.get_value(STATUS.initial)
+	# )
     
 	class Meta:
 		ordering = ['since']
 
 
 	def __str__(self):
-		return self.gropid
-
-	# Check a user is a member of group
-	@property
-	def is_member(self):
-		UserModel = apps.get_model('users', 'Account')
-		user = UserModel.objects.get(username=username)
-		if user in self.members:
-			return True
-		else:
-			return False
-
-	# Check a member is a creator or not
-	@property
-	def is_creator(self):
-		UserModel = apps.get_model('users', 'Account')
-		user = UserModel.objects.get(username=username)
-		if user.is_member and user == self.created_by:
-			return True
-		else:
-			return False
+		return self.groupid
 
 	#Return a unique channels.Group for each group through groupid
 	@property
