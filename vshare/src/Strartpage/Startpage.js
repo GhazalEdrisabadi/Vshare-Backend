@@ -7,7 +7,9 @@ import AwesomeSlider from 'react-awesome-slider'
 import 'react-awesome-slider/dist/styles.css';
 import ReactDOM from 'react-dom';
 class startpage extends Component {
+    
     render() {
+
         return (
 
             <div className="back_startpage">
