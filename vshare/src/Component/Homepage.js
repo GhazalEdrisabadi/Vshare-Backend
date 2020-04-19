@@ -1,48 +1,14 @@
 import React, {Component} from 'react'
-
-
 import './Homepage.css'
-
-import Fontawesome from 'react-fontawesome'
-
-import Navbar from '../navbar/navbar'
-
-import Sidedrawer from '../SideDrawe/Sidedrawer'
-
-import {BrowserRouter, Route} from 'react-router-dom'
-
-
-import Backdrop from '../Backdrop/Backdrop'
-
-import Create from '../create_room/create_room'
-
-import plusss2 from './plusss2.png'
-import zare from '../zare.png'
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-
-import Grid from '@material-ui/core/Grid';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import AddIcon from '@material-ui/icons/Add';
 import $ from 'jquery';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import jQuery from 'jquery'
-import Leave from './leave.png'
-import Profile from './profile.png'
-import Home from './home_.png'
-import Logo from './log.PNG'
-import {makeStyles} from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
-
-import {UserOutlined} from '@ant-design/icons';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Button from '@material-ui/core/Button';
-import TextField from "@material-ui/core/TextField";
+import Popover from '@material-ui/core/Popover';
+import Typography from '@material-ui/core/Typography';
 
 const name = window.$name;
 
@@ -63,8 +29,6 @@ class Homepage extends Component {
                 var id = $(".input").val();
                 console.log("aaaa" + id);
 
-                // console.log(id + " " + name + " " + bio);
-                //console.log(csrftoken)
                 var token = window.localStorage.getItem('token');
                 console.log(token);
 
@@ -121,9 +85,7 @@ class Homepage extends Component {
             var token = window.localStorage.getItem('token');
             var username = window.localStorage.getItem('username');
             $('.groupsShow').append('<h4> Your Groups </h4>');
-            // $('.groupsShow').append("<h5> User: " + username + "</h5>");
-
-            // $('.groupsShow').append("</br>");
+            
             $('.groupsShow').append("<hr>");
             $('.username').text(username);
             $(".logout").click(function () {
@@ -158,32 +120,14 @@ class Homepage extends Component {
                 var htmlcode = '';
                 for (var counter1 = 0; counter1 < mygroups.length; counter1++, htmlcode = '') {
 
-                    // var modal = 'document.getElementById("myModal")';
-                    //   var s=modal+'.style.display = "block"';
-                    //     window.localStorage.setItem('numbergp1',mygroups[counter1])
+                    
                     var s = "document.getElementById('myModal')";
                     var ss = s + ".style.display = 'block'";
                     var a = "window.localStorage.setItem('numbergp1','" + mygroups[counter1].id + "')";
                     //  console.log("mygroupssss" + mygroups[counter1].id);
                     var d = "document.getElementById('myModal2')";
                     var dd = d + ".style.display = 'block'";
-                    /*    var s="document.getElementById('close"+counter1+"')";
-                        var ss=s+".remove()";
-                        var a="document.getElementById('c"+counter1+"')";
-                        var aa=a+".remove()";
-
-                        var d="document.getElementById('h"+counter1+"')";
-                        var dd=d+".remove()";
-                        htmlcode+='<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close' + counter1 + '">&times;</span>';*/
-                    //      onMouseOver="this.style.color='red'"
-                    //  onMouseOut="this.style.color='green'" >GeeksforGeeks</a>
-
-
-                    /*     var hoverout='onMouseOut="this.style.color=';
-                         var hoverrout=hoverout+"'red'";
-
-                         var hover='onMouseOver="this.style.color=';
-                         var hoverr=hover+"'green'";*/
+                    
                     htmlcode += '</br>';
                     htmlcode += '<div class="admin"></div>';
                     htmlcode += '<p   style="font-size: 21px" class="mygroups" id=' + '"c' + counter1 + '">' + "&nbsp" + mygroups[counter1].name + '</p>';
@@ -452,14 +396,6 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
                         var a2 = "window.localStorage.setItem('numbergp1','" + groups[counter2].id + "')";
                         var d2 = "document.getElementById('myModal2')";
                         var dd2 = d2 + ".style.display = 'block'";
-                        /*    var s="document.getElementById('close2"+counter1+"')";
-                            var ss=s+".remove()";
-                            var a="document.getElementById('c2"+counter1+"')";
-                            var aa=a+".remove()";
-
-                            var d="document.getElementById('h2"+counter1+"')";
-                            var dd=d+".remove()";
-                        htmlcode+=+'<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close2' + counter1 + '">&times;</span>';*/
                         htmlcode2 += '</br>';
                         htmlcode2 += '<p  style="font-size: 21px" class="mygroups" id=' + '"c2' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].name + '</p>';
                         htmlcode2 += '<div class="buttonsforgp">';
@@ -483,111 +419,9 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
         });
 
 
-        // var csrftoken = Cookies.get('csrftoken');
-
         $(document).ready(function () {
 
             console.log(window.localStorage.getItem('token'));
-
-            //$(".zare").click(function () {
-
-            //    var id = $(".input_input").val();;
-
-
-            //    //console.log(id + " " + name + " " + bio);
-
-            //    //console.log(csrftoken)
-
-            //    var token = window.localStorage.getItem('token');
-
-            //    console.log(token);
-
-
-            //    var settings = {
-
-            //        "url": "http://127.0.0.1:8000/group/join/",
-
-            //        "method": "POST",
-
-            //        "timeout": 0,
-
-            //        error: function () {
-
-            //            console.log("noooooooo");
-
-            //        },
-
-            //        success: function () {
-
-            //            console.log("yeeeeeees");
-
-            //        },
-
-            //        "headers": {
-
-            //            'X-CSRFToken': csrftoken,
-
-            //            "Authorization": "token " + token,
-
-            //            "accept": "application/json",
-
-            //            "Access-Control-Allow-Origin": "*",
-
-            //            "Access-Control-Allow-Headers": "*",
-
-            //            "Content-Type": "application/json"
-
-            //        },
-
-            //        "data": JSON.stringify({
-
-            //            "the_group":id
-
-            //        }
-
-            //        ),
-
-            //    };
-
-            //    console.log(settings.headers);
-
-            //    console.log(settings.method);
-
-            //    $.ajax(settings).done(function (response) {
-
-            //        console.log(response);
-
-            //        console.log(response.status);
-
-            //        console.log("1");
-
-            //        //if (response.status === 404) {
-
-            //        //    console.log("no");
-
-            //        //}
-
-            //        //if (response.status===200) {
-
-            //        //    console.log("yes");
-
-            //        //}
-
-            //        //if (response.o)
-
-            //        //  console.log(responseDisplay);
-
-            //        // console.log(response.status.);
-
-            //    });
-
-
-            //    //    window.location.replace("/account/menu/");
-
-            //    // Window.location="/account/menu/"
-
-
-            //});
 
         })
     };
@@ -600,8 +434,9 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
 
         this.states = {
 
-
+            anchorPosition:null ,
             value: ''
+            
 
         }
 
@@ -648,13 +483,32 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
 
     };
 
+    
+      
+    
+      
+     handleClick = (event) => {
+        // this.setState({value: event.target.value});
+        this.setState({anchorPosition: event.currentTarget});
+    };
+      
+        handleClose = () => {
+          this.setState({anchorPosition: null});
+        };
+
+        
     backdropclickhandeler = () => {
 
         this.setState({sidedraweropen: false})
 
-    }
+    };
+    
+    open = Boolean(this.state.anchorPosition);
+    id = this.open ? 'simple-popover' : undefined;
 
     render() {
+        this.open = Boolean(this.state.anchorPosition);
+        this.id = this.open ? 'simple-popover' : undefined;
 
 
         return (
@@ -757,7 +611,33 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
 
 
                 <div className="groupsShow">
+                        <div>
+                            <Button  aria-describedby={this.id} variant="contained" color="primary" onClick={this.handleClick}>
+                                Open Popover
+                            </Button>
+                            <Popover 
+                                id={this.id}
+                                open={this.open}
+                                anchorPosition={this.state.anchorPosition}
+                                onClose={this.handleClose}
+                                anchorReference="anchorPosition"
+                                anchorPosition={{ top: 550, left: 950 }}
+                                anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                                }}
+                                transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                                }}
+                                >
+                                    <div>
+                                        <Typography className={Typography}>The content of the Popover.</Typography>
+                                    </div>
+                            </Popover>
 
+                        </div>
+                       
                     <Button style={{
                         backgroundColor: "Red",
                         marginRight: "10px",
