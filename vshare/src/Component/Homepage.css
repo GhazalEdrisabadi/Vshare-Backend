@@ -34,6 +34,10 @@
 
 }
 
+.nextbtn{
+    
+}
+
 .searchgp {
     margin-top: 5px;
     font-size: 20px;
@@ -87,7 +91,7 @@
     padding-left: 25px;
 
     padding-right: 25px;
-    width: 25%;
+    width: 23%;
     height: 650px;
     background-color: rgb(12, 12, 12);
     -webkit-box-shadow: 0px 0px 71px 5px rgba(0, 0, 0, 0.76);
@@ -96,39 +100,76 @@
     position:fixed;
     text-align: center;
     font-size: 24px;
+    display: none;
 
 }
+.formback-content{
+    
+}
+.tit{
+    font-size: 100%;
+    margin-top: 8%;
+    margin-bottom: 5%;
+}
+.inp{
+    font-size: 20px;
+    background-color: rgb(51, 51, 51);
+    margin-top: 8%;
+    border-radius: 10px;
+    text-align: left;
+     border-color: rgb(51, 51, 51);
+}
+
+
+
+
 
 .input1 {
     font-size: 20px;
-    background-color: rgba(255, 255, 255, 0.53);
-    margin-top: 15%;
+    background-color: rgb(51, 51, 51);
+    margin-top: 8%;
     border-radius: 10px;
     text-align: center;
-    margin-left: 10%;
+     border-color: rgb(51, 51, 51);
 }
 
 .input2 {
     font-size: 20px;
-    background-color: rgba(255, 255, 255, 0.53);
-    margin: 15px;
-    margin-left: 10%;
+    background-color: rgb(51, 51, 51);
+    
     
     border-radius: 10px;
     text-align: center;
+    border-color: rgb(51, 51, 51);
+    margin-top: 1%;
 }
-
+.textarea-addmember{
+    font-size: 20px;
+    background-color: rgb(51, 51, 51);
+    position: relative;
+    border: solid;
+    border-radius: 10px;
+    margin-top: 1%;
+    text-align: left;
+    border-color: rgb(51, 51, 51);
+    margin-top:10%;
+    margin-bottom:5% ;
+} 
 
 .textarea {
     font-size: 20px;
-     background-color: rgba(255, 255, 255, 0.53);
+    background-color: rgb(51, 51, 51);
     position: relative;
-    margin: 15px;
     border: solid;
-    margin-left: 10%;
     border-radius: 10px;
-
+    margin-top: 1%;
     text-align: center;
+    border-color: rgb(51, 51, 51);
+
+}
+.addmember-content{
+    display: none;
+
 
 }
 .leftheader {
@@ -242,9 +283,6 @@
     width: 100px;
 }
 
-.logo {
-    margin-right: 20px;
-}
 
 .sidenav {
     height: 100%;
@@ -421,6 +459,20 @@
 .dltno {
 
 
+}
+
+.Status-Addmember{
+
+    display: none;
+    position: fixed;
+    font-size: 13px;
+    margin-top: 300px;
+    margin-left: 50px;
+    border-bottom: solid thin red;
+    background-color: rgba(0, 0, 0, 0.76);
+    width: fit-content;
+    height: 25px;
+    text-align: center;
 }
 
 .sidenav a {

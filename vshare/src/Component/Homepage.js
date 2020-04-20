@@ -15,9 +15,158 @@ class Homepage extends Component {
     componentDidMount() {
         const {id} = this.props.match.params;
         $(document).ready(function () {
-            $('.createnewgp').click(function () {
-                window.location.replace("/create/");
+            $('.nextbtn').click(function () {
+                var id = $(".input1").val();
+                
+                var name = $(".input2").val();
+                var bio = $(".textarea").val();
+
+                var mem = [];
+                var token = window.localStorage.getItem('token');
+
+                
+
+                var settings = {
+                    "url": "http://localhost:8000/groups/",
+                    "method": "POST",
+                    "timeout": 0,
+                    error: function (event) {
+                        if (event.status == 400)
+                            alert("group with this groupid already exists");
+                    },
+                    success: function () {
+                      //  document.getElementById("myModel").style.display = 'block'
+                                    $('.formback-content').fadeOut(); 
+                                    $('.addmember-content').fadeIn();
+
+                        window.localStorage.setItem('id_group', id);
+                        
+                        alert("done");
+                    },
+                    "headers": {
+                        
+                        "accept": "application/json",
+
+                        "Authorization": "token " + token,
+
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+                    "data": JSON.stringify({
+                            "groupid": id,
+                            "title": name,
+                            "describtion": bio,
+                            "invite_only": true,
+                            "members": mem
+
+                        }
+                   ),
+
+                }
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                });
             });
+            $(".addbtn").click(function () {
+                var member = $(".inp").val();
+
+                var token = window.localStorage.getItem('token');
+                var id_gp = window.localStorage.getItem('id_group')
+                
+
+                var settings = {
+                    "url": "http://127.0.0.1:8000/user/" + member + "",
+                    "method": "GET",
+                    "timeout": 0,
+                    error: function (event) {
+                        
+                      
+                        $('#Addmember-Status').html('User not found !');
+                        $('#Addmember-Status').fadeIn();
+                    //    $('#Addmember-Status').delay(16000).toggle('slow');
+                        
+
+                    },
+                    success: function () {
+                        $('#Addmember-Status').fadeOut();
+                     
+                        var settings = {
+                            "url": "http://127.0.0.1:8000/group/add_member/",
+                            "method": "POST",
+                            error: function () {
+                                
+                                    $('#Addmember-Status').html('User is already a member of this group !');
+                                    $('#Addmember-Status').fadeIn();
+                                    
+
+                                //    $('#Addmember-Status').delay(3000).toggle('slow');
+                                 
+                            },
+                            success: function () {
+                                $('#Addmember-Status').fadeOut(); 
+                                $(".textarea-addmember").append(member+'-');
+                            },
+                            "timeout": 0,
+                            "headers": {
+                                
+                                "accept": "application/json",
+                                "Access-Control-Allow-Origin": "*",
+                                "Access-Control-Allow-Headers": "*",
+                                "Content-Type": "application/json"
+                            },
+                            "data": JSON.stringify({
+                                    "the_group": id_gp,
+                                    "the_member": member
+                                }
+                            ),
+                        };
+
+                        $.ajax(settings).done(function (response) {
+                            
+                            console.log(response);
+                        });
+                    },
+                    "headers": {
+                        
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+                   
+                };
+                
+                $.ajax(settings).done(function (response) {
+                    // 
+                    console.log(response);
+                    
+                });
+
+            });
+
+
+            $(".skipbtn").click(function () {
+                window.location.replace("/homepage");
+
+            });
+
+
+            $(".createnewgp").click(function () {
+                
+                $('.formback').fadeIn();
+
+            });
+
+
+            
+
+
+
+
+
+
+        
 
             if (localStorage.getItem('token') == null) {
                 alert("Login please !");
@@ -314,6 +463,11 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
                 },
             };
 
+
+
+
+            
+
             $.ajax(settings).done(function (response) {
                 console.log(response);
                 for (var counter = 0; counter < response.length; counter++) {
@@ -375,6 +529,10 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
 
         })
     };
+
+    
+
+
 
 
     constructor(props) {
@@ -551,36 +709,72 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
 
                 
                     <div className="formback">
+                        <div className="formback-content">
                     <h4 className="textForm">create new group</h4>
+                    <hr></hr>
                     <input onChange={this.change_name} type="text"
 
                            className="input1" placeholder="name" style={{
                         height: '40px',
-                        width: '60%',
+                        width: '65%',
                     }}/>
+
+                    <br></br>
+                    
+                    <br></br>
                     <input onChange={this.change_id} type="text"
                            className="input2" placeholder="id" style={{
                         height: '40px',
-                        width: '60%'
+                        width: '65%'
                     }}/>
-
+                    <br></br>
 
                     <textarea onChange={this.change_bio} type="text"
                               className="textarea" placeholder=" bio" style={{
                         height: '60px',
-                        width: '60%',
+                        width: '65%',
+                        marginTop:'8%'
                         
                         
                     }}/>
 
                         <Button style={{
                         backgroundColor: "Red",
-                        marginRight: "40%",
-                        marginTop: "20%"
-                        }} className='createnewgp' variant="contained" color="secondary">
+                        marginRight:"45%" ,
+                        marginTop: "30%",
+                        marginLeft:"42%"
+                        }} className='nextbtn' variant="contained" color="secondary">
                         next
                         </Button>
+                        </div>
 
+                        <div className="addmember-content">
+                        <p classname='tit' style={{fontSize:"100%" , marginBottom:"8%" , marginTop:"8%" ,}}>Add your member</p>
+                        <hr></hr>
+
+                            <input class='inp' placeholder=" enter your user's id"></input>
+                            <div className = "textarea-addmember" style={{border:"solid" , borderRadius:"10px" , borderColor:"rgb(51, 51, 51)" ,marginTop:"10%", marginBottom:"5%" , backgroundColor: "rgb(51, 51, 51) "  }}></div>
+                            <div className = "Status-Addmember" id = "Addmember-Status"></div>
+                            <div class="center">
+
+                            <Button style={{marginTop:"5%" , backgroundColor: "Red"}} size='large'
+                                    className="addbtn" variant="contained" color="secondary">
+                                <p>Add&nbsp;</p>
+                            </Button>
+
+                            <Button style={{
+                                marginTop:"5%",
+                                backgroundColor: 'gray',
+                                marginRight: "7px"
+
+                            }} size='large' className="skipbtn" variant="contained" color="secondary">
+                                <p>Skip</p>
+                            </Button>
+
+
+                               
+                            </div>
+                        </div>
                     {/* <div id="myModel" className="modal2">
                         <div id="mymodal2" class="modal-content2">
                             <p class='tit'>Add your member</p>
