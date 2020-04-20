@@ -12,8 +12,10 @@ class chat_room extends Component {
             window.location.replace("/login/");
 
         }
+        var id_gp = window.localStorage.getItem('id_gp');
+        //id_gp = "test";
         //This will open the connection*
-        var ws = new WebSocket("ws://localhost:8000/groups/stream/" + window.localStorage.getItem('token')+"/");
+        var ws = new WebSocket("ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + "");
         ws.onopen = function () {
             console.log("Ping");
         };
