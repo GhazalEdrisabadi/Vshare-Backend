@@ -84,8 +84,8 @@ class Homepage extends Component {
                         }
                     },
                     success: function () {
-                        window.localStorage.setItem('id_gp', id);
-                        window.location.replace("/group/" + id + "");
+                      //  window.localStorage.setItem('id_gp', id);
+                        window.location.replace("/homepage/");
                     },
                     "headers": {
                         //'X-CSRFToken': csrftoken,
@@ -485,7 +485,7 @@ class Homepage extends Component {
                             var dd=d+".remove()";
                         htmlcode+=+'<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close2' + counter1 + '">&times;</span>';*/
                         htmlcode2 += '</br>';
-                        htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp" + groups[counter2].name + '</p>';
+                        htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].name + '</p>';
                         htmlcode2 += '<div class="buttonsforgp">';
 
                         htmlcode2 += '<div onclick="' + a2 + "," + dd2 + '" class="leave" ></div>';
