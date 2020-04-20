@@ -87,6 +87,7 @@
 }
 
 .mygroups {
+    cursor: pointer;
     color: whitesmoke;
     font-family: Arial;
     font-size: 50px;
