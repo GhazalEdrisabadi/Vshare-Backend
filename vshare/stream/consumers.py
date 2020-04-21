@@ -23,26 +23,61 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 	async def connect (self):
 
 		user = self.scope["user"]
-		print(user)
 		roomid = self.scope['url_route']['kwargs']['groupid']
-		print(roomid)
 		room = await get_room(roomid)
 		ismember = await is_member(user,roomid)
-		print(ismember)
+		print(self.channel_name)
 
 		# Check user logged in or is in the group
-		if user.is_anonymous:
+		if user.is_anonymous or not ismember:
+			# Reject connection
 			await self.close()
 		else:
+			# Add members to stream group and accept connection
+			await self.channel_layer.group_add(roomid,self.channel_name)
 			await self.accept()
+			await self.channel_layer.group_send(room.group_id,{"status":room.status})
 
 	async def receive_json(self, content):
 
-		await self.send_json(
+		user = self.scope["user"]
+		print(roomid)
+		iscreator = await is_creator(user,roomid)
+		room = await get_room(roomid)
+
+		command = content.get("command",None)
+
+		try:
+			if command == "send stream":
+				if room.status == state0 and iscreator:
+					await self.recieve_stream(content["room"],content["hash"])
+				else:
+					await self.send_json(
+						{
+							"room":room.roomid,
+							"username":user.username,
+							"message": "you can't send video!"
+						}
+					)
+
+		except ClientError as e:
+			await self.send_json({"error": e.code})
+
+	# State0:
+	# 	Send hash by owner to backend, 
+	#  	Save hash to database,
+	# 	Change state to 1 and notify to clients
+	async def recieve_stream(self,roomid,hash):
+
+		room = await get_room(roomid)
+
+		# Change state to 1
+		await set_status(roomid,state1)
+		
+		# Notify to clients that state of group is 1
+		await self.channel_layer.group_send(
+			room.group_id,
 			{
-				"message":"hello front!",
+				"status":room.status
 			}
 		)
-
-
-	#async def disconnect(self, close_code):

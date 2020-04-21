@@ -23,8 +23,24 @@ def is_member(user,roomid):
 	# Check a user is a member of group
 	try:
 		return Membership.objects.filter(
-			the_member="user", 
-			the_group="roomid"
+			the_member=user,
+			the_group=roomid
 		).exists()
+
 	except Membership.DoesNotExist:
 		pass
+
+@database_sync_to_async
+def is_creator(user,roomid):
+	try:
+		return Group.objects.filter(
+			groupid=roomid,
+			created_by=user
+			).exists()
+	except Group.DoesNotExist:
+		pass
+
+@database_sync_to_async	
+def set_status(self,roomid,state):
+		Group.objects.filter(groupid=roomid).update(status=state)
+
