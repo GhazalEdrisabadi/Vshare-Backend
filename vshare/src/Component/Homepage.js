@@ -7,6 +7,8 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Button from '@material-ui/core/Button';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
+
 
 const name = window.$name;
 
@@ -145,6 +147,9 @@ class Homepage extends Component {
 
             });
 
+            
+
+
 
             $(".skipbtn").click(function () {
                 window.location.replace("/homepage");
@@ -158,6 +163,15 @@ class Homepage extends Component {
 
             });
 
+
+            $(".KeyboardBackspaceIcon").click(function () {
+                
+                $('.formback').fadeOut();
+            });
+
+
+
+           
 
             
 
@@ -530,6 +544,9 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
         })
     };
 
+
+    
+
     
 
 
@@ -600,6 +617,7 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
         this.setState({sidedraweropen: false})
 
     };
+    
     
 
 
@@ -710,8 +728,15 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
                 
                     <div className="formback">
                         <div className="formback-content">
-                    <h4 className="textForm">create new group</h4>
-                    <hr></hr>
+                            <div className="TTitle">
+                                <IconButton style={{color : 'white' ,marginRight :'80%' }} className="KeyboardBackspaceIcon">
+                                    <KeyboardBackspaceIcon fontSize="large" />
+                                </IconButton>
+
+                                <h4 className="textForm">create new group</h4>
+                                <hr></hr>
+
+                            </div>
                     <input onChange={this.change_name} type="text"
 
                            className="input1" placeholder="name" style={{
@@ -753,17 +778,17 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
                         <hr></hr>
 
                             <input class='inp' placeholder=" enter your user's id"></input>
-                            <div className = "textarea-addmember" style={{border:"solid" , borderRadius:"10px" , borderColor:"rgb(51, 51, 51)" ,marginTop:"10%", marginBottom:"5%" , backgroundColor: "rgb(51, 51, 51) "  }}></div>
+                            <div className = "textarea-addmember" style={{ borderRadius:"10px"  ,marginTop:"10%", marginBottom:"5%" , }}></div>
                             <div className = "Status-Addmember" id = "Addmember-Status"></div>
                             <div class="center">
 
-                            <Button style={{marginTop:"5%" , backgroundColor: "Red"}} size='large'
+                            <Button style={{marginTop:"14%" , backgroundColor: "Red"}} size='large'
                                     className="addbtn" variant="contained" color="secondary">
                                 <p>Add&nbsp;</p>
                             </Button>
 
                             <Button style={{
-                                marginTop:"5%",
+                                marginTop:"14%",
                                 backgroundColor: 'gray',
                                 marginRight: "7px"
 
