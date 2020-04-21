@@ -2,15 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d0f22248-2259-40b4-8ef3-46314e63d707" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/About/About.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/About/About.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Component/Homepage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Component/Homepage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/signup-login/signup-login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/signup-login/signup-login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/signup-login/signup-logincss.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/signup-login/signup-logincss.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Strartpage/Startpage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Strartpage/Startpage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chatroom/chat_room.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatroom/chat_room.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chatroom/chat_room.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatroom/chat_room.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/create_room/create_room.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/create_room/create_room.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/create_room/create_room.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/create_room/create_room.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vshare/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/vshare/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -27,6 +25,12 @@
         <option value="C:\Users\kamyab\Desktop\vshare_git\VShareproject\vshare\.idea" />
       </set>
     </option>
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
   </component>
   <component name="ProjectId" id="1aIyQCUHUS5WY3zkKiRUBgY4yaD" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -87,6 +91,7 @@
       <workItem from="1586513082016" duration="74000" />
       <workItem from="1586627116962" duration="3552000" />
       <workItem from="1586710104115" duration="5686000" />
+      <workItem from="1587424328524" duration="11166000" />
     </task>
     <servers />
   </component>
@@ -105,5 +110,11 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="769" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1587425976799">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="769" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1587425976799" />
   </component>
 </project>
