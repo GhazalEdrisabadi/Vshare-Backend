@@ -7,7 +7,9 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Button from '@material-ui/core/Button';
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
+import CloseIcon from '@material-ui/icons/Close';
+
+
 
 
 const name = window.$name;
@@ -160,6 +162,7 @@ class Homepage extends Component {
             $(".createnewgp").click(function () {
                 
                 $('.formback').fadeIn();
+                // $('.groupsShow').toggleClass('blur');
 
             });
 
@@ -617,6 +620,17 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
         this.setState({sidedraweropen: false})
 
     };
+    // renderEfect = () => {
+    //     if(this.state.showEffect === true){
+    //         return(
+    //             <div style={{position:"absolute", width:"100% " , height : "100%" , border:"solid red" , zIndex :100 , backgroundColor:"rgba(0, 0, 0, 0.76)" }}></div>
+    //     )
+    //     }
+
+    //     else{
+    //         return(null)
+    //     }
+    // };
     
     
 
@@ -629,7 +643,8 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
 
 
             <div class="Homepage">
-
+                {/* {this.renderEfect()} */}
+                
 
                 <div id="myModal" class="modal">
                     <div class="modal-content">
@@ -729,8 +744,8 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
                     <div className="formback">
                         <div className="formback-content">
                             <div className="TTitle">
-                                <IconButton style={{color : 'white' ,marginRight :'80%' }} className="KeyboardBackspaceIcon">
-                                    <KeyboardBackspaceIcon fontSize="large" />
+                                <IconButton style={{color : 'white' ,marginRight :'130%' ,marginTop:'4%' }} className="KeyboardBackspaceIcon">
+                                    <CloseIcon fontSize="large" />
                                 </IconButton>
 
                                 <h4 className="textForm">create new group</h4>
@@ -790,7 +805,7 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
                             <Button style={{
                                 marginTop:"14%",
                                 backgroundColor: 'gray',
-                                marginRight: "7px"
+                                marginLeft: "3%"
 
                             }} size='large' className="skipbtn" variant="contained" color="secondary">
                                 <p>Skip</p>
