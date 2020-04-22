@@ -8,22 +8,18 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-
-
     "antd": "^4.1.4",
     "bootstrap": "^4.4.1",
     "crypto-js": "^4.0.0",
     "filepond": "^4.13.4",
-
-
     "jquery": "^3.4.1",
     "jquery-filepond": "^1.0.0",
     "js-cookie": "^2.2.1",
-    "react": "^16.13.0",
+    "react": "^16.13.1",
     "react-awesome-slider": "^4.1.0",
     "react-bootstrap": "^1.0.0",
     "react-circular-progressbar": "^2.0.3",
-    "react-dom": "^16.13.0",
+    "react-dom": "^16.13.1",
     "react-file-picker": "0.0.6",
     "react-fontawesome": "^1.7.1",
     "react-player": "^1.15.3",
@@ -33,7 +29,8 @@
     "react-slick": "^0.25.2",
     "react-websocket": "^2.1.0",
     "reactjs-popup": "^1.5.0",
-    "sha1": "^1.1.1"
+    "sha1": "^1.1.1",
+    "video-react": "^0.14.1"
   },
   "scripts": {
     "start": "react-scripts start",
