@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="261f5428-644e-4ccf-b1d6-0289c4e945f1" name="Default Changelist" comment="">
+    <list default="true" id="261f5428-644e-4ccf-b1d6-0289c4e945f1" name="Default Changelist" comment="Merge branch 'features/chatroom-frontend' into features/chatroom-frontend-playVideo&#10;&#10;# Conflicts:&#10;#&#9;vshare/package-lock.json&#10;#&#9;vshare/package.json&#10;#&#9;vshare/src/chatroom/chat_room.css&#10;#&#9;vshare/src/chatroom/chat_room.js">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vshare/src/Strartpage/Startpage.css" beforeDir="false" afterPath="$PROJECT_DIR$/vshare/src/Strartpage/Startpage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vshare/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/vshare/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vshare/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/vshare/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vshare/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/vshare/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vshare/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/vshare/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vshare/src/Strartpage/Startpage.js" beforeDir="false" afterPath="$PROJECT_DIR$/vshare/src/Strartpage/Startpage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vshare/src/chatroom/chat_room.css" beforeDir="false" afterPath="$PROJECT_DIR$/vshare/src/chatroom/chat_room.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vshare/src/chatroom/chat_room.js" beforeDir="false" afterPath="$PROJECT_DIR$/vshare/src/chatroom/chat_room.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vshare/vshare/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/vshare/vshare/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,10 +22,20 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
   <component name="ProjectId" id="1aLs0lBzjqWNoYwANAZZydJnJvP" />
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -46,6 +62,7 @@
       <workItem from="1586525993373" duration="2774000" />
       <workItem from="1586601584280" duration="38000" />
       <workItem from="1586895071232" duration="2149000" />
+      <workItem from="1587521536907" duration="1259000" />
     </task>
     <servers />
   </component>

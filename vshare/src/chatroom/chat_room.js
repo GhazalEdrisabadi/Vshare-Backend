@@ -1,21 +1,20 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import './chat_room.css'
 import $ from 'jquery';
 import Websocket from 'react-websocket';
 import Home from './home.png'
 import Button from '@material-ui/core/Button';
-import * as FilePond from 'filepond';
-import {FilePicker} from 'react-file-picker'
+
+import ReactPlayer from 'react-player'
 import sha256 from 'crypto-js/sha256';
 import hmacSHA512 from 'crypto-js/hmac-sha512';
 import Base64 from 'crypto-js/enc-base64';
-import ProgressBar from "react-bootstrap/ProgressBar";
-import {Progress} from 'antd';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import ReactDOM from 'react-dom'
 
-import {CircularProgressbar} from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+
+
 import PublishIcon from '@material-ui/icons/Publish';
 import PlayCircleFilledWhiteIcon from '@material-ui/icons/PlayCircleFilledWhite';
 import HomeIcon from '@material-ui/icons/Home';
@@ -25,106 +24,146 @@ var percant = 0;
 class chat_room extends Component {
 
 
+
     componentDidMount() {
 
 
-        const {id} = this.props.match.params
-        $(document).ready(function () {
-            var localresponse;
+        var id_gp = window.localStorage.getItem('id_gp');
+      //  id_gp = "test";
+        //This will open the connection*
+        var ws = new WebSocket("ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + "");
+        ws.onopen = function () {
+            console.log("Ping");
+        };
 
-            if (window.localStorage.getItem('token') == null) {
+        
 
-                alert("Login first !");
+            const { id } = this.props.match.params
+            $(document).ready(function () {
+                var localresponse;
 
-                window.location.replace("/login/");
+                if (window.localStorage.getItem('token') == null) {
 
-            }
-            $('.homebtn').click(function () {
-                window.location.replace('/homepage/');
-            });
-            var id_gp = window.localStorage.getItem('id_gp');
-            //id_gp = "test";
-            //This will open the connection*
-            var ws = new WebSocket("ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + "");
-            ws.onopen = function () {
-                console.log("Ping");
-            };
-            setTimeout(function () {
-                if (localresponse.created_by == window.localStorage.getItem('username')) {
-                    document.getElementById('moviebtnd').style.display = 'block';
-                    document.getElementById('movietxt').style.display = 'none';
+                    alert("Login first !");
 
-                    //$('#videopickbtn').fadeIn('fast');
-                    //    $('#movietxt').fadeOut('fast');
-
-                } else {
-                    document.getElementById('moviebtnd').style.display = 'none';
-                    document.getElementById('movietxt').style.display = 'block';
-                    //   $('#videopickbtn').fadeOut('fast');
-                    // $('#movietxt').fadeIn('fast');
-                }
-            }, 100);
-
-
-            $('#videopicks').change(function () {
-                if (localresponse.created_by == window.localStorage.getItem('username')) {
-                    $('#videopickbtn').fadeOut();
-                    $('#progress').fadeIn();
-                } else {
+                    window.location.replace("/login/");
 
                 }
+                $('.homebtn').click(function () {
+                    window.location.replace('/homepage/');
+                });
+
+                //id_gp = "test";
+                //This will open the connection*
+
+                // setTimeout(function () {
+                //     if (localresponse.created_by == window.localStorage.getItem('username')) {
+                //         document.getElementById('moviebtnd').style.display = 'block';
+                //         document.getElementById('movietxt').style.display = 'none';
+                //
+                //         //$('#videopickbtn').fadeIn('fast');
+                //         //    $('#movietxt').fadeOut('fast');
+                //
+                //     } else {
+                //         document.getElementById('moviebtnd').style.display = 'none';
+                //         document.getElementById('movietxt').style.display = 'block';
+                //         //   $('#videopickbtn').fadeOut('fast');
+                //         // $('#movietxt').fadeIn('fast');
+                //     }
+                // }, 1000);
+
+
+                $('#videopicks').change(function () {
+                    if (localresponse.created_by == window.localStorage.getItem('username')) {
+                        $('#videopickbtn').fadeOut();
+                        $('#progress').fadeIn();
+                    } else {
+
+                    }
+                });
+
+
+                // if (localStorage.getItem('token') == null) {
+                //     alert("Login please !");
+                //     window.location.replace("/login/");
+                // }
+
+
+                var id = window.localStorage.getItem('id_gp');
+                var settings = {
+                    "url": "http://127.0.0.1:8000/groups/" + id + '/',
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+                        //'X-CSRFToken': csrftoken,
+                        //  "Authorization": "token " + token,
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    }
+                };
+
+                $.ajax(settings).done(function (response) {
+                    localresponse = response;
+                    console.log("111111");
+                    console.log(response);
+                    /*  for (var i = 0; i < response.members.length; i++) {
+                          var hoverout = 'onMouseOut="this.style.color=';
+                          var hoverrout = hoverout + "'white'";
+                          var htmlcode = '';
+                          var hover = 'onMouseOver="this.style.color=';
+                          var hoverr = hover + "'red'";
+    
+                          htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
+                          $(".textarea_member").append(htmlcode);
+    
+                          console.log("2")
+                          //$(".textarea_member").append(response.members[i] + "\n")
+    
+                      }*/
+                    //  $(".textarea_bio").append(response.describtion + "\n")
+                    $(".name").append(response.title);
+                });
             });
 
-            // if (localStorage.getItem('token') == null) {
-            //     alert("Login please !");
-            //     window.location.replace("/login/");
-            // }
 
-            var id = window.localStorage.getItem('id_gp');
-            var settings = {
-                "url": "http://127.0.0.1:8000/groups/" + id + '/',
-                "method": "GET",
-                "timeout": 0,
-                "headers": {
-                    //'X-CSRFToken': csrftoken,
-                    //  "Authorization": "token " + token,
-                    "accept": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Headers": "*",
-                    "Content-Type": "application/json"
-                }
-            };
-
-            $.ajax(settings).done(function (response) {
-                localresponse = response;
-                console.log("111111");
-                console.log(response);
-                /*  for (var i = 0; i < response.members.length; i++) {
-                      var hoverout = 'onMouseOut="this.style.color=';
-                      var hoverrout = hoverout + "'white'";
-                      var htmlcode = '';
-                      var hover = 'onMouseOver="this.style.color=';
-                      var hoverr = hover + "'red'";
-
-                      htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
-                      $(".textarea_member").append(htmlcode);
-
-                      console.log("2")
-                      //$(".textarea_member").append(response.members[i] + "\n")
-
-                  }*/
-                //  $(".textarea_bio").append(response.describtion + "\n")
-                $(".name").append(response.title);
-            });
-        });
+            //Log the messages that are returned from the server
 
 
-        //Log the messages that are returned from the server
-
+        }
+            
+   
+    constructor(props) {
+        super(props)
+        this.state = {
+            marhale:0,
+            file_select: null,
+            file_show_when_click: null
+        }
+        this.onChange = this.onChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
+    //handleChange(event) {
+    //    this.setState({
+    //        file_select: URL.createObjectURL(event.target.files[0])
+    //    })
+    //}
+    handleSubmit(e) {
+    
+        this.setState({
+            file_show_when_click: this.state.file_select
+        })
+        console.log("onchange")
+        document.getElementById('movie').style.display = 'block';
+    }
+  
 
 
     onChange(e) {
+                this.setState({
+            file_select: URL.createObjectURL(e.target.files[0])
+        })
         function callbackRead(reader, file, evt, callbackProgress, callbackFinal) {
             callbackProgress(evt.target.result);
             if (reader.offset + reader.size >= file.size) {
@@ -216,8 +255,14 @@ class chat_room extends Component {
                         </div>
                     </header>
                     <div className="formback_movie">
+              
+
+                        <ReactPlayer id="movie" className="video" url={this.state.file_show_when_click} playing />
+              
+        
+
                         <div id='blaybtndiv'>
-                            <Button startIcon={<PlayCircleFilledWhiteIcon/>} style={{
+                            <Button  onClick={this.handleSubmit} startIcon={<PlayCircleFilledWhiteIcon />} style={{
                                 backgroundColor: 'red',
 
                             }} size='large' id='playbtnid' variant="contained" color="secondary">
