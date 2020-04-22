@@ -68,9 +68,9 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 	#  	Save hash to database,
 	# 	Change state to 1 and notify to clients
 	async def recieve_stream(self,roomid,hash):
-
+		user = self.scope["user"]
 		room = await get_room(roomid)
-		save_hash(room,hash)
+		await save_hash(roomid,hash,user)
 		# Change state to 1
 		await set_status(roomid,state1)
 		
