@@ -162,7 +162,7 @@ class Homepage extends Component {
             $(".createnewgp").click(function () {
                 
                 $('.formback').fadeIn();
-                // $('.groupsShow').toggleClass('blur');
+                
 
             });
 
