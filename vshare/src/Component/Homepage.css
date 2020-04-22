@@ -1,5 +1,4 @@
 
-
 .Homepage {
     width: 100%;
 
@@ -9,52 +8,180 @@
     align-items: center;
     top: 0;
 
-    background-image: url(./back_first_.jpg);
+    background-color: #292929;
 
     justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
     background-repeat: no-repeat;
-    background-size:cover
+    background-size: cover
 
 }
 
 
 .zare {
+    cursor: pointer;
     text-align: center;
     float: right;
     border-radius: 20px;
     margin-right: 20px;
     margin-top: 10px;
-    background-color: rgb(0, 0, 0);
+    background-color: rgb(162, 6, 62);
     height: 30px;
-    font-size:20px;
+    font-size: 20px;
     width: 80px;
     color: white;
+
+}
+
+.nextbtn{
     
 }
 
-.input {
-    padding: 10px;
-    float: right;
-    background-color: rgba(220, 240, 239, 0.38);
-    border-radius: 10px;
-
+.searchgp {
+    margin-top: 5px;
     font-size: 20px;
+    float: right;
+    margin-left: 60px;
+}
 
-    height: 30px;
-    width: 210px;
-    margin-top: 10px;
+.logout {
+
+    cursor: pointer;
+    float: right;
     margin-right: 10px;
+}
 
+.logout_text {
+    font-size: 20px;
+    float: left;
+    margin-top: 14%;
+}
+
+.input {
+    color: whitesmoke;
+    padding: 10px;
+    float: left;
+    background-color: rgb(51, 51, 51);
+    border-radius: 10px;
+    font-size: 20px;
+    height: 35px;
+    width: 300px;
+    margin-top: 7px;
+    margin-right: 10px;
     border-top: solid;
     border-left: solid;
     border-bottom: solid;
     border-right: solid;
     border-color: black;
-
     flex-direction: row
 
+}
+.formback {
+
+    box-shadow: black;
+    /* overflow-y: scroll; */
+    border-radius: 27px;
+    margin-left: 55%;
+    margin-top: 9%;
+    color: white;
+
+    padding-top: 8px;
+
+    padding-left: 25px;
+
+    padding-right: 25px;
+    width: 23%;
+    height: 650px;
+    background-color: rgb(12, 12, 12);
+    -webkit-box-shadow: 0px 0px 71px 5px rgba(0, 0, 0, 0.76);
+    -moz-box-shadow: 0px 0px 71px 5px rgba(0, 0, 0, 0.76);
+    box-shadow: 0px 0px 71px 5px rgba(0, 0, 0, 0.76);
+    position:fixed;
+    text-align: center;
+    font-size: 24px;
+    display: none;
+
+    
+
+}
+.formback-content{
+    
+}
+.tit{
+    font-size: 100%;
+    margin-top: 8%;
+    margin-bottom: 5%;
+}
+.inp{
+    font-size: 20px;
+    background-color: rgb(51, 51, 51);
+    margin-top: 8%;
+    border-radius: 10px;
+    text-align: left;
+    border-color: rgb(51, 51, 51);
+    color: white;
+}
+
+
+
+
+
+.input1 {
+    font-size: 20px;
+    background-color: rgb(51, 51, 51);
+    margin-top: 8%;
+    border-radius: 10px;
+    text-align: center;
+     border-color: rgb(51, 51, 51);
+     color: white;
+}
+
+.textarea-addmember{
+    font-size: 20px;
+    background-color: rgb(12, 12, 12);
+    position: relative;
+    
+    border-radius: 10px;
+    margin-top: 1%;
+    margin-left: 3%;
+    text-align: left;
+    
+    
+} 
+
+
+.input2 {
+    font-size: 20px;
+    background-color: rgb(51, 51, 51);
+    border-radius: 10px;
+    text-align: center;
+    border-color: rgb(51, 51, 51);
+    margin-top: 1%;
+    color: white;
+}
+
+
+.textarea {
+    font-size: 20px;
+    background-color: rgb(51, 51, 51);
+    position: relative;
+    border: solid;
+    border-radius: 10px;
+    margin-top: 1%;
+    text-align: center;
+    border-color: rgb(51, 51, 51);
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+
+}
+.addmember-content{
+    display: none;
+
+
+}
+.leftheader {
+    float: left;
 }
 
 .create {
@@ -66,7 +193,12 @@
 }
 
 .mygroups {
-    color:whitesmoke;
+    cursor: pointer;
+    color: whitesmoke;
+    font-family: Arial;
+    font-size: 50px;
+    margin-bottom: 10px;
+
 }
 
 .leave {
@@ -78,19 +210,25 @@
     float: right;
     width: 25px;
     height: 25px;
-    
+
+}
+
+.createnewgp {
+    position: absolute;
+    float: right;
+
 }
 
 .edit {
     background-image: url(./edit.png);
-    background-repeat:no-repeat;
-    margin-left: 30px ;
+    background-repeat: no-repeat;
+    margin-left: 30px;
     margin-top: 2px;
     float: left;
     width: 25px;
     height: 25px;
     cursor: pointer;
-    
+
 }
 
 .mygroups {
@@ -116,36 +254,58 @@
     height: 25px;
 }
 
+.groupsShow h4 {
+    font-family: Arial;
+    text-align: left;
+    font-size: 20px;
+}
+
+.groupsShow h5 {
+    font-family: Arial;
+    font-size: 14px;
+    text-align: left;
+}
+
 .groupsShow {
+    box-shadow: black;
     /* overflow-y: scroll; */
     border-radius: 27px;
-    margin-left:  40%;
-    margin-top: 8%;
-    color:white;
-    text-align: center;
-    padding:25px;
-    width: 350px;
-    height: 700px;
-    background-color: rgba(185, 110, 110, 0.66);
+    margin-left: 3%;
+    margin-top: 6%;
+    color: white;
+
+    padding-top: 8px;
+
+    padding-left: 25px;
+
+    padding-right: 25px;
+    width: 30%;
+    height: 780px;
+    background-color: rgb(12, 12, 12);
+    -webkit-box-shadow: 0px 0px 71px 5px rgba(0, 0, 0, 0.76);
+    -moz-box-shadow: 0px 0px 71px 5px rgba(0, 0, 0, 0.76);
+    box-shadow: 0px 0px 71px 5px rgba(0, 0, 0, 0.76);
 
 }
 
-.logo{
-    margin-right:20px;
+.profileee {
+    width: 100px;
 }
+
+
 .sidenav {
-    height: 100%; 
-    width: 70px; 
+    height: 100%;
+    width: 70px;
     position: fixed;
-    z-index: 1; 
-    top: 5.9%; 
+    z-index: 1;
+    top: 5.9%;
     left: 0;
     justify-items: left;
     background: rgba(96, 9, 3, 0.6);
-    
-    overflow-x: hidden; 
-    padding-top: 60px; 
-    transition: 0.5s; 
+
+    overflow-x: hidden;
+    padding-top: 60px;
+    transition: 0.5s;
 }
 
 .editpage {
@@ -158,184 +318,199 @@
 
 .modal {
     display: none;
-    
+
     position: fixed;
 
     z-index: 1;
-    
+
     padding-top: 100px;
-    
+
     left: 0;
     top: 0;
     width: 100%;
-    
+
     height: 100%;
-    
+
     overflow: auto;
-    
+
     background-color: rgb(0, 0, 0);
-    
-    background-color: rgba(0, 0, 0, 0.4);
-    
+
+    background-color: rgba(0, 0, 0, 0.7);
+
 }
 
 
-
-
 .modal-content {
-    border-radius: 50px;
+    border-radius: 27px;
     text-align: center;
-    background-color: #fefefe;
-    color: black;
+    background-color: rgb(35, 35, 35);
+    color: whitesmoke;
     margin: auto;
-    padding: 20px;
+    padding-left: 30px;
+    padding-bottom: 40px;
     border: 1px solid #888;
-    width: 43%;
+    width: 30%;
 }
 
 .modal2 {
     display: none;
-    
+
     position: fixed;
-    
+
     z-index: 1;
-    
+
     padding-top: 100px;
-    
+
     left: 0;
     top: 0;
     width: 100%;
 
     height: 100%;
-    
+
     overflow: auto;
-    
+
     background-color: rgb(0, 0, 0);
-    
-    background-color: rgba(0, 0, 0, 0.4);
+
+    background-color: rgba(0, 0, 0, 0.7);
 
 }
 
 
-
-
 .deleteTEXT {
-    font-size: xx-large;
-    float: left;
-    margin-bottom: 5px;
+
+    margin-left: 11%;
+    margin-top: 10%;
 }
 
 .dltbtns {
     float: right;
+
 }
 
 .dltyes {
-    border-radius: 10px;
-    padding: 2px;
-    background-color: green;
-    border:2px solid green;
-    margin-bottom : 2px ;
     float: left;
-    cursor: pointer;
 }
 
 .dltno {
-    border-radius: 10px;
-    cursor: pointer;
-    padding: 2px;
-    border: 2px solid;
-    background-color: red;
-    margin-left: 5px;
     float: right;
 }
 
 .inputedit {
-    text-align: center;
+    color: whitesmoke;
+    padding: 10px;
+
+    background-color: rgb(215, 215, 215);
+    border-radius: 10px;
+    font-size: 20px;
+    height: 35px;
     width: 300px;
-    border: black solid thin;
-    border-radius: 25px;
+    margin-top: 7px;
+    margin-right: 10px;
+    border-top: solid;
+    border-left: solid;
+    border-bottom: solid;
+    border-right: solid;
+    border-color: black;
+    flex-direction: row;
+
+
 }
 
 .submitedit {
-    background-color:rgb(214, 29, 54);
-    border-radius:40px;
-    border: dashed black;
-    width: 162px;
-    height: 50px;
-    text-align: left ;
-    margin-top: 50px;
-    margin-left: 10%;
-    margin-right: 50px;
-    font-size: 20px;
+
+
 }
 
 
 .modal-content2 {
-    border-radius: 25px;
-    text-align: right;
-    background-color: #fefefe;
-    color: black;
+    border-radius: 27px;
+    text-align: center;
+    background-color: rgb(35, 35, 35);
+    color: whitesmoke;
     margin: auto;
-    padding: 35px;
+
     border: 1px solid #888;
-    width: 55%;
-    height: 12%;
+    width: 30%;
+    height: 30%;
+    font-family: Arial;
+
+
+}
+
+.texx {
+
+    font-size: 30px;
+    font-family: Arial;
 }
 
 .deleteTEXT {
-    font-size: xx-large;
+    font-family: Arial;
+    font-size: 30px;
+    line-height: 45px;
     float: left;
-    margin-bottom: 5px;
+    margin-top: 20px;
 }
-
-.dltbtns {
-    float: right;
+.admintext{
     width: fit-content;
+    text-align: center;
+    margin-left: 15%;
+    font-family: Arial;
+}
+.dltbtns {
+    margin-top: 5%;
+    margin-right: 38%;
 }
 
 .dltyes {
-    border-radius: 10px;
-    padding: 2px;
-    background-color: green;
-    margin: 5px;
-    float: right;
-    cursor: pointer;
+
 }
 
 .dltno {
-    border-radius: 10px;
-    cursor: pointer;
-    padding: 2px;
-    background-color: red;
-    margin: 5px;
-    float: right;
+
+
+}
+.textForm{}
+
+
+.Status-Addmember{
+
+    display: none;
+    position: fixed;
+    font-size: 13px;
+    margin-top: 1%;
+    margin-left: 5%;
+    border-bottom: solid thin red;
+    background-color: rgba(0, 0, 0, 0.76);
+    width: fit-content;
+    height: 25px;
+    text-align: left;
 }
 
-    .sidenav a {
-        padding: 8px 8px 8px 32px;
-        text-decoration: none;
-        font-size: 25px;
-        color: #818181;
-        display: block;
-        transition: 0.3s;
-    }
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
 
-        .sidenav a:hover {
-            color: #f1f1f1;
-        }
+.sidenav a:hover {
+    color: #f1f1f1;
+}
 
-    .sidenav .closebtn {
-        position: absolute;
-        top: 0;
-        right: 25px;
-        font-size: 36px;
-        margin-left: 50px;
-    }
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
 
 
 #main {
     transition: margin-left .5s;
-  
+
 }
 
 
@@ -343,43 +518,70 @@
     .sidenav {
         padding-top: 15px;
     }
-        .sidenav a {
-            font-size: 18px;
-        }
+
+    .sidenav a {
+        font-size: 18px;
+    }
 }
 
-.div_leave {
 
-    top:0;
-    left:0;
-    margin-top:1100%;
-   margin-left:-20px
-    
-} 
 .home {
     height: 50px;
     width: 50px;
 
 }
+
 .div_home {
     top: 0;
     left: 0;
     margin-left: -20px;
-    margin-top:-20px;
+    margin-top: -20px;
 }
-.profile{
+
+.profile {
     cursor: pointer;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     margin-top: -50px;
-  margin-left: 10px;
+    margin-left: 10px;
 }
+
 .head {
     position: fixed;
 
     width: 100%;
-    background: rgba(96, 9, 3, 0.6);
+    background: rgb(0, 0, 0);
 
-    height: 56px;
+    height: 63px;
+}
+
+.userprofile {
+
+    cursor: pointer;
+    margin-left: 10px;
+    float: left;
+}
+
+.statusofjoin {
+    display: none;
+    position: fixed;
+    font-size: 13px;
+    margin-top: 50px;
+    margin-left: 5px;
+    border-bottom: solid thin red;
+    background-color: rgba(0, 0, 0, 0.76);
+    width: fit-content;
+    height: 25px;
+    text-align: center;
+}
+
+.username {
+    margin-top: 20px;
+    font-size: 25px;
+    float: right;
+}
+
+.profilepic {
+    float: left;
 }
 
