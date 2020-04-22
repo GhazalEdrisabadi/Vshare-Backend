@@ -1,48 +1,16 @@
 import React, {Component} from 'react'
-
-
 import './Homepage.css'
-
-import Fontawesome from 'react-fontawesome'
-
-import Navbar from '../navbar/navbar'
-
-import Sidedrawer from '../SideDrawe/Sidedrawer'
-
-import {BrowserRouter, Route} from 'react-router-dom'
-
-
-import Backdrop from '../Backdrop/Backdrop'
-
-import Create from '../create_room/create_room'
-
-import plusss2 from './plusss2.png'
-import zare from '../zare.png'
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-
-import Grid from '@material-ui/core/Grid';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import AddIcon from '@material-ui/icons/Add';
 import $ from 'jquery';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import jQuery from 'jquery'
-import Leave from './leave.png'
-import Profile from './profile.png'
-import Home from './home_.png'
-import Logo from './log.PNG'
-import {makeStyles} from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
-
-import {UserOutlined} from '@ant-design/icons';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Button from '@material-ui/core/Button';
-import TextField from "@material-ui/core/TextField";
+import CloseIcon from '@material-ui/icons/Close';
+
+
+
 
 const name = window.$name;
 
@@ -51,9 +19,171 @@ class Homepage extends Component {
     componentDidMount() {
         const {id} = this.props.match.params;
         $(document).ready(function () {
-            $('.createnewgp').click(function () {
-                window.location.replace("/create/");
+            $('.nextbtn').click(function () {
+                var id = $(".input1").val();
+                
+                var name = $(".input2").val();
+                var bio = $(".textarea").val();
+
+                var mem = [];
+                var token = window.localStorage.getItem('token');
+
+                
+
+                var settings = {
+                    "url": "http://localhost:8000/groups/",
+                    "method": "POST",
+                    "timeout": 0,
+                    error: function (event) {
+                        if (event.status == 400)
+                            alert("group with this groupid already exists");
+                    },
+                    success: function () {
+                      //  document.getElementById("myModel").style.display = 'block'
+                                    $('.formback-content').fadeOut(); 
+                                    $('.addmember-content').fadeIn();
+
+                        window.localStorage.setItem('id_group', id);
+                        
+                        alert("done");
+                    },
+                    "headers": {
+                        
+                        "accept": "application/json",
+
+                        "Authorization": "token " + token,
+
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+                    "data": JSON.stringify({
+                            "groupid": id,
+                            "title": name,
+                            "describtion": bio,
+                            "invite_only": true,
+                            "members": mem
+
+                        }
+                   ),
+
+                }
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                });
             });
+            $(".addbtn").click(function () {
+                var member = $(".inp").val();
+
+                var token = window.localStorage.getItem('token');
+                var id_gp = window.localStorage.getItem('id_group')
+                
+
+                var settings = {
+                    "url": "http://127.0.0.1:8000/user/" + member + "",
+                    "method": "GET",
+                    "timeout": 0,
+                    error: function (event) {
+                        
+                      
+                        $('#Addmember-Status').html('User not found !');
+                        $('#Addmember-Status').fadeIn();
+                    //    $('#Addmember-Status').delay(16000).toggle('slow');
+                        
+
+                    },
+                    success: function () {
+                        $('#Addmember-Status').fadeOut();
+                     
+                        var settings = {
+                            "url": "http://127.0.0.1:8000/group/add_member/",
+                            "method": "POST",
+                            error: function () {
+                                
+                                    $('#Addmember-Status').html('User is already a member of this group !');
+                                    $('#Addmember-Status').fadeIn();
+                                    
+
+                                //    $('#Addmember-Status').delay(3000).toggle('slow');
+                                 
+                            },
+                            success: function () {
+                                $('#Addmember-Status').fadeOut(); 
+                                $(".textarea-addmember").append(member+'-');
+                            },
+                            "timeout": 0,
+                            "headers": {
+                                
+                                "accept": "application/json",
+                                "Access-Control-Allow-Origin": "*",
+                                "Access-Control-Allow-Headers": "*",
+                                "Content-Type": "application/json"
+                            },
+                            "data": JSON.stringify({
+                                    "the_group": id_gp,
+                                    "the_member": member
+                                }
+                            ),
+                        };
+
+                        $.ajax(settings).done(function (response) {
+                            
+                            console.log(response);
+                        });
+                    },
+                    "headers": {
+                        
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+                   
+                };
+                
+                $.ajax(settings).done(function (response) {
+                    // 
+                    console.log(response);
+                    
+                });
+
+            });
+
+            
+
+
+
+            $(".skipbtn").click(function () {
+                window.location.replace("/homepage");
+
+            });
+
+
+            $(".createnewgp").click(function () {
+                
+                $('.formback').fadeIn();
+                
+
+            });
+
+
+            $(".KeyboardBackspaceIcon").click(function () {
+                
+                $('.formback').fadeOut();
+            });
+
+
+
+           
+
+            
+
+
+
+
+
+
+        
 
             if (localStorage.getItem('token') == null) {
                 alert("Login please !");
@@ -63,8 +193,6 @@ class Homepage extends Component {
                 var id = $(".input").val();
                 console.log("aaaa" + id);
 
-                // console.log(id + " " + name + " " + bio);
-                //console.log(csrftoken)
                 var token = window.localStorage.getItem('token');
                 console.log(token);
 
@@ -120,9 +248,7 @@ class Homepage extends Component {
             var token = window.localStorage.getItem('token');
             var username = window.localStorage.getItem('username');
             $('.groupsShow').append('<h4> Your Groups </h4>');
-            // $('.groupsShow').append("<h5> User: " + username + "</h5>");
-
-            // $('.groupsShow').append("</br>");
+            
             $('.groupsShow').append("<hr>");
             $('.username').text(username);
             $(".logout").click(function () {
@@ -157,15 +283,13 @@ class Homepage extends Component {
                 var htmlcode = '';
                 for (var counter1 = 0; counter1 < mygroups.length; counter1++, htmlcode = '') {
 
-                    // var modal = 'document.getElementById("myModal")';
-                    //   var s=modal+'.style.display = "block"';
-                    //     window.localStorage.setItem('id_gp',mygroups[counter1])
                     var s = "document.getElementById('myModal')";
                     var ss = s + ".style.display = 'block'";
                     var a = "window.localStorage.setItem('id_gp','" + mygroups[counter1].id + "')"; //id of the group
                     //  console.log("mygroupssss" + mygroups[counter1].id);
                     var d = "document.getElementById('myModal2')";
                     var dd = d + ".style.display = 'block'";
+
 
 
                     //   var l = "window.localStorage.setItem('id_gp','" + mygroups[counter1].id + "')";
@@ -209,9 +333,6 @@ class Homepage extends Component {
                     htmlcode += '<div  onclick="' + a + "," + ss + '" class="edit"></div>';
                     htmlcode += '</div>';
                     htmlcode += '</br>';
-
-
-                    //htmlcode += '<hr class="line" id=' + '"h' + counter1 + '">';
                     $('.groupsShow').append(htmlcode);
 
                 }
@@ -230,21 +351,10 @@ class Homepage extends Component {
                     "Content-Type": "application/json",
 
                 };
-                /*
-                                var settings = {
-                                    "url": "http://127.0.0.1:8000/groups/"+gpid,
-                                    "method": "GET",
-                                    "timeout": 0,
-                                    "processData": false,
-                                    "mimeType": "multipart/form-data",
-                                    "contentType": false,
-
-                                  };*/
 
                 $.ajax(settings).done(function (response) {
-                    // console.log(response.title);
+                    
                     localresponse = response;
-                    //  $('.deleteTEXT').text("Are you sure \n you want to leave The " + response.title + "  ? ");
                     var obj = $('.deleteTEXT').text("Are you sure  you want to leave \n The  " + response.title + "  ? ");
                     obj.html(obj.html().replace(/\n/g, '<br/>'));
                     if (localresponse.created_by == window.localStorage.getItem('username')) {
@@ -260,8 +370,9 @@ class Homepage extends Component {
 
 
             $('.dltyes').click(function () {
+
                 var gpid = window.localStorage.getItem("id_gp");
-                // console.log("inee : "+gpid);
+                
                 if (localresponse.created_by == window.localStorage.getItem('username')) {
                     var settings = {
                         "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
@@ -328,19 +439,8 @@ class Homepage extends Component {
                     "Content-Type": "application/json",
 
                 };
-                /*
-                                var settings = {
-                                    "url": "http://127.0.0.1:8000/groups/"+gpid,
-                                    "method": "GET",
-                                    "timeout": 0,
-                                    "processData": false,
-                                    "mimeType": "multipart/form-data",
-                                    "contentType": false,
-
-                                  };*/
-
+               
                 $.ajax(settings).done(function (response) {
-                    // console.log(response.title);
                     $('.texx').text("Edit " + response.title + " details");
                 });
 
@@ -353,12 +453,9 @@ class Homepage extends Component {
                 var gpid = window.localStorage.getItem("id_gp");
 
 
-                //   var idd = $('#editid').val();
+            
                 var title = $('#edittitle').val();
                 var des = $('#editdes').val();
-                // console.log('id : ' + idd + ' title : ' + title + ' des : ' + des);
-
-                //  console.log("//////");
                 console.log("AAAAAA  " + gpid);
                 var form = new FormData();
 
@@ -366,7 +463,7 @@ class Homepage extends Component {
                     form.append("title", title);
                 if (des != '')
                     form.append("describtion", des);
-                // form.append("invite_only", "");
+                
 
                 var settings = {
                     "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
@@ -395,31 +492,16 @@ class Homepage extends Component {
                     console.log(response);
                 });
 
-                /*
-                                var settings = {
-                                    "url": "http://127.0.0.1:8000/groups/"+gpid+'/',
-                                    "method": "PUT",
-                                    "timeout": 0,
-                                    "processData": false,
-                                    "mimeType": "multipart/form-data",
-                                    "contentType": false,
-                                    "data": form
-                                };
-                                $.ajax(settings).done(function (response) {
-                                    console.log(response);
-                                });*/
-
-
             })
 
             window.onclick = function (event) {
                 if (event.target == document.getElementById("myModal")) {
                     $('.modal').fadeOut("slow");
-                    //     document.getElementById("myModal").style.display = "none";
+                    
                 }
                 if (event.target == document.getElementById("myModal2")) {
                     $('.modal2').fadeOut("slow");
-                    //  document.getElementById("myModal2").style.display = "none";
+                    
                 }
             }
 
@@ -431,6 +513,11 @@ class Homepage extends Component {
                     "Authorization": "Token " + token
                 },
             };
+
+
+
+
+            
 
             $.ajax(settings).done(function (response) {
                 console.log(response);
@@ -447,11 +534,10 @@ class Homepage extends Component {
                     $.ajax(settings2).done(function (response2) {
                         console.log(response2);
                         groups.push({name: response2.title, id: response2.groupid});
-                        //  groups.push(response2.title);
-                        //  $('.deleteTEXT').text("Are you sure you want to leave The " + response.title + "  ? ");
+                        
                     });
 
-                    // groups.push(response[counter].the_group);
+                    
 
 
                 }
@@ -465,6 +551,7 @@ class Homepage extends Component {
                         var a2 = "window.localStorage.setItem('id_gp','" + groups[counter2].id + "')";
                         var d2 = "document.getElementById('myModal2')";
                         var dd2 = d2 + ".style.display = 'block'";
+
 
                         var r = "window.location.replace('/group/" + groups[counter2].id + "')";
                         //window.location.replace("/group/" + id + "");
@@ -484,6 +571,7 @@ class Homepage extends Component {
                             var d="document.getElementById('h2"+counter1+"')";
                             var dd=d+".remove()";
                         htmlcode+=+'<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close2' + counter1 + '">&times;</span>';*/
+
                         htmlcode2 += '</br>';
                         htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].name + '</p>';
                         htmlcode2 += '<div class="buttonsforgp">';
@@ -507,114 +595,19 @@ class Homepage extends Component {
         });
 
 
-        // var csrftoken = Cookies.get('csrftoken');
-
         $(document).ready(function () {
 
             console.log(window.localStorage.getItem('token'));
 
-            //$(".zare").click(function () {
-
-            //    var id = $(".input_input").val();;
-
-
-            //    //console.log(id + " " + name + " " + bio);
-
-            //    //console.log(csrftoken)
-
-            //    var token = window.localStorage.getItem('token');
-
-            //    console.log(token);
-
-
-            //    var settings = {
-
-            //        "url": "http://127.0.0.1:8000/group/join/",
-
-            //        "method": "POST",
-
-            //        "timeout": 0,
-
-            //        error: function () {
-
-            //            console.log("noooooooo");
-
-            //        },
-
-            //        success: function () {
-
-            //            console.log("yeeeeeees");
-
-            //        },
-
-            //        "headers": {
-
-            //            'X-CSRFToken': csrftoken,
-
-            //            "Authorization": "token " + token,
-
-            //            "accept": "application/json",
-
-            //            "Access-Control-Allow-Origin": "*",
-
-            //            "Access-Control-Allow-Headers": "*",
-
-            //            "Content-Type": "application/json"
-
-            //        },
-
-            //        "data": JSON.stringify({
-
-            //            "the_group":id
-
-            //        }
-
-            //        ),
-
-            //    };
-
-            //    console.log(settings.headers);
-
-            //    console.log(settings.method);
-
-            //    $.ajax(settings).done(function (response) {
-
-            //        console.log(response);
-
-            //        console.log(response.status);
-
-            //        console.log("1");
-
-            //        //if (response.status === 404) {
-
-            //        //    console.log("no");
-
-            //        //}
-
-            //        //if (response.status===200) {
-
-            //        //    console.log("yes");
-
-            //        //}
-
-            //        //if (response.o)
-
-            //        //  console.log(responseDisplay);
-
-            //        // console.log(response.status.);
-
-            //    });
-
-
-            //    //    window.location.replace("/account/menu/");
-
-            //    // Window.location="/account/menu/"
-
-
-            //});
-
         })
     };
+
+
+    
+
+    
+
+
 
 
     constructor(props) {
@@ -624,8 +617,9 @@ class Homepage extends Component {
 
         this.states = {
 
-
+            // anchorPosition:null ,
             value: ''
+            
 
         }
 
@@ -672,20 +666,40 @@ class Homepage extends Component {
 
     };
 
+    
+      
+    
+    
     backdropclickhandeler = () => {
 
         this.setState({sidedraweropen: false})
 
-    }
+    };
+    // renderEfect = () => {
+    //     if(this.state.showEffect === true){
+    //         return(
+    //             <div style={{position:"absolute", width:"100% " , height : "100%" , border:"solid red" , zIndex :100 , backgroundColor:"rgba(0, 0, 0, 0.76)" }}></div>
+    //     )
+    //     }
+
+    //     else{
+    //         return(null)
+    //     }
+    // };
+    
+    
+
 
     render() {
+        
 
 
         return (
 
 
             <div class="Homepage">
-
+                {/* {this.renderEfect()} */}
+                
 
                 <div id="myModal" class="modal">
                     <div class="modal-content">
@@ -780,8 +794,101 @@ class Homepage extends Component {
                 </header>
 
 
-                <div className="groupsShow">
 
+                
+                    <div className="formback">
+                        <div className="formback-content">
+                            <div className="TTitle">
+                                <IconButton style={{color : 'white' ,marginRight :'130%' ,marginTop:'4%' }} className="KeyboardBackspaceIcon">
+                                    <CloseIcon fontSize="large" />
+                                </IconButton>
+
+                                <h4 className="textForm">create new group</h4>
+                                <hr></hr>
+
+                            </div>
+                    <input onChange={this.change_name} type="text"
+
+                           className="input1" placeholder="name" style={{
+                        height: '40px',
+                        width: '65%',
+                    }}/>
+
+                    <br></br>
+                    
+                    <br></br>
+                    <input onChange={this.change_id} type="text"
+                           className="input2" placeholder="id" style={{
+                        height: '40px',
+                        width: '65%'
+                    }}/>
+                    <br></br>
+
+                    <textarea onChange={this.change_bio} type="text"
+                              className="textarea" placeholder=" bio" style={{
+                        height: '60px',
+                        width: '65%',
+                        marginTop:'8%'
+                        
+                        
+                    }}/>
+
+                        <Button style={{
+                        backgroundColor: "Red",
+                        marginRight:"45%" ,
+                        marginTop: "30%",
+                        marginLeft:"42%"
+                        }} className='nextbtn' variant="contained" color="secondary">
+                        next
+                        </Button>
+                        </div>
+
+                        <div className="addmember-content">
+                        <p classname='tit' style={{fontSize:"100%" , marginBottom:"8%" , marginTop:"8%" ,}}>Add your member</p>
+                        <hr></hr>
+
+                            <input class='inp' placeholder=" enter your user's id"></input>
+                            <div className = "textarea-addmember" style={{ borderRadius:"10px"  ,marginTop:"10%", marginBottom:"5%" , }}></div>
+                            <div className = "Status-Addmember" id = "Addmember-Status"></div>
+                            <div class="center">
+
+                            <Button style={{marginTop:"14%" , backgroundColor: "Red"}} size='large'
+                                    className="addbtn" variant="contained" color="secondary">
+                                <p>Add&nbsp;</p>
+                            </Button>
+
+                            <Button style={{
+                                marginTop:"14%",
+                                backgroundColor: 'gray',
+                                marginLeft: "3%"
+
+                            }} size='large' className="skipbtn" variant="contained" color="secondary">
+                                <p>Skip</p>
+                            </Button>
+
+
+                               
+                            </div>
+                        </div>
+                    {/* <div id="myModel" className="modal2">
+                        <div id="mymodal2" class="modal-content2">
+                            <p class='tit'>Add your member</p>
+                            <input class='inp' placeholder=" enter your user's id"></input>
+                            <div class="center">
+                                <div class='addbtn'>Add</div>
+                                <div class='skipbtn'>Skip</div>
+                            </div>
+
+                        </div>
+                    </div> */}
+
+
+                    </div>
+
+
+                    <div className="groupsShow">
+                        
+                       
                     <Button style={{
                         backgroundColor: "Red",
                         marginRight: "10px",
@@ -791,11 +898,12 @@ class Homepage extends Component {
                         Create new group
                     </Button>
 
-                </div>
+                    </div>
+                
 
 
             </div>
-            //<div className="div_home" ><a href="/homepage"><img src={Home} className="home" /></a></div>
+            
 
 
         )
