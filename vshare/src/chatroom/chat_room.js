@@ -28,32 +28,51 @@ class chat_room extends Component {
     componentDidMount() {
 
 
-        if (window.localStorage.getItem('token') == null) {
-
-            alert("Login first !");
-
-            window.location.replace("/login/");
-
-        }
-        $('.homebtn').click(function () {
-window.location.replace('/homepage/');
-        });
-        var id_gp = window.localStorage.getItem('id_gp');
-        //id_gp = "test";
-        //This will open the connection*
-        var ws = new WebSocket("ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + "");
-        ws.onopen = function () {
-            console.log("Ping");
-        };
-
-
         const {id} = this.props.match.params
         $(document).ready(function () {
+            var localresponse;
+
+            if (window.localStorage.getItem('token') == null) {
+
+                alert("Login first !");
+
+                window.location.replace("/login/");
+
+            }
+            $('.homebtn').click(function () {
+                window.location.replace('/homepage/');
+            });
+            var id_gp = window.localStorage.getItem('id_gp');
+            //id_gp = "test";
+            //This will open the connection*
+            var ws = new WebSocket("ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + "");
+            ws.onopen = function () {
+                console.log("Ping");
+            };
+            setTimeout(function () {
+                if (localresponse.created_by == window.localStorage.getItem('username')) {
+                    document.getElementById('moviebtnd').style.display = 'block';
+                    document.getElementById('movietxt').style.display = 'none';
+
+                    //$('#videopickbtn').fadeIn('fast');
+                    //    $('#movietxt').fadeOut('fast');
+
+                } else {
+                    document.getElementById('moviebtnd').style.display = 'none';
+                    document.getElementById('movietxt').style.display = 'block';
+                    //   $('#videopickbtn').fadeOut('fast');
+                    // $('#movietxt').fadeIn('fast');
+                }
+            }, 100);
 
 
             $('#videopicks').change(function () {
-                $('#videopickbtn').fadeOut();
-                $('#progress').fadeIn();
+                if (localresponse.created_by == window.localStorage.getItem('username')) {
+                    $('#videopickbtn').fadeOut();
+                    $('#progress').fadeIn();
+                } else {
+
+                }
             });
 
             // if (localStorage.getItem('token') == null) {
@@ -77,24 +96,24 @@ window.location.replace('/homepage/');
             };
 
             $.ajax(settings).done(function (response) {
-
+                localresponse = response;
                 console.log("111111");
                 console.log(response);
-                for (var i = 0; i < response.members.length; i++) {
-                    var hoverout = 'onMouseOut="this.style.color=';
-                    var hoverrout = hoverout + "'white'";
-                    var htmlcode = '';
-                    var hover = 'onMouseOver="this.style.color=';
-                    var hoverr = hover + "'red'";
+                /*  for (var i = 0; i < response.members.length; i++) {
+                      var hoverout = 'onMouseOut="this.style.color=';
+                      var hoverrout = hoverout + "'white'";
+                      var htmlcode = '';
+                      var hover = 'onMouseOver="this.style.color=';
+                      var hoverr = hover + "'red'";
 
-                    htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
-                    $(".textarea_member").append(htmlcode);
+                      htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
+                      $(".textarea_member").append(htmlcode);
 
-                    console.log("2")
-                    //$(".textarea_member").append(response.members[i] + "\n")
+                      console.log("2")
+                      //$(".textarea_member").append(response.members[i] + "\n")
 
-                }
-                $(".textarea_bio").append(response.describtion + "\n")
+                  }*/
+                //  $(".textarea_bio").append(response.describtion + "\n")
                 $(".name").append(response.title);
             });
         });
@@ -186,11 +205,12 @@ window.location.replace('/homepage/');
                         <div className="div_center">
 
                             <HomeIcon className='homebtn' style={{
-                                cursor:'pointer',
-                                fontSize:'50px',
-                                marginTop:'15px',
-                                marginLeft:'10px'
+                                cursor: 'pointer',
+                                fontSize: '50px',
+                                marginTop: '15px',
+                                marginLeft: '10px'
                             }}/>
+
 
                             <div className="name"/>
                         </div>
@@ -204,12 +224,13 @@ window.location.replace('/homepage/');
                                 <p>Play</p>
                             </Button>
                         </div>
-
-                        <div className='moviebtns'>
+                        <p id='movietxt'>Wait for admin to select the movie</p>
+                        <div id='moviebtnd' className='moviebtns'>
 
                             <div className="upload-btn-wrapper">
                                 <Button startIcon={<PublishIcon/>} style={{
                                     backgroundColor: 'rgba(255,0,0)',
+
                                 }} size='large' id='videopickbtn' className="btn" variant="contained" color="secondary">
                                     <p>Select a video</p>
                                 </Button>
@@ -231,8 +252,7 @@ window.location.replace('/homepage/');
 
                         <div className="formback_info" style={{width: '350px', height: '395px'}}>
 
-                            <div className="textarea_member" style={{overflowY: 'scroll'}}/>
-                            <div className="textarea_bio"/>
+
                         </div>
                         <div className="formback_text" style={{width: '350px', height: '395px',}}>
 
