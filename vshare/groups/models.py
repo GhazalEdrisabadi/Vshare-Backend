@@ -24,7 +24,7 @@ class Group(models.Model):
 	invite_only = models.BooleanField(default=False)
 	created_by = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name='owner')
 	members = models.ManyToManyField(settings.AUTH_USER_MODEL,blank=True,related_name='joined_groups',through='Membership')
-	video_hash = models.CharField(max_length=100, blank=Truem ,default='No hash yet!')	
+	video_hash = models.CharField(max_length=100, blank=True ,default='No hash yet!')	
 
 	state0 = 0
 	state1 = 1

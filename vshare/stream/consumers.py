@@ -35,27 +35,27 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			# Add members to stream group and accept connection
 			await self.channel_layer.group_add(roomid,self.channel_name)
 			await self.accept()
-			await self.channel_layer.group_send(room.group_id,{"status":room.status})
 
 			# Send welcome message to user
 			await self.send_json(
 				{
-					"room":room.groupid,
+					"room":roomid,
 					"username":user.username,
 					"message":"you successfully connected.",
 				}
 			)
-			await asyncio.sleep(60)
 
 			# Send current state to all clients
 			await self.channel_layer.group_send(
-				room.groupid,
+				roomid,
 				{
-					"state":room.group_status
+					"state":room.status
 				}
 			)
 
 	async def receive_json(self, content):
+
+		print("Enterrrrrrrrrrrrrrrrr")
 
 		user = self.scope["user"]
 		iscreator = await is_creator(user,roomid)
@@ -64,13 +64,14 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		command = content.get("command",None)
 
 		try:
-			if command == "send stream":
-				if room.status == state0 and iscreator:
-					await self.recieve_stream(content["room"],content["hash"])
+			print("Enter to try")
+			if command == "send":
+				if room.status == 0 and iscreator:
+					await self.recieve_stream(content["room"],content["hashv"])
 				else:
 					await self.send_json(
 						{
-							"room":room.roomid,
+							"room":room.groupid,
 							"username":user.username,
 							"message": "you can't send video!"
 						}
@@ -83,17 +84,23 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 	# 	Send hash by owner to backend, 
 	#  	Save hash to database,
 	# 	Change state to 1 and notify to clients
-	async def recieve_stream(self,roomid,hash):
+	async def recieve_stream(self,roomid,hashv):
 
 		room = await get_room(roomid)
-		save_hash(room,hash)
+		await save_hash(room.groupid,hashv)
+
 		# Change state to 1
-		await set_status(roomid,state1)
+		await set_status(roomid,state=1)
 		
 		# Notify to clients that state of group is 1
 		await self.channel_layer.group_send(
-			room.group_id,
+			room.groupid,
 			{
-				"status":room.status
+				"status":room.status,
+				"hash":hashv
 			}
 		)
+
+	# State1:
+	#	Add clients to stream if hash is ok
+	#	
