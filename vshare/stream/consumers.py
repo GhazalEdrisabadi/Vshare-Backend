@@ -32,9 +32,10 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			# Reject connection
 			await self.close()
 		else:
-			# Add member to stream group and accept connection
+			# Add members to stream group and accept connection
 			await self.channel_layer.group_add(roomid,self.channel_name)
 			await self.accept()
+			await self.channel_layer.group_send(room.group_id,{"status":room.status})
 
 			# Send welcome message to user
 			await self.send_json(
@@ -54,7 +55,6 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				}
 			)
 
-
 	async def receive_json(self, content):
 
 		user = self.scope["user"]
@@ -70,7 +70,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				else:
 					await self.send_json(
 						{
-							"room":room.groupid,
+							"room":room.roomid,
 							"username":user.username,
 							"message": "you can't send video!"
 						}
@@ -86,7 +86,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 	async def recieve_stream(self,roomid,hash):
 
 		room = await get_room(roomid)
-
+		save_hash(room,hash)
 		# Change state to 1
 		await set_status(roomid,state1)
 		
@@ -97,36 +97,3 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				"status":room.status
 			}
 		)
-
-	# async def disconnect(self, close_code):
-	# 	await self.channel_layer.group_discard(
-	# 		room.roomid,
-	# 		self.channel_name
-	# 	)
-
-
-
-
-		# await self.channel_layer.group_send(
-  #           room.group_name,
-  #           {
-  #               "type": "chat.message",
-  #               "room_id": room_id,
-  #               "username": self.scope["user"].username,
-  #               "message": message,
-  #           }
-  #       )
-
-  #        async def chat_message(self, event):
-  #       """
-  #       Called when someone has messaged our chat.
-  #       """
-  #       # Send a message down to the client
-  #       await self.send_json(
-  #           {
-  #               "msg_type": settings.MSG_TYPE_MESSAGE,
-  #               "room": event["room_id"],
-  #               "username": event["username"],
-  #               "message": event["message"],
-  #           },
-  #       )

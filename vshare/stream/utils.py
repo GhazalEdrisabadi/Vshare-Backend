@@ -4,6 +4,17 @@ from channels.db import database_sync_to_async
 from .exceptions import ClientError
 from groups.models import *
 
+
+@database_sync_to_async
+def save_hash(the_group , the_hash):
+	#save the hash to the hash field of a Group instance
+	try:
+		obj = Group.objects.get(groupid=the_group)
+		obj.video_hash = the_hash
+		obj.save()
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
+
 @database_sync_to_async
 def get_room(roomid):
 
