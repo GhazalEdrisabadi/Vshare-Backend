@@ -9,7 +9,9 @@ from django.core.validators import RegexValidator
 from django import forms
 from django.contrib.postgres.fields import ArrayField
 from django.apps import apps
-from enum import Enum 
+from enum import Enum
+from django.utils.translation import gettext as _
+
 alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
 
 
@@ -24,21 +26,21 @@ class Group(models.Model):
 	members = models.ManyToManyField(settings.AUTH_USER_MODEL,blank=True,related_name='joined_groups',through='Membership')
 	video_hash = models.CharField(max_length=100, blank=Truem ,default='No hash yet!')	
 
-	# class STATUS(Enum):
-	# 	initial = (0, 'no action')
-	# 	selected = (1, 'video selected by owner')
-	# 	validation = (2, 'check validation')
-	# 	played = (3, 'video played by owner')
+	state0 = 0
+	state1 = 1
+	state2 = 2
 
-	# 	@classmethod
-	# 	def get_value(cls, member):
-	# 		return member.value[0]
+	StatusChoice = (
+		(state0, _('video was not selected by owner')),
+		(state1, _('video validation is checking')),
+		(state2, _('video is playing')),
+	)
 
-	# status = models.CharField(
-	# 	max_length=32,
-	# 	choices=[x.value for x in STATUS],
-	# 	default=STATUS.get_value(STATUS.initial)
-	# )
+
+	status = models.PositiveSmallIntegerField(
+		choices=StatusChoice,
+		default=state0,
+	)
     
 	class Meta:
 		ordering = ['since']
@@ -49,18 +51,13 @@ class Group(models.Model):
 
 	#Return a unique channels.Group for each group through groupid
 	@property
-	def group_name(self):
-		return "room-%s" % self.title
+	def group_id(self):
+		return "room-%s" % self.groupid
 
-	# def set_state(self, commend):
-	# 	if command == 'video selected by owner':
-	# 		self.STATUS.status = 1
-	# 	elif command == 'check validation':
-	# 		self.STATUS.status = 2
-	# 	elif command == 'video played by owner':
-	# 		self.STATUS.status = 3
-	# 	else
-	# 		self.STATUS.status = 0
+	@property
+	def group_status(self):
+		return self.status
+
 
 class Membership(models.Model):
     the_member = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE)

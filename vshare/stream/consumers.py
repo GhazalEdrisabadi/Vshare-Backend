@@ -20,13 +20,12 @@ import json
 
 class VideoConsumer(AsyncJsonWebsocketConsumer):
 
-	async def connect (self):
+	async def connect(self):
 
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
 		room = await get_room(roomid)
 		ismember = await is_member(user,roomid)
-		print(self.channel_name)
 
 		# Check user logged in or is in the group
 		if user.is_anonymous or not ismember:
@@ -38,10 +37,27 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			await self.accept()
 			await self.channel_layer.group_send(room.group_id,{"status":room.status})
 
+			# Send welcome message to user
+			await self.send_json(
+				{
+					"room":room.groupid,
+					"username":user.username,
+					"message":"you successfully connected.",
+				}
+			)
+			await asyncio.sleep(60)
+
+			# Send current state to all clients
+			await self.channel_layer.group_send(
+				room.groupid,
+				{
+					"state":room.group_status
+				}
+			)
+
 	async def receive_json(self, content):
 
 		user = self.scope["user"]
-		print(roomid)
 		iscreator = await is_creator(user,roomid)
 		room = await get_room(roomid)
 
