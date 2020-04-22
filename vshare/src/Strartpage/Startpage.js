@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import './Startpage.css'
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-import { Carousel } from 'react-responsive-carousel';
+
+
 import AwesomeSlider from 'react-awesome-slider'
 import 'react-awesome-slider/dist/styles.css';
 import ReactDOM from 'react-dom';
