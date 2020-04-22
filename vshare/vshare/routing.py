@@ -1,17 +1,25 @@
-from django.urls import path
 from django.conf.urls import url
-
 from channels.http import AsgiHandler
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
-from groups.utils import TokenAuthMiddlewareStack
-from groups.consumers import VideoConsumer
-
+from stream.middlewares import TokenAuthMiddlewareStack
+from stream.consumers import VideoConsumer
+from groups.models import *
 
 application = ProtocolTypeRouter({
 	"websocket":TokenAuthMiddlewareStack(
-		URLRouter([
-			url(r'^groups/stream', VideoConsumer),
-		])
+		URLRouter(
+			[
+				url(r'^stream/groups/(?P<groupid>[\w.@+-]+)/$', VideoConsumer),
+			]
+		)
 	)
 })
+
+"""
+
+Request to VideoConsumer
+
+"ws://127.0.0.1:8000/stream/groups/<groupid>/?token=token_id
+
+"""
