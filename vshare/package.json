@@ -9,10 +9,12 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
 
+
     "antd": "^4.1.4",
     "bootstrap": "^4.4.1",
     "crypto-js": "^4.0.0",
     "filepond": "^4.13.4",
+
 
     "jquery": "^3.4.1",
     "jquery-filepond": "^1.0.0",
