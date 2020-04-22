@@ -22,9 +22,8 @@ class Group(models.Model):
 	invite_only = models.BooleanField(default=False)
 	created_by = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name='owner')
 	members = models.ManyToManyField(settings.AUTH_USER_MODEL,blank=True,related_name='joined_groups',through='Membership')
-	
-	#upper field should be modified. because right now, it's pointing to django's default superuser model
-	
+	video_hash = models.CharField(max_length=100, blank=Truem ,default='No hash yet!')	
+
 	# class STATUS(Enum):
 	# 	initial = (0, 'no action')
 	# 	selected = (1, 'video selected by owner')
