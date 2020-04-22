@@ -9,13 +9,11 @@ from django.core.validators import RegexValidator
 from django import forms
 from django.contrib.postgres.fields import ArrayField
 from django.apps import apps
-from enum import Enum 
+from enum import Enum
+from django.utils.translation import gettext as _
+
 alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
 
-class StatusChoice(Enum):
-	state0 = "video was not selected by owner"
-	state1 = "video validation is checking"
-	state2 = "video is playing"
 
 class Group(models.Model):
 	since = models.DateTimeField(auto_now_add=True)
@@ -29,26 +27,21 @@ class Group(models.Model):
 	
 	#upper field should be modified. because right now, it's pointing to django's default superuser model
 
-	status = models.CharField(max_length=50, 
-		choices=[(state, state.value) for state in StatusChoice],
-		blank=True
+	state0 = 0
+	state1 = 1
+	state2 = 2
+
+	StatusChoice = (
+		(state0, _('video was not selected by owner')),
+		(state1, _('video validation is checking')),
+		(state2, _('video is playing')),
 	)
-	
-	# class STATUS(Enum):
-	# 	initial = (0, 'no action')
-	# 	selected = (1, 'video selected by owner')
-	# 	validation = (2, 'check validation')
-	# 	played = (3, 'video played by owner')
 
-	# 	@classmethod
-	# 	def get_value(cls, member):
-	# 		return member.value[0]
 
-	# status = models.CharField(
-	# 	max_length=32,
-	# 	choices=[x.value for x in STATUS],
-	# 	default=STATUS.get_value(STATUS.initial)
-	# )	
+	status = models.PositiveSmallIntegerField(
+		choices=StatusChoice,
+		default=state0,
+	)
     
 	class Meta:
 		ordering = ['since']
