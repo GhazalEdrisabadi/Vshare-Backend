@@ -9,11 +9,25 @@ import {FilePicker} from 'react-file-picker'
 import sha256 from 'crypto-js/sha256';
 import hmacSHA512 from 'crypto-js/hmac-sha512';
 import Base64 from 'crypto-js/enc-base64';
+import ProgressBar from "react-bootstrap/ProgressBar";
+import {Progress} from 'antd';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import ReactDOM from 'react-dom'
 
+import {CircularProgressbar} from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import PublishIcon from '@material-ui/icons/Publish';
+import PlayCircleFilledWhiteIcon from '@material-ui/icons/PlayCircleFilledWhite';
+import HomeIcon from '@material-ui/icons/Home';
+
+var percant = 0;
 
 class chat_room extends Component {
 
+
     componentDidMount() {
+
+
         if (window.localStorage.getItem('token') == null) {
 
             alert("Login first !");
@@ -21,6 +35,9 @@ class chat_room extends Component {
             window.location.replace("/login/");
 
         }
+        $('.homebtn').click(function () {
+window.location.replace('/homepage/');
+        });
         var id_gp = window.localStorage.getItem('id_gp');
         //id_gp = "test";
         //This will open the connection*
@@ -34,8 +51,9 @@ class chat_room extends Component {
         $(document).ready(function () {
 
 
-            $('.videopicsk').change(function () {
-                console.log($('.videopicsk').files);
+            $('#videopicks').change(function () {
+                $('#videopickbtn').fadeOut();
+                $('#progress').fadeIn();
             });
 
             // if (localStorage.getItem('token') == null) {
@@ -59,6 +77,7 @@ class chat_room extends Component {
             };
 
             $.ajax(settings).done(function (response) {
+
                 console.log("111111");
                 console.log(response);
                 for (var i = 0; i < response.members.length; i++) {
@@ -87,24 +106,13 @@ class chat_room extends Component {
 
 
     onChange(e) {
-
-        var lastOffset = 0;
-
         function callbackRead(reader, file, evt, callbackProgress, callbackFinal) {
-            if (lastOffset === reader.offset) {
-                // in order chunk
-                lastOffset = reader.offset + reader.size;
-                callbackProgress(evt.target.result);
-                if (reader.offset + reader.size >= file.size) {
-                    callbackFinal();
-                }
-            } else {
-                // not in order chunk
-                setTimeout(function () {
-                    callbackRead(reader, file, evt, callbackProgress, callbackFinal);
-                }, 10);
+            callbackProgress(evt.target.result);
+            if (reader.offset + reader.size >= file.size) {
+                callbackFinal();
             }
         }
+
 
         function loading(file, callbackProgress, callbackFinal) {
             var chunkSize = 1024 * 1024; // bytes
@@ -117,12 +125,14 @@ class chat_room extends Component {
                 callbackFinal();
             }
             while (offset < file.size) {
+
                 partial = file.slice(offset, offset + size);
                 var reader = new FileReader;
                 reader.size = chunkSize;
                 reader.offset = offset;
                 reader.index = index;
                 reader.onload = function (evt) {
+
                     callbackRead(this, file, evt, callbackProgress, callbackFinal);
                 };
                 reader.readAsArrayBuffer(partial);
@@ -136,26 +146,28 @@ class chat_room extends Component {
         var SHA256 = CryptoJS.algo.SHA256.create();
         var counter = 0;
         var self = this;
-        loading(file,
-            function (data) {
-                var wordBuffer = CryptoJS.lib.WordArray.create(data);
-                SHA256.update(wordBuffer);
-                counter += data.byteLength;
-                console.log(((counter / file.size) * 100).toFixed(0) + '%');
-            }, function (data) {
-                console.log('100%');
-                var encrypted = SHA256.finalize().toString();
-                console.log('encrypted: ' + encrypted);
-            });
-        /*
-                let files = e.target.files;
-                let reader = new FileReader();
-                reader.readAsDataURL(files[0]);
-                reader.onload = (e) => {
 
-                    console.log(e.target.result);
-                }
-            */
+        loading(file, function (data) {
+
+            var wordBuffer = CryptoJS.lib.WordArray.create(data);
+            SHA256.update(wordBuffer);
+            counter += data.byteLength;
+            percant = ((counter / file.size) * 100).toFixed(0);
+            console.log("pp : " + percant);
+            console.log(((counter / file.size) * 100).toFixed(0) + '%');
+
+
+        }, function (data) {
+
+            console.log('100%');
+            var encrypted = SHA256.finalize().toString();
+            console.log('encrypted: ' + encrypted);
+            document.getElementById('progress').style.display = 'none';
+            document.getElementById('blaybtndiv').style.display = 'block';
+
+        });
+        console.log("aa");
+
     }
 
 
@@ -168,37 +180,61 @@ class chat_room extends Component {
 
 
                 < form className="back">
+
+
                     <header class="header_s">
                         <div className="div_center">
 
+                            <HomeIcon className='homebtn' style={{
+                                cursor:'pointer',
+                                fontSize:'50px',
+                                marginTop:'15px',
+                                marginLeft:'10px'
+                            }}/>
 
-                            <div className="div_icon"><a href='../homepage'><img src={Home} className="icon"/></a></div>
                             <div className="name"/>
                         </div>
                     </header>
                     <div className="formback_movie">
-
-
-                        <div className="upload-btn-wrapper">
-                            <Button style={{
+                        <div id='blaybtndiv'>
+                            <Button startIcon={<PlayCircleFilledWhiteIcon/>} style={{
                                 backgroundColor: 'red',
-                            }} size='large' className="btn" variant="contained" color="secondary">
-                                <p>Upload a file</p>
-                            </Button>
 
-                            <input type="file" className='videopicsk' name="file" onChange={(e) => this.onChange(e)}/>
+                            }} size='large' id='playbtnid' variant="contained" color="secondary">
+                                <p>Play</p>
+                            </Button>
+                        </div>
+
+                        <div className='moviebtns'>
+
+                            <div className="upload-btn-wrapper">
+                                <Button startIcon={<PublishIcon/>} style={{
+                                    backgroundColor: 'rgba(255,0,0)',
+                                }} size='large' id='videopickbtn' className="btn" variant="contained" color="secondary">
+                                    <p>Select a video</p>
+                                </Button>
+
+                                <input type="file" id='videopicks' className='videopicsk' name="file"
+                                       onChange={(e) => this.onChange(e)}/>
+                                <br/><br/><br/><br/>
+                                <div id='progress'>
+                                    <CircularProgress disableShrink color="secondary"/>
+                                </div>
+
+                            </div>
+
                         </div>
 
 
                     </div>
                     <div className="back_coulom">
 
-                        <div className="formback_info" style={{width: '115%', height: '410px'}}>
-                            <legend className="title_gp">info of group</legend>
+                        <div className="formback_info" style={{width: '350px', height: '395px'}}>
+
                             <div className="textarea_member" style={{overflowY: 'scroll'}}/>
                             <div className="textarea_bio"/>
                         </div>
-                        <div className="formback_text" style={{width: '115%', height: '410px',}}>
+                        <div className="formback_text" style={{width: '350px', height: '395px',}}>
 
 
                         </div>

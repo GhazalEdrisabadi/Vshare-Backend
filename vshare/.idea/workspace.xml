@@ -2,19 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d0f22248-2259-40b4-8ef3-46314e63d707" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Strartpage/Startpage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Strartpage/Startpage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chatroom/chat_room.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatroom/chat_room.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chatroom/chat_room.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatroom/chat_room.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vshare/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/vshare/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -91,7 +95,8 @@
       <workItem from="1586513082016" duration="74000" />
       <workItem from="1586627116962" duration="3552000" />
       <workItem from="1586710104115" duration="5686000" />
-      <workItem from="1587424328524" duration="11166000" />
+      <workItem from="1587424328524" duration="11211000" />
+      <workItem from="1587466296208" duration="25670000" />
     </task>
     <servers />
   </component>
