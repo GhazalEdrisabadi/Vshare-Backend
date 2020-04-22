@@ -4,8 +4,9 @@ import $ from 'jquery';
 import Websocket from 'react-websocket';
 import Home from './home.png'
 import Button from '@material-ui/core/Button';
-
-import ReactPlayer from 'react-player'
+//import '../../node_modules/video-react/dist/video-react.css';
+import './video-react.css';
+import {Player, ControlBar, PlayToggle} from 'video-react';
 import sha256 from 'crypto-js/sha256';
 import hmacSHA512 from 'crypto-js/hmac-sha512';
 import Base64 from 'crypto-js/enc-base64';
@@ -54,9 +55,9 @@ class chat_room extends Component {
             //This will open the connection*
             document.getElementById('moviebtnd').style.display = 'none';
             document.getElementById('movietxt').style.display = 'none';
-              document.getElementById('firstprogress').style.display = 'block';
+            document.getElementById('firstprogress').style.display = 'block';
 
-                setTimeout(function () {
+            setTimeout(function () {
                 document.getElementById('firstprogress').style.display = 'none';
                 if (localresponse.created_by == window.localStorage.getItem('username')) {
                     document.getElementById('moviebtnd').style.display = 'block';
@@ -72,22 +73,6 @@ class chat_room extends Component {
                     // $('#movietxt').fadeIn('fast');
                 }
             }, 2000);
-
-            // setTimeout(function () {
-            //     if (localresponse.created_by == window.localStorage.getItem('username')) {
-            //         document.getElementById('moviebtnd').style.display = 'block';
-            //         document.getElementById('movietxt').style.display = 'none';
-            //
-            //         //$('#videopickbtn').fadeIn('fast');
-            //         //    $('#movietxt').fadeOut('fast');
-            //
-            //     } else {
-            //         document.getElementById('moviebtnd').style.display = 'none';
-            //         document.getElementById('movietxt').style.display = 'block';
-            //         //   $('#videopickbtn').fadeOut('fast');
-            //         // $('#movietxt').fadeIn('fast');
-            //     }
-            // }, 1000);
 
 
             $('#videopicks').change(function () {
@@ -276,10 +261,19 @@ class chat_room extends Component {
                     </header>
                     <div className="formback_movie">
 
+                        <div id="movie">
 
-                        <ReactPlayer id="movie" className="video" url={this.state.file_show_when_click} playing/>
+                            <Player
+                                autoPlay
+                                src={this.state.file_show_when_click}
+                            >
+                                <ControlBar autoHide={false} disableDefaultControls={true}>
+                                    <PlayToggle/>
+                                </ControlBar>
+                            </Player>
 
 
+                        </div>
                         <div id='firstprogress'>
                             <CircularProgress disableShrink color="secondary"/>
                         </div>
