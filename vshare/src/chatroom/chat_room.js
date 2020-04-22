@@ -4,6 +4,7 @@ import $ from 'jquery';
 import Websocket from 'react-websocket';
 import Home from './home.png'
 import Button from '@material-ui/core/Button';
+
 //import '../../node_modules/video-react/dist/video-react.css';
 import './video-react.css';
 import {Player, ControlBar, PlayToggle} from 'video-react';
@@ -18,6 +19,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import PublishIcon from '@material-ui/icons/Publish';
 import PlayCircleFilledWhiteIcon from '@material-ui/icons/PlayCircleFilledWhite';
 import HomeIcon from '@material-ui/icons/Home';
+import IconButton from "@material-ui/core/IconButton";
+import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 var percant = 0;
 
@@ -38,6 +42,7 @@ class chat_room extends Component {
 
         const {id} = this.props.match.params
         $(document).ready(function () {
+
             var localresponse;
 
             if (window.localStorage.getItem('token') == null) {
@@ -47,10 +52,10 @@ class chat_room extends Component {
                 window.location.replace("/login/");
 
             }
-            $('.homebtn').click(function () {
+            $('.logout').click(function () {
                 window.location.replace('/homepage/');
             });
-
+            $('.username').text(window.localStorage.getItem('username'));
             //id_gp = "test";
             //This will open the connection*
             document.getElementById('moviebtnd').style.display = 'none';
@@ -246,17 +251,30 @@ class chat_room extends Component {
 
 
                     <header class="header_s">
-                        <div className="div_center">
+                        <div className='leftheader'>
+                            <div className='userprofile'>
+                                <IconButton style={{
+                                    color: 'white'
 
-                            <HomeIcon className='homebtn' style={{
-                                cursor: 'pointer',
-                                fontSize: '50px',
-                                marginTop: '15px',
-                                marginLeft: '10px'
-                            }}/>
+                                }}
+                                            className="profilepic">
+                                    <AccountCircleOutlinedIcon fontSize="large"/>
+                                </IconButton>
+
+                                <p className='username'>Username</p>
+                            </div>
 
 
                             <div className="name"/>
+                        </div>
+                        <div className='logout'>
+                            <p className='logout_text2'>Exit group</p>
+                            <IconButton style={{
+                                color: 'white'
+                            }}
+                                        className="div_leave">
+                                <ExitToAppIcon fontSize="large"/>
+                            </IconButton>
                         </div>
                     </header>
                     <div className="formback_movie">
@@ -285,7 +303,7 @@ class chat_room extends Component {
                                 <p>Play</p>
                             </Button>
                         </div>
-                        <p id='movietxt'>Wait for admin to select the movie</p>
+                        <p id='movietxt'>Wait for admin to select the video</p>
                         <div id='moviebtnd' className='moviebtns'>
 
                             <div className="upload-btn-wrapper">
@@ -312,9 +330,8 @@ class chat_room extends Component {
                     <div className="back_coulom">
 
                         <div className="formback_info" style={{width: '350px', height: '395px'}}>
-
-
                         </div>
+
                         <div className="formback_text" style={{width: '350px', height: '395px',}}>
 
 
