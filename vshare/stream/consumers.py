@@ -26,22 +26,59 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		roomid = self.scope['url_route']['kwargs']['groupid']
 		room = await get_room(roomid)
 		ismember = await is_member(user,roomid)
-		print(self.channel_name)
 
 		# Check user logged in or is in the group
 		if user.is_anonymous or not ismember:
 			# Reject connection
 			await self.close()
 		else:
-			# Add members to stream group and accept connection
+			# Add member to stream group and accept connection
 			await self.channel_layer.group_add(roomid,self.channel_name)
 			await self.accept()
-			await self.channel_layer.group_send(room.group_id,{"status":room.status})
+
+			# Send welcome message to user
+			await self.send_json(
+				{
+					"room":room.groupid,
+					"username":user.username,
+					"message":"you successfully connected.",
+				}
+			)
+			await asyncio.sleep(60)
+
+			# await self.channel_layer.send(
+			# 	self.channel_name,
+			# 	{
+			# 		"type":"connect.msg",
+			# 		"room":room.groupid,
+			# 		"username":user.username,
+			# 		"message":"you successfully connected.",
+			# 	}
+			# )
+
+			# Send current state to all clients
+			await self.channel_layer.group_send(
+				room.groupid,
+				{
+					"state":room.group_status
+				}
+			)
+
+			# await asyncio.sleep(60)
+
+	# To handle welcome message
+	# async def connect_msg(self,event):
+	# 	await self.send_json(
+	# 			{
+	# 				"room":event["room"],
+	# 				"username":event["username"],
+	# 				"message": event["message"],
+	# 			}
+	# 		)
 
 	async def receive_json(self, content):
 
 		user = self.scope["user"]
-		print(roomid)
 		iscreator = await is_creator(user,roomid)
 		room = await get_room(roomid)
 
@@ -54,7 +91,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				else:
 					await self.send_json(
 						{
-							"room":room.roomid,
+							"room":room.groupid,
 							"username":user.username,
 							"message": "you can't send video!"
 						}
@@ -81,3 +118,36 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				"status":room.status
 			}
 		)
+
+	# async def disconnect(self, close_code):
+	# 	await self.channel_layer.group_discard(
+	# 		room.roomid,
+	# 		self.channel_name
+	# 	)
+
+
+
+
+		# await self.channel_layer.group_send(
+  #           room.group_name,
+  #           {
+  #               "type": "chat.message",
+  #               "room_id": room_id,
+  #               "username": self.scope["user"].username,
+  #               "message": message,
+  #           }
+  #       )
+
+  #        async def chat_message(self, event):
+  #       """
+  #       Called when someone has messaged our chat.
+  #       """
+  #       # Send a message down to the client
+  #       await self.send_json(
+  #           {
+  #               "msg_type": settings.MSG_TYPE_MESSAGE,
+  #               "room": event["room_id"],
+  #               "username": event["username"],
+  #               "message": event["message"],
+  #           },
+  #       )
