@@ -204,16 +204,16 @@ class Homepage extends Component {
                         if (event.status == 500) {
                             $('#joinstatus').html('You are already a member of this group !');
                             $('#joinstatus').toggle('slow');
-                           $('#joinstatus').delay(3000).toggle('slow');
+                            $('#joinstatus').delay(3000).toggle('slow');
                         } else {
-                             $('#joinstatus').html('Group not found !');
+                            $('#joinstatus').html('Group not found !');
                             $('#joinstatus').toggle('slow');
-                           $('#joinstatus').delay(3000).toggle('slow');
+                            $('#joinstatus').delay(3000).toggle('slow');
                         }
                     },
                     success: function () {
-                        window.localStorage.setItem('id_gp', id);
-                        window.location.replace("/group/" + id + "");
+                      //  window.localStorage.setItem('id_gp', id);
+                        window.location.replace("/homepage/");
                     },
                     "headers": {
                         //'X-CSRFToken': csrftoken,
@@ -239,8 +239,7 @@ class Homepage extends Component {
             });
 
 
-            window.localStorage.removeItem('numbergp1');
-
+            window.localStorage.removeItem('id_gp');
 
 
             console.log("aa");
@@ -284,17 +283,48 @@ class Homepage extends Component {
                 var htmlcode = '';
                 for (var counter1 = 0; counter1 < mygroups.length; counter1++, htmlcode = '') {
 
-                    
                     var s = "document.getElementById('myModal')";
                     var ss = s + ".style.display = 'block'";
-                    var a = "window.localStorage.setItem('numbergp1','" + mygroups[counter1].id + "')";
+                    var a = "window.localStorage.setItem('id_gp','" + mygroups[counter1].id + "')"; //id of the group
                     //  console.log("mygroupssss" + mygroups[counter1].id);
                     var d = "document.getElementById('myModal2')";
                     var dd = d + ".style.display = 'block'";
-                    
+
+
+
+                    //   var l = "window.localStorage.setItem('id_gp','" + mygroups[counter1].id + "')";
+                    //  console.log("mygroupssss" + mygroups[counter1].id);
+                    // var l = "window.localStorage.setItem('id_gp','" + mygroups[counter1].id + "')";
+                    //   window.localStorage.setItem('id_gp', id);
+                    var r = "window.location.replace('/group/" + mygroups[counter1].id + "')";
+                    //window.location.replace("/group/" + id + "");
+
+
+                    var hoverout = 'onMouseOut="this.style.color=';
+                    var hoverrout = hoverout + "'white'";
+
+                    var hover = 'onMouseOver="this.style.color=';
+                    var hoverr = hover + "'red'";
+                    /*    var s="document.getElementById('close"+counter1+"')";
+                        var ss=s+".remove()";
+                        var a="document.getElementById('c"+counter1+"')";
+                        var aa=a+".remove()";
+
+                        var d="document.getElementById('h"+counter1+"')";
+                        var dd=d+".remove()";
+                        htmlcode+='<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close' + counter1 + '">&times;</span>';*/
+                    //      onMouseOver="this.style.color='red'"
+                    //  onMouseOut="this.style.color='green'" >GeeksforGeeks</a>
+
+
+                    /*     var hoverout='onMouseOut="this.style.color=';
+                         var hoverrout=hoverout+"'red'";
+
+                         var hover='onMouseOver="this.style.color=';
+                         var hoverr=hover+"'green'";*/
                     htmlcode += '</br>';
                     htmlcode += '<div class="admin"></div>';
-                    htmlcode += '<p   style="font-size: 21px" class="mygroups" id=' + '"c' + counter1 + '">' + "&nbsp" + mygroups[counter1].name + '</p>';
+                    htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" + mygroups[counter1].name + '</p>';
 
 
                     htmlcode += '<div class="buttonsforgp">';
@@ -311,7 +341,7 @@ class Homepage extends Component {
 
             var localresponse;
             $('.modal2').mouseover(function () {
-                var gpid = window.localStorage.getItem("numbergp1");
+                var gpid = window.localStorage.getItem("id_gp");
                 console.log(gpid);
 
                 var settings = {
@@ -327,11 +357,10 @@ class Homepage extends Component {
                     localresponse = response;
                     var obj = $('.deleteTEXT').text("Are you sure  you want to leave \n The  " + response.title + "  ? ");
                     obj.html(obj.html().replace(/\n/g, '<br/>'));
-                      if (localresponse.created_by == window.localStorage.getItem('username')) {
-$('.admintext').text("You are the admin of this group , if you leave , it will be deleted");
-                      }
-                      else
-                          $('.admintext').text("");
+                    if (localresponse.created_by == window.localStorage.getItem('username')) {
+                        $('.admintext').text("You are the admin of this group , if you leave , it will be deleted");
+                    } else
+                        $('.admintext').text("");
 
 
                 });
@@ -341,7 +370,9 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
 
 
             $('.dltyes').click(function () {
-                var gpid = window.localStorage.getItem("numbergp1");
+
+                var gpid = window.localStorage.getItem("id_gp");
+                
                 if (localresponse.created_by == window.localStorage.getItem('username')) {
                     var settings = {
                         "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
@@ -399,7 +430,7 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
             });
 
             $('.modal').mouseover(function () {
-                var gpid = window.localStorage.getItem("numbergp1");
+                var gpid = window.localStorage.getItem("id_gp");
 
                 var settings = {
                     "url": "http://127.0.0.1:8000/groups/" + gpid,
@@ -416,10 +447,13 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
 
             });
 
-            console.log("shomarash : " + window.localStorage.getItem('numbergp1'));
+            console.log("shomarash : " + window.localStorage.getItem('id_gp'));
             $('.submitedit').click(function () {
 
-                var gpid = window.localStorage.getItem("numbergp1");
+                var gpid = window.localStorage.getItem("id_gp");
+
+
+            
                 var title = $('#edittitle').val();
                 var des = $('#editdes').val();
                 console.log("AAAAAA  " + gpid);
@@ -514,11 +548,32 @@ $('.admintext').text("You are the admin of this group , if you leave , it will b
                     var counter2 = 0;
                     var htmlcode2 = '';
                     while (counter2 < groups.length) {
-                        var a2 = "window.localStorage.setItem('numbergp1','" + groups[counter2].id + "')";
+                        var a2 = "window.localStorage.setItem('id_gp','" + groups[counter2].id + "')";
                         var d2 = "document.getElementById('myModal2')";
                         var dd2 = d2 + ".style.display = 'block'";
+
+
+                        var r = "window.location.replace('/group/" + groups[counter2].id + "')";
+                        //window.location.replace("/group/" + id + "");
+
+
+                        var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'white'";
+
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
+
+                        /*    var s="document.getElementById('close2"+counter1+"')";
+                            var ss=s+".remove()";
+                            var a="document.getElementById('c2"+counter1+"')";
+                            var aa=a+".remove()";
+
+                            var d="document.getElementById('h2"+counter1+"')";
+                            var dd=d+".remove()";
+                        htmlcode+=+'<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close2' + counter1 + '">&times;</span>';*/
+
                         htmlcode2 += '</br>';
-                        htmlcode2 += '<p  style="font-size: 21px" class="mygroups" id=' + '"c2' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].name + '</p>';
+                        htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].name + '</p>';
                         htmlcode2 += '<div class="buttonsforgp">';
 
                         htmlcode2 += '<div onclick="' + a2 + "," + dd2 + '" class="leave" ></div>';
