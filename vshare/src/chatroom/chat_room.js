@@ -24,20 +24,29 @@ import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined"
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 var percant = 0;
+var id_gp = window.localStorage.getItem('id_gp')
+const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
+var encrypted
+var ws = new WebSocket(url);
 
 class chat_room extends Component {
 
-
     componentDidMount() {
-
-
-        var id_gp = window.localStorage.getItem('id_gp');
+        console.log(localStorage.getItem('token'))
         //  id_gp = "test";
         //This will open the connection*
-        var ws = new WebSocket("ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + "");
+
         ws.onopen = function () {
             console.log("Ping");
         };
+        ws.onmessage = evt => {
+            console.log("messsssssage")
+            const messagee = JSON.parse(evt.data)
+             this.setState({server_pm: messagee})
+            console.log(messagee)
+            console.log(messagee.message)
+        };
+
 
 
         const {id} = this.props.match.params
@@ -77,6 +86,7 @@ class chat_room extends Component {
                     //   $('#videopickbtn').fadeOut('fast');
                     // $('#movietxt').fadeIn('fast');
                 }
+
             }, 2000);
 
 
@@ -146,7 +156,9 @@ class chat_room extends Component {
         this.state = {
             marhale: 0,
             file_select: null,
-            file_show_when_click: null
+            file_show_when_click: null,
+            server_pm: "",
+            hash_: ""
         }
         this.onChange = this.onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -215,6 +227,22 @@ class chat_room extends Component {
         var counter = 0;
         var self = this;
 
+        function Send_data() {
+            const message_send = {"command": "set_video_hash", "roomid": id_gp, "vhash": encrypted}
+
+            // ws.send(JSON.stringify(message_send))
+            ws.send(JSON.stringify(message_send))
+            console.log(JSON.stringify(message_send))
+
+            //ws.onmessage = evt => {
+            //    console.log("messsssssage")
+            //    const messagee = JSON.parse(evt.data)
+            //    // this.setState({server_pm: messagee})
+            //    console.log(messagee)
+            //    console.log(+messagee.message)
+            //};
+        }
+
         loading(file, function (data) {
 
             var wordBuffer = CryptoJS.lib.WordArray.create(data);
@@ -228,16 +256,22 @@ class chat_room extends Component {
         }, function (data) {
 
             console.log('100%');
-            var encrypted = SHA256.finalize().toString();
+            encrypted = SHA256.finalize().toString();
             console.log('encrypted: ' + encrypted);
+
+            // eslint-disable-next-line no-undef
+            Send_data();
             document.getElementById('progress').style.display = 'none';
             document.getElementById('blaybtndiv').style.display = 'block';
 
         });
-        console.log("aa");
 
+        console.log("aa");
     }
 
+    Send_data() {
+
+    }
 
     render() {
 
@@ -279,6 +313,7 @@ class chat_room extends Component {
                     </header>
                     <div className="formback_movie">
 
+
                         <div id="movie">
 
                             <Player
@@ -289,6 +324,7 @@ class chat_room extends Component {
                                     <PlayToggle/>
                                 </ControlBar>
                             </Player>
+
 
 
                         </div>
