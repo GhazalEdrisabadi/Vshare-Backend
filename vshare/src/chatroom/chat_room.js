@@ -265,7 +265,7 @@ class chat_room extends Component {
                             </div>
 
 
-                            <div className="name"/>
+
                         </div>
                         <div className='logout'>
                             <p className='logout_text2'>Exit group</p>
@@ -330,6 +330,7 @@ class chat_room extends Component {
                     <div className="back_coulom">
 
                         <div className="formback_info" style={{width: '350px', height: '395px'}}>
+                            <div className="name"/>
                         </div>
 
                         <div className="formback_text" style={{width: '350px', height: '395px',}}>

@@ -3,12 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d55f3097-6487-464d-a4bd-e506b2a84bda" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Strartpage/Startpage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Strartpage/Startpage.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chatroom/chat_room.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatroom/chat_room.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chatroom/chat_room.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatroom/chat_room.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatroom/video-react.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatroom/video-react.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +46,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1587587729379</updated>
-      <workItem from="1587587746239" duration="7308000" />
+      <workItem from="1587587746239" duration="7726000" />
+      <workItem from="1587654527988" duration="833000" />
+      <workItem from="1587659406016" duration="990000" />
     </task>
     <servers />
   </component>
