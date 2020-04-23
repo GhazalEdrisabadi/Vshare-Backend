@@ -28,6 +28,8 @@ var id_gp = window.localStorage.getItem('id_gp')
 const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
 var encrypted
 var ws = new WebSocket(url);
+var adminhash;
+var localresponse;
 
 class chat_room extends Component {
 
@@ -42,17 +44,23 @@ class chat_room extends Component {
         ws.onmessage = evt => {
             console.log("messsssssage")
             const messagee = JSON.parse(evt.data)
-             this.setState({server_pm: messagee})
+            this.setState({server_pm: messagee})
             console.log(messagee)
             console.log(messagee.message)
-        };
+            if (messagee.status == 1 && localresponse.created_by != window.localStorage.getItem('username')) {
+                $('#movietxt').fadeOut('slow');
+                $('#moviebtnd').fadeIn('slow');
+                adminhash=messagee.hash;
 
+
+            }
+        };
 
 
         const {id} = this.props.match.params
         $(document).ready(function () {
 
-            var localresponse;
+
 
             if (window.localStorage.getItem('token') == null) {
 
@@ -243,6 +251,23 @@ class chat_room extends Component {
             //};
         }
 
+           function Send_data2() {
+            const message_send = {"command": "set_video_hash", "roomid": id_gp, "vhash": encrypted}
+
+            // ws.send(JSON.stringify(message_send))
+            ws.send(JSON.stringify(message_send))
+            console.log(JSON.stringify(message_send))
+
+            //ws.onmessage = evt => {
+            //    console.log("messsssssage")
+            //    const messagee = JSON.parse(evt.data)
+            //    // this.setState({server_pm: messagee})
+            //    console.log(messagee)
+            //    console.log(+messagee.message)
+            //};
+        }
+
+
         loading(file, function (data) {
 
             var wordBuffer = CryptoJS.lib.WordArray.create(data);
@@ -260,7 +285,21 @@ class chat_room extends Component {
             console.log('encrypted: ' + encrypted);
 
             // eslint-disable-next-line no-undef
-            Send_data();
+            if (localresponse.created_by == window.localStorage.getItem('username'))
+                Send_data();
+            else {
+                if(encrypted==adminhash){
+                     Send_data2();
+                      $('#movietxt').text('Wait for admin to play the video');
+                      $('#moviebtnd').fadeOut();
+                      $('#movietxt').fadeIn();
+
+                }
+                else {
+                    $('#movietxt').text('Your video is not same with admin\'s video , please chose another one');
+                     $('#movietxt').fadeIn();
+                }
+            }
             document.getElementById('progress').style.display = 'none';
             document.getElementById('blaybtndiv').style.display = 'block';
 
@@ -299,7 +338,6 @@ class chat_room extends Component {
                             </div>
 
 
-
                         </div>
                         <div className='logout'>
                             <p className='logout_text2'>Exit group</p>
@@ -312,10 +350,7 @@ class chat_room extends Component {
                         </div>
                     </header>
                     <div className="formback_movie">
-
-
                         <div id="movie">
-
                             <Player
                                 autoPlay
                                 src={this.state.file_show_when_click}
@@ -324,7 +359,6 @@ class chat_room extends Component {
                                     <PlayToggle/>
                                 </ControlBar>
                             </Player>
-
 
 
                         </div>
