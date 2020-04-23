@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import './chat_room.css'
 import $ from 'jquery';
 import Websocket from 'react-websocket';
@@ -14,15 +14,16 @@ import Base64 from 'crypto-js/enc-base64';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 
-
 import PublishIcon from '@material-ui/icons/Publish';
 import PlayCircleFilledWhiteIcon from '@material-ui/icons/PlayCircleFilledWhite';
 import HomeIcon from '@material-ui/icons/Home';
+
 var percant = 0;
 var id_gp = window.localStorage.getItem('id_gp')
-const url="ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
+const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
 var encrypted
- var ws = new WebSocket(url);
+var ws = new WebSocket(url);
+
 class chat_room extends Component {
 
     componentDidMount() {
@@ -31,14 +32,15 @@ class chat_room extends Component {
         //  id_gp = "test";
         //This will open the connection*
 
-       ws.onopen = function () {
+        ws.onopen = function () {
             console.log("Ping");
         };
-       ws.onmessage = evt => {
+        ws.onmessage = evt => {
+            console.log("messsssssage")
             const messagee = JSON.parse(evt.data)
-            this.setState({server_pm: messagee})
+             this.setState({server_pm: messagee})
             console.log(messagee)
-            console.log(+ messagee.message)
+            console.log(messagee.message)
         };
 
         const {id} = this.props.match.params
@@ -144,7 +146,7 @@ class chat_room extends Component {
             file_select: null,
             file_show_when_click: null,
             server_pm: "",
-            hash_:""
+            hash_: ""
         }
         this.onChange = this.onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -212,11 +214,19 @@ class chat_room extends Component {
         var self = this;
 
         function Send_data() {
-                           const message_send = {room:id_gp, hash:encrypted }
-                           const command_={"command":"send"}
-   // ws.send(JSON.stringify(message_send))
-      ws.send(JSON.stringify(command_))
-console.log(JSON.stringify(command_))
+            const message_send = {"command": "set_video_hash", "roomid": id_gp, "vhash": encrypted}
+
+            // ws.send(JSON.stringify(message_send))
+            ws.send(JSON.stringify(message_send))
+            console.log(JSON.stringify(message_send))
+
+            //ws.onmessage = evt => {
+            //    console.log("messsssssage")
+            //    const messagee = JSON.parse(evt.data)
+            //    // this.setState({server_pm: messagee})
+            //    console.log(messagee)
+            //    console.log(+messagee.message)
+            //};
         }
 
         loading(file, function (data) {
@@ -232,7 +242,7 @@ console.log(JSON.stringify(command_))
         }, function (data) {
 
             console.log('100%');
-             encrypted = SHA256.finalize().toString();
+            encrypted = SHA256.finalize().toString();
             console.log('encrypted: ' + encrypted);
 
             // eslint-disable-next-line no-undef
@@ -245,9 +255,10 @@ console.log(JSON.stringify(command_))
         console.log("aa");
     }
 
-    Send_data(){
+    Send_data() {
 
-        }
+    }
+
     render() {
 
 
