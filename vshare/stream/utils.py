@@ -25,10 +25,6 @@ def get_room(roomid):
 		raise ClientError("ROOM_INVALID")
 
 @database_sync_to_async
-def join_error(user):
-	raise ClientError("USER_IS_NOW_A_MEMBER")
-
-@database_sync_to_async
 def is_member(user,roomid):
 
 	# Check a user is a member of group
@@ -52,6 +48,7 @@ def is_creator(user,roomid):
 		pass
 
 @database_sync_to_async	
-def set_status(self,roomid,state):
-		Group.objects.filter(groupid=roomid).update(status=state)
-
+def set_status(roomid,state):
+	obj = Group.objects.get(groupid=roomid)
+	obj.status = state
+	obj.save()
