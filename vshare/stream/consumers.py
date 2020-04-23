@@ -67,15 +67,6 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		try:
 			if command == "set_video_hash":
 				await self.recieve_stream(content["roomid"],content["vhash"])
-				await self.channel_layer.group_send(
-					self.room_id,
-					{
-						"type":"send_hash",
-						"roomid":roomid,
-						"status":room.status,
-						"hash":room.video_hash,
-					}
-				)
 
 		except ClientError as e:
 			await self.send_json({"error": e.code})
@@ -104,6 +95,15 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 								"message": "video sent successfully!"
 							}
 						)
+
+			await self.channel_layer.group_send(
+					self.room_id,
+					{
+						"type":"send_hash",
+						"status":room.status,
+						"hash":room.video_hash,
+					}
+				)
 		else:
 			await self.send_json(
 						{
@@ -113,6 +113,14 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 						}
 					)
 
+			await self.channel_layer.group_send(
+					self.room_id,
+					{
+						"type":"send_state",
+						"status":room.status,
+					}
+				)
+
 	""" 
 	Handlers for group sends
 	"""
@@ -121,7 +129,6 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		await self.send_json(
 			{
 				"msg_type":settings.MSG_TYPE_ENTER,
-				"roomid":event["roomid"],
 				"status":event["status"],
 			}
 		)
@@ -130,7 +137,6 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		await self.send_json(
 			{
 				"msg_type":settings.MSG_TYPE_ENTER,
-				"roomid":event["roomid"],
 				"status":event["status"],
 				"hash":event["hash"],
 			}
