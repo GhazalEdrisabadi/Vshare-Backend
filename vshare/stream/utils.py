@@ -9,9 +9,12 @@ from groups.models import *
 def save_hash(the_group , the_hash):
 	#save the hash to the hash field of a Group instance
 	try:
-		obj = Group.objects.get(groupid=the_group)
-		obj.video_hash = the_hash
-		obj.save()
+		if	Group.objects.filter(groupid=roomid,created_by=user).exists():
+			obj = Group.objects.get(groupid=the_group)
+			obj.video_hash = the_hash
+			obj.save()
+		else:
+			raise ClientError("ROOM_INVALID")
 	except Group.DoesNotExist:
 		raise ClientError("ROOM_INVALID")
 
