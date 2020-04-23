@@ -8,12 +8,13 @@ UserModel = apps.get_model('users', 'Account')
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = '__all__'
+        fields = '__all__' 
+
 
 class GroupUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields =  ['groupid','title','describtion','invite_only',]
+        fields =  ['groupid','title','describtion','invite_only','video_hash']
 
 class MembershipSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):

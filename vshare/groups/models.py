@@ -17,14 +17,22 @@ alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters a
 
 class Group(models.Model):
 	since = models.DateTimeField(auto_now_add=True)
-	groupid = models.CharField(max_length=20, blank=False, null=False, validators=[alphanumeric], unique=True, default='')
+	groupid = models.CharField(max_length=20, blank=False, null=False, validators=[alphanumeric], unique=True, default='',)
 	#groupid only contains alphanumerical characters
-	title = models.CharField(max_length=100, blank=True, default='No Name')
-	describtion = models.TextField(blank=True)
-	invite_only = models.BooleanField(default=False)
-	created_by = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name='owner')
-	members = models.ManyToManyField(settings.AUTH_USER_MODEL,blank=True,related_name='joined_groups',through='Membership')
-	video_hash = models.CharField(max_length=100, blank=Truem ,default='No hash yet!')	
+	title = models.CharField(max_length=100, blank=True, default='No Name',)
+	describtion = models.TextField(blank=True,)
+	invite_only = models.BooleanField(default=False,)
+	created_by = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name='owner',)
+	members = models.ManyToManyField(settings.AUTH_USER_MODEL,blank=True,related_name='joined_groups',through='Membership',)
+	video_hash = models.CharField(max_length=100, blank=True ,default='No hash yet!')
+	
+	def save(self,*args,**kwargs):
+		created = self.pk is None
+		super(Group,self).save(*args, **kwargs)
+		if created:
+			created_group = Group.objects.get(groupid=self.groupid)
+			owner_to_members=Membership(the_group=created_group , the_member=created_group.created_by)
+			owner_to_members.save()
 
 	state0 = 0
 	state1 = 1

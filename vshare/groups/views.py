@@ -30,6 +30,7 @@ class GroupList(generics.ListCreateAPIView):
         req = serializer.context['request']
         serializer.save(created_by=req.user)
 
+
 class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
