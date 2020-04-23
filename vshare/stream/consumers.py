@@ -82,13 +82,12 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 	# 	Send hash by owner to backend, 
 	#  	Save hash to database,
 	# 	Change state to 1 and notify to clients
-	async def recieve_stream(self,roomid,vhash):
+	async def recieve_stream(self,roomid,vhash):	
 
+		user = self.scope["user"]
 		room = await get_room(roomid)
-
-		# Save hash to database
-		await save_hash(room.groupid,vhash)
-
+    # Save hash to database
+		await save_hash(roomid,vhash,user)
 		# Change state to 1
 		await set_status(room.groupid,state=1)
 		
