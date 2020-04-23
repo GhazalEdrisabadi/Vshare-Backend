@@ -19,26 +19,26 @@ import PublishIcon from '@material-ui/icons/Publish';
 import PlayCircleFilledWhiteIcon from '@material-ui/icons/PlayCircleFilledWhite';
 import HomeIcon from '@material-ui/icons/Home';
 var percant = 0;
+var id_gp = window.localStorage.getItem('id_gp')
+const url="ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
+var encrypted
+ var ws = new WebSocket(url);
 class chat_room extends Component {
 
-
     componentDidMount() {
-
         console.log(localStorage.getItem('token'))
-        var id_gp = window.localStorage.getItem('id_gp');
+
         //  id_gp = "test";
         //This will open the connection*
-        var ws = new WebSocket("ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + "");
-        ws.onopen = function () {
+
+       ws.onopen = function () {
             console.log("Ping");
         };
-
-        ws.onmessage = evt => {
-
+       ws.onmessage = evt => {
             const messagee = JSON.parse(evt.data)
             this.setState({server_pm: messagee})
-
-            console.log("meeeeeeeeeeeeeee " + messagee.message)
+            console.log(messagee)
+            console.log(+ messagee.message)
         };
 
         const {id} = this.props.match.params
@@ -143,7 +143,8 @@ class chat_room extends Component {
             marhale: 0,
             file_select: null,
             file_show_when_click: null,
-            server_pm: ""
+            server_pm: "",
+            hash_:""
         }
         this.onChange = this.onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -210,6 +211,14 @@ class chat_room extends Component {
         var counter = 0;
         var self = this;
 
+        function Send_data() {
+                           const message_send = {room:id_gp, hash:encrypted }
+                           const command_={"command":"send"}
+   // ws.send(JSON.stringify(message_send))
+      ws.send(JSON.stringify(command_))
+console.log(JSON.stringify(command_))
+        }
+
         loading(file, function (data) {
 
             var wordBuffer = CryptoJS.lib.WordArray.create(data);
@@ -223,17 +232,22 @@ class chat_room extends Component {
         }, function (data) {
 
             console.log('100%');
-            var encrypted = SHA256.finalize().toString();
+             encrypted = SHA256.finalize().toString();
             console.log('encrypted: ' + encrypted);
+
+            // eslint-disable-next-line no-undef
+            Send_data();
             document.getElementById('progress').style.display = 'none';
             document.getElementById('blaybtndiv').style.display = 'block';
 
         });
-        console.log("aa");
 
+        console.log("aa");
     }
 
+    Send_data(){
 
+        }
     render() {
 
 
