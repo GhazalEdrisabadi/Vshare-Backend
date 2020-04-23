@@ -64,17 +64,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 		try:
 			if command == "set_video_hash":
-				if room.status == 0 and iscreator:
-					await self.recieve_stream(content["roomid"],content["vhash"])
-				else:
-					await self.send_json(
-						{
-							"room":room.groupid,
-							"username":user.username,
-							"message": "you can't send video!"
-						}
-					)
-
+				await self.recieve_stream(content["roomid"],content["vhash"])
 		except ClientError as e:
 			await self.send_json({"error": e.code})
 
@@ -86,12 +76,32 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 		user = self.scope["user"]
 		room = await get_room(roomid)
-    # Save hash to database
-		await save_hash(roomid,vhash,user)
-		# Change state to 1
-		await set_status(room.groupid,state=1)
-		
-		# Notify to clients that state of group is 1
+		iscreator = await is_creator(user,roomid)
+
+		if room.status == 0 and iscreator:
+	    	# Save hash to database
+			await save_hash(room.groupid,vhash)
+			# Change state to 1
+			await set_status(room.groupid,state=1)
+			
+			# Notify to clients that state of group is 1
+			await self.send_json(
+							{
+								"status":room.status,
+								"username":user.username,
+								"message": "video sent successfully!"
+							}
+						)
+		else:
+			await self.send_json(
+						{
+							"room":room.groupid,
+							"username":user.username,
+							"message": "you can't send video!"
+						}
+					)
+
+
 		# await self.channel_layer.group_send(
 		# 	room.groupid,
 		# 	{
