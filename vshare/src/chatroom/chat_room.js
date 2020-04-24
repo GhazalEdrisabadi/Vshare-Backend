@@ -182,12 +182,23 @@ class chat_room extends Component {
         this.setState({
             file_show_when_click: this.state.file_select
         })
-        console.log("onchange")
-        document.getElementById('movie').style.display = 'block';
-        document.getElementById('blaybtndiv').style.display = 'none';
+        const message_send_play = { "command": "play" }
+
+        // ws.send(JSON.stringify(message_send))
+        ws.send(JSON.stringify(message_send_play))
+        console.log(JSON.stringify(message_send_play))
+  
+        //document.getElementById('movie').style.display = 'block';
+        //document.getElementById('blaybtndiv').style.display = 'none';
 
     }
+    //send_play() {
+    //    const message_send_play = { "command": "play"}
 
+    //    // ws.send(JSON.stringify(message_send))
+    //    ws.send(JSON.stringify(message_send_play))
+    //    console.log(JSON.stringify(message_send_play))
+    //}
 
     onChange(e) {
         this.setState({
