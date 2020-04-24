@@ -51,7 +51,8 @@ class chat_room extends Component {
                 $('#movietxt').fadeOut('slow');
                 $('#moviebtnd').fadeIn('slow');
                 adminhash = messagee.hash;
-
+            }
+        };
 
             }
         };
@@ -59,6 +60,7 @@ class chat_room extends Component {
 
         const {id} = this.props.match.params
         $(document).ready(function () {
+
 
 
             if (window.localStorage.getItem('token') == null) {
@@ -248,6 +250,7 @@ class chat_room extends Component {
         }
 
         function Send_data2() {
+
             const message_send = {"command": "set_video_hash", "roomid": id_gp, "vhash": encrypted}
 
             // ws.send(JSON.stringify(message_send))
@@ -279,6 +282,7 @@ class chat_room extends Component {
             console.log('100%');
             encrypted = SHA256.finalize().toString();
             console.log('encrypted: ' + encrypted);
+          
             document.getElementById('progress').style.display = 'none';
             // eslint-disable-next-line no-undef
             if (localresponse.created_by == window.localStorage.getItem('username')) {
