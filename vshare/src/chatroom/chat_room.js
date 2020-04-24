@@ -186,6 +186,8 @@ class chat_room extends Component {
 
 
     onChange(e) {
+        document.getElementById('blaybtndiv').style.display = 'none';
+        document.getElementById('progress').style.display = 'block';
         this.setState({
             file_select: URL.createObjectURL(e.target.files[0])
         })
@@ -279,19 +281,22 @@ class chat_room extends Component {
             console.log('100%');
             encrypted = SHA256.finalize().toString();
             console.log('encrypted: ' + encrypted);
-            document.getElementById('progress').style.display = 'none';
+
             // eslint-disable-next-line no-undef
             if (localresponse.created_by == window.localStorage.getItem('username')) {
                 Send_data();
                 document.getElementById('blaybtndiv').style.display = 'block';
+                document.getElementById('progress').style.display = 'none';
             } else {
                 if (encrypted == adminhash) {
                     Send_data2();
+                    document.getElementById('progress').style.display = 'none';
                     $('#movietxt').text('Wait for admin to play the video');
                     $('#moviebtnd').fadeOut();
                     $('#movietxt').fadeIn();
 
                 } else {
+                    document.getElementById('progress').style.display = 'none';
                     $('#movietxt').text('Your video is not same with admin\'s video , please chose another one');
                     $('#movietxt').fadeIn();
                 }
