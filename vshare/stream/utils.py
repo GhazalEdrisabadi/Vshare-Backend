@@ -20,14 +20,12 @@ def save_client_with_hash(the_user , the_group ,the_hash):
 
 @database_sync_to_async
 def save_hash(the_group , the_hash):
-	#save the hash to the hash field of a Group instance
-	try:
-		if	Group.objects.get(groupid=the_group).exists():
+	# Save the hash to the hash field of a Group instance
+	try:  
 			obj = Group.objects.get(groupid=the_group)
 			obj.video_hash = the_hash
 			obj.save()
-		else:
-			raise ClientError("ROOM_INVALID")
+			return obj.video_hash
 	except Group.DoesNotExist:
 		raise ClientError("ROOM_INVALID")
 
@@ -68,3 +66,4 @@ def set_status(roomid,state):
 	obj = Group.objects.get(groupid=roomid)
 	obj.status = state
 	obj.save()
+	return obj.status
