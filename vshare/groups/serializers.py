@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Group , Membership
+from .models import Group , Membership , AcceptedClient
 from django.apps import apps
 
 UserModel = apps.get_model('users', 'Account')
@@ -22,8 +22,13 @@ class MembershipSerializer(serializers.ModelSerializer):
         super(MembershipSerializer, self).__init__(many=many, *args, **kwargs)
     class Meta:
         model = Membership
-        fields = '__all__'   
-    
+        fields = '__all__'  
+class AcceptedClientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AcceptedClient
+        fields = '__all__'
+
+        
 
 
 class GroupRegistrationSerializer(serializers.ModelSerializer):

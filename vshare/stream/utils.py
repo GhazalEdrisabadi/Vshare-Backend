@@ -6,9 +6,22 @@ from groups.models import *
 
 
 @database_sync_to_async
+def save_client_with_hash(the_user , the_group ,the_hash):
+	#save clients which their videos accepted
+	try:
+		if	Group.objects.get(groupid=the_group).exists():
+			group_obj = Group.objects.get(groupid=the_group)
+			obj = AcceptedClient(entered_group=group_obj , accepted_client=the_user , recieved_hash=the_hash)
+			obj.save()
+		else:
+			raise ClientError("ROOM_INVALID")
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
+
+@database_sync_to_async
 def save_hash(the_group , the_hash):
 	# Save the hash to the hash field of a Group instance
-	try:
+	try:  
 			obj = Group.objects.get(groupid=the_group)
 			obj.video_hash = the_hash
 			obj.save()

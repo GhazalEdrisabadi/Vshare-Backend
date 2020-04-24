@@ -76,3 +76,12 @@ class Membership(models.Model):
         ordering = ['date_joined']
         unique_together = ("the_group", "the_member")
 
+class AcceptedClient(models.Model):
+	entered_group = models.ForeignKey(Group, to_field="groupid" , on_delete=models.CASCADE)
+	accepted_client = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE)
+	recieved_hash = models.CharField(max_length=100,default='No hash yet!')
+	date_accepted = models.DateTimeField(auto_now_add=True)
+	class Meta:
+		ordering = ['date_accepted']
+		unique_together = ("entered_group", "accepted_client")
+
