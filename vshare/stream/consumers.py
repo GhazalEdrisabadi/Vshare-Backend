@@ -25,6 +25,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
 		room = await get_room(roomid)
+		self.room_id = roomid
 		ismember = await is_member(user,roomid)
 
 		# Check user logged in or is in the group
@@ -34,6 +35,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		else:
 			# Add members to stream group and accept connection
 			await self.channel_layer.group_add(roomid,self.channel_name)
+
 			await self.accept()
 
 			# Send welcome message to user
@@ -64,16 +66,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 		try:
 			if command == "set_video_hash":
-				if room.status == 0 and iscreator:
-					await self.recieve_stream(content["roomid"],content["vhash"])
-				else:
-					await self.send_json(
-						{
-							"room":room.groupid,
-							"username":user.username,
-							"message": "you can't send video!"
-						}
-					)
+				await self.recieve_stream(content["roomid"],content["vhash"])
 
 		except ClientError as e:
 			await self.send_json({"error": e.code})
@@ -86,20 +79,53 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 		user = self.scope["user"]
 		room = await get_room(roomid)
-    # Save hash to database
-		await save_hash(roomid,vhash,user)
-		# Change state to 1
-		await set_status(room.groupid,state=1)
-		
-		# Notify to clients that state of group is 1
-		# await self.channel_layer.group_send(
-		# 	room.groupid,
-		# 	{
-		# 		"status":room.status,
-		# 		"hash":hashv
-		# 	}
-		# )
+		iscreator = await is_creator(user,roomid)
 
-	# State1:
-	#	Add clients to stream if hash is ok
-	#	
+		# In state 1 only owner can send video
+		if room.status == 0 and iscreator:
+
+	    	# Save hash to database
+			videohash = await save_hash(room.groupid,vhash)
+
+			# Change state to 1
+			groupstatus = await set_status(room.groupid,state=1)
+			
+			# Notify to clients that state is 1 and send hash to them
+			await self.channel_layer.group_send(
+					self.room_id,
+					{
+						"type":"send_hash",
+						"status":groupstatus,
+						"hash":videohash,
+					}
+				)
+		else:
+			await self.send_json(
+						{
+							"room":room.groupid,
+							"username":user.username,
+							"message": "you can't send video!"
+						}
+					)
+
+	""" 
+	Handlers for group sends
+	"""
+	# Called when we want send state to clients
+	async def send_state(self, event):
+		await self.send_json(
+			{
+				"msg_type":settings.MSG_TYPE_MESSAGE,
+				"status":event["status"],
+			}
+		)
+
+	# Called when we want send hash to clients
+	async def send_hash(self, event):
+		await self.send_json(
+			{
+				"msg_type":"video sent successfully!",
+				"status":event["status"],
+				"hash":event["hash"],
+			}
+		)
