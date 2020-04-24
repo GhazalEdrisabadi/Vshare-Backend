@@ -47,13 +47,6 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				}
 			)
 
-			# Send current state to all clients
-			# await self.channel_layer.group_send(
-			# 	roomid,
-			# 	{
-			# 		"state":room.status
-			# 	}
-			# )
 
 	async def receive_json(self, content):
 
@@ -66,30 +59,10 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 		try:
 			if command == "set_video_hash":
-				if room.status == 0 and iscreator:
 					await self.recieve_stream(content["roomid"],content["vhash"])
-				else:
-					await self.send_json(
-						{
-							"room":room.groupid,
-							"username":user.username,
-							"message": "you can't send video!"
-						}
-					)
+
 			elif command == "send_cient_hash":
-				if room.status == 1 and not iscreator:
-					await self.send_json(
-						{
-							"message": "your video accepted."
-						}
-					)	
-					await self.save_client_with_hash(user,roomid,content["vhash"])
-				else:
-					await self.send_json(
-						{
-							"message": "you can't choose a video for now!"
-						}
-					)
+				await self.send_hash()
 
 			elif command == "play_video":
 				await self.play(content["roomid"])
@@ -135,10 +108,28 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 						}
 					)
 
-	# When video is played change state and notify clients
-	async def play(self):
+	# Amin manzooram ine:
+	async def send_hash(self):
 
-		room = await get_room(self.room_id)
+		if room.status == 1 and not iscreator:
+					await self.send_json(
+						{
+							"message": "your video accepted."
+						}
+					)	
+					await self.save_client_with_hash(user,roomid,content["vhash"])
+				else:
+					await self.send_json(
+						{
+							"message": "you can't choose a video for now!"
+						}
+					)
+
+
+	# When video is played change state and notify clients
+	async def play(self, roomid):
+
+		room = await get_room(roomid)
 
 		if room.status == 1:
 		# Change state to 2
