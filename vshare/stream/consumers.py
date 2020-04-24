@@ -95,15 +95,6 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 								"message": "video sent successfully!"
 							}
 						)
-
-			await self.channel_layer.group_send(
-					self.room_id,
-					{
-						"type":"send_hash",
-						"status":room.status,
-						"hash":room.video_hash,
-					}
-				)
 		else:
 			await self.send_json(
 						{
@@ -113,11 +104,12 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 						}
 					)
 
-			await self.channel_layer.group_send(
+		await self.channel_layer.group_send(
 					self.room_id,
 					{
-						"type":"send_state",
+						"type":"send_hash",
 						"status":room.status,
+						"hash":room.video_hash,
 					}
 				)
 
