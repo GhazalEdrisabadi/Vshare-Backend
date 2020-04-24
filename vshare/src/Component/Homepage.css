@@ -471,6 +471,20 @@
 .textForm{}
 
 
+.Status-Id{
+    
+    display: none;
+    position: fixed;
+    font-size: 13px;
+    margin-top: 5px;
+    margin-left: 4%;
+    border-bottom: solid thin red;
+    background-color: rgba(0, 0, 0, 0.76);
+    width: fit-content;
+    height: 25px;
+    text-align: center;
+}
+
 .Status-Addmember{
 
     display: none;

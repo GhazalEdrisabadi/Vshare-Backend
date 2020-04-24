@@ -33,7 +33,12 @@ class Homepage extends Component {
                     "timeout": 0,
                     error: function (event) {
                         if (event.status == 400)
-                            alert("group with this groupid already exists");
+                            // alert("group with this groupid already exists");
+
+
+                            $('#Status-Id').html('group with this groupid already exists!');
+                            $('#Status-Id').fadeIn();
+                            $('#Status-Id').delay(3000).toggle('slow');
                     },
                     success: function () {
                         //  document.getElementById("myModel").style.display = 'block'
@@ -666,6 +671,8 @@ class Homepage extends Component {
                 {/* {this.renderEfect()} */}
 
 
+
+
                 <div id="myModal" class="modal">
                     <div class="modal-content">
                         <h3 class="texx">Edit your groups deatails</h3>
@@ -786,6 +793,10 @@ class Homepage extends Component {
                             height: '40px',
                             width: '65%'
                         }}/>
+
+                            <div className="Status-Id" id="Status-Id"></div>
+
+
                         <br></br>
 
                         <textarea onChange={this.change_bio} type="text"
