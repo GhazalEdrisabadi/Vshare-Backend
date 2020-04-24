@@ -69,11 +69,18 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 		try:
 			if command == "set_video_hash":
+				if room.status == 0 and iscreator:
 					await self.recieve_stream(content["roomid"],content["vhash"])
-
-			elif command == "send_cient_hash":
-				await self.send_hash()
-
+				else:
+					await self.send_json(
+						{
+							"room":room.groupid,
+							"username":user.username,
+							"message": "you can't send video!"
+						}
+					)
+			elif command == "send_client_hash":
+				await self.save_client_with_hash(content["roomid"],context["vhash"])
 			elif command == "play_video":
 				await self.play(content["roomid"])
 
@@ -117,29 +124,21 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 							"message": "you can't send video!"
 						}
 					)
-
-	# Amin manzooram ine:
-	async def send_hash(self):
-
-		if room.status == 1 and not iscreator:
-					await self.send_json(
-						{
-							"message": "your video accepted."
-						}
-					)	
-					await self.save_client_with_hash(user,roomid,content["vhash"])
-				else:
-					await self.send_json(
-						{
-							"message": "you can't choose a video for now!"
-						}
-					)
-
+# Amin manzooram ine:
+	async def save_hash_with_client(self,roomid,vhash):
+		user = self.scope["user"]
+		await self.send_json(
+			{
+				"message": "your video accepted."
+			}
+		)	
+		await self.save_client_with_hash(user,roomid,vhash)
+		await self.channel_layer.group_add("accepted_users",self.channel_name)
 
 	# When video is played change state and notify clients
-	async def play(self, roomid):
+	async def play(self):
 
-		room = await get_room(roomid)
+		room = await get_room(self.room_id)
 
 		if room.status == 1:
 		# Change state to 2
@@ -166,8 +165,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				"message":event["message"],
 			}
 		)
-
-	# Called when we want send hash to clients
+	
 	async def send_hash(self, event):
 		await self.send_json(
 			{
@@ -177,3 +175,4 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				"message":event["message"],
 			}
 		)
+	
