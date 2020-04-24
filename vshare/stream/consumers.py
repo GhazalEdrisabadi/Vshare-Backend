@@ -74,7 +74,20 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 							"message": "you can't send video!"
 						}
 					)
-
+			elif command == "send_cient_hash":
+				if room.status == 1 and not iscreator:
+					await self.send_json(
+						{
+							"message": "your video accepted."
+						}
+					)	
+					await self.save_client_with_hash(user,roomid,content["vhash"])
+				else:
+					await self.send_json(
+						{
+							"message": "you can't choose a video for now!"
+						}
+					)
 		except ClientError as e:
 			await self.send_json({"error": e.code})
 
