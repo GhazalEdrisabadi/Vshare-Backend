@@ -91,6 +91,9 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 						}
 					)
 
+			elif command == "play_video":
+				await self.play(content["roomid"])
+
 		except ClientError as e:
 			await self.send_json({"error": e.code})
 
@@ -120,6 +123,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 						"type":"send_hash",
 						"status":groupstatus,
 						"hash":videohash,
+						"message":"video sent by owner"
 					}
 				)
 		else:
@@ -131,6 +135,24 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 						}
 					)
 
+	# When video is played change state and notify clients
+	async def play(self):
+
+		room = await get_room(self.room_id)
+
+		if room.status == 1:
+		# Change state to 2
+			groupstatus = await set_status(room.groupid,state=2)
+
+			await self.channel_layer.group_send(
+						self.room_id,
+						{
+							"type":"send_state",
+							"status":groupstatus,
+							"message":"video played by owner",
+						}
+					)
+
 	""" 
 	Handlers for group sends
 	"""
@@ -138,8 +160,9 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 	async def send_state(self, event):
 		await self.send_json(
 			{
-				"msg_type":settings.MSG_TYPE_MESSAGE,
+				"msg_type":"state of group",
 				"status":event["status"],
+				"message":event["message"],
 			}
 		)
 
@@ -147,8 +170,9 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 	async def send_hash(self, event):
 		await self.send_json(
 			{
-				"msg_type":"video sent successfully!",
+				"msg_type":"send hash",
 				"status":event["status"],
 				"hash":event["hash"],
+				"message":event["message"],
 			}
 		)
