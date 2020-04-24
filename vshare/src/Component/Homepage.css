@@ -141,9 +141,8 @@
     font-size: 20px;
     background-color: rgb(12, 12, 12);
     position: relative;
-    
     border-radius: 10px;
-    margin-top: 1%;
+    margin-top: 10%;
     margin-left: 3%;
     text-align: left;
     
@@ -472,13 +471,27 @@
 .textForm{}
 
 
+.Status-Id{
+    
+    display: none;
+    position: fixed;
+    font-size: 13px;
+    margin-top: 5px;
+    margin-left: 4%;
+    border-bottom: solid thin red;
+    background-color: rgba(0, 0, 0, 0.76);
+    width: fit-content;
+    height: 25px;
+    text-align: center;
+}
+
 .Status-Addmember{
 
     display: none;
     position: fixed;
     font-size: 13px;
-    margin-top: 1%;
-    margin-left: 5%;
+    margin-top: -50px;
+    margin-left: 0%;
     border-bottom: solid thin red;
     background-color: rgba(0, 0, 0, 0.76);
     width: fit-content;
