@@ -25,17 +25,26 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
 		room = await get_room(roomid)
-		self.room_id = roomid
+		self.roomid = roomid
 		ismember = await is_member(user,roomid)
 
 		# Check user logged in or is in the group
 		if user.is_anonymous or not ismember:
 			# Reject connection
 			await self.close()
-		else:
-			# Add members to stream group and accept connection
-			await self.channel_layer.group_add(roomid,self.channel_name)
 
+		# Check state (in state=2 client can't connect)
+		elif room.status == 2:
+			# Reject connection
+			await self.close()
+
+		else:
+			# get current state and hash
+			status = await get_status(roomid)
+			vhash = await get_hash(roomid)
+
+			# Add clients to stream group and accept connection
+			await self.channel_layer.group_add(self.roomid,self.channel_name)
 			await self.accept()
 
 			# Send welcome message to user
@@ -43,17 +52,18 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				{
 					"room":roomid,
 					"username":user.username,
+					"status":status,
+					"hash":vhash,
 					"message":"you successfully connected.",
 				}
 			)
 
-
+	# Recieve websockets requests
 	async def receive_json(self, content):
 
 		user = self.scope["user"]
-		roomid = self.scope['url_route']['kwargs']['groupid']
-		room = await get_room(roomid)
-		iscreator = await is_creator(user,roomid)
+		room = await get_room(self.roomid)
+		iscreator = await is_creator(user,self.roomid)
 
 		command = content.get("command",None)
 

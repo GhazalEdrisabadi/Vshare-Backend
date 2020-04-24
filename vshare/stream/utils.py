@@ -67,3 +67,11 @@ def set_status(roomid,state):
 	obj.status = state
 	obj.save()
 	return obj.status
+
+@database_sync_to_async	
+def get_status(roomid):
+	return Group.objects.get(groupid=roomid).status
+
+@database_sync_to_async	
+def get_hash(roomid):
+	return Group.objects.get(groupid=roomid).video_hash
