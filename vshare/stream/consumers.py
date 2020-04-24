@@ -81,20 +81,24 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		room = await get_room(roomid)
 		iscreator = await is_creator(user,roomid)
 
+		# In state 1 only owner can send video
 		if room.status == 0 and iscreator:
+
 	    	# Save hash to database
-			await save_hash(room.groupid,vhash)
+			videohash = await save_hash(room.groupid,vhash)
+
 			# Change state to 1
-			await set_status(room.groupid,state=1)
+			groupstatus = await set_status(room.groupid,state=1)
 			
-			# Notify to clients that state of group is 1
-			await self.send_json(
-							{
-								"status":room.status,
-								"username":user.username,
-								"message": "video sent successfully!"
-							}
-						)
+			# Notify to clients that state is 1 and send hash to them
+			await self.channel_layer.group_send(
+					self.room_id,
+					{
+						"type":"send_hash",
+						"status":groupstatus,
+						"hash":videohash,
+					}
+				)
 		else:
 			await self.send_json(
 						{
@@ -104,15 +108,6 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 						}
 					)
 
-		await self.channel_layer.group_send(
-					self.room_id,
-					{
-						"type":"send_hash",
-						"status":room.status,
-						"hash":room.video_hash,
-					}
-				)
-
 	""" 
 	Handlers for group sends
 	"""
@@ -120,15 +115,16 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 	async def send_state(self, event):
 		await self.send_json(
 			{
-				"msg_type":settings.MSG_TYPE_ENTER,
+				"msg_type":settings.MSG_TYPE_MESSAGE,
 				"status":event["status"],
 			}
 		)
 
+	# Called when we want send hash to clients
 	async def send_hash(self, event):
 		await self.send_json(
 			{
-				"msg_type":settings.MSG_TYPE_ENTER,
+				"msg_type":"video sent successfully!",
 				"status":event["status"],
 				"hash":event["hash"],
 			}

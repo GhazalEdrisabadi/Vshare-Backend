@@ -12,6 +12,7 @@ def save_hash(the_group , the_hash):
 			obj = Group.objects.get(groupid=the_group)
 			obj.video_hash = the_hash
 			obj.save()
+			return obj.video_hash
 	except Group.DoesNotExist:
 		raise ClientError("ROOM_INVALID")
 
@@ -52,3 +53,4 @@ def set_status(roomid,state):
 	obj = Group.objects.get(groupid=roomid)
 	obj.status = state
 	obj.save()
+	return obj.status
