@@ -129,8 +129,16 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				"message": "your video accepted."
 			}
 		)	
-		await self.save_client_with_hash(user,roomid,vhash)
+		await save_client_with_hash(user,roomid,vhash)
 		await self.channel_layer.group_add("accepted_users",self.channel_name)
+		await self.channel_layer.group_send(
+						"accepted_users",
+						{
+							"type":"send_state",
+							"status":"111111",
+							"message":"amin code is ok",
+						}
+					)
 
 	# When video is played change state and notify clients
 	async def play(self):
