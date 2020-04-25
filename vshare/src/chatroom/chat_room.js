@@ -50,7 +50,7 @@ class chat_room extends Component {
             if (messagee.status == 1 && localresponse.created_by != window.localStorage.getItem('username')) {
                 $('#movietxt').fadeOut('slow');
                 $('#moviebtnd').fadeIn('slow');
-                adminhash=messagee.hash;
+                adminhash = messagee.hash;
 
 
             }
@@ -64,7 +64,6 @@ class chat_room extends Component {
 
         const {id} = this.props.match.params
         $(document).ready(function () {
-
 
 
             if (window.localStorage.getItem('token') == null) {
@@ -144,13 +143,10 @@ class chat_room extends Component {
                       var htmlcode = '';
                       var hover = 'onMouseOver="this.style.color=';
                       var hoverr = hover + "'red'";
-
                       htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
                       $(".textarea_member").append(htmlcode);
-
                       console.log("2")
                       //$(".textarea_member").append(response.members[i] + "\n")
-
                   }*/
                 //  $(".textarea_bio").append(response.describtion + "\n")
                 $(".name").append(response.title);
@@ -204,6 +200,8 @@ class chat_room extends Component {
     //}
 
     onChange(e) {
+        document.getElementById('blaybtndiv').style.display = 'none';
+        document.getElementById('progress').style.display = 'block';
         this.setState({
             file_select: URL.createObjectURL(e.target.files[0])
         })
@@ -265,8 +263,10 @@ class chat_room extends Component {
             //};
         }
 
+
            function Send_data2() {
             const message_send = {"command": "send_client_hash", "vhash": encrypted}
+
 
             // ws.send(JSON.stringify(message_send))
             ws.send(JSON.stringify(message_send))
@@ -299,23 +299,25 @@ class chat_room extends Component {
             console.log('encrypted: ' + encrypted);
 
             // eslint-disable-next-line no-undef
-            if (localresponse.created_by == window.localStorage.getItem('username'))
+            if (localresponse.created_by == window.localStorage.getItem('username')) {
                 Send_data();
-            else {
-                if(encrypted==adminhash){
-                     Send_data2();
-                      $('#movietxt').text('Wait for admin to play the video');
-                      $('#moviebtnd').fadeOut();
-                      $('#movietxt').fadeIn();
+                document.getElementById('blaybtndiv').style.display = 'block';
+                document.getElementById('progress').style.display = 'none';
+            } else {
+                if (encrypted == adminhash) {
+                    Send_data2();
+                    document.getElementById('progress').style.display = 'none';
+                    $('#movietxt').text('Wait for admin to play the video');
+                    $('#moviebtnd').fadeOut();
+                    $('#movietxt').fadeIn();
 
-                }
-                else {
+                } else {
+                    document.getElementById('progress').style.display = 'none';
                     $('#movietxt').text('Your video is not same with admin\'s video , please chose another one');
-                     $('#movietxt').fadeIn();
+                    $('#movietxt').fadeIn();
                 }
             }
-            document.getElementById('progress').style.display = 'none';
-            document.getElementById('blaybtndiv').style.display = 'block';
+
 
         });
 

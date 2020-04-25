@@ -10,8 +10,6 @@ import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 
 
-
-
 const name = window.$name;
 
 class Homepage extends Component {
@@ -21,14 +19,13 @@ class Homepage extends Component {
         $(document).ready(function () {
             $('.nextbtn').click(function () {
                 var id = $(".input1").val();
-                
+
                 var name = $(".input2").val();
                 var bio = $(".textarea").val();
 
                 var mem = [];
                 var token = window.localStorage.getItem('token');
 
-                
 
                 var settings = {
                     "url": "http://localhost:8000/groups/",
@@ -36,19 +33,24 @@ class Homepage extends Component {
                     "timeout": 0,
                     error: function (event) {
                         if (event.status == 400)
-                            alert("group with this groupid already exists");
+                            // alert("group with this groupid already exists");
+
+
+                            $('#Status-Id').html('group with this groupid already exists!');
+                            $('#Status-Id').fadeIn();
+                            $('#Status-Id').delay(3000).toggle('slow');
                     },
                     success: function () {
-                      //  document.getElementById("myModel").style.display = 'block'
-                                    $('.formback-content').fadeOut(); 
-                                    $('.addmember-content').fadeIn();
+                        //  document.getElementById("myModel").style.display = 'block'
+                        $('.formback-content').fadeOut();
+                        $('.addmember-content').fadeIn();
 
                         window.localStorage.setItem('id_group', id);
-                        
-                        alert("done");
+
+
                     },
                     "headers": {
-                        
+
                         "accept": "application/json",
 
                         "Authorization": "token " + token,
@@ -65,7 +67,7 @@ class Homepage extends Component {
                             "members": mem
 
                         }
-                   ),
+                    ),
 
                 }
                 $.ajax(settings).done(function (response) {
@@ -77,43 +79,42 @@ class Homepage extends Component {
 
                 var token = window.localStorage.getItem('token');
                 var id_gp = window.localStorage.getItem('id_group')
-                
+
 
                 var settings = {
                     "url": "http://127.0.0.1:8000/user/" + member + "",
                     "method": "GET",
                     "timeout": 0,
                     error: function (event) {
-                        
-                      
+
+
                         $('#Addmember-Status').html('User not found !');
                         $('#Addmember-Status').fadeIn();
-                    //    $('#Addmember-Status').delay(16000).toggle('slow');
-                        
+                        $('#Addmember-Status').delay(3000).toggle('slow');
+
 
                     },
                     success: function () {
-                        $('#Addmember-Status').fadeOut();
-                     
+
+
                         var settings = {
                             "url": "http://127.0.0.1:8000/group/add_member/",
                             "method": "POST",
                             error: function () {
-                                
-                                    $('#Addmember-Status').html('User is already a member of this group !');
-                                    $('#Addmember-Status').fadeIn();
-                                    
 
-                                //    $('#Addmember-Status').delay(3000).toggle('slow');
-                                 
+                                $('#Addmember-Status').html('User is already a member of this group !');
+                                $('#Addmember-Status').fadeIn();
+                                $('#Addmember-Status').delay(3000).toggle('slow');
+
+
                             },
                             success: function () {
-                                $('#Addmember-Status').fadeOut(); 
-                                $(".textarea-addmember").append(member+'-');
+
+                                $(".textarea-addmember").append(member + '-');
                             },
                             "timeout": 0,
                             "headers": {
-                                
+
                                 "accept": "application/json",
                                 "Access-Control-Allow-Origin": "*",
                                 "Access-Control-Allow-Headers": "*",
@@ -127,30 +128,27 @@ class Homepage extends Component {
                         };
 
                         $.ajax(settings).done(function (response) {
-                            
+
                             console.log(response);
                         });
                     },
                     "headers": {
-                        
+
                         "accept": "application/json",
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Allow-Headers": "*",
                         "Content-Type": "application/json"
                     },
-                   
+
                 };
-                
+
                 $.ajax(settings).done(function (response) {
                     // 
                     console.log(response);
-                    
+
                 });
 
             });
-
-            
-
 
 
             $(".skipbtn").click(function () {
@@ -160,30 +158,18 @@ class Homepage extends Component {
 
 
             $(".createnewgp").click(function () {
-                
+
                 $('.formback').fadeIn();
-                
+
 
             });
 
 
             $(".KeyboardBackspaceIcon").click(function () {
-                
+
                 $('.formback').fadeOut();
             });
 
-
-
-           
-
-            
-
-
-
-
-
-
-        
 
             if (localStorage.getItem('token') == null) {
                 alert("Login please !");
@@ -212,7 +198,7 @@ class Homepage extends Component {
                         }
                     },
                     success: function () {
-                      //  window.localStorage.setItem('id_gp', id);
+                        //  window.localStorage.setItem('id_gp', id);
                         window.location.replace("/homepage/");
                     },
                     "headers": {
@@ -248,7 +234,7 @@ class Homepage extends Component {
             var token = window.localStorage.getItem('token');
             var username = window.localStorage.getItem('username');
             $('.groupsShow').append('<h4> Your Groups </h4>');
-            
+
             $('.groupsShow').append("<hr>");
             $('.username').text(username);
             $(".logout").click(function () {
@@ -289,7 +275,6 @@ class Homepage extends Component {
                     //  console.log("mygroupssss" + mygroups[counter1].id);
                     var d = "document.getElementById('myModal2')";
                     var dd = d + ".style.display = 'block'";
-
 
 
                     //   var l = "window.localStorage.setItem('id_gp','" + mygroups[counter1].id + "')";
@@ -353,7 +338,7 @@ class Homepage extends Component {
                 };
 
                 $.ajax(settings).done(function (response) {
-                    
+
                     localresponse = response;
                     var obj = $('.deleteTEXT').text("Are you sure  you want to leave \n The  " + response.title + "  ? ");
                     obj.html(obj.html().replace(/\n/g, '<br/>'));
@@ -372,7 +357,7 @@ class Homepage extends Component {
             $('.dltyes').click(function () {
 
                 var gpid = window.localStorage.getItem("id_gp");
-                
+
                 if (localresponse.created_by == window.localStorage.getItem('username')) {
                     var settings = {
                         "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
@@ -439,7 +424,7 @@ class Homepage extends Component {
                     "Content-Type": "application/json",
 
                 };
-               
+
                 $.ajax(settings).done(function (response) {
                     $('.texx').text("Edit " + response.title + " details");
                 });
@@ -453,7 +438,6 @@ class Homepage extends Component {
                 var gpid = window.localStorage.getItem("id_gp");
 
 
-            
                 var title = $('#edittitle').val();
                 var des = $('#editdes').val();
                 console.log("AAAAAA  " + gpid);
@@ -463,7 +447,7 @@ class Homepage extends Component {
                     form.append("title", title);
                 if (des != '')
                     form.append("describtion", des);
-                
+
 
                 var settings = {
                     "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
@@ -497,11 +481,11 @@ class Homepage extends Component {
             window.onclick = function (event) {
                 if (event.target == document.getElementById("myModal")) {
                     $('.modal').fadeOut("slow");
-                    
+
                 }
                 if (event.target == document.getElementById("myModal2")) {
                     $('.modal2').fadeOut("slow");
-                    
+
                 }
             }
 
@@ -514,10 +498,6 @@ class Homepage extends Component {
                 },
             };
 
-
-
-
-            
 
             $.ajax(settings).done(function (response) {
                 console.log(response);
@@ -532,12 +512,15 @@ class Homepage extends Component {
                     };
 
                     $.ajax(settings2).done(function (response2) {
-                        console.log(response2);
-                        groups.push({name: response2.title, id: response2.groupid});
-                        
-                    });
+                        var booll = 0;
+                        for (var jj = 0; jj < mygroups.length; jj++) {
+                            if (mygroups[jj].id == response2.groupid)
+                                booll = 1;
 
-                    
+                        }
+                        if (booll == 0)
+                            groups.push({name: response2.title, id: response2.groupid});
+                    });
 
 
                 }
@@ -603,13 +586,6 @@ class Homepage extends Component {
     };
 
 
-    
-
-    
-
-
-
-
     constructor(props) {
 
         super(props);
@@ -619,7 +595,7 @@ class Homepage extends Component {
 
             // anchorPosition:null ,
             value: ''
-            
+
 
         }
 
@@ -666,10 +642,7 @@ class Homepage extends Component {
 
     };
 
-    
-      
-    
-    
+
     backdropclickhandeler = () => {
 
         this.setState({sidedraweropen: false})
@@ -686,12 +659,9 @@ class Homepage extends Component {
     //         return(null)
     //     }
     // };
-    
-    
 
 
     render() {
-        
 
 
         return (
@@ -699,7 +669,9 @@ class Homepage extends Component {
 
             <div class="Homepage">
                 {/* {this.renderEfect()} */}
-                
+
+
+
 
                 <div id="myModal" class="modal">
                     <div class="modal-content">
@@ -794,82 +766,86 @@ class Homepage extends Component {
                 </header>
 
 
+                <div className="formback">
+                    <div className="formback-content">
+                        <div className="TTitle">
+                            <IconButton style={{color: 'white', marginRight: '130%', marginTop: '4%'}}
+                                        className="KeyboardBackspaceIcon">
+                                <CloseIcon fontSize="large"/>
+                            </IconButton>
 
-                
-                    <div className="formback">
-                        <div className="formback-content">
-                            <div className="TTitle">
-                                <IconButton style={{color : 'white' ,marginRight :'130%' ,marginTop:'4%' }} className="KeyboardBackspaceIcon">
-                                    <CloseIcon fontSize="large" />
-                                </IconButton>
+                            <h4 className="textForm">create new group</h4>
+                            <hr></hr>
 
-                                <h4 className="textForm">create new group</h4>
-                                <hr></hr>
+                        </div>
+                        <input onChange={this.change_name} type="text"
 
-                            </div>
-                    <input onChange={this.change_name} type="text"
+                               className="input1" placeholder="name" style={{
+                            height: '40px',
+                            width: '65%',
+                        }}/>
 
-                           className="input1" placeholder="name" style={{
-                        height: '40px',
-                        width: '65%',
-                    }}/>
+                        <br></br>
 
-                    <br></br>
-                    
-                    <br></br>
-                    <input onChange={this.change_id} type="text"
-                           className="input2" placeholder="id" style={{
-                        height: '40px',
-                        width: '65%'
-                    }}/>
-                    <br></br>
+                        <br></br>
+                        <input onChange={this.change_id} type="text"
+                               className="input2" placeholder="id" style={{
+                            height: '40px',
+                            width: '65%'
+                        }}/>
 
-                    <textarea onChange={this.change_bio} type="text"
-                              className="textarea" placeholder=" bio" style={{
-                        height: '60px',
-                        width: '65%',
-                        marginTop:'8%'
-                        
-                        
-                    }}/>
+                            <div className="Status-Id" id="Status-Id"></div>
+
+
+                        <br></br>
+
+                        <textarea onChange={this.change_bio} type="text"
+                                  className="textarea" placeholder=" bio" style={{
+                            height: '60px',
+                            width: '65%',
+                            marginTop: '8%'
+
+
+                        }}/>
 
                         <Button style={{
-                        backgroundColor: "Red",
-                        marginRight:"45%" ,
-                        marginTop: "30%",
-                        marginLeft:"42%"
+                            backgroundColor: "Red",
+                            marginRight: "45%",
+                            marginTop: "30%",
+                            marginLeft: "42%"
                         }} className='nextbtn' variant="contained" color="secondary">
-                        next
+                            next
                         </Button>
-                        </div>
+                    </div>
 
-                        <div className="addmember-content">
-                        <p classname='tit' style={{fontSize:"100%" , marginBottom:"8%" , marginTop:"8%" ,}}>Add your member</p>
+                    <div className="addmember-content">
+                        <p classname='tit' style={{fontSize: "100%", marginBottom: "8%", marginTop: "8%",}}>Add your
+                            member</p>
                         <hr></hr>
 
-                            <input class='inp' placeholder=" enter your user's id"></input>
-                            <div className = "textarea-addmember" style={{ borderRadius:"10px"  ,marginTop:"10%", marginBottom:"5%" , }}></div>
-                            <div className = "Status-Addmember" id = "Addmember-Status"></div>
-                            <div class="center">
+                        <input class='inp' placeholder=" enter your user's id"></input>
+                        <div className="textarea-addmember"
+                             style={{borderRadius: "10px", marginTop: "10%", marginBottom: "5%",}}></div>
+                        <div className="Status-Addmember" id="Addmember-Status"></div>
+                        <div class="center">
 
-                            <Button style={{marginTop:"14%" , backgroundColor: "Red"}} size='large'
+                            <Button style={{marginTop: "14%", backgroundColor: "Red"}} size='large'
                                     className="addbtn" variant="contained" color="secondary">
                                 <p>Add&nbsp;</p>
                             </Button>
 
                             <Button style={{
-                                marginTop:"14%",
+                                marginTop: "14%",
                                 backgroundColor: 'gray',
                                 marginLeft: "3%"
 
                             }} size='large' className="skipbtn" variant="contained" color="secondary">
-                                <p>Skip</p>
+                                <p>Done</p>
                             </Button>
 
 
-                               
-                            </div>
                         </div>
+                    </div>
                     {/* <div id="myModel" className="modal2">
                         <div id="mymodal2" class="modal-content2">
                             <p class='tit'>Add your member</p>
@@ -883,12 +859,12 @@ class Homepage extends Component {
                     </div> */}
 
 
-                    </div>
+                </div>
 
 
-                    <div className="groupsShow">
-                        
-                       
+                <div className="groupsShow">
+
+
                     <Button style={{
                         backgroundColor: "Red",
                         marginRight: "10px",
@@ -898,12 +874,10 @@ class Homepage extends Component {
                         Create new group
                     </Button>
 
-                    </div>
-                
+                </div>
 
 
             </div>
-            
 
 
         )

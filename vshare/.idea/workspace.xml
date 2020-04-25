@@ -3,7 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="d55f3097-6487-464d-a4bd-e506b2a84bda" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/src/chatroom/chat_room.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatroom/chat_room.js" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/src/Component/Homepage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Component/Homepage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Component/Homepage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Component/Homepage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Strartpage/Startpage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Strartpage/Startpage.js" afterDir="false" />
+>>>>>>> features/chatroom
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,7 +25,17 @@
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
   </component>
+<<<<<<< HEAD
   <component name="ProjectId" id="1aua2JnRQAb0opVlRZDCNlzfFwK" />
+=======
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="ProjectId" id="1aIyQCUHUS5WY3zkKiRUBgY4yaD" />
+>>>>>>> features/chatroom
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -49,6 +65,8 @@
       <workItem from="1587587746239" duration="7726000" />
       <workItem from="1587654527988" duration="833000" />
       <workItem from="1587659406016" duration="990000" />
+      <workItem from="1587687425784" duration="685000" />
+      <workItem from="1587733014953" duration="4782000" />
     </task>
     <servers />
   </component>
