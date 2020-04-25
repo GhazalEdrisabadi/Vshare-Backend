@@ -65,8 +65,12 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			elif command == "play_video":
 				await self.play()
 
+			elif command == "reset":
+				await self.reset_state()
+
 		except ClientError as e:
 			await self.send_json({"error": e.code})
+
 
 	async def recieve_stream(self,vhash):	
 
@@ -196,8 +200,41 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				}
 			)
 
+	async def reset_state():
+		user = self.scope["user"]
+		iscreator = await is_creator(user,self.roomid)
+		status = await get_status(self.roomid)
+
+		if iscreator:
+			if status == 1 or status == 2:
+				groupstatus = await set_status(self.roomid,state=0)
+				await channel_layer.group_send(
+					self.roomid,
+				{
+					"type":"send_state",
+					"status":groupstatus,
+					"message":"group was reset!",
+				}
+			)
+			else:
+				await self.send_json(
+				{
+					"username":user.username,
+					"status":status,
+					"message":"Nothing to reset in this state!",
+				}
+			)
+		else:
+			await self.send_json(
+				{
+					"username":user.username,
+					"message":"Permission is denied!",
+				}
+			)
+
+
 	""" 
-	 Handlers for messages sent over the channel layer
+		Handlers for messages sent over the channel layer
 	"""
 	# Called when we want send state to clients
 	async def send_state(self, event):
