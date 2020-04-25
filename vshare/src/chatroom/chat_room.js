@@ -54,6 +54,11 @@ class chat_room extends Component {
 
 
             }
+            if (messagee.status == 2) {
+                this.setState({
+                    file_show_when_click: this.state.file_select
+                })
+            }
         };
 
 
@@ -175,15 +180,24 @@ class chat_room extends Component {
     //}
     handleSubmit(e) {
 
-        this.setState({
-            file_show_when_click: this.state.file_select
-        })
-        console.log("onchange")
-        document.getElementById('movie').style.display = 'block';
-        document.getElementById('blaybtndiv').style.display = 'none';
+
+        const message_send_play = { "command": "play" }
+
+        // ws.send(JSON.stringify(message_send))
+        ws.send(JSON.stringify(message_send_play))
+        console.log(JSON.stringify(message_send_play))
+  
+        //document.getElementById('movie').style.display = 'block';
+        //document.getElementById('blaybtndiv').style.display = 'none';
 
     }
+    //send_play() {
+    //    const message_send_play = { "command": "play"}
 
+    //    // ws.send(JSON.stringify(message_send))
+    //    ws.send(JSON.stringify(message_send_play))
+    //    console.log(JSON.stringify(message_send_play))
+    //}
 
     onChange(e) {
         document.getElementById('blaybtndiv').style.display = 'none';
@@ -234,7 +248,7 @@ class chat_room extends Component {
         var self = this;
 
         function Send_data() {
-            const message_send = {"command": "set_video_hash", "roomid": id_gp, "vhash": encrypted}
+            const message_send = {"command": "set_video_hash", "vhash": encrypted}
 
             // ws.send(JSON.stringify(message_send))
             ws.send(JSON.stringify(message_send))
@@ -249,8 +263,10 @@ class chat_room extends Component {
             //};
         }
 
-        function Send_data2() {
-            const message_send = {"command": "set_video_hash", "roomid": id_gp, "vhash": encrypted}
+
+           function Send_data2() {
+            const message_send = {"command": "send_client_hash", "vhash": encrypted}
+
 
             // ws.send(JSON.stringify(message_send))
             ws.send(JSON.stringify(message_send))
