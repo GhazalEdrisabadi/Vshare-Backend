@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './Startpage.css'
 
+
 import AwesomeSlider from 'react-awesome-slider'
 import 'react-awesome-slider/dist/styles.css';
 import ReactDOM from 'react-dom';
