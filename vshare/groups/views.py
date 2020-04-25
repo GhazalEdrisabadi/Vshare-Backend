@@ -1,8 +1,8 @@
 from rest_framework import generics
-from .models import Group , Membership
+from .models import Group , Membership , AcceptedClient
 from users.models import Account
 from .serializers import GroupRegistrationSerializer
-from .serializers import GroupSerializer , MembershipSerializer , GroupUpdateSerializer
+from .serializers import GroupSerializer , MembershipSerializer , GroupUpdateSerializer ,AcceptedClientSerializer
 from rest_framework import filters
 from rest_framework import status
 from rest_framework import viewsets
@@ -29,6 +29,7 @@ class GroupList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         req = serializer.context['request']
         serializer.save(created_by=req.user)
+
 
 class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Group.objects.all()
@@ -91,6 +92,33 @@ class DeleteMembership(generics.RetrieveUpdateDestroyAPIView):
         queryset = Membership.objects.filter(the_member=user)
         return queryset
 
+class GroupList(generics.ListCreateAPIView):
+    search_fields = ['groupid']
+    filter_backends = (filters.SearchFilter,)
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    permission_classes = [AllowAny]
+    def perform_create(self, serializer):
+        req = serializer.context['request']
+        serializer.save(created_by=req.user)
+
+
+class AcceptedClientDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = AcceptedClient.objects.all()
+    serializer_class = AcceptedClientSerializer
+    lookup_field = 'accepted_client'
+    permission_classes = [AllowAny]
+
+class GroupAcceptedClientDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = AcceptedClient.objects.all()
+    serializer_class = AcceptedClientSerializer
+    lookup_field = 'entered_group'
+    permission_classes = [AllowAny]
+
+class AcceptedClientList(generics.ListCreateAPIView):
+    queryset = AcceptedClient.objects.all()
+    serializer_class = AcceptedClientSerializer
+    permission_classes = [AllowAny]
 
 '''
 class GroupsOfUser(generics.ListCreateAPIView):

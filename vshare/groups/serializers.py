@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Group , Membership
+from .models import Group , Membership , AcceptedClient
 from django.apps import apps
 
 UserModel = apps.get_model('users', 'Account')
@@ -8,12 +8,13 @@ UserModel = apps.get_model('users', 'Account')
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = '__all__'
+        fields = '__all__' 
+
 
 class GroupUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields =  ['groupid','title','describtion','invite_only',]
+        fields =  ['groupid','title','describtion','invite_only','video_hash']
 
 class MembershipSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
@@ -21,8 +22,13 @@ class MembershipSerializer(serializers.ModelSerializer):
         super(MembershipSerializer, self).__init__(many=many, *args, **kwargs)
     class Meta:
         model = Membership
-        fields = '__all__'   
-    
+        fields = '__all__'  
+class AcceptedClientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AcceptedClient
+        fields = '__all__'
+
+        
 
 
 class GroupRegistrationSerializer(serializers.ModelSerializer):
