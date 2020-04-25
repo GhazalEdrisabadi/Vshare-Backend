@@ -14,6 +14,9 @@ urlpatterns = [
     path('group/joined_groups/',views.GroupsOfUser.as_view(), name='groups_of_user'),
     path('group/owned_groups/',views.GroupsWhichUserIsAdmin.as_view(), name='owned_by_user'),
     path('group/<str:the_group>/leave/',views.DeleteMembership.as_view(), name='leave'),
+    path('group/ready_to_watch/',views.AcceptedClientList.as_view(), name='users_ready_to_watch'),
+    path('group/ready_to_watch/<str:accepted_client>/',views.AcceptedClientDetail.as_view(), name='ready_to_watch'),
+    path('group/users_ready_to_watch/<str:entered_group>/',views.GroupAcceptedClientDetail.as_view(), name='group_users_ready_to_watch'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
