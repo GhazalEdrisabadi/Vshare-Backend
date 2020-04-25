@@ -31,6 +31,8 @@ var ws = new WebSocket(url);
 var adminhash;
 var localresponse;
 var play_or_no;
+var clienthashok=0;
+
 class chat_room extends Component {
 
     componentDidMount() {
@@ -47,7 +49,7 @@ class chat_room extends Component {
             this.setState({server_pm: messagee})
             console.log(messagee)
             console.log(messagee.message)
-            if (messagee.status == 1 && localresponse.created_by != window.localStorage.getItem('username')) {
+            if ( clienthashok==0 && messagee.status == 1 && localresponse.created_by != window.localStorage.getItem('username')) {
                 $('#movietxt').fadeOut('slow');
                 $('#moviebtnd').fadeIn('slow');
                 adminhash = messagee.hash;
@@ -59,8 +61,9 @@ class chat_room extends Component {
                 this.setState({
                     file_show_when_click: this.state.file_select
                 })
-                    document.getElementById('movie').style.display = 'block';
-                    document.getElementById('blaybtndiv').style.display = 'none';
+                document.getElementById('movie').style.display = 'block';
+                document.getElementById('blaybtndiv').style.display = 'none';
+                document.getElementById('movietxt').style.display = 'none';
             }
         };
 
@@ -184,15 +187,16 @@ class chat_room extends Component {
     handleSubmit(e) {
 
 
-        const message_send_play = { "command": "play_video" }
+        const message_send_play = {"command": "play_video"}
 
         // ws.send(JSON.stringify(message_send))
         ws.send(JSON.stringify(message_send_play))
         console.log(JSON.stringify(message_send_play))
         play_or_no = true
-    
+
 
     }
+
     //send_play() {
     //    const message_send_play = { "command": "play"}
 
@@ -266,9 +270,9 @@ class chat_room extends Component {
         }
 
 
-           function Send_data2() {
-               const message_send = { "command": "send_client_hash", "vhash": encrypted }
-               play_or_no = true
+        function Send_data2() {
+            const message_send = {"command": "send_client_hash", "vhash": encrypted}
+            play_or_no = true
 
             // ws.send(JSON.stringify(message_send))
             ws.send(JSON.stringify(message_send))
@@ -301,19 +305,21 @@ class chat_room extends Component {
             console.log('encrypted: ' + encrypted);
 
             // eslint-disable-next-line no-undef
-                if (localresponse.created_by == window.localStorage.getItem('username')) {
+            if (localresponse.created_by == window.localStorage.getItem('username')) {
 
                 Send_data();
                 document.getElementById('blaybtndiv').style.display = 'block';
                 document.getElementById('progress').style.display = 'none';
             } else {
-                    if (encrypted == adminhash) {
-                      //  play_or_no = true
-                    Send_data2();
+                if (encrypted == adminhash) {
+                    clienthashok=1;
                     document.getElementById('progress').style.display = 'none';
                     $('#movietxt').text('Wait for admin to play the video');
                     $('#moviebtnd').fadeOut();
                     $('#movietxt').fadeIn();
+                    //  play_or_no = true
+                    Send_data2();
+
 
                 } else {
                     document.getElementById('progress').style.display = 'none';
