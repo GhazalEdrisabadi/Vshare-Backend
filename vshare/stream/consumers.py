@@ -115,7 +115,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		if status == 1 and ismember and not iscreator:
 
 			ownerhash = await get_hash(self.roomid)
-			clienthash = await client_hash(user)
+			clienthash = await client_hash(user,self.roomid)
 			# Check client hash with owner hash
 			if ownerhash == vhash and clienthash is None:
 				# Save hash with clients in db

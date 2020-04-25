@@ -21,8 +21,11 @@ def save_client_with_hash(the_user , the_group ,the_hash):
 		raise ClientError("ROOM_INVALID")
 
 @database_sync_to_async
-def client_hash(the_user):
-	return AcceptedClient.objects.get(accepted_client=the_user).recieved_hash
+def client_hash(the_user, the_group):
+	group_obj = Group.objects.get(groupid=the_group)
+	return AcceptedClient.objects.get(
+		entered_group=group_obj,
+		accepted_client=the_user).recieved_hash
 
 @database_sync_to_async
 def save_hash(the_group , the_hash):
