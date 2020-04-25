@@ -5,49 +5,18 @@ from .exceptions import ClientError
 from groups.models import *
 
 
-@database_sync_to_async
-def save_client_with_hash(the_user , the_group ,the_hash):
-	#save clients which their videos accepted
-	try:
-		group_obj = Group.objects.get(groupid=the_group)
-		obj = AcceptedClient(entered_group=group_obj , accepted_client=the_user , recieved_hash=the_hash)
-		obj.save()
-	except Group.DoesNotExist:
-		raise ClientError("ROOM_INVALID")
-
-@database_sync_to_async
-def save_hash(the_group , the_hash):
-	# Save the hash to the hash field of a Group instance
-	try:  
-			obj = Group.objects.get(groupid=the_group)
-			obj.video_hash = the_hash
-			obj.save()
-			return obj.video_hash
-	except Group.DoesNotExist:
-		raise ClientError("ROOM_INVALID")
-
-@database_sync_to_async
-def get_room(roomid):
-
-	# Find the room they requested (by ID)
-	try:
-		return Group.objects.get(groupid=roomid)
-	except Group.DoesNotExist:
-		raise ClientError("ROOM_INVALID")
-
+# Check a user is a member of group
 @database_sync_to_async
 def is_member(user,roomid):
-
-	# Check a user is a member of group
 	try:
 		return Membership.objects.filter(
 			the_member=user,
 			the_group=roomid
 		).exists()
-
 	except Membership.DoesNotExist:
-		pass
+		raise ClientError("ROOM_INVALID")
 
+# Check a user is a creator of group
 @database_sync_to_async
 def is_creator(user,roomid):
 	try:
@@ -56,11 +25,82 @@ def is_creator(user,roomid):
 			created_by=user
 			).exists()
 	except Group.DoesNotExist:
-		pass
+		raise ClientError("ROOM_INVALID")
 
+# Find room by requested id
+@database_sync_to_async
+def get_room(roomid):
+	try:
+		return Group.objects.get(groupid=roomid)
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
+
+# Set status for group
 @database_sync_to_async	
 def set_status(roomid,state):
-	obj = Group.objects.get(groupid=roomid)
-	obj.status = state
-	obj.save()
-	return obj.status
+	try:
+		obj = Group.objects.get(groupid=roomid)
+		obj.status = state
+		obj.save()
+		return obj.status
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
+
+# Get status by requested id
+@database_sync_to_async	
+def get_status(roomid):
+	try:
+		return Group.objects.get(groupid=roomid).status
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
+
+# Save the hash to the hash field of a group instance
+@database_sync_to_async
+def set_group_hash(the_group,the_hash):
+	try:  
+			obj = Group.objects.get(groupid=the_group)
+			obj.video_hash = the_hash
+			obj.save()
+			return obj.video_hash
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
+
+# Get group hash by requested id
+@database_sync_to_async	
+def get_group_hash(roomid):
+	try:
+		return Group.objects.get(groupid=roomid).video_hash
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
+
+# Save clients which their videos accepted
+@database_sync_to_async
+def save_client_with_hash(the_user,the_group,the_hash):
+	try:
+		group_obj = Group.objects.get(groupid=the_group)
+		obj = AcceptedClient(
+			entered_group=group_obj , 
+			accepted_client=the_user , 
+			recieved_hash=the_hash
+		)
+		obj.save()
+		return obj
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
+
+# Get client hash by requested group and client id
+@database_sync_to_async
+def get_client_hash(the_user, the_group):
+	try:
+		group_obj = Group.objects.get(groupid=the_group)
+		try:
+			obj = AcceptedClient.objects.get(
+				entered_group=group_obj,
+				accepted_client=the_user
+			)
+			return obj.recieved_hash
+		except AcceptedClient.DoesNotExist:
+			raise ClientError("Client_INVALID")
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
+
