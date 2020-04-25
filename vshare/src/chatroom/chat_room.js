@@ -30,7 +30,7 @@ var encrypted
 var ws = new WebSocket(url);
 var adminhash;
 var localresponse;
-
+var play_or_no;
 class chat_room extends Component {
 
     componentDidMount() {
@@ -54,10 +54,12 @@ class chat_room extends Component {
 
 
             }
-            if (messagee.status == 2) {
+            if (messagee.status == 2 && play_or_no == true) {
                 this.setState({
                     file_show_when_click: this.state.file_select
                 })
+                    document.getElementById('movie').style.display = 'block';
+                    document.getElementById('blaybtndiv').style.display = 'none';
             }
         };
 
@@ -181,14 +183,13 @@ class chat_room extends Component {
     handleSubmit(e) {
 
 
-        const message_send_play = { "command": "play" }
+        const message_send_play = { "command": "play_video" }
 
         // ws.send(JSON.stringify(message_send))
         ws.send(JSON.stringify(message_send_play))
         console.log(JSON.stringify(message_send_play))
   
-        //document.getElementById('movie').style.display = 'block';
-        //document.getElementById('blaybtndiv').style.display = 'none';
+    
 
     }
     //send_play() {
@@ -265,8 +266,8 @@ class chat_room extends Component {
 
 
            function Send_data2() {
-            const message_send = {"command": "send_client_hash", "vhash": encrypted}
-
+               const message_send = { "command": "send_client_hash", "vhash": encrypted }
+               play_or_no = true
 
             // ws.send(JSON.stringify(message_send))
             ws.send(JSON.stringify(message_send))
