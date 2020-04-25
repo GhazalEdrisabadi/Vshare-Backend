@@ -54,6 +54,7 @@ class chat_room extends Component {
 
 
             }
+            console.log(play_or_no)
             if (messagee.status == 2 && play_or_no == true) {
                 this.setState({
                     file_show_when_click: this.state.file_select
@@ -188,7 +189,7 @@ class chat_room extends Component {
         // ws.send(JSON.stringify(message_send))
         ws.send(JSON.stringify(message_send_play))
         console.log(JSON.stringify(message_send_play))
-  
+        play_or_no = true
     
 
     }
@@ -300,12 +301,14 @@ class chat_room extends Component {
             console.log('encrypted: ' + encrypted);
 
             // eslint-disable-next-line no-undef
-            if (localresponse.created_by == window.localStorage.getItem('username')) {
+                if (localresponse.created_by == window.localStorage.getItem('username')) {
+
                 Send_data();
                 document.getElementById('blaybtndiv').style.display = 'block';
                 document.getElementById('progress').style.display = 'none';
             } else {
-                if (encrypted == adminhash) {
+                    if (encrypted == adminhash) {
+                      //  play_or_no = true
                     Send_data2();
                     document.getElementById('progress').style.display = 'none';
                     $('#movietxt').text('Wait for admin to play the video');
