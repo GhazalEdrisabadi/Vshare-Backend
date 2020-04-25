@@ -153,7 +153,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				)
 
 	# When video is played change state and notify clients
-	async def play(self,roomid):
+	async def play(self):
 
 		user = self.scope["user"]
 		iscreator = await is_creator(user,self.roomid)
