@@ -115,16 +115,24 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		if status == 1 and ismember and not iscreator:
 
 			ownerhash = await get_hash(self.roomid)
+			clienthash = await client_hash(user)
 			# Check client hash with owner hash
-			if ownerhash == vhash:
+			if ownerhash == vhash and clienthash is None:
 				# Save hash with clients in db
-				await save_client_with_hash(user,self.roomid,vhash)
-				await self.channel_layer.group_add("accepted_users",self.channel_name)
+				client_is_ok = await save_client_with_hash(user,self.roomid,vhash)
+
 				await self.send_json(
 					{
 						"username":user.username,
 						"status":status,
 						"message":"you add to stream successfully.",
+					}
+				)
+			elif clienthash is not None:
+				await self.send_json(
+					{
+						"username":user.username,
+						"message":"your hash was sent once.",
 					}
 				)
 
@@ -145,7 +153,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				)
 
 	# When video is played change state and notify clients
-	async def play(self):
+	async def play(self,roomid):
 
 		user = self.scope["user"]
 		iscreator = await is_creator(user,self.roomid)
@@ -157,7 +165,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			groupstatus = await set_status(self.roomid,state=2)
 
 			await self.channel_layer.group_send(
-						"accepted_users"
+						self.roomid,
 						{
 							"type":"send_state",
 							"status":groupstatus,

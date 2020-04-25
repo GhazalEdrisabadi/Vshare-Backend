@@ -16,8 +16,13 @@ def save_client_with_hash(the_user , the_group ,the_hash):
 			recieved_hash=the_hash
 		)
 		obj.save()
+		return obj
 	except Group.DoesNotExist:
 		raise ClientError("ROOM_INVALID")
+
+@database_sync_to_async
+def client_hash(the_user):
+	return AcceptedClient.objects.get(accepted_client=the_user).recieved_hash
 
 @database_sync_to_async
 def save_hash(the_group , the_hash):
