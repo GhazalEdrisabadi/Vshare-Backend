@@ -31,7 +31,7 @@ class startpage extends Component {
 </a>        
     </button>
                         <button className="btn_login-singup" type="link" ghost>
-                            login/signup
+                                    <a href="../login">  login/signup</a>
     </button>
                         </div>
                     </div>
@@ -42,7 +42,7 @@ class startpage extends Component {
                                                                 at the same time.
                                                                 You can talk through the movie with each other
                             </div>
-                        <button className="btn_start"><a href="./login">Get Start</a></button>
+                        <button className="btn_start"><a href="../login">Get Start</a></button>
                     </div>
           
                     </div>
