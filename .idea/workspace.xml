@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="261f5428-644e-4ccf-b1d6-0289c4e945f1" name="Default Changelist" comment="Merge branch 'features/chatroom-frontend' into features/chatroom-frontend-playVideo&#10;&#10;# Conflicts:&#10;#&#9;vshare/package-lock.json&#10;#&#9;vshare/package.json&#10;#&#9;vshare/src/chatroom/chat_room.css&#10;#&#9;vshare/src/chatroom/chat_room.js">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vshare/src/chatroom/chat_room.js" beforeDir="false" afterPath="$PROJECT_DIR$/vshare/src/chatroom/chat_room.js" afterDir="false" />
-    </list>
+    <list default="true" id="261f5428-644e-4ccf-b1d6-0289c4e945f1" name="Default Changelist" comment="Merge branch 'features/chatroom-frontend' into features/chatroom-frontend-playVideo&#10;&#10;# Conflicts:&#10;#&#9;vshare/package-lock.json&#10;#&#9;vshare/package.json&#10;#&#9;vshare/src/chatroom/chat_room.css&#10;#&#9;vshare/src/chatroom/chat_room.js" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,6 +55,7 @@
       <workItem from="1587571566074" duration="15324000" />
       <workItem from="1587601356887" duration="8147000" />
       <workItem from="1587737515691" duration="1096000" />
+      <workItem from="1587775933192" duration="31000" />
     </task>
     <servers />
   </component>
