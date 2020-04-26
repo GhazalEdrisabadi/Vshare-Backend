@@ -13,7 +13,7 @@ class sl extends Component {
             $(".signupbtn").click(function () {
 
 
-                var username = $(".username").val();
+                var username = $(".susername").val();
                 var firstname = $(".firstname").val();
                 var lastname = $(".lastname").val();
                 var email = $(".email").val();
@@ -152,7 +152,7 @@ class sl extends Component {
                             </div>
                             <input type="text" placeholder="Fisrt name" class='firstname'/>
                             <input type="text" placeholder="Last name" class='lastname'/>
-                            <input type="text" placeholder="User name" class='username'/>
+                            <input type="text" placeholder="User name" class='susername'/>
                             <input type="password" placeholder="Password" class='password'/>
                             <input type="password" placeholder="Confirm password" class='cpassword'/>
                             <input type="email" placeholder="Email" class='email'/>
