@@ -9,36 +9,45 @@ from django.core.validators import RegexValidator
 from django import forms
 from django.contrib.postgres.fields import ArrayField
 from django.apps import apps
-from enum import Enum 
+from enum import Enum
+from django.utils.translation import gettext as _
+
 alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
 
 
 class Group(models.Model):
 	since = models.DateTimeField(auto_now_add=True)
-	groupid = models.CharField(max_length=20, blank=False, null=False, validators=[alphanumeric], unique=True, default='')
+	groupid = models.CharField(max_length=20, blank=False, null=False, validators=[alphanumeric], unique=True, default='',)
 	#groupid only contains alphanumerical characters
-	title = models.CharField(max_length=100, blank=True, default='No Name')
-	describtion = models.TextField(blank=True)
-	invite_only = models.BooleanField(default=False)
-  created_by = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name='owner')
-  members = models.ManyToManyField(settings.AUTH_USER_MODEL,blank=True,related_name='joined_groups',through='Membership')
+	title = models.CharField(max_length=100, blank=True, default='No Name',)
+	describtion = models.TextField(blank=True,)
+	invite_only = models.BooleanField(default=False,)
+	created_by = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name='owner',)
+	members = models.ManyToManyField(settings.AUTH_USER_MODEL,blank=True,related_name='joined_groups',through='Membership',)
+	video_hash = models.CharField(max_length=100, blank=True ,default='No hash yet!')
 	
-	#upper field should be modified. because right now, it's pointing to django's default superuser model
-	
-	class STATUS(Enum):
-		initial = (0, 'no action')
-		selected = (1, 'video selected by owner')
-		validation = (2, 'check validation')
-		played = (3, 'video played by owner')
+	def save(self,*args,**kwargs):
+		created = self.pk is None
+		super(Group,self).save(*args, **kwargs)
+		if created:
+			created_group = Group.objects.get(groupid=self.groupid)
+			owner_to_members=Membership(the_group=created_group , the_member=created_group.created_by)
+			owner_to_members.save()
 
-		@classmethod
-		def get_value(cls, member):
-			return member.value[0]
+	state0 = 0
+	state1 = 1
+	state2 = 2
 
-	status = models.CharField(
-		max_length=32,
-		choices=[x.value for x in STATUS],
-		default=STATUS.get_value(STATUS.initial)
+	StatusChoice = (
+		(state0, _('video was not selected by owner')),
+		(state1, _('video validation is checking')),
+		(state2, _('video is playing')),
+	)
+
+
+	status = models.PositiveSmallIntegerField(
+		choices=StatusChoice,
+		default=state0,
 	)
     
 	class Meta:
@@ -46,42 +55,17 @@ class Group(models.Model):
 
 
 	def __str__(self):
-		return self.gropid
-
-	# Check a user is a member of group
-	@property
-	def is_member(self):
-		UserModel = apps.get_model('users', 'Account')
-		user = UserModel.objects.get(username=username)
-		if user in self.members:
-			return True
-		else:
-			return False
-
-	# Check a member is a creator or not
-	@property
-	def is_creator(self):
-		UserModel = apps.get_model('users', 'Account')
-		user = UserModel.objects.get(username=username)
-		if user.is_member and user == self.created_by:
-			return True
-		else:
-			return False
+		return self.groupid
 
 	#Return a unique channels.Group for each group through groupid
 	@property
-	def group_name(self):
-		return "room-%s" % self.title
+	def group_id(self):
+		return "room-%s" % self.groupid
 
-	# def set_state(self, commend):
-	# 	if command == 'video selected by owner':
-	# 		self.STATUS.status = 1
-	# 	elif command == 'check validation':
-	# 		self.STATUS.status = 2
-	# 	elif command == 'video played by owner':
-	# 		self.STATUS.status = 3
-	# 	else
-	# 		self.STATUS.status = 0
+	@property
+	def group_status(self):
+		return self.status
+
 
 class Membership(models.Model):
     the_member = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE)
@@ -91,4 +75,13 @@ class Membership(models.Model):
     class Meta:
         ordering = ['date_joined']
         unique_together = ("the_group", "the_member")
+
+class AcceptedClient(models.Model):
+	entered_group = models.ForeignKey(Group, to_field="groupid" , on_delete=models.CASCADE)
+	accepted_client = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE)
+	recieved_hash = models.CharField(max_length=100,default='No hash yet!')
+	date_accepted = models.DateTimeField(auto_now_add=True)
+	class Meta:
+		ordering = ['date_accepted']
+		unique_together = ("entered_group", "accepted_client")
 

@@ -204,4 +204,9 @@ STATIC_URL = '/static/'
 
 
 MEDIA_URL =  '/media/'
+<<<<<<< HEAD
 MEDIA_ROOT = os.path.join(BASE_DIR , 'users/media')
+=======
+MEDIA_ROOT = os.path.join(BASE_DIR , 'users/media')
+
+>>>>>>> dev

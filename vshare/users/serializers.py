@@ -38,6 +38,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 class UserLoginSerializer(serializers.ModelSerializer):
 	
+	token = serializers.CharField(allow_blank=True, read_only=True)
 	username = serializers.CharField(required=False, allow_blank=True)
 
 	class Meta:
@@ -45,6 +46,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
 		fields = [
 			'username',
 			'password',
+			'token'
 		]
 		extra_kwargs = {
 				'password': {'write_only' : True}
@@ -65,6 +67,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
 			).distinct()
 
 		user = user.exclude(email__isnull=True).exclude(email__iexact='')
+
 		
 		if user.exists() and user.count() == 1:
 			user_obj = user.first()
@@ -75,6 +78,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
 			if not user_obj.check_password(password):
 				raise ValidationError("Incorrect credentials. please try again.")
 
+		token, created = Token.objects.get_or_create(user=user_obj) 
 		data["user"] = user_obj
 		return data
 
