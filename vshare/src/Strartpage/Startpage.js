@@ -1,52 +1,57 @@
 import React, { Component } from 'react'
 import './Startpage.css'
-import $ from 'jquery';
+
+
 import AwesomeSlider from 'react-awesome-slider'
 import 'react-awesome-slider/dist/styles.css';
-import Home from './homepage.png'
+import ReactDOM from 'react-dom';
 class startpage extends Component {
-    componentDidMount() {
-
-        $(document).ready(function () {
-            $(".app").click(function () {
-                alert("Coming soon!")
-
-            })
-            $(".contact").click(function () {
-                alert("Coming soon!")
-
-            })
-        })
-    }
+    
     render() {
+
         return (
-            <div className="start">
-                <header className="head_first">
-                    <div className="div_head">
-                        <div className="btn_login"><a href='./login'> login/signup</a></div>
-                        <div className="contact"><a >Contact</a></div>
-                        <div className="app"><a >Application</a></div>
-                        <div className="btn_about"><a href='./about'>About</a></div>
+
+            <div className="back_startpage">
+                <div className="Main_div">
+                <header className="page-header" >
+
+                        <div className="div_header_start" style={{ overflow:"hidden" }}>
+                        <div className="div_site_name">
+                            <h1 className="site_name">Vshare</h1>
+                        </div>
+                        <div className="button_header">
+                            <button className="btn_about" type="link" ghost><a href="./about">
+                                about</a>
+                            </button>
+                            <button className="btn_contact" type="link" ghost><a href="./contact">
+                                contact
+</a>        
+                            </button>
+                            <button className="btn_app" type="link" ghost><a href="./app">
+                                Application
+</a>        
+    </button>
+                        <button className="btn_login-singup" type="link" ghost>
+                                    <a href="../login">  login/signup</a>
+    </button>
+                        </div>
                     </div>
-                </header>
-                <div className="body_start" >
-                    <p className="welcome">Welcome to Vshare</p>
-                    <div className="text">
-                        <p className="txt">We are here</p>
-                        <p className="txt">  </p>
-                        <p className="txt">to make your life</p>
-                        <p className="txt">  </p>
-                        <p className="txt">more instresting</p>
+                    </header>
+                    <div className="txt_explain">
+                        <div>
+                        Vshare is a web-base service which allows you to watch a video file with other users
+                                                                at the same time.
+                                                                You can talk through the movie with each other
+                            </div>
+                        <button className="btn_start"><a href="../login">Get Start</a></button>
                     </div>
-                <AwesomeSlider style={{ height: "500px", width: "500px" , top:"20px" , left:"1%" }}>
-                    <div>1</div>
-                    <div >2</div>
-                    <div>3</div>
-                    <div>4</div>
-                    </AwesomeSlider>
+          
+                    </div>
+                
                 </div>
-            </div>
+            
             )
+
     }
 }
 export default startpage;

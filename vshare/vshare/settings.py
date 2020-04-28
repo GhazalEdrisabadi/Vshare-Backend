@@ -140,8 +140,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'vshare',
-        'USER' : 'admin',
-        'PASSWORD' : 'vshare5432',
+        'USER' : 'postgres',
+        'PASSWORD' : '123qwe',
         'HOST' : 'localhost',
         'PORT' : '5432',
     }
@@ -204,5 +204,6 @@ STATIC_URL = '/static/'
 
 
 MEDIA_URL =  '/media/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR , 'users/media')
 
