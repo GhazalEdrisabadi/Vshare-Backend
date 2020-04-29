@@ -1,0 +1,46 @@
+.back_profile {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    align-items: center;
+    top: 0;
+    background-color: #292929;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    background-repeat: no-repeat;
+    background-size: cover
+}
+.photo {
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    margin-top: 5%;
+    margin-left: 20%;
+    border-radius: 100px;
+    background-color:white
+}
+.username_prof {
+    position: absolute;
+    margin-top: 9%;
+    margin-left: 42%;
+    font-size: 20px;
+    color: white;
+    font-size: 30px;
+      font-family: 'Malgun Gothic'
+      
+}
+.edite_profile {
+    position: absolute;
+    margin-top: 9.5%;
+    margin-left:50%;
+    font-size: 20px;
+    color: white;
+    width:150px;
+    height:50px;
+    border-radius:0px;
+    font-size: 20px;
+    border-color:black;
+    font-family: 'Malgun Gothic'
+}
