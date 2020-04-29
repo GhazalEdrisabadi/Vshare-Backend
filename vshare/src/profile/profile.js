@@ -6,6 +6,7 @@ class profile extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
         $(document).ready(function () {
+
                 var member = $(".inp").val();
 
                 var username = window.localStorage.getItem('username');
@@ -115,7 +116,12 @@ class profile extends Component {
                     var counter2 = 0;
                     var htmlcode2 = '';
                     while (counter2 < groups.length) {
+                        htmlcode2 += '<div>'
                         htmlcode2 += '<div class="member_gp"></div>';
+
+                        htmlcode2 += '<p class="id_group">' + groups[counter2].id + '</p>'
+                        htmlcode2 += '</div>'
+                        
 
                         $('.group_prof').append(htmlcode2);
                         counter2++;
@@ -156,7 +162,10 @@ class profile extends Component {
                 <div className="follower">followers</div>
                 <div className="following_count">0</div>
                 <div className="following">following</div>
-                <div className="group_prof"></div>
+
+                <div className="group_prof">
+               
+                </div>
             </div>
             )
     }

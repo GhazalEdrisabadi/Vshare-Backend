@@ -122,9 +122,10 @@
     margin-left: 15%;
     font-size: 20px;
     color: white;
-    width: 1000px;
+    width: 900px;
     height: 200px;
-    
+    left:0;
+    overflow-x:scroll;
     font-size: 20px;
     font-family: 'Malgun Gothic';
 }
@@ -149,3 +150,4 @@
     color: white;
     margin-left: 50px;
 }
+
