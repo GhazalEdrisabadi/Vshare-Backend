@@ -1,40 +1,42 @@
 import React, { Component } from 'react'
 import './profile.css'
 import $ from 'jquery';
+import Left from './left.png'
+import Right from './right.png'
 var respone_get
 class profile extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
         $(document).ready(function () {
 
-                var member = $(".inp").val();
+            var member = $(".inp").val();
 
-                var username = window.localStorage.getItem('username');
-                var id_gp = window.localStorage.getItem('id_group')
-           
+            var username = window.localStorage.getItem('username');
+            var id_gp = window.localStorage.getItem('id_group')
 
-                var settings = {
-                    "url": "http://127.0.0.1:8000/user/" + username + "",
-                    "method": "GET",
-                    "timeout": 0,
-                    "headers": {
 
-                        "accept": "application/json",
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Headers": "*",
-                        "Content-Type": "application/json"
-                    },
+            var settings = {
+                "url": "http://127.0.0.1:8000/user/" + username + "",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
 
-                };
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                },
 
-                $.ajax(settings).done(function (response) {
-                    // 
-                    console.log(response);
-                    respone_get = response
-                    $(".username_prof").text(respone_get.username)
+            };
 
-                });
-           
+            $.ajax(settings).done(function (response) {
+                // 
+                console.log(response);
+                respone_get = response
+                $(".username_prof").text(respone_get.username)
+
+            });
+
             $(".edite_profile").click(function () {
                 $(".modal_edite_profile").fadeIn();
 
@@ -63,11 +65,11 @@ class profile extends Component {
                 var htmlcode = '';
                 for (var counter1 = 0; counter1 < mygroups.length; counter1++ , htmlcode = '') {
 
-                    htmlcode+='<div>'
+                    htmlcode += '<div>'
                     htmlcode += '<div class="admin_gp"></div>';
-                   
+
                     htmlcode += '<p class="id_group">' + mygroups[counter1].id + '</p>'
-                    htmlcode+='</div>'
+                    htmlcode += '</div>'
                     $('.group_prof').append(htmlcode);
 
                 }
@@ -121,7 +123,7 @@ class profile extends Component {
 
                         htmlcode2 += '<p class="id_group">' + groups[counter2].id + '</p>'
                         htmlcode2 += '</div>'
-                        
+
 
                         $('.group_prof').append(htmlcode2);
                         counter2++;
@@ -133,8 +135,47 @@ class profile extends Component {
 
 
             });
+    
+
+            document.getElementById('right-button').onclick = function () {
+                scrollLeft(document.getElementById('content'), 300, 1000);
+                console.log("right")
+            }
+            document.getElementById('left-button').onclick = function () {
+                scrollLeft(document.getElementById('content'), -300, 1000);
+                console.log("left")
+            }
+            function scrollLeft(element, change, duration) {
+                var start = element.scrollLeft,
+                    currentTime = 0,
+                    increment = 20;
+
+                console.log(start)
+
+                var animateScroll = function () {
+                    currentTime += increment;
+                    var val = Math.easeInOutQuad(currentTime, start, change, duration);
+                    element.scrollLeft = val;
+                    if (currentTime < duration) {
+                        setTimeout(animateScroll, increment);
+                    }
+                };
+                animateScroll();
+            }
+
+            //t = current time
+            //b = start value
+            //c = change in value
+            //d = duration
+            Math.easeInOutQuad = function (t, b, c, d) {
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t + b;
+                t--;
+                return -c / 2 * (t * (t - 2) - 1) + b;
+            };
         })
     }
+
     render() {
         return (
             <div className="back_profile" >
@@ -156,42 +197,29 @@ class profile extends Component {
                         </button>
 
                     </div>
-                   
+
                 </div>
                 <div className="follower_count">0</div>
                 <div className="follower">followers</div>
                 <div className="following_count">0</div>
                 <div className="following">following</div>
 
-                <div className="group_prof">
-               
+
+
+                <img id="left-button" className="left_div" src={Left} />
+                       
+  
+                
+                <div className="group_prof" id="content">
+
                 </div>
+
+                <img id="right-button" class="right_div" src={Right} />
+                     
+                    
+
             </div>
-            )
+        )
     }
 }
 export default profile;
-/*        <div id="myModal" class="modal">
-
-                    <div class="modal-content">
-                        <h3 class="texx">Edit your groups deatails</h3>
-
-                        <hr></hr>
-
-                        <input class="inputedit" id='edittitle' placeholder="Title"></input>
-
-
-                        <input class="inputedit" id='editdes' placeholder="Description"></input>
-                        <br></br>
-
-                        <button style={{
-                            backgroundColor: "Red",
-                            marginTop: "20px"
-                        }} size='large' className="submitedit" variant="contained" color="secondary">
-                            <p>Edit</p>
-                        </button>
-
-                    </div>
-
-                </div>
-                */
