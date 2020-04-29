@@ -174,6 +174,9 @@ class chat_room extends Component {
         }
         this.onChange = this.onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.play = this.play.bind(this);
+        this.pause = this.pause.bind(this);
+        this.changeCurrentTime = this.changeCurrentTime.bind(this);
     }
 
     //handleChange(event) {
@@ -331,7 +334,37 @@ class chat_room extends Component {
     Send_data() {
 
     }
+    play() {
+        const { player } = this.player.getState();
+        console.log("curent " + player.currentTime)
+        const message_send_play = { "command": "play_video_currentTime", "currentTime": player.currentTime }
+        // ws.send(JSON.stringify(message_send))
+        ws.send(JSON.stringify(message_send_play))
+        console.log(JSON.stringify(message_send_play))
+        this.player.play();
+      
+    }
 
+    pause() {
+        const { player } = this.player.getState();
+        console.log("curent " + player.currentTime)
+        const message_send_play = { "command": "pause_video_currentTime", "currentTime": player.currentTime }
+        // ws.send(JSON.stringify(message_send))
+        ws.send(JSON.stringify(message_send_play))
+        console.log(JSON.stringify(message_send_play))
+        this.player.pause();
+       
+    }
+    changeCurrentTime(seconds) {
+        return () => {
+            const { player } = this.player.getState();
+            console.log("curent " + player.currentTime)
+            const message_send_play = { "command": "forward_backward_video_currentTime", "currentTime": player.currentTime + seconds }
+            ws.send(JSON.stringify(message_send_play))
+            console.log(JSON.stringify(message_send_play))
+            this.player.seek(player.currentTime + seconds);
+        };
+    }
     render() {
 
 
@@ -371,15 +404,16 @@ class chat_room extends Component {
                     </header>
                     <div className="formback_movie">
                         <div id="movie">
-                            <Player
+                            <Player 
+                                ref={player => {
+                                    this.player = player;
+                                }}
                                 autoPlay
                                 src={this.state.file_show_when_click}
                             >
-                                <ControlBar autoHide={false} disableDefaultControls={true}>
-                                    <PlayToggle/>
-                                </ControlBar>
+                               
                             </Player>
-
+                 
 
                         </div>
                         <div id='firstprogress'>
@@ -417,6 +451,21 @@ class chat_room extends Component {
 
 
                     </div>
+                               <div className="controll">
+
+                                <Button onClick={this.play} className="play_btn">
+                                    play()
+                                </Button>
+                                <Button onClick={this.pause} className="pause_btn">
+                                    pause()
+                                </Button>
+                                  <Button onClick={this.changeCurrentTime(10)} className="mr-3">
+                                     currentTime += 10
+                                 </Button>
+                                  <Button onClick={this.changeCurrentTime(-10)} className="mr-3">
+                            currentTime -= 10
+                                     </Button>
+                            </div>
                     <div className="back_coulom">
 
                         <div className="formback_info" style={{width: '350px', height: '395px'}}>
