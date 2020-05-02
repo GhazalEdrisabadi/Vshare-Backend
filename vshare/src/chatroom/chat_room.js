@@ -188,21 +188,33 @@ class chat_room extends Component {
                 // player: the player's state
                 // actions: the player's actions
                 handle: (player, actions) => {
-                    console.log("act")
-                    const duration = player.duration;
+                    
+                    const current_time = player.currentTime;
                     // jump to the postion of 10%
                     if (Play_pause_space==0) {
-                        console.log("play")
+                        console.log("pause")
                         actions.pause()
-                        console.log("play")
+
+                        console.log("curent " + current_time)
+                        const message_send_play = { "command": "pause_video_currentTime", "currentTime": current_time }
+                        // ws.send(JSON.stringify(message_send))
+                        ws.send(JSON.stringify(message_send_play))
+                        console.log(JSON.stringify(message_send_play))
+                       // this.player.pause();
                         Play_pause_space = 1;
+
                         return
                     }
                     if (Play_pause_space==1) {
-                        console.log("pause")
+                        console.log("play")
                         actions.play()
-                        console.log("pause")
                         Play_pause_space = 0;
+                        console.log("curent " + current_time)
+                        const message_send_play = { "command": "play_video_currentTime", "currentTime": current_time }
+                        // ws.send(JSON.stringify(message_send))
+                        ws.send(JSON.stringify(message_send_play))
+                        console.log(JSON.stringify(message_send_play))
+                       // this.player.play();
                         return
                     }
                 }
