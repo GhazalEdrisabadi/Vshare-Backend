@@ -63,7 +63,10 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				await self.check_client_hash(content["vhash"])
 
 			elif command == "play_video":
-				await self.play()
+				await self.play(content["currentTime"])
+
+			elif command == "pause_video":
+				await self.pause(content["currentTime"])
 
 			elif command == "reset":
 				await self.reset_state()
@@ -146,7 +149,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 
 	# When video is played change state and notify clients
-	async def play(self):
+	async def play(self,currentTime):
 
 		user = self.scope["user"]
 		iscreator = await is_creator(user,self.roomid)
@@ -201,6 +204,36 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				}
 			)
 
+	async def pause(self,currentTime):
+		user = self.scope["user"]
+		iscreator = await is_creator(user,self.roomid)
+		status = await get_status(self.roomid)
+
+		if iscreator:
+			if status == 2:
+				await self.channel_layer.group_send(
+							self.roomid,
+							{
+								"type":"send_time",
+								"currentTime":currentTime,
+								"message":"video paused by owner",
+							}
+						)
+			else:
+				await self.send_json(
+					{
+						"username":user.username,
+						"message":"you can't pause video in this state!",
+					}
+				)
+		else:
+			await self.send_json(
+					{
+						"username":user.username,
+						"message":"Permission is denied!"
+					}
+				)
+
 	async def reset_state(self):
 		user = self.scope["user"]
 		iscreator = await is_creator(user,self.roomid)
@@ -254,6 +287,15 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				"msg_type":"send hash",
 				"status":event["status"],
 				"hash":event["hash"],
+				"message":event["message"],
+			}
+		)
+
+	async def send_time(self, event):
+		await self.send_json(
+			{
+				"msg_type":"send time",
+				"time":event["currentTime"],
 				"message":event["message"],
 			}
 		)
