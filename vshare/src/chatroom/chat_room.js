@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 
 //import '../../node_modules/video-react/dist/video-react.css';
 import './video-react.css';
-import {Player, ControlBar, PlayToggle} from 'video-react';
+import { Player, ControlBar, PlayToggle, Shortcut} from 'video-react';
 import sha256 from 'crypto-js/sha256';
 import hmacSHA512 from 'crypto-js/hmac-sha512';
 import Base64 from 'crypto-js/enc-base64';
@@ -31,6 +31,7 @@ var ws = new WebSocket(url);
 var adminhash;
 var localresponse;
 var play_or_no;
+var Play_pause_space = 0;
 class chat_room extends Component {
 
     componentDidMount() {
@@ -177,6 +178,56 @@ class chat_room extends Component {
         this.play = this.play.bind(this);
         this.pause = this.pause.bind(this);
         this.changeCurrentTime = this.changeCurrentTime.bind(this);
+        this.newShortcuts = [
+           
+            // Press number 1 to jump to the postion of 10%
+            {
+                
+                keyCode: 32, // Number 1
+                // handle is the function to control the player
+                // player: the player's state
+                // actions: the player's actions
+                handle: (player, actions) => {
+                    console.log("act")
+                    const duration = player.duration;
+                    // jump to the postion of 10%
+                    if (Play_pause_space==0) {
+                        console.log("play")
+                        actions.pause()
+                        console.log("play")
+                        Play_pause_space = 1;
+                        return
+                    }
+                    if (Play_pause_space==1) {
+                        console.log("pause")
+                        actions.play()
+                        console.log("pause")
+                        Play_pause_space = 0;
+                        return
+                    }
+                }
+            },
+            {
+                keyCode: 39, // Right arrow
+                ctrl: true, // Ctrl/Cmd
+                handle: (player, actions) => {
+                    if (!player.hasStarted) {
+                        return;
+                    }
+
+                    // this operation param is option
+                    // helps to display a bezel
+                    const operation = {
+                        action: 'forward-30',
+                        source: 'shortcut'
+                    };
+                    actions.forward(30, operation); // Go forward 30 seconds
+                }
+            }
+
+      
+        ];
+
     }
 
     //handleChange(event) {
@@ -411,7 +462,8 @@ class chat_room extends Component {
                                 autoPlay
                                 src={this.state.file_show_when_click}
                             >
-                               
+                                <Shortcut clickable={false} shortcuts={this.newShortcuts} />
+ 
                             </Player>
                  
 
