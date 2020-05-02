@@ -161,7 +161,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 					self.roomid,
 					{
 						"type":"send_time",
-						"status":status,
+						"status":groupstatus,
 						"currentTime":currentTime,
 						"message":"video played by owner",
 					}
