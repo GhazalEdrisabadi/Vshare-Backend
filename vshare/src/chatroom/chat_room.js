@@ -64,7 +64,11 @@ var localresponse;
 
 var play_or_no;
 
+
 var Play_pause_space = 0;
+
+var clienthashok=0;
+
 
 class chat_room extends Component {
 
@@ -98,7 +102,7 @@ class chat_room extends Component {
 
             console.log(messagee.message)
 
-            if (messagee.status == 1 && localresponse.created_by != window.localStorage.getItem('username')) {
+            if ( clienthashok==0 && messagee.status == 1 && localresponse.created_by != window.localStorage.getItem('username')) {
 
                 $('#movietxt').fadeOut('slow');
 
@@ -123,8 +127,8 @@ class chat_room extends Component {
                 })
 
                 document.getElementById('movie').style.display = 'block';
-
                 document.getElementById('blaybtndiv').style.display = 'none';
+                document.getElementById('movietxt').style.display = 'none';
 
             }
             if (messagee.status == 2 && messagee.message == "video paused by owner") {
@@ -371,9 +375,11 @@ class chat_room extends Component {
 
         this.pause = this.pause.bind(this);
 
+
         this.changeCurrentTime = this.changeCurrentTime.bind(this);
 
         this.newShortcuts = [
+
 
 
 
@@ -397,7 +403,9 @@ class chat_room extends Component {
 
                     const current_time = player.currentTime;
 
+
                     // jump to the postion of 10%
+
 
                     if (Play_pause_space == 0) {
 
@@ -779,6 +787,7 @@ class chat_room extends Component {
 
             // eslint-disable-next-line no-undef
 
+
             if (localresponse.created_by == window.localStorage.getItem('username')) {
 
 
@@ -792,10 +801,7 @@ class chat_room extends Component {
             } else {
 
                 if (encrypted == adminhash) {
-
-                    //  play_or_no = true
-
-                    Send_data2();
+                    clienthashok=1;
 
                     document.getElementById('progress').style.display = 'none';
 
@@ -804,6 +810,9 @@ class chat_room extends Component {
                     $('#moviebtnd').fadeOut();
 
                     $('#movietxt').fadeIn();
+                    //  play_or_no = true
+                    Send_data2();
+
 
 
 

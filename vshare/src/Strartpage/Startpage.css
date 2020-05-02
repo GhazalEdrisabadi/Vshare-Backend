@@ -60,26 +60,19 @@
 color:white;
 
 }
-    .btn_about a:hover,
-    .btn_about a:active {
-        color: red;
-    }
+ 
 .btn_app a {
     color: white;
 }
 
-    .btn_app a:hover,
-    .btn_app a:active {
-        color: red;
-    }
+   
 .btn_contact a {
     color: white;
 }
-
-    .btn_contact a:hover,
-    .btn_contact a:active {
-        color: red;
-    }
+.btn_login-singup a {
+    color: white;
+}
+  
 
 .txt_explain {
     width: 520px;
