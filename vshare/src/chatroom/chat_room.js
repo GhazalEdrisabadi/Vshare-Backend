@@ -45,14 +45,15 @@ import PauseIcon from '@material-ui/icons/Pause';
 
 
 
-
+var logoutclicked=0;
+var azavalbude=0;
 var percant = 0;
+var rejoined=0;
+var id_gp = window.localStorage.getItem('id_gp');
 
-var id_gp = window.localStorage.getItem('id_gp')
+const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + "";
 
-const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
-
-var encrypted
+var encrypted;
 
 var ws = new WebSocket(url);
 
@@ -105,11 +106,11 @@ class chat_room extends Component {
 
             console.log(messagee.message)
 
-            if ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message) {
+            if (logoutclicked==0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
                 window.location.reload();
             }
 
-            if (clienthashok == 0 && messagee.status == 1 && isadmin == 1) {
+            if (clienthashok == 0 && messagee.status == 1 && isadmin == 0) {
 
                 $('#movietxt').fadeOut('slow');
 
@@ -120,7 +121,24 @@ class chat_room extends Component {
 
             }
 
+
             console.log(play_or_no)
+
+            if (messagee.status == 0 && isadmin == 0) {
+                azavalbude=1;
+            }
+
+
+              if (messagee.status == 1 && isadmin == 0 && azavalbude==0 && clienthashok==0 ) {
+                rejoined=1;
+                $('#movietxt').text('Admin has been selected the video , select it too');
+
+                $('#moviebtnd').fadeIn('slow');
+
+
+
+            }
+
 
             if (messagee.status == 2 && play_or_no == true) {
 
@@ -190,6 +208,7 @@ class chat_room extends Component {
             }
 
             $('.logout').click(function () {
+                logoutclicked=1;
                 const message_reselect = {"command": "reset"}
                 ws.send(JSON.stringify(message_reselect));
                 window.location.replace('/homepage/');
@@ -199,6 +218,7 @@ class chat_room extends Component {
             $('#reselect').click(function () {
                 const message_reselect = {"command": "reset"}
                 ws.send(JSON.stringify(message_reselect));
+
                 //
 
             });
@@ -236,6 +256,7 @@ class chat_room extends Component {
 
                 } else {
                     document.getElementById('reselect').style.display = 'none';
+                    if(rejoined==0)
                     document.getElementById('moviebtnd').style.display = 'none';
 
                     document.getElementById('movietxt').style.display = 'block';
