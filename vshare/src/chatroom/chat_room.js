@@ -65,8 +65,12 @@ var clienthashok = 0;
 class chat_room extends Component {
 
 
-    componentDidMount() {
 
+    componentWillUnmount() {
+        document.removeEventListener("keyup", this.escFunction, false);
+    }
+    componentDidMount() {
+        document.addEventListener("keyup", this.handlereq_forward_backward, false);
 
         console.log(localStorage.getItem('token'))
 
@@ -115,8 +119,9 @@ class chat_room extends Component {
                 })
 
                 document.getElementById('movie').style.display = 'block';
-                document.getElementById('blaybtndiv').style.display = 'none';
+                document.getElementById('playbtnid').style.display = 'none';
                 document.getElementById('movietxt').style.display = 'none';
+                document.getElementById('controll_div').style.display='block'
 
             }
             if (messagee.status == 2 && messagee.message == "video paused by owner") {
@@ -141,6 +146,26 @@ class chat_room extends Component {
         const {id} = this.props.match.params
 
         $(document).ready(function () {
+
+            //$(document).keyup(function (e) {
+            //    if (e.keyCode == 39) {
+
+            //        const { player } = this.player.getState();
+
+            //        console.log("curent " + player.currentTime)
+
+            //        const message_send_play = { "command": "play_video", "currentTime": player.currentTime }
+
+
+            //        // ws.send(JSON.stringify(message_send))
+
+            //        ws.send(JSON.stringify(message_send_play))
+
+            //        console.log(JSON.stringify(message_send_play))
+            //    }
+            //});
+
+
 
 
             if (window.localStorage.getItem('token') == null) {
@@ -336,7 +361,7 @@ class chat_room extends Component {
         this.play = this.play.bind(this);
 
         this.pause = this.pause.bind(this);
-
+        this.handlereq_forward_backward = this.handlereq_forward_backward.bind(this);
 
         this.changeCurrentTime = this.changeCurrentTime.bind(this);
 
@@ -419,65 +444,70 @@ class chat_room extends Component {
 
             },
 
-            {
+            //{
 
-                keyCode: 39, // Right arrow
+            //    keyCode: 39, // Right arrow
 
-                // Ctrl/Cmd
+            //    // Ctrl/Cmd
 
-                handle: (player, actions) => {
+            //    handle: (player, actions) => {
 
-                    const current_time = player.currentTime;
+            //        const current_time = player.currentTime;
 
-                    if (!player.hasStarted) {
+            //        if (!player.hasStarted) {
 
-                        return;
+            //            return;
 
-                    }
+            //        }
 
-                    console.log("curent " + player.currentTime)
+            //        console.log("curent " + player.currentTime)
 
-                    const message_send_play = {"command": "play_video", "currentTime": current_time + 5}
 
-                    ws.send(JSON.stringify(message_send_play))
 
-                    console.log(JSON.stringify(message_send_play))
+            //        const message_send_play = { "command": "play_video", "currentTime": current_time + 5 }
 
-                    actions.forward(5); // Go forward 30 seconds
 
-                }
+            //        ws.send(JSON.stringify(message_send_play))
 
-            },
+            //        console.log(JSON.stringify(message_send_play))
 
-            {
+            //        actions.forward(5); // Go forward 30 seconds
 
-                keyCode: 37, // Right arrow
+            //    }
 
-                // Ctrl/Cmd
+            //},
 
-                handle: (player, actions) => {
+            //{
 
-                    const current_time = player.currentTime;
+            //    keyCode: 37, // Right arrow
 
-                    if (!player.hasStarted) {
+            //    // Ctrl/Cmd
 
-                        return;
+            //    handle: (player, actions) => {
 
-                    }
+            //        const current_time = player.currentTime;
 
-                    console.log("curent " + player.currentTime)
+            //        if (!player.hasStarted) {
 
-                    const message_send_play = {"command": "play_video", "currentTime": current_time - 5}
+            //            return;
 
-                    ws.send(JSON.stringify(message_send_play))
+            //        }
 
-                    console.log(JSON.stringify(message_send_play))
+            //        console.log("curent " + player.currentTime)
 
-                    actions.forward(-5); // Go forward 30 seconds
 
-                }
+            //        const message_send_play = { "command": "play_video", "currentTime": current_time - 5 }
 
-            }
+
+            //        ws.send(JSON.stringify(message_send_play))
+
+            //        console.log(JSON.stringify(message_send_play))
+
+            //        actions.forward(-5); // Go forward 30 seconds
+
+            //    }
+
+            //}
 
 
         ];
@@ -612,7 +642,7 @@ class chat_room extends Component {
         var counter = 0;
 
         var self = this;
-
+        console.log(file)
 
         function Send_data() {
 
@@ -818,6 +848,24 @@ class chat_room extends Component {
         };
 
     }
+    handlereq_forward_backward(event) {
+        console.log("hoooooooold")
+        if (event.keyCode == 39 || event.keyCode==37) {
+
+            const { player } = this.player.getState();
+
+            console.log("curent " + player.currentTime)
+
+            const message_send_play = { "command": "play_video", "currentTime": player.currentTime }
+
+            // ws.send(JSON.stringify(message_send))
+
+            ws.send(JSON.stringify(message_send_play))
+
+            console.log(JSON.stringify(message_send_play))
+            //console.log("11111111111111111111111111111111")
+        }
+    }
 
     render() {
 
@@ -880,10 +928,10 @@ class chat_room extends Component {
 
                     <div className="formback_movie">
 
-                        <div id="movie">
+                        <div id="movie" >
 
                             <Player
-
+                                
                                 ref={player => {
 
                                     this.player = player;
@@ -893,6 +941,7 @@ class chat_room extends Component {
                                 autoPlay
 
                                 src={this.state.file_show_when_click}
+                               
 
                             >
 
@@ -922,77 +971,124 @@ class chat_room extends Component {
                                 <p>Play</p>
 
                             </Button>
+                            <div className="control" id='controll_div'>
+                            <Button onClick={this.play} style={{
 
+                                backgroundColor: 'red',
+                                
+
+
+                            }} size='large' className="play_btn">
+
+
+                                play()
+
+                                </Button>
+
+
+                            <Button onClick={this.pause} style={{
+
+                                    backgroundColor: 'red',
+                                    marginLeft:'5%'
+
+
+                            }} size='large' className="pause_btn">
+
+
+                                pause()
+
+                                </Button>
+
+                            <Button onClick={this.changeCurrentTime(10)} style={{
+
+
+                                backgroundColor: 'red',
+                                    marginLeft: '5%'
+
+
+                            }} size='large' className="mr-3">
+
+                                currentTime += 10
+
+                                 </Button>
+
+
+                            <Button onClick={this.changeCurrentTime(-10)} style={{
+
+
+                                backgroundColor: 'red',
+                                    marginLeft: '5%'
+
+
+
+                            }} size='large' className="mr-3">
+
+                                currentTime -= 10
+        
+                                     </Button>
+
+                            </div>
                         </div>
 
                         <p id='movietxt'>Wait for admin to select the video</p>
 
+
                         <div id='moviebtnd' className='moviebtns'>
+
 
 
                             <div className="upload-btn-wrapper">
 
-                                <Button startIcon={<PublishIcon/>} style={{
+                                <Button startIcon={<PublishIcon />} style={{
 
                                     backgroundColor: 'rgba(255,0,0)',
 
 
+
                                 }} size='large' id='videopickbtn' className="btn" variant="contained" color="secondary">
+
 
                                     <p>Select a video</p>
 
                                 </Button>
 
 
+
+
+
+
                                 <input type="file" id='videopicks' className='videopicsk' name="file"
 
-                                       onChange={(e) => this.onChange(e)}/>
+                                    onChange={(e) => this.onChange(e)} />
 
-                                <br/><br/><br/><br/>
+
+                                <br /><br /><br /><br />
+
 
                                 <div id='progress'>
 
-                                    <CircularProgress disableShrink color="secondary"/>
+                                    <CircularProgress disableShrink color="secondary" />
+
 
                                 </div>
+
+
+
 
 
                             </div>
 
 
+
                         </div>
+                    
+
+
 
 
                     </div>
 
-                    <div className="controll">
-
-
-                        <Button onClick={this.play} className="play_btn">
-
-                            play()
-
-                        </Button>
-
-                        <Button onClick={this.pause} className="pause_btn">
-
-                            pause()
-
-                        </Button>
-
-                        <Button onClick={this.changeCurrentTime(10)} className="mr-3">
-
-                            currentTime += 10
-
-                        </Button>
-
-                        <Button onClick={this.changeCurrentTime(-10)} className="mr-3">
-
-                            currentTime -= 10
-
-                        </Button>
-
-                    </div>
+       
 
                     <div className="back_coulom">
 
