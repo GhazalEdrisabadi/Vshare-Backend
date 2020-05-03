@@ -129,8 +129,9 @@ class chat_room extends Component {
                 })
 
                 document.getElementById('movie').style.display = 'block';
-                document.getElementById('blaybtndiv').style.display = 'none';
+                document.getElementById('playbtnid').style.display = 'none';
                 document.getElementById('movietxt').style.display = 'none';
+                document.getElementById('controll_div').style.display='block'
 
             }
             if (messagee.status == 2 && messagee.message == "video paused by owner") {
@@ -1069,7 +1070,55 @@ class chat_room extends Component {
                                 <p>Play</p>
 
                             </Button>
+                            <div className="control" id='controll_div'>
+                            <Button onClick={this.play} style={{
 
+                                backgroundColor: 'red',
+                                
+
+
+                            }} size='large' className="play_btn">
+
+                                play()
+
+                                </Button>
+
+                            <Button onClick={this.pause} style={{
+
+                                    backgroundColor: 'red',
+                                    marginLeft:'5%'
+
+
+                            }} size='large' className="pause_btn">
+
+                                pause()
+
+                                </Button>
+
+                            <Button onClick={this.changeCurrentTime(10)} style={{
+
+                                backgroundColor: 'red',
+                                    marginLeft: '5%'
+
+
+                            }} size='large' className="mr-3">
+
+                                currentTime += 10
+
+                                 </Button>
+
+                            <Button onClick={this.changeCurrentTime(-10)} style={{
+
+                                backgroundColor: 'red',
+                                    marginLeft: '5%'
+
+
+                            }} size='large' className="mr-3">
+
+                                currentTime -= 10
+        
+                                     </Button>
+                            </div>
                         </div>
 
                         <p id='movietxt'>Wait for admin to select the video</p>
@@ -1113,42 +1162,13 @@ class chat_room extends Component {
 
 
                         </div>
-
-
+                    
 
 
 
                     </div>
 
-                    <div className="controll">
-
-
-
-                        <Button onClick={this.play} className="play_btn">
-
-                            play()
-
-                                </Button>
-
-                        <Button onClick={this.pause} className="pause_btn">
-
-                            pause()
-
-                                </Button>
-
-                        <Button onClick={this.changeCurrentTime(10)} className="mr-3">
-
-                            currentTime += 10
-
-                                 </Button>
-
-                        <Button onClick={this.changeCurrentTime(-10)} className="mr-3">
-
-                            currentTime -= 10
-
-                                     </Button>
-
-                    </div>
+       
 
                     <div className="back_coulom">
 
