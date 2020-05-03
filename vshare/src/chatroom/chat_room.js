@@ -928,7 +928,7 @@ class chat_room extends Component {
     }
     handlereq_forward_backward(event) {
         console.log("hoooooooold")
-        if (event.keyCode == 39) {
+        if (event.keyCode == 39 || event.keyCode==37) {
 
             const { player } = this.player.getState();
 
