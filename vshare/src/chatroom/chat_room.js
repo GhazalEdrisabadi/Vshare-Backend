@@ -73,9 +73,11 @@ var clienthashok=0;
 class chat_room extends Component {
 
 
-
+    componentWillUnmount() {
+        document.removeEventListener("keyup", this.escFunction, false);
+    }
     componentDidMount() {
-
+        document.addEventListener("keyup", this.handlereq_forward_backward, false);
         console.log(localStorage.getItem('token'))
 
         //  id_gp = "test";
@@ -157,7 +159,22 @@ class chat_room extends Component {
 
         $(document).ready(function () {
 
+            //$(document).keyup(function (e) {
+            //    if (e.keyCode == 39) {
 
+            //        const { player } = this.player.getState();
+
+            //        console.log("curent " + player.currentTime)
+
+            //        const message_send_play = { "command": "play_video", "currentTime": player.currentTime }
+
+            //        // ws.send(JSON.stringify(message_send))
+
+            //        ws.send(JSON.stringify(message_send_play))
+
+            //        console.log(JSON.stringify(message_send_play))
+            //    }
+            //});
 
 
 
@@ -374,7 +391,7 @@ class chat_room extends Component {
         this.play = this.play.bind(this);
 
         this.pause = this.pause.bind(this);
-
+        this.handlereq_forward_backward = this.handlereq_forward_backward.bind(this);
 
         this.changeCurrentTime = this.changeCurrentTime.bind(this);
 
@@ -463,65 +480,65 @@ class chat_room extends Component {
 
             },
 
-            {
+            //{
 
-                keyCode: 39, // Right arrow
+            //    keyCode: 39, // Right arrow
 
-                // Ctrl/Cmd
+            //    // Ctrl/Cmd
 
-                handle: (player, actions) => {
+            //    handle: (player, actions) => {
 
-                    const current_time = player.currentTime;
+            //        const current_time = player.currentTime;
 
-                    if (!player.hasStarted) {
+            //        if (!player.hasStarted) {
 
-                        return;
+            //            return;
 
-                    }
+            //        }
 
-                    console.log("curent " + player.currentTime)
+            //        console.log("curent " + player.currentTime)
 
-                    const message_send_play = { "command": "play_video", "currentTime": current_time + 5 }
+            //        const message_send_play = { "command": "play_video", "currentTime": current_time + 5 }
 
-                    ws.send(JSON.stringify(message_send_play))
+            //        ws.send(JSON.stringify(message_send_play))
 
-                    console.log(JSON.stringify(message_send_play))
+            //        console.log(JSON.stringify(message_send_play))
 
-                    actions.forward(5); // Go forward 30 seconds
+            //        actions.forward(5); // Go forward 30 seconds
 
-                }
+            //    }
 
-            },
+            //},
 
-            {
+            //{
 
-                keyCode: 37, // Right arrow
+            //    keyCode: 37, // Right arrow
 
-                // Ctrl/Cmd
+            //    // Ctrl/Cmd
 
-                handle: (player, actions) => {
+            //    handle: (player, actions) => {
 
-                    const current_time = player.currentTime;
+            //        const current_time = player.currentTime;
 
-                    if (!player.hasStarted) {
+            //        if (!player.hasStarted) {
 
-                        return;
+            //            return;
 
-                    }
+            //        }
 
-                    console.log("curent " + player.currentTime)
+            //        console.log("curent " + player.currentTime)
 
-                    const message_send_play = { "command": "play_video", "currentTime": current_time - 5 }
+            //        const message_send_play = { "command": "play_video", "currentTime": current_time - 5 }
 
-                    ws.send(JSON.stringify(message_send_play))
+            //        ws.send(JSON.stringify(message_send_play))
 
-                    console.log(JSON.stringify(message_send_play))
+            //        console.log(JSON.stringify(message_send_play))
 
-                    actions.forward(-5); // Go forward 30 seconds
+            //        actions.forward(-5); // Go forward 30 seconds
 
-                }
+            //    }
 
-            }
+            //}
 
 
 
@@ -680,7 +697,7 @@ class chat_room extends Component {
         var counter = 0;
 
         var self = this;
-
+        console.log(file)
 
 
         function Send_data() {
@@ -909,6 +926,24 @@ class chat_room extends Component {
         };
 
     }
+    handlereq_forward_backward(event) {
+        console.log("hoooooooold")
+        if (event.keyCode == 39 || event.keyCode==37) {
+
+            const { player } = this.player.getState();
+
+            console.log("curent " + player.currentTime)
+
+            const message_send_play = { "command": "play_video", "currentTime": player.currentTime }
+
+            // ws.send(JSON.stringify(message_send))
+
+            ws.send(JSON.stringify(message_send_play))
+
+            console.log(JSON.stringify(message_send_play))
+            //console.log("11111111111111111111111111111111")
+        }
+    }
 
     render() {
 
@@ -986,10 +1021,10 @@ class chat_room extends Component {
 
                     <div className="formback_movie">
 
-                        <div id="movie">
+                        <div id="movie" >
 
                             <Player
-
+                                
                                 ref={player => {
 
                                     this.player = player;
@@ -999,6 +1034,7 @@ class chat_room extends Component {
                                 autoPlay
 
                                 src={this.state.file_show_when_click}
+                               
 
                             >
 
