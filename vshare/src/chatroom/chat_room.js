@@ -55,7 +55,7 @@ var adminhash;
 var localresponse;
 
 var play_or_no;
-
+var isadmin=window.localStorage.getItem('isadmin');
 
 var Play_pause_space = 0;
 
@@ -65,11 +65,13 @@ var clienthashok = 0;
 class chat_room extends Component {
 
 
-
     componentWillUnmount() {
         document.removeEventListener("keyup", this.escFunction, false);
     }
+
     componentDidMount() {
+
+        console.log("is admin : "+isadmin);
         document.addEventListener("keyup", this.handlereq_forward_backward, false);
 
         console.log(localStorage.getItem('token'))
@@ -97,7 +99,11 @@ class chat_room extends Component {
 
             console.log(messagee.message)
 
-            if (clienthashok == 0 && messagee.status == 1 && localresponse.created_by != window.localStorage.getItem('username')) {
+            if ("group was reset!" == messagee.message || "Nothing to reset in this state!"== messagee.message) {
+                window.location.reload();
+            }
+
+            if (clienthashok == 0 && messagee.status == 1 && isadmin==1) {
 
                 $('#movietxt').fadeOut('slow');
 
@@ -121,7 +127,7 @@ class chat_room extends Component {
                 document.getElementById('movie').style.display = 'block';
                 document.getElementById('playbtnid').style.display = 'none';
                 document.getElementById('movietxt').style.display = 'none';
-                document.getElementById('controll_div').style.display='block'
+                document.getElementById('controll_div').style.display = 'block'
 
             }
             if (messagee.status == 2 && messagee.message == "video paused by owner") {
@@ -166,8 +172,6 @@ class chat_room extends Component {
             //});
 
 
-
-
             if (window.localStorage.getItem('token') == null) {
 
 
@@ -186,8 +190,9 @@ class chat_room extends Component {
             });
 
             $('#reselect').click(function () {
-
-                window.location.reload();
+                const message_reselect = {"command": "reset"}
+                ws.send(JSON.stringify(message_reselect));
+                //
 
             });
 
@@ -209,7 +214,7 @@ class chat_room extends Component {
 
                 document.getElementById('firstprogress').style.display = 'none';
 
-                if (localresponse.created_by == window.localStorage.getItem('username')) {
+                if (isadmin==1) {
 
                     document.getElementById('moviebtnd').style.display = 'block';
 
@@ -239,7 +244,7 @@ class chat_room extends Component {
 
             $('#videopicks').change(function () {
 
-                if (localresponse.created_by == window.localStorage.getItem('username')) {
+                if (isadmin==1) {
 
                     $('#videopickbtn').fadeOut();
 
@@ -461,7 +466,6 @@ class chat_room extends Component {
             //        }
 
             //        console.log("curent " + player.currentTime)
-
 
 
             //        const message_send_play = { "command": "play_video", "currentTime": current_time + 5 }
@@ -733,7 +737,7 @@ class chat_room extends Component {
             // eslint-disable-next-line no-undef
 
             if (percant == 100) {
-                if (localresponse.created_by == window.localStorage.getItem('username')) {
+                if (isadmin==1) {
 
 
                     Send_data();
@@ -848,15 +852,16 @@ class chat_room extends Component {
         };
 
     }
+
     handlereq_forward_backward(event) {
         console.log("hoooooooold")
-        if (event.keyCode == 39 || event.keyCode==37) {
+        if (event.keyCode == 39 || event.keyCode == 37) {
 
-            const { player } = this.player.getState();
+            const {player} = this.player.getState();
 
             console.log("curent " + player.currentTime)
 
-            const message_send_play = { "command": "play_video", "currentTime": player.currentTime }
+            const message_send_play = {"command": "play_video", "currentTime": player.currentTime}
 
             // ws.send(JSON.stringify(message_send))
 
@@ -928,10 +933,10 @@ class chat_room extends Component {
 
                     <div className="formback_movie">
 
-                        <div id="movie" >
+                        <div id="movie">
 
                             <Player
-                                
+
                                 ref={player => {
 
                                     this.player = player;
@@ -941,7 +946,7 @@ class chat_room extends Component {
                                 autoPlay
 
                                 src={this.state.file_show_when_click}
-                               
+
 
                             >
 
@@ -972,60 +977,58 @@ class chat_room extends Component {
 
                             </Button>
                             <div className="control" id='controll_div'>
-                            <Button onClick={this.play} style={{
-
-                                backgroundColor: 'red',
-                                
-
-
-                            }} size='large' className="play_btn">
-
-
-                                play()
-
-                                </Button>
-
-
-                            <Button onClick={this.pause} style={{
+                                <Button onClick={this.play} style={{
 
                                     backgroundColor: 'red',
-                                    marginLeft:'5%'
 
 
-                            }} size='large' className="pause_btn">
+                                }} size='large' className="play_btn">
 
 
-                                pause()
+                                    play()
 
                                 </Button>
 
-                            <Button onClick={this.changeCurrentTime(10)} style={{
 
+                                <Button onClick={this.pause} style={{
 
-                                backgroundColor: 'red',
+                                    backgroundColor: 'red',
                                     marginLeft: '5%'
 
 
-                            }} size='large' className="mr-3">
-
-                                currentTime += 10
-
-                                 </Button>
+                                }} size='large' className="pause_btn">
 
 
-                            <Button onClick={this.changeCurrentTime(-10)} style={{
+                                    pause()
+
+                                </Button>
+
+                                <Button onClick={this.changeCurrentTime(10)} style={{
 
 
-                                backgroundColor: 'red',
+                                    backgroundColor: 'red',
                                     marginLeft: '5%'
 
 
+                                }} size='large' className="mr-3">
 
-                            }} size='large' className="mr-3">
+                                    currentTime += 10
 
-                                currentTime -= 10
-        
-                                     </Button>
+                                </Button>
+
+
+                                <Button onClick={this.changeCurrentTime(-10)} style={{
+
+
+                                    backgroundColor: 'red',
+                                    marginLeft: '5%'
+
+
+                                }} size='large' className="mr-3">
+
+                                    currentTime -= 10
+
+                                </Button>
 
                             </div>
                         </div>
@@ -1036,13 +1039,11 @@ class chat_room extends Component {
                         <div id='moviebtnd' className='moviebtns'>
 
 
-
                             <div className="upload-btn-wrapper">
 
-                                <Button startIcon={<PublishIcon />} style={{
+                                <Button startIcon={<PublishIcon/>} style={{
 
                                     backgroundColor: 'rgba(255,0,0)',
-
 
 
                                 }} size='large' id='videopickbtn' className="btn" variant="contained" color="secondary">
@@ -1053,42 +1054,30 @@ class chat_room extends Component {
                                 </Button>
 
 
-
-
-
-
                                 <input type="file" id='videopicks' className='videopicsk' name="file"
 
-                                    onChange={(e) => this.onChange(e)} />
+                                       onChange={(e) => this.onChange(e)}/>
 
 
-                                <br /><br /><br /><br />
+                                <br/><br/><br/><br/>
 
 
                                 <div id='progress'>
 
-                                    <CircularProgress disableShrink color="secondary" />
+                                    <CircularProgress disableShrink color="secondary"/>
 
 
                                 </div>
 
 
-
-
-
                             </div>
 
 
-
                         </div>
-                    
-
-
 
 
                     </div>
 
-       
 
                     <div className="back_coulom">
 
@@ -1099,7 +1088,7 @@ class chat_room extends Component {
 
                         </div>
 
-                        <Button startIcon = {<RedoIcon/>} style={{
+                        <Button startIcon={<RedoIcon/>} style={{
 
                             backgroundColor: 'rgb(0,0,0)',
 
