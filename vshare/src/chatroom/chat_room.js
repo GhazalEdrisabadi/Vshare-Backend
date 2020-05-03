@@ -38,6 +38,12 @@ import IconButton from "@material-ui/core/IconButton";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import PauseIcon from '@material-ui/icons/Pause';
+
+
+
+
 
 
 var percant = 0;
@@ -979,31 +985,43 @@ class chat_room extends Component {
 
                             </Button>
                             <div className="control" id='controll_div'>
-                                <Button onClick={this.play} style={{
 
-                                    backgroundColor: 'red',
-
-
-                                }} size='large' className="play_btn">
+                                
+                            <Button onClick={this.changeCurrentTime(-10)} style={{
 
 
-                                    play()
+                                backgroundColor: 'red',
+                                marginLeft: '5%'
 
-                                </Button>
+
+                                }} size='large' className="mr-3">
+
+                                currentTime -= 10
+
+                            </Button>
+                                
+
+                                <IconButton onClick={this.play} style={{
+                                        color: 'white'
+
+                                            }}
+                                            className="play_btn">
+                                            <PlayArrowIcon fontSize="large"/>
+                                </IconButton>
 
 
-                                <Button onClick={this.pause} style={{
+                                <IconButton onClick={this.pause} style={{
 
-                                    backgroundColor: 'red',
-                                    marginLeft: '5%'
 
 
                                 }} size='large' className="pause_btn">
 
 
-                                    pause()
+                                    
 
-                                </Button>
+                                    <PauseIcon/>
+
+                                </IconButton>
 
                                 <Button onClick={this.changeCurrentTime(10)} style={{
 
@@ -1019,18 +1037,6 @@ class chat_room extends Component {
                                 </Button>
 
 
-                                <Button onClick={this.changeCurrentTime(-10)} style={{
-
-
-                                    backgroundColor: 'red',
-                                    marginLeft: '5%'
-
-
-                                }} size='large' className="mr-3">
-
-                                    currentTime -= 10
-
-                                </Button>
 
                             </div>
                         </div>
