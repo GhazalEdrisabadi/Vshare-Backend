@@ -55,7 +55,7 @@ var adminhash;
 var localresponse;
 
 var play_or_no;
-var isadmin=window.localStorage.getItem('isadmin');
+var isadmin = window.localStorage.getItem('isadmin');
 
 var Play_pause_space = 0;
 
@@ -71,7 +71,7 @@ class chat_room extends Component {
 
     componentDidMount() {
 
-        console.log("is admin : "+isadmin);
+        console.log("is admin : " + isadmin);
         document.addEventListener("keyup", this.handlereq_forward_backward, false);
 
         console.log(localStorage.getItem('token'))
@@ -99,11 +99,11 @@ class chat_room extends Component {
 
             console.log(messagee.message)
 
-            if ("group was reset!" == messagee.message || "Nothing to reset in this state!"== messagee.message) {
+            if ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message) {
                 window.location.reload();
             }
 
-            if (clienthashok == 0 && messagee.status == 1 && isadmin==1) {
+            if (clienthashok == 0 && messagee.status == 1 && isadmin == 1) {
 
                 $('#movietxt').fadeOut('slow');
 
@@ -184,7 +184,8 @@ class chat_room extends Component {
             }
 
             $('.logout').click(function () {
-
+                const message_reselect = {"command": "reset"}
+                ws.send(JSON.stringify(message_reselect));
                 window.location.replace('/homepage/');
 
             });
@@ -214,9 +215,10 @@ class chat_room extends Component {
 
                 document.getElementById('firstprogress').style.display = 'none';
 
-                if (isadmin==1) {
+                if (isadmin == 1) {
 
                     document.getElementById('moviebtnd').style.display = 'block';
+
 
                     document.getElementById('movietxt').style.display = 'none';
 
@@ -227,7 +229,7 @@ class chat_room extends Component {
 
 
                 } else {
-
+                    document.getElementById('reselect').style.display = 'none';
                     document.getElementById('moviebtnd').style.display = 'none';
 
                     document.getElementById('movietxt').style.display = 'block';
@@ -244,7 +246,7 @@ class chat_room extends Component {
 
             $('#videopicks').change(function () {
 
-                if (isadmin==1) {
+                if (isadmin == 1) {
 
                     $('#videopickbtn').fadeOut();
 
@@ -737,7 +739,7 @@ class chat_room extends Component {
             // eslint-disable-next-line no-undef
 
             if (percant == 100) {
-                if (isadmin==1) {
+                if (isadmin == 1) {
 
 
                     Send_data();

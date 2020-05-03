@@ -37,8 +37,8 @@ class Homepage extends Component {
 
 
                             $('#Status-Id').html('group with this groupid already exists!');
-                            $('#Status-Id').fadeIn();
-                            $('#Status-Id').delay(3000).toggle('slow');
+                        $('#Status-Id').fadeIn();
+                        $('#Status-Id').delay(3000).toggle('slow');
                     },
                     success: function () {
                         //  document.getElementById("myModel").style.display = 'block'
@@ -319,7 +319,12 @@ class Homepage extends Component {
                     htmlcode += '<div  onclick="' + a + "," + ss + '" class="edit"></div>';
                     htmlcode += '</div>';
                     htmlcode += '</br>';
-                    $('.groupsShow').append(htmlcode);
+
+
+                   // setTimeout(function () {
+                        $('.groupsShow').append(htmlcode);
+                   // }, 100);
+
 
                 }
 
@@ -557,10 +562,10 @@ class Homepage extends Component {
                         htmlcode+=+'<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close2' + counter1 + '">&times;</span>';*/
 
                         htmlcode2 += '</br>';
-                        htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a2 + "," + ad2 + ","+ r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].name + '</p>';
+                        htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a2 + "," + ad2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].name + '</p>';
                         htmlcode2 += '<div class="buttonsforgp">';
 
-                        htmlcode2 += '<div onclick="' + a2 + ","  + dd2 + '" class="leave" ></div>';
+                        htmlcode2 += '<div onclick="' + a2 + "," + dd2 + '" class="leave" ></div>';
 
                         htmlcode2 += '</div>';
                         htmlcode2 += '</br>';
@@ -570,7 +575,7 @@ class Homepage extends Component {
                         htmlcode2 = '';
                     }
                     console.log("groups :" + groups);
-                }, 500);
+                }, 1000);
 
 
             });
@@ -670,8 +675,6 @@ class Homepage extends Component {
 
             <div class="Homepage">
                 {/* {this.renderEfect()} */}
-
-
 
 
                 <div id="myModal" class="modal">
@@ -795,7 +798,7 @@ class Homepage extends Component {
                             width: '65%'
                         }}/>
 
-                            <div className="Status-Id" id="Status-Id"></div>
+                        <div className="Status-Id" id="Status-Id"></div>
 
 
                         <br></br>
