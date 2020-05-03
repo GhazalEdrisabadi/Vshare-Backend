@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 
 import './chat_room.css'
 
@@ -11,12 +11,11 @@ import Home from './home.png'
 import Button from '@material-ui/core/Button';
 
 
-
 //import '../../node_modules/video-react/dist/video-react.css';
 
 import './video-react.css';
 
-import { Player, ControlBar, PlayToggle, Shortcut } from 'video-react';
+import {Player, ControlBar, PlayToggle, Shortcut} from 'video-react';
 
 import sha256 from 'crypto-js/sha256';
 
@@ -25,13 +24,7 @@ import hmacSHA512 from 'crypto-js/hmac-sha512';
 import Base64 from 'crypto-js/enc-base64';
 
 
-
-
-
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-
-
 
 
 import PublishIcon from '@material-ui/icons/Publish';
@@ -45,7 +38,6 @@ import IconButton from "@material-ui/core/IconButton";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-
 
 
 var percant = 0;
@@ -67,21 +59,21 @@ var play_or_no;
 
 var Play_pause_space = 0;
 
-var clienthashok=0;
+var clienthashok = 0;
 
 
 class chat_room extends Component {
 
 
-
     componentDidMount() {
+
+      
 
         console.log(localStorage.getItem('token'))
 
         //  id_gp = "test";
 
         //This will open the connection*
-
 
 
         ws.onopen = function () {
@@ -96,22 +88,19 @@ class chat_room extends Component {
 
             const messagee = JSON.parse(evt.data)
 
-            this.setState({ server_pm: messagee })
+            this.setState({server_pm: messagee})
 
             console.log(messagee)
 
             console.log(messagee.message)
 
-            if ( clienthashok==0 && messagee.status == 1 && localresponse.created_by != window.localStorage.getItem('username')) {
+            if (clienthashok == 0 && messagee.status == 1 && localresponse.created_by != window.localStorage.getItem('username')) {
 
                 $('#movietxt').fadeOut('slow');
 
                 $('#moviebtnd').fadeIn('slow');
 
                 adminhash = messagee.hash;
-
-
-
 
 
             }
@@ -135,14 +124,14 @@ class chat_room extends Component {
                 var time = messagee.time
                 this.player.seek(time)
                 this.player.pause();
-      
+
 
             }
             if (messagee.status == 2 && messagee.message == "video played by owner again") {
                 var time = messagee.time
                 this.player.seek(time)
                 this.player.play();
-      
+
 
             }
 
@@ -150,27 +139,18 @@ class chat_room extends Component {
         };
 
 
-
-
-
-        const { id } = this.props.match.params
+        const {id} = this.props.match.params
 
         $(document).ready(function () {
-
-
-
 
 
             if (window.localStorage.getItem('token') == null) {
 
 
-
                 alert("Login first !");
 
 
-
                 window.location.replace("/login/");
-
 
 
             }
@@ -180,6 +160,15 @@ class chat_room extends Component {
                 window.location.replace('/homepage/');
 
             });
+
+            $('#reselect').click(function () {
+
+                window.location.reload();
+
+            });
+
+
+
 
             $('.username').text(window.localStorage.getItem('username'));
 
@@ -194,7 +183,6 @@ class chat_room extends Component {
             document.getElementById('firstprogress').style.display = 'block';
 
 
-
             setTimeout(function () {
 
                 document.getElementById('firstprogress').style.display = 'none';
@@ -206,11 +194,9 @@ class chat_room extends Component {
                     document.getElementById('movietxt').style.display = 'none';
 
 
-
                     //$('#videopickbtn').fadeIn('fast');
 
                     //    $('#movietxt').fadeOut('fast');
-
 
 
                 } else {
@@ -226,11 +212,7 @@ class chat_room extends Component {
                 }
 
 
-
             }, 2000);
-
-
-
 
 
             $('#videopicks').change(function () {
@@ -244,13 +226,9 @@ class chat_room extends Component {
                 } else {
 
 
-
                 }
 
             });
-
-
-
 
 
             // if (localStorage.getItem('token') == null) {
@@ -260,9 +238,6 @@ class chat_room extends Component {
             //     window.location.replace("/login/");
 
             // }
-
-
-
 
 
             var id = window.localStorage.getItem('id_gp');
@@ -292,7 +267,6 @@ class chat_room extends Component {
                 }
 
             };
-
 
 
             $.ajax(settings).done(function (response) {
@@ -334,19 +308,10 @@ class chat_room extends Component {
         });
 
 
-
-
-
         //Log the messages that are returned from the server
 
 
-
-
-
     }
-
-
-
 
 
     constructor(props) {
@@ -381,12 +346,9 @@ class chat_room extends Component {
         this.newShortcuts = [
 
 
-
-
             // Press number 1 to jump to the postion of 10%
 
             {
-
 
 
                 keyCode: 32, // Number 1
@@ -400,7 +362,6 @@ class chat_room extends Component {
                 handle: (player, actions) => {
 
 
-
                     const current_time = player.currentTime;
 
 
@@ -411,13 +372,12 @@ class chat_room extends Component {
 
                         console.log("pause")
 
-                      //  actions.pause()
-
+                        //  actions.pause()
 
 
                         console.log("curent " + current_time)
 
-                        const message_send_play = { "command": "pause_video", "currentTime": current_time }
+                        const message_send_play = {"command": "pause_video", "currentTime": current_time}
 
                         // ws.send(JSON.stringify(message_send))
 
@@ -430,7 +390,6 @@ class chat_room extends Component {
                         Play_pause_space = 1;
 
 
-
                         return
 
                     }
@@ -439,13 +398,13 @@ class chat_room extends Component {
 
                         console.log("play")
 
-                      //  actions.play()
+                        //  actions.play()
 
                         Play_pause_space = 0;
 
                         console.log("curent " + current_time)
 
-                        const message_send_play = { "command": "play_video", "currentTime": current_time }
+                        const message_send_play = {"command": "play_video", "currentTime": current_time}
 
                         // ws.send(JSON.stringify(message_send))
 
@@ -481,7 +440,7 @@ class chat_room extends Component {
 
                     console.log("curent " + player.currentTime)
 
-                    const message_send_play = { "command": "play_video", "currentTime": current_time + 5 }
+                    const message_send_play = {"command": "play_video", "currentTime": current_time + 5}
 
                     ws.send(JSON.stringify(message_send_play))
 
@@ -511,7 +470,7 @@ class chat_room extends Component {
 
                     console.log("curent " + player.currentTime)
 
-                    const message_send_play = { "command": "play_video", "currentTime": current_time - 5 }
+                    const message_send_play = {"command": "play_video", "currentTime": current_time - 5}
 
                     ws.send(JSON.stringify(message_send_play))
 
@@ -524,17 +483,10 @@ class chat_room extends Component {
             }
 
 
-
-
-
-
-
         ];
 
 
-
     }
-
 
 
     //handleChange(event) {
@@ -550,11 +502,7 @@ class chat_room extends Component {
     handleSubmit(e) {
 
 
-
-
-
-        const message_send_play = { "command": "play_video", "currentTime": "0" }
-
+        const message_send_play = {"command": "play_video", "currentTime": "0"}
 
 
         // ws.send(JSON.stringify(message_send))
@@ -566,15 +514,11 @@ class chat_room extends Component {
         play_or_no = true
 
 
-
-
-
     }
 
     //send_play() {
 
     //    const message_send_play = { "command": "play"}
-
 
 
     //    // ws.send(JSON.stringify(message_send))
@@ -584,7 +528,6 @@ class chat_room extends Component {
     //    console.log(JSON.stringify(message_send_play))
 
     //}
-
 
 
     onChange(e) {
@@ -600,7 +543,6 @@ class chat_room extends Component {
         })
 
 
-
         function callbackRead(reader, file, evt, callbackProgress, callbackFinal) {
 
             callbackProgress(evt.target.result);
@@ -612,9 +554,6 @@ class chat_room extends Component {
             }
 
         }
-
-
-
 
 
         function loading(file, callbackProgress, callbackFinal) {
@@ -630,7 +569,6 @@ class chat_room extends Component {
             var index = 0;
 
 
-
             if (file.size === 0) {
 
                 callbackFinal();
@@ -638,7 +576,6 @@ class chat_room extends Component {
             }
 
             while (offset < file.size) {
-
 
 
                 partial = file.slice(offset, offset + size);
@@ -652,7 +589,6 @@ class chat_room extends Component {
                 reader.index = index;
 
                 reader.onload = function (evt) {
-
 
 
                     callbackRead(this, file, evt, callbackProgress, callbackFinal);
@@ -670,7 +606,6 @@ class chat_room extends Component {
         }
 
 
-
         var CryptoJS = require("crypto-js");
 
         var file = e.target.files[0];
@@ -682,11 +617,9 @@ class chat_room extends Component {
         var self = this;
 
 
-
         function Send_data() {
 
-            const message_send = { "command": "set_video_hash", "vhash": encrypted }
-
+            const message_send = {"command": "set_video_hash", "vhash": encrypted}
 
 
             // ws.send(JSON.stringify(message_send))
@@ -694,7 +627,6 @@ class chat_room extends Component {
             ws.send(JSON.stringify(message_send))
 
             console.log(JSON.stringify(message_send))
-
 
 
             //ws.onmessage = evt => {
@@ -712,17 +644,13 @@ class chat_room extends Component {
             //};
 
         }
-
-
-
 
 
         function Send_data2() {
 
-            const message_send = { "command": "send_client_hash", "vhash": encrypted }
+            const message_send = {"command": "send_client_hash", "vhash": encrypted}
 
             play_or_no = true
-
 
 
             // ws.send(JSON.stringify(message_send))
@@ -730,7 +658,6 @@ class chat_room extends Component {
             ws.send(JSON.stringify(message_send))
 
             console.log(JSON.stringify(message_send))
-
 
 
             //ws.onmessage = evt => {
@@ -750,11 +677,7 @@ class chat_room extends Component {
         }
 
 
-
-
-
         loading(file, function (data) {
-
 
 
             var wordBuffer = CryptoJS.lib.WordArray.create(data);
@@ -770,11 +693,7 @@ class chat_room extends Component {
             console.log(((counter / file.size) * 100).toFixed(0) + '%');
 
 
-
-
-
         }, function (data) {
-
 
 
             console.log('100%');
@@ -784,56 +703,54 @@ class chat_room extends Component {
             console.log('encrypted: ' + encrypted);
 
 
-
             // eslint-disable-next-line no-undef
 
+            if (percant == 100) {
+                if (localresponse.created_by == window.localStorage.getItem('username')) {
 
-            if (localresponse.created_by == window.localStorage.getItem('username')) {
 
+                    Send_data();
 
-
-                Send_data();
-
-                document.getElementById('blaybtndiv').style.display = 'block';
-
-                document.getElementById('progress').style.display = 'none';
-
-            } else {
-
-                if (encrypted == adminhash) {
-                    clienthashok=1;
+                    document.getElementById('blaybtndiv').style.display = 'block';
 
                     document.getElementById('progress').style.display = 'none';
-
-                    $('#movietxt').text('Wait for admin to play the video');
-
-                    $('#moviebtnd').fadeOut();
-
-                    $('#movietxt').fadeIn();
-                    //  play_or_no = true
-                    Send_data2();
-
-
-
 
                 } else {
 
-                    document.getElementById('progress').style.display = 'none';
+                    if (encrypted == adminhash) {
+                        clienthashok = 1;
 
-                    $('#movietxt').text('Your video is not same with admin\'s video , please chose another one');
+                        document.getElementById('progress').style.display = 'none';
 
-                    $('#movietxt').fadeIn();
+                        $('#movietxt').text('Wait for admin to play the video');
+
+                        $('#moviebtnd').fadeOut();
+
+                        $('#movietxt').fadeIn();
+                        //  play_or_no = true
+                        Send_data2();
+
+
+                    } else {
+
+                        document.getElementById('progress').style.display = 'none';
+
+                        $('#movietxt').text('Your video is not same with admin\'s video , please chose another one');
+
+                        $('#movietxt').fadeIn();
+
+                    }
 
                 }
+            } else {
+                document.getElementById('progress').style.display = 'none';
+                $('#movietxt').text('Something went wrong in selecting movie , Please reselect the video ');
+                $('#movietxt').fadeIn();
 
             }
 
 
-
-
-
         });
-
 
 
         console.log("aa");
@@ -841,20 +758,18 @@ class chat_room extends Component {
     }
 
 
-
     Send_data() {
-
 
 
     }
 
     play() {
 
-        const { player } = this.player.getState();
+        const {player} = this.player.getState();
 
         console.log("curent " + player.currentTime)
 
-        const message_send_play = { "command": "play_video", "currentTime": player.currentTime }
+        const message_send_play = {"command": "play_video", "currentTime": player.currentTime}
 
         // ws.send(JSON.stringify(message_send))
 
@@ -865,18 +780,16 @@ class chat_room extends Component {
         //this.player.play();
 
 
-
     }
-
 
 
     pause() {
 
-        const { player } = this.player.getState();
+        const {player} = this.player.getState();
 
         console.log("curent " + player.currentTime)
 
-        const message_send_play = { "command": "pause_video", "currentTime": player.currentTime }
+        const message_send_play = {"command": "pause_video", "currentTime": player.currentTime}
 
         // ws.send(JSON.stringify(message_send))
 
@@ -887,24 +800,23 @@ class chat_room extends Component {
         //this.player.pause();
 
 
-
     }
 
     changeCurrentTime(seconds) {
 
         return () => {
 
-            const { player } = this.player.getState();
+            const {player} = this.player.getState();
 
             console.log("curent " + player.currentTime)
 
-            const message_send_play = { "command": "play_video", "currentTime": player.currentTime + seconds }
+            const message_send_play = {"command": "play_video", "currentTime": player.currentTime + seconds}
 
             ws.send(JSON.stringify(message_send_play))
 
             console.log(JSON.stringify(message_send_play))
 
-           // this.player.seek(player.currentTime + seconds);
+            // this.player.seek(player.currentTime + seconds);
 
         };
 
@@ -913,23 +825,13 @@ class chat_room extends Component {
     render() {
 
 
-
-
-
         return (
-
 
 
             <div>
 
 
-
-
-
                 < form className="back">
-
-
-
 
 
                     <header class="header_s">
@@ -943,23 +845,18 @@ class chat_room extends Component {
                                     color: 'white'
 
 
-
                                 }}
 
-                                    className="profilepic">
+                                            className="profilepic">
 
-                                    <AccountCircleOutlinedIcon fontSize="large" />
+                                    <AccountCircleOutlinedIcon fontSize="large"/>
 
                                 </IconButton>
-
 
 
                                 <p className='username'>Username</p>
 
                             </div>
-
-
-
 
 
                         </div>
@@ -974,9 +871,9 @@ class chat_room extends Component {
 
                             }}
 
-                                className="div_leave">
+                                        className="div_leave">
 
-                                <ExitToAppIcon fontSize="large" />
+                                <ExitToAppIcon fontSize="large"/>
 
                             </IconButton>
 
@@ -1002,30 +899,25 @@ class chat_room extends Component {
 
                             >
 
-                                <Shortcut clickable={false} shortcuts={this.newShortcuts} />
-
+                                <Shortcut clickable={false} shortcuts={this.newShortcuts}/>
 
 
                             </Player>
-
-
-
 
 
                         </div>
 
                         <div id='firstprogress'>
 
-                            <CircularProgress disableShrink color="secondary" />
+                            <CircularProgress disableShrink color="secondary"/>
 
                         </div>
 
                         <div id='blaybtndiv'>
 
-                            <Button onClick={this.handleSubmit} startIcon={<PlayCircleFilledWhiteIcon />} style={{
+                            <Button onClick={this.handleSubmit} startIcon={<PlayCircleFilledWhiteIcon/>} style={{
 
                                 backgroundColor: 'red',
-
 
 
                             }} size='large' id='playbtnid' variant="contained" color="secondary">
@@ -1041,13 +933,11 @@ class chat_room extends Component {
                         <div id='moviebtnd' className='moviebtns'>
 
 
-
                             <div className="upload-btn-wrapper">
 
-                                <Button startIcon={<PublishIcon />} style={{
+                                <Button startIcon={<PublishIcon/>} style={{
 
                                     backgroundColor: 'rgba(255,0,0)',
-
 
 
                                 }} size='large' id='videopickbtn' className="btn" variant="contained" color="secondary">
@@ -1057,29 +947,23 @@ class chat_room extends Component {
                                 </Button>
 
 
-
                                 <input type="file" id='videopicks' className='videopicsk' name="file"
 
-                                    onChange={(e) => this.onChange(e)} />
+                                       onChange={(e) => this.onChange(e)}/>
 
-                                <br /><br /><br /><br />
+                                <br/><br/><br/><br/>
 
                                 <div id='progress'>
 
-                                    <CircularProgress disableShrink color="secondary" />
+                                    <CircularProgress disableShrink color="secondary"/>
 
                                 </div>
-
 
 
                             </div>
 
 
-
                         </div>
-
-
-
 
 
                     </div>
@@ -1087,61 +971,59 @@ class chat_room extends Component {
                     <div className="controll">
 
 
-
                         <Button onClick={this.play} className="play_btn">
 
                             play()
 
-                                </Button>
+                        </Button>
 
                         <Button onClick={this.pause} className="pause_btn">
 
                             pause()
 
-                                </Button>
+                        </Button>
 
                         <Button onClick={this.changeCurrentTime(10)} className="mr-3">
 
                             currentTime += 10
 
-                                 </Button>
+                        </Button>
 
                         <Button onClick={this.changeCurrentTime(-10)} className="mr-3">
 
                             currentTime -= 10
 
-                                     </Button>
+                        </Button>
 
                     </div>
 
                     <div className="back_coulom">
 
 
+                        <div className="formback_info" style={{width: '350px', height: '395px'}}>
 
-                        <div className="formback_info" style={{ width: '350px', height: '395px' }}>
-
-                            <div className="name" />
-
-                        </div>
-
-
-
-                        <div className="formback_text" style={{ width: '350px', height: '395px', }}>
-
-
-
-
+                            <div className="name"/>
 
                         </div>
 
+                        <Button style={{
+
+                            backgroundColor: 'rgb(0,0,0)',
 
 
+                        }} size='large' id='reselect' variant="contained" color="secondary">
+
+                            <p>Reselect the movie</p>
+
+                        </Button>
+
+                        <div className="formback_text" style={{width: '350px', height: '395px',}}>
+
+
+                        </div>
 
 
                     </div>
-
-
-
 
 
                 </form>
@@ -1153,7 +1035,6 @@ class chat_room extends Component {
     }
 
 }
-
 
 
 export default chat_room;
