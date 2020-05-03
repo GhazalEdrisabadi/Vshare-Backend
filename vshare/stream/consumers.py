@@ -133,7 +133,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		status = await get_status(self.roomid)
 
 		if ismember and not iscreator:
-			if status == 1 or status == 2:
+			if status == 1:
 
 				ownerhash = await get_group_hash(self.roomid)
 				
@@ -145,6 +145,29 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 							"username":user.username,
 							"status":status,
 							"message":"you add to stream successfully.",
+						}
+					)
+
+				else:
+					await self.send_json(
+						{
+							"username":user.username,
+							"message":"your hash is not match. you should send it again!",
+						}
+					)
+			elif status == 2:
+
+				ownerhash = await get_group_hash(self.roomid)
+				
+				# Check client hash with owner hash
+				if ownerhash == vhash:
+
+					await self.channel_layer.group_send(
+						self.roomid,
+						{
+							"type":"send_state",
+							"status":status,
+							"message":"new user's hash is ok.",
 						}
 					)
 
