@@ -10,7 +10,7 @@ import Home from './home.png'
 
 import Button from '@material-ui/core/Button';
 
-
+import RedoIcon from '@material-ui/icons/Redo';
 //import '../../node_modules/video-react/dist/video-react.css';
 
 import './video-react.css';
@@ -67,7 +67,6 @@ class chat_room extends Component {
 
     componentDidMount() {
 
-      
 
         console.log(localStorage.getItem('token'))
 
@@ -166,8 +165,6 @@ class chat_room extends Component {
                 window.location.reload();
 
             });
-
-
 
 
             $('.username').text(window.localStorage.getItem('username'));
@@ -1006,14 +1003,14 @@ class chat_room extends Component {
 
                         </div>
 
-                        <Button style={{
+                        <Button startIcon = {<RedoIcon/>} style={{
 
                             backgroundColor: 'rgb(0,0,0)',
 
 
                         }} size='large' id='reselect' variant="contained" color="secondary">
 
-                            <p>Reselect the movie</p>
+                            <p>Reselect the video</p>
 
                         </Button>
 
