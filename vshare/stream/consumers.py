@@ -235,7 +235,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			await self.send_json(
 				{
 					"username":user.username,
-					"message":"Permission is denied!"
+					"message":"Permission denied!"
 				}
 			)
 
@@ -247,7 +247,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		if iscreator:
 			if status == 1 or status == 2:
 				groupstatus = await set_status(self.roomid,state=0)
-				await channel_layer.group_send(
+				await self.channel_layer.group_send(
 					self.roomid,
 					{
 						"type":"send_state",
@@ -269,7 +269,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			await self.send_json(
 				{
 					"username":user.username,
-					"message":"Permission is denied!",
+					"message":"Permission denied!",
 				}
 			)
 
