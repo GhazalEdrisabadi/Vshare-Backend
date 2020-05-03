@@ -71,7 +71,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				await self.recieve_stream(content["vhash"])
 
 			elif command == "send_client_hash":
-				await self.check_client_hash(content["vhash"],content["currentTime"])
+				await self.check_client_hash(content["vhash"])
 
 			elif command == "send_current_time":
 				await self.send_time(content["currentTime"])
