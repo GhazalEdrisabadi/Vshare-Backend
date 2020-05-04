@@ -68,9 +68,24 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			elif command == "reset":
 				await self.reset_state()
 
+			elif command == "chat_client":
+				await self.recieve_message(content["message_client"])
+
 		except ClientError as e:
 			await self.send_json({"error": e.code})
 
+	async def recieve_message(self,message_client):
+		user = self.scope["user"]
+		ismember = await is_member(user,self.roomid)
+		status = await get_status(self.roomid)
+		if ismember:
+			await self.channel_layer.group_send(
+					self.roomid,
+				{
+					"type":"send_message",
+					"message":message_client,
+				}
+			)
 
 	async def recieve_stream(self,vhash):	
 
@@ -257,4 +272,11 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				"message":event["message"],
 			}
 		)
-	
+
+	async def send_message(self, event):
+		await self.send_json(
+			{
+				"msg_type":"send message",
+				"message":event["message"]
+			}
+		)
