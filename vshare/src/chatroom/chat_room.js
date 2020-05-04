@@ -165,7 +165,8 @@ class chat_room extends Component {
                 this.player.pause();
                 const {player} = this.player.getState();
                 console.log("curent " + player.currentTime)
-                const message_send_play = {"command": "send_current_time", "currentTime": "11" };
+
+                const message_send_play = {"command": "send_current_time", "currentTime": player.currentTime };
                 ws.send(JSON.stringify(message_send_play));
 
             }
