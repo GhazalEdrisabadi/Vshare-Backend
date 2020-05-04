@@ -42,13 +42,10 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 
 
-
-
-
-var logoutclicked=0;
-var azavalbude=0;
+var logoutclicked = 0;
+var azavalbude = 0;
 var percant = 0;
-var rejoined=0;
+var rejoined = 0;
 var id_gp = window.localStorage.getItem('id_gp');
 
 const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + "";
@@ -106,7 +103,7 @@ class chat_room extends Component {
 
             console.log(messagee.message)
 
-            if (logoutclicked==0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
+            if (logoutclicked == 0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
                 window.location.reload();
             }
 
@@ -125,16 +122,22 @@ class chat_room extends Component {
             console.log(play_or_no)
 
             if (messagee.status == 0 && isadmin == 0) {
-                azavalbude=1;
+                azavalbude = 1;
+            }
+
+            if (messagee.status == 2 && isadmin == 0) {
+                rejoined = 1;
+                $('#movietxt').text('Admin has played the video , select your video too , to join it');
+                $('#moviebtnd').fadeIn('slow');
+                adminhash = messagee.hash;
             }
 
 
-              if (messagee.status == 1 && isadmin == 0 && azavalbude==0 && clienthashok==0 ) {
-                rejoined=1;
-                $('#movietxt').text('Admin has been selected the video , select it too');
+            if (messagee.status == 1 && isadmin == 0 && azavalbude == 0 && clienthashok == 0) {
+                rejoined = 1;
+                $('#movietxt').text('Admin has selected the video , select it too');
 
                 $('#moviebtnd').fadeIn('slow');
-
 
 
             }
@@ -152,6 +155,18 @@ class chat_room extends Component {
                 document.getElementById('playbtnid').style.display = 'none';
                 document.getElementById('movietxt').style.display = 'none';
                 document.getElementById('controll_div').style.display = 'block'
+
+            }
+
+
+            if (messagee.status == 2 && messagee.message == "new user's hash is ok." && isadmin == 1) {
+
+
+                this.player.pause();
+                const {player} = this.player.getState();
+                console.log("curent " + player.currentTime)
+                const message_send_play = {"command": "send_current_time", "currentTime": "11" };
+                ws.send(JSON.stringify(message_send_play));
 
             }
             if (messagee.status == 2 && messagee.message == "video paused by owner") {
@@ -208,7 +223,7 @@ class chat_room extends Component {
             }
 
             $('.logout').click(function () {
-                logoutclicked=1;
+                logoutclicked = 1;
                 const message_reselect = {"command": "reset"}
                 ws.send(JSON.stringify(message_reselect));
                 window.location.replace('/homepage/');
@@ -256,8 +271,8 @@ class chat_room extends Component {
 
                 } else {
                     document.getElementById('reselect').style.display = 'none';
-                    if(rejoined==0)
-                    document.getElementById('moviebtnd').style.display = 'none';
+                    if (rejoined == 0)
+                        document.getElementById('moviebtnd').style.display = 'none';
 
                     document.getElementById('movietxt').style.display = 'block';
 
@@ -945,7 +960,6 @@ class chat_room extends Component {
                             <p className='logout_text2'>Exit group</p>
 
                             <IconButton style={{
-
                                 color: 'white'
 
                             }}
@@ -1007,38 +1021,32 @@ class chat_room extends Component {
                             </Button>
                             <div className="control" id='controll_div'>
 
-                                
-                            <Button onClick={this.changeCurrentTime(-10)} style={{
+
+                                <Button onClick={this.changeCurrentTime(-10)} style={{
 
 
-                                backgroundColor: 'red',
-                                marginLeft: '5%'
+                                    backgroundColor: 'red',
+                                    marginLeft: '5%'
 
 
                                 }} size='large' className="mr-3">
 
-                                currentTime -= 10
+                                    currentTime -= 10
 
-                            </Button>
-                                
+                                </Button>
+
 
                                 <IconButton onClick={this.play} style={{
-                                        color: 'white'
+                                    color: 'white'
 
-                                            }}
+                                }}
                                             className="play_btn">
-                                            <PlayArrowIcon fontSize="large"/>
+                                    <PlayArrowIcon fontSize="large"/>
                                 </IconButton>
 
 
-                                <IconButton onClick={this.pause} style={{
+                                <IconButton onClick={this.pause} style={{}} size='large' className="pause_btn">
 
-
-
-                                }} size='large' className="pause_btn">
-
-
-                                    
 
                                     <PauseIcon/>
 
@@ -1056,7 +1064,6 @@ class chat_room extends Component {
                                     currentTime += 10
 
                                 </Button>
-
 
 
                             </div>
