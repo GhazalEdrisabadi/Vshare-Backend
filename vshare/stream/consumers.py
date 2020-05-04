@@ -74,7 +74,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				await self.check_client_hash(content["vhash"])
 
 			elif command == "send_current_time":
-				await self.send_time(content["currentTime"])
+				await self.get_current_time(content["currentTime"])
 
 			elif command == "play_video":
 				await self.play(content["currentTime"])
@@ -195,12 +195,14 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				}
 			)
 
-	async def send_time(self,currentTime):
+	async def get_current_time(self,currentTime):
 		user = self.scope["user"]
 		iscreator = await is_creator(user,self.roomid)
 		status = await get_status(self.roomid)
+
 		if iscreator:
 			if status == 2:
+
 				await self.channel_layer.group_send(
 					self.roomid,
 					{
