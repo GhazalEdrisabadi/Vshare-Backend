@@ -108,6 +108,15 @@ class chat_room extends Component {
                 window.location.reload();
             }
 
+            if ("this is current time for new users" == messagee.message) {
+                this.changeCurrentTime(messagee.time);
+                this.pause();
+                this.play();
+                $('#moviebtnd').fadeOut();
+            }
+
+
+
             if (clienthashok == 0 && messagee.status == 1 && isadmin == 0) {
 
                 $('#movietxt').fadeOut('slow');
@@ -126,7 +135,7 @@ class chat_room extends Component {
                 azavalbude = 1;
             }
 
-            if (messagee.status == 2 && isadmin == 0) {
+            if (messagee.status == 2 && isadmin == 0 && filmplayed==0) {
                 rejoined = 1;
                 $('#movietxt').text('Admin has played the video , select your video too , to join it');
                 $('#moviebtnd').fadeIn('slow');
@@ -137,7 +146,6 @@ class chat_room extends Component {
             if (messagee.status == 1 && isadmin == 0 && azavalbude == 0 && clienthashok == 0) {
                 rejoined = 1;
                 $('#movietxt').text('Admin has selected the video , select it too');
-
                 $('#moviebtnd').fadeIn('slow');
 
 
@@ -244,13 +252,13 @@ class chat_room extends Component {
 
             });
             $("#formback_movie_id").mouseover(function () {
-                console.log("mouse umad tu");
+
                 if (filmplayed == 1)
                     $('#controll_div').fadeIn();
 
             });
             $("#formback_movie_id").mouseleave(function () {
-                console.log("mouse raf birun");
+
                 $('#controll_div').fadeOut();
             });
 
@@ -738,7 +746,7 @@ class chat_room extends Component {
 
 
         function Send_data2() {
-
+ $('#moviebtnd').fadeOut('slow');
             const message_send = {"command": "send_client_hash", "vhash": encrypted}
 
             play_or_no = true
@@ -810,7 +818,7 @@ class chat_room extends Component {
 
                     if (encrypted == adminhash) {
                         clienthashok = 1;
-
+filmplayed=1;
                         document.getElementById('progress').style.display = 'none';
 
                         $('#movietxt').text('Wait for admin to play the video');
