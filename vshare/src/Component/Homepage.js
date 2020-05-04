@@ -860,8 +860,10 @@ class Homepage extends Component {
 
 
                 </div>
-
-
+              
+                <div className="container-lg no-gutters" style={{ backgroundColor: "transparent", marginTop: "80px", overflowY: "visible" }}>
+                    <div className="row-1 ">
+                        <div className=" col-sm-12 col-lg-12 col-xl-12 col-md-12 " >
                 <div className="groupsShow">
 
 
@@ -874,6 +876,9 @@ class Homepage extends Component {
                         Create new group
                     </Button>
 
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
 
