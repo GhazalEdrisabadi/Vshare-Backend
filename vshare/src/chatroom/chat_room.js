@@ -43,13 +43,10 @@ import PauseIcon from '@material-ui/icons/Pause';
 import Forward10Icon from '@material-ui/icons/Forward10';
 
 
-
-
-
-var logoutclicked=0;
-var azavalbude=0;
+var logoutclicked = 0;
+var azavalbude = 0;
 var percant = 0;
-var rejoined=0;
+var rejoined = 0;
 var id_gp = window.localStorage.getItem('id_gp');
 
 const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + "";
@@ -64,7 +61,7 @@ var localresponse;
 
 var play_or_no;
 var isadmin = window.localStorage.getItem('isadmin');
-
+var filmplayed = 0;
 var Play_pause_space = 0;
 
 var clienthashok = 0;
@@ -107,9 +104,18 @@ class chat_room extends Component {
 
             console.log(messagee.message)
 
-            if (logoutclicked==0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
+            if (logoutclicked == 0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
                 window.location.reload();
             }
+
+            if ("this is current time for new users" == messagee.message) {
+                this.changeCurrentTime(messagee.time);
+                this.pause();
+                this.play();
+                $('#moviebtnd').fadeOut();
+            }
+
+
 
             if (clienthashok == 0 && messagee.status == 1 && isadmin == 0) {
 
@@ -126,16 +132,21 @@ class chat_room extends Component {
             console.log(play_or_no)
 
             if (messagee.status == 0 && isadmin == 0) {
-                azavalbude=1;
+                azavalbude = 1;
+            }
+
+            if (messagee.status == 2 && isadmin == 0 && filmplayed==0) {
+                rejoined = 1;
+                $('#movietxt').text('Admin has played the video , select your video too , to join it');
+                $('#moviebtnd').fadeIn('slow');
+                adminhash = messagee.hash;
             }
 
 
-              if (messagee.status == 1 && isadmin == 0 && azavalbude==0 && clienthashok==0 ) {
-                rejoined=1;
-                $('#movietxt').text('Admin has been selected the video , select it too');
-
+            if (messagee.status == 1 && isadmin == 0 && azavalbude == 0 && clienthashok == 0) {
+                rejoined = 1;
+                $('#movietxt').text('Admin has selected the video , select it too');
                 $('#moviebtnd').fadeIn('slow');
-
 
 
             }
@@ -153,6 +164,19 @@ class chat_room extends Component {
                 document.getElementById('playbtnid').style.display = 'none';
                 document.getElementById('movietxt').style.display = 'none';
                 document.getElementById('controll_div').style.display = 'block'
+
+            }
+
+
+            if (messagee.status == 2 && messagee.message == "new user's hash is ok." && isadmin == 1) {
+
+
+                this.player.pause();
+                const {player} = this.player.getState();
+                console.log("curent " + player.currentTime)
+
+                const message_send_play = {"command": "send_current_time", "currentTime": player.currentTime};
+                ws.send(JSON.stringify(message_send_play));
 
             }
             if (messagee.status == 2 && messagee.message == "video paused by owner") {
@@ -177,6 +201,10 @@ class chat_room extends Component {
         const {id} = this.props.match.params
 
         $(document).ready(function () {
+
+            $("#playbtnid").click(function () {
+                filmplayed = 1;
+            });
 
             //$(document).keyup(function (e) {
             //    if (e.keyCode == 39) {
@@ -209,7 +237,7 @@ class chat_room extends Component {
             }
 
             $('.logout').click(function () {
-                logoutclicked=1;
+                logoutclicked = 1;
                 const message_reselect = {"command": "reset"}
                 ws.send(JSON.stringify(message_reselect));
                 window.location.replace('/homepage/');
@@ -223,15 +251,16 @@ class chat_room extends Component {
                 //
 
             });
-            $( "#movie" ).mouseover(function() {
-                $('#controll_div').fadeIn();
-                
+            $("#formback_movie_id").mouseover(function () {
+
+                if (filmplayed == 1)
+                    $('#controll_div').fadeIn();
+
             });
-            $( "#movie" ).mouseleave(function() {
+            $("#formback_movie_id").mouseleave(function () {
+
                 $('#controll_div').fadeOut();
             });
-        
-            
 
 
             $('.username').text(window.localStorage.getItem('username'));
@@ -266,8 +295,8 @@ class chat_room extends Component {
 
                 } else {
                     document.getElementById('reselect').style.display = 'none';
-                    if(rejoined==0)
-                    document.getElementById('moviebtnd').style.display = 'none';
+                    if (rejoined == 0)
+                        document.getElementById('moviebtnd').style.display = 'none';
 
                     document.getElementById('movietxt').style.display = 'block';
 
@@ -295,9 +324,6 @@ class chat_room extends Component {
                 }
 
             });
-
-
-            
 
 
             // if (localStorage.getItem('token') == null) {
@@ -720,7 +746,7 @@ class chat_room extends Component {
 
 
         function Send_data2() {
-
+ $('#moviebtnd').fadeOut('slow');
             const message_send = {"command": "send_client_hash", "vhash": encrypted}
 
             play_or_no = true
@@ -792,7 +818,7 @@ class chat_room extends Component {
 
                     if (encrypted == adminhash) {
                         clienthashok = 1;
-
+filmplayed=1;
                         document.getElementById('progress').style.display = 'none';
 
                         $('#movietxt').text('Wait for admin to play the video');
@@ -914,7 +940,6 @@ class chat_room extends Component {
         }
     }
 
-   
 
     render() {
 
@@ -960,7 +985,6 @@ class chat_room extends Component {
                             <p className='logout_text2'>Exit group</p>
 
                             <IconButton style={{
-
                                 color: 'white'
 
                             }}
@@ -975,7 +999,7 @@ class chat_room extends Component {
 
                     </header>
 
-                    <div className="formback_movie">
+                    <div id='formback_movie_id' className="formback_movie">
 
                         <div id="movie">
 
@@ -1022,39 +1046,33 @@ class chat_room extends Component {
                             </Button>
                             <div className="control" id='controll_div'>
 
-                                
-                            <IconButton onClick={this.changeCurrentTime(-10)} style={{
 
-                                transform:'scaleX(-1)',
-                                color: 'white'
-                              
+                                <IconButton onClick={this.changeCurrentTime(-10)} style={{
+
+                                    transform: 'scaleX(-1)',
+                                    color: 'white'
 
 
                                 }} size='large' className="mr-3">
 
-                                <Forward10Icon/>
 
-                            </IconButton>
-                                
+                                    <Forward10Icon/>
 
-                                <IconButton onClick={this.play} style={{
-                                        color: 'white'
-
-                                            }}
-                                            className="play_btn">
-                                            <PlayArrowIcon fontSize="large"/>
                                 </IconButton>
 
 
-                                <IconButton onClick={this.pause} style={{
+                                <IconButton onClick={this.play} style={{
                                     color: 'white'
 
+                                }}
+                                            className="play_btn">
+                                    <PlayArrowIcon fontSize="large"/>
+                                </IconButton>
 
 
-                                }} size='large' className="pause_btn">
+                                <IconButton onClick={this.pause} style={{color: 'white'}} size='large'
+                                            className="pause_btn">
 
-
-                                    
 
                                     <PauseIcon/>
 
@@ -1064,14 +1082,11 @@ class chat_room extends Component {
                                     color: 'white'
 
 
+                                }} size='large' className="mr-3">
 
 
-                                    }} size='large' className="mr-3">
-
-                                    
                                     <Forward10Icon/>
                                 </IconButton>
-
 
 
                             </div>
