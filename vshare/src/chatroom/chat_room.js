@@ -61,7 +61,7 @@ var localresponse;
 
 var play_or_no;
 var isadmin = window.localStorage.getItem('isadmin');
-
+var filmplayed = 0;
 var Play_pause_space = 0;
 
 var clienthashok = 0;
@@ -167,7 +167,7 @@ class chat_room extends Component {
                 const {player} = this.player.getState();
                 console.log("curent " + player.currentTime)
 
-                const message_send_play = {"command": "send_current_time", "currentTime": player.currentTime };
+                const message_send_play = {"command": "send_current_time", "currentTime": player.currentTime};
                 ws.send(JSON.stringify(message_send_play));
 
             }
@@ -193,6 +193,10 @@ class chat_room extends Component {
         const {id} = this.props.match.params
 
         $(document).ready(function () {
+
+            $("#playbtnid").click(function () {
+                filmplayed = 1;
+            });
 
             //$(document).keyup(function (e) {
             //    if (e.keyCode == 39) {
@@ -239,15 +243,16 @@ class chat_room extends Component {
                 //
 
             });
-            $( "#movie" ).mouseover(function() {
-                $('#controll_div').fadeIn();
-                
+            $("#formback_movie_id").mouseover(function () {
+                console.log("mouse umad tu");
+                if (filmplayed == 1)
+                    $('#controll_div').fadeIn();
+
             });
-            $( "#movie" ).mouseleave(function() {
+            $("#formback_movie_id").mouseleave(function () {
+                console.log("mouse raf birun");
                 $('#controll_div').fadeOut();
             });
-        
-            
 
 
             $('.username').text(window.localStorage.getItem('username'));
@@ -311,9 +316,6 @@ class chat_room extends Component {
                 }
 
             });
-
-
-            
 
 
             // if (localStorage.getItem('token') == null) {
@@ -930,7 +932,6 @@ class chat_room extends Component {
         }
     }
 
-   
 
     render() {
 
@@ -990,7 +991,7 @@ class chat_room extends Component {
 
                     </header>
 
-                    <div className="formback_movie">
+                    <div id='formback_movie_id' className="formback_movie">
 
                         <div id="movie">
 
@@ -1038,22 +1039,18 @@ class chat_room extends Component {
                             <div className="control" id='controll_div'>
 
 
-                                
-                            <IconButton onClick={this.changeCurrentTime(-10)} style={{
+                                <IconButton onClick={this.changeCurrentTime(-10)} style={{
 
-                                transform:'scaleX(-1)',
-                                color: 'white'
-                              
-
+                                    transform: 'scaleX(-1)',
+                                    color: 'white'
 
 
                                 }} size='large' className="mr-3">
 
 
-                                <Forward10Icon/>
+                                    <Forward10Icon/>
 
-                            </IconButton>
-                                
+                                </IconButton>
 
 
                                 <IconButton onClick={this.play} style={{
@@ -1065,10 +1062,8 @@ class chat_room extends Component {
                                 </IconButton>
 
 
-
-                                <IconButton onClick={this.pause} style={{ color: 'white'}} size='large' className="pause_btn">
-
-
+                                <IconButton onClick={this.pause} style={{color: 'white'}} size='large'
+                                            className="pause_btn">
 
 
                                     <PauseIcon/>
@@ -1079,11 +1074,9 @@ class chat_room extends Component {
                                     color: 'white'
 
 
+                                }} size='large' className="mr-3">
 
 
-                                    }} size='large' className="mr-3">
-
-                                    
                                     <Forward10Icon/>
                                 </IconButton>
 
