@@ -293,3 +293,85 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				"user":event["user"],
 			}
 		)
+
+
+
+
+
+
+
+
+
+#created to implement chat feature
+class TextChat(AsyncJsonWebsocketConsumer):
+
+	# Connect websocket
+	async def connect(self):
+
+		user = self.scope["user"]
+		roomid = self.scope['url_route']['kwargs']['groupid']
+		self.roomid = roomid
+		# Check room is valid or not
+		room = await get_room(roomid)
+		ismember = await is_member(user,roomid)
+
+		# Check user logged in or is in the group
+		if user.is_anonymous or not ismember:
+			# Reject connection
+			await self.close()
+		else:
+			# Add clients to chat and accept connection
+			await self.channel_layer.group_add(roomid,self.channel_name)
+			await self.accept()
+
+			# Send welcome message to user
+			await self.send_json(
+				{
+					"room":roomid,
+					"username":user.username,
+					"message":"you connected to chat successfully.",
+				}
+			)
+
+	# Recieve websocket request
+	async def receive_json(self, content):
+		command = content.get("command",None)
+		try:
+			if command == "chat_client":
+				await self.recieve_message(content["message_client"])
+		except ClientError as e:
+			await self.send_json({"error": e.code})
+
+	#send recieved message to all clients in this group
+	async def recieve_message(self,message_client):
+		user = self.scope["user"]
+		ismember = await is_member(user,self.roomid)
+		if ismember:
+			await self.channel_layer.group_send(
+					self.roomid,
+				{
+					"type":"send_message",
+					"message":message_client,
+					"command":"chat_client",
+					"user":user.username,
+				}
+			)
+			#here we will store the message in our DB
+			await store_message(user,message_client,self.roomid)
+		else:
+			await self.send_json(
+				{	
+					"username":user.username,
+					"message" : "you must be in the group to send messages through it!",
+				}
+			)
+
+	async def send_message(self, event):
+		await self.send_json(
+			{
+				"msg_type":"send message",
+				"message":event["message"],
+				"command":event["command"],
+				"user":event["user"],
+			}
+		)
