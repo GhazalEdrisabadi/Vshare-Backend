@@ -17,8 +17,8 @@ urlpatterns = [
     path('group/ready_to_watch/',views.AcceptedClientList.as_view(), name='users_ready_to_watch'),
     path('group/ready_to_watch/<str:accepted_client>/',views.AcceptedClientDetail.as_view(), name='ready_to_watch'),
     path('group/users_ready_to_watch/<str:entered_group>/',views.GroupAcceptedClientDetail.as_view(), name='group_users_ready_to_watch'),
-    path('group/messages', views.MessageHistory.as_view(), name='all_messages'),
-    path('group/messagest', views.MessageHistoryt.as_view(), name='all_messagest'),
+    path('group/messages/', views.MessageHistory.as_view(), name='all_messages'),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

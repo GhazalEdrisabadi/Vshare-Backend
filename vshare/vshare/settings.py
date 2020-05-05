@@ -63,8 +63,8 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
-    #'DEFAULT_PAGINATION_CLASS':    
-     #    'groups.pagination.CustomPagination'
+    #'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    #'PAGE_SIZE': 3,
 }
 
 AUTH_USER_MODEL = 'users.Account'
@@ -208,8 +208,8 @@ STATIC_URL = '/static/'
 MEDIA_URL =  '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR , 'users/media')
-#ws://127.0.0.1:8000/stream/groups/thisgp1/?token=a289e76acffc93b752bc54b1eaa71d452cb80f84
-#36719180a2ba109bf38f65f650af56396aea9b2e
+#ws://127.0.0.1:8000/stream/groups/thisgp1/?token=a4f8e0f20d1019e43631f5b2037c5139b0ca4324
+#5b6c9718c079dec1c4e0070d4fc21d67f718166e
 #daphne -b 0.0.0.0 -p 8000 vshare.asgi:application
 #{ "command": "chat_client", "message_client": pm}
 

@@ -11,6 +11,7 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.models import User
+from groups.pagination import CustomPagination
 
 
 from rest_framework.permissions import (
@@ -19,17 +20,21 @@ from rest_framework.permissions import (
 		IsAdminUser,
 		IsAuthenticatedOrReadOnly,
 	)
-
 class MessageHistory(generics.ListAPIView):
-    queryset = Message.objects.all()
+    #queryset = Message.objects.all()
     serializer_class = MessageSerializer
     permission_classes = [AllowAny]
+    def get_queryset(self):
+        queryset = Message.objects.all()
+        the_group = self.request.query_params.get('target','')
+        return queryset.filter(target_group=the_group)
+    pagination_class = CustomPagination
 
+#class MessageHistory(generics.ListAPIView):
+#    queryset = Message.objects.all()
+#    serializer_class = MessageSerializer
+#    permission_classes = [AllowAny]
 
-class MessageHistoryt(generics.ListCreateAPIView):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
-    permission_classes = [AllowAny]
         
 class GroupList(generics.ListCreateAPIView):
     search_fields = ['groupid']
