@@ -85,3 +85,12 @@ class AcceptedClient(models.Model):
 		ordering = ['date_accepted']
 		unique_together = ("entered_group", "accepted_client")
 
+class Message(models.Model):
+	message_text = models.CharField(max_length=100, blank=True, default='',)
+	target_group = models.ForeignKey(Group, to_field="groupid" , on_delete=models.CASCADE)
+	message_sender = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE)
+	date_sent = models.DateTimeField(auto_now_add=True)
+	class Meta:
+		ordering = ['date_sent']
+
+

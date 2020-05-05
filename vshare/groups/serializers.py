@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Group , Membership , AcceptedClient
+from .models import Group , Membership , AcceptedClient , Message
 from django.apps import apps
 
 UserModel = apps.get_model('users', 'Account')
@@ -23,13 +23,11 @@ class MembershipSerializer(serializers.ModelSerializer):
     class Meta:
         model = Membership
         fields = '__all__'  
+
 class AcceptedClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = AcceptedClient
         fields = '__all__'
-
-        
-
 
 class GroupRegistrationSerializer(serializers.ModelSerializer):
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
@@ -48,3 +46,8 @@ class GroupRegistrationSerializer(serializers.ModelSerializer):
         )
         group.save()
         return group
+
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = '__all__'

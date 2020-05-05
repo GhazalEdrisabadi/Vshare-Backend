@@ -86,6 +86,15 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 					"message":message_client,
 				}
 			)
+			#here we will store the message in our DB
+			await store_message(user,message_client,self.roomid)
+		else:
+			await self.send_json(
+				{	
+					"username":user.username,
+					"message" : "you must be in the group to send messages through it!",
+				}
+			)
 
 	async def recieve_stream(self,vhash):	
 

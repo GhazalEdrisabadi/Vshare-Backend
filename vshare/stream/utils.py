@@ -4,7 +4,15 @@ from channels.db import database_sync_to_async
 from .exceptions import ClientError
 from groups.models import *
 
-
+#store the recieved message to the database
+@database_sync_to_async
+def store_message(user,message_client,the_room):
+	try:
+		obj = Group.objects.get(groupid=the_room)	
+		new_obj=Message(message_text=message_client, target_group=obj, message_sender=user)
+		new_obj.save()
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
 # Check a user is a member of group
 @database_sync_to_async
 def is_member(user,roomid):
