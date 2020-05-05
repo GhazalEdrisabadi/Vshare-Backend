@@ -209,6 +209,7 @@ MEDIA_URL =  '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR , 'users/media')
 #ws://127.0.0.1:8000/stream/groups/thisgp1/?token=a289e76acffc93b752bc54b1eaa71d452cb80f84
+#36719180a2ba109bf38f65f650af56396aea9b2e
 #daphne -b 0.0.0.0 -p 8000 vshare.asgi:application
 #{ "command": "chat_client", "message_client": pm}
 

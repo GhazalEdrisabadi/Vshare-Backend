@@ -84,6 +84,8 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				{
 					"type":"send_message",
 					"message":message_client,
+					"command":"chat_client",
+					"user":user.username,
 				}
 			)
 			#here we will store the message in our DB
@@ -286,6 +288,8 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		await self.send_json(
 			{
 				"msg_type":"send message",
-				"message":event["message"]
+				"message":event["message"],
+				"command":event["command"],
+				"user":event["user"],
 			}
 		)
