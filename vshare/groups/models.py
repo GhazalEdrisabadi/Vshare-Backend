@@ -93,4 +93,12 @@ class Message(models.Model):
 	class Meta:
 		ordering = ['-date_sent']
 
+class OnlineUser(models.Model):
+	online_user = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE)
+	joined_group = models.ForeignKey(Group, to_field="groupid" , on_delete=models.CASCADE)
+	data_joined = models.DateTimeField(auto_now_add=True)
+	class Meta:
+		ordering = ['data_joined']
+		unique_together = ("joined_group", "online_user")
+
 

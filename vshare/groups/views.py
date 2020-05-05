@@ -1,8 +1,8 @@
 from rest_framework import generics
-from .models import Group , Membership , AcceptedClient , Message
+from .models import Group , Membership , AcceptedClient , Message , OnlineUser
 from users.models import Account
 from .serializers import GroupRegistrationSerializer
-from .serializers import GroupSerializer , MembershipSerializer , GroupUpdateSerializer ,AcceptedClientSerializer , MessageSerializer
+from .serializers import GroupSerializer , MembershipSerializer , GroupUpdateSerializer ,AcceptedClientSerializer , MessageSerializer , OnlineUserSerializer
 from rest_framework import filters
 from rest_framework import status
 from rest_framework import viewsets
@@ -20,6 +20,16 @@ from rest_framework.permissions import (
 		IsAdminUser,
 		IsAuthenticatedOrReadOnly,
 	)
+class OnlineUserList(generics.ListAPIView):
+    #queryset = OnlineUser.objects.all()
+    serializer_class = OnlineUserSerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+        queryset = OnlineUser.objects.all()
+        the_group = self.request.query_params.get('group','')
+        return queryset.filter(joined_group=the_group)
+
+
 class MessageHistory(generics.ListAPIView):
     #queryset = Message.objects.all()
     serializer_class = MessageSerializer
@@ -29,13 +39,7 @@ class MessageHistory(generics.ListAPIView):
         the_group = self.request.query_params.get('target','')
         return queryset.filter(target_group=the_group)
     pagination_class = CustomPagination
-
-#class MessageHistory(generics.ListAPIView):
-#    queryset = Message.objects.all()
-#    serializer_class = MessageSerializer
-#    permission_classes = [AllowAny]
-
-        
+      
 class GroupList(generics.ListCreateAPIView):
     search_fields = ['groupid']
     filter_backends = (filters.SearchFilter,)
