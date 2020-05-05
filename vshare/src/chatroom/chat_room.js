@@ -68,15 +68,16 @@ class chat_room extends Component {
                 document.getElementById('blaybtndiv').style.display = 'none';
                 document.getElementById('movietxt').style.display = 'none';
             }
+            console.log(window.localStorage.getItem('username'))
 
             if(messagee.command == "chat_client" ){
 
-                if (messagee.id == window.localStorage.getItem('username')){
-                    $(".pm").append("<p id='pmeman'>"+messagee.message+"</p>");
+                if (messagee.user == window.localStorage.getItem('username')){
+                    $(".pm").append("<div id='pmeman'>"+messagee.message+"</div>");
 
                 }
                 else{
-                    $(".pm").append("<p id='pmeoon'>"+ messagee.id + " : " + messagee.message+"</p>");
+                     $(".pm").append("<div id='pmeoon'>"+ messagee.user + " : " + messagee.message+"</div>");
                 }
             }
 
@@ -510,12 +511,7 @@ class chat_room extends Component {
                       
                                 
                                     <div className="pm" >
-                                        
-                                   
-                                    <p id='pmeoon'>salam</p>
-                                      <p id='pmeman'>salam</p>
-                                        
-                                        
+             
 
                                     </div>
 

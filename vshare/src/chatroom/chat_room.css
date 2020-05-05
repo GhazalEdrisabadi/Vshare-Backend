@@ -16,13 +16,20 @@
 
 }
 #pmeoon{
- 
+    width: 100%;
+    white-space: initial;
     text-align: left;
+    float: left;
+    
+    
    
 }
 #pmeman{
-   
+    width: 100%;
+    white-space: initial;
     text-align: right;
+    float:right;
+    
    
 }
 .formback_text {
@@ -93,9 +100,10 @@
 
 .pm{
     height: 35%;
-    width: 17% ;
+    width: 50% ;
     color: whitesmoke;
     background-color: rgba(0, 0, 0, 0);
+    
     
     font-size: 14px;
     white-space: initial;
