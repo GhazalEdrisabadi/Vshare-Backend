@@ -91,6 +91,6 @@ class Message(models.Model):
 	message_sender = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE)
 	date_sent = models.DateTimeField(auto_now_add=True)
 	class Meta:
-		ordering = ['date_sent']
+		ordering = ['-date_sent']
 
 
