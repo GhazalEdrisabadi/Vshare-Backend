@@ -68,6 +68,30 @@ class chat_room extends Component {
                 document.getElementById('blaybtndiv').style.display = 'none';
                 document.getElementById('movietxt').style.display = 'none';
             }
+
+            if(messagee.command == "chat_client" ){
+
+                if (messagee.id == window.localStorage.getItem('username')){
+                    $(".pm").append("<p id='pmeman'>"+messagee.message+"</p>");
+
+                }
+                else{
+                    $(".pm").append("<p id='pmeoon'>"+ messagee.id + " : " + messagee.message+"</p>");
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
         };
 
 
@@ -75,10 +99,19 @@ class chat_room extends Component {
         $(document).ready(function () {
 
             $(".send_btn").click(function (){
-                var massage = $(".input_send").val();
+                var massage = $(".formback_text_input").val();
+
+                const message_send_chat = { "command": "chat_client", "message_client": massage}
+                        ws.send(JSON.stringify(message_send_chat))
+
+                        console.log(JSON.stringify(message_send_chat))
+
 
 
             });
+
+
+
 
 
 
@@ -474,14 +507,15 @@ class chat_room extends Component {
                         </div>
 
                         <div className="formback_text"  style={{width: '350px', height: '395px',}}>
+                      
                                 
                                     <div className="pm" >
-                                        <div>
-                                            3333333333
-                                            ashc
-                                           
-                                            ASC
-                                        </div>
+                                        
+                                   
+                                    <p id='pmeoon'>salam</p>
+                                      <p id='pmeman'>salam</p>
+                                        
+                                        
 
                                     </div>
 
@@ -491,10 +525,11 @@ class chat_room extends Component {
                                         <input className="formback_text_input" id="formback_text_input"></input>
 
                                         <IconButton style={{
-                                             color: 'white'
+                                             color: 'white',
+                                             fontSize:'80px'
                                             }}
                                                 className="send_btn">
-                                            <SendIcon fontSize="medium"/>
+                                            <SendIcon />
                                         </IconButton>
                             
                                     </div>

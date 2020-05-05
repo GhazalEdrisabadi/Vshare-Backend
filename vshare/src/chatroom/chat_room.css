@@ -15,18 +15,25 @@
 
 
 }
-
+#pmeoon{
+ 
+    text-align: left;
+   
+}
+#pmeman{
+   
+    text-align: right;
+   
+}
 .formback_text {
     background-color: rgba(0, 0, 0, 0.77);
     border-radius: 10px;
     display: flex;
-    align-items: center;
-    justify-content: left;
     flex-direction: column;
     padding: 7px; 
     height: 50%;
     width: 100%;
-    text-align: center;
+    
 }
 
 .formback_movie {
@@ -46,14 +53,15 @@
     text-align: center;
 }
 .formback_text_input{
-    height: 40%;
+    height: 35px;
     width: 150%;
-    opacity: 14%;
-    color: blanchedalmond;
-    background-color:white;
+    font-size: 14px;
+    border-radius: 10px;
+     color: whitesmoke;
+     background-color: rgba(36, 32, 32, 0.77);
     
     
-    
+     
 }
 .input_send{
     display: flex;
@@ -86,13 +94,18 @@
 .pm{
     height: 35%;
     width: 17% ;
-    background-color:pink;
-    opacity: 14%; 
+    color: whitesmoke;
+    background-color: rgba(0, 0, 0, 0);
+    
+    font-size: 14px;
+    white-space: initial;
+    /* opacity: 100%; */
     position: absolute;
-    display: flex;
-    flex-wrap: nowrap;
-    /* overflow-x:hidden; */
-    color: white;
+    
+    
+     overflow-x:hidden; 
+     
+    
     
 }
 
