@@ -23,7 +23,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import IconButton from "@material-ui/core/IconButton";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { TextField } from '@material-ui/core';
+import {TextField} from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 
 var percant = 0;
@@ -36,7 +36,7 @@ var ws = new WebSocket(url);
 var adminhash;
 var localresponse;
 var play_or_no;
-var clienthashok=0;
+var clienthashok = 0;
 
 class chat_room extends Component {
 
@@ -48,40 +48,39 @@ class chat_room extends Component {
         ws.onopen = function () {
             console.log("Ping");
         };
-        ws1.onopen=function(){
+        ws1.onopen = function () {
             console.log("ws1.open")
 
         }
 
-        ws1.onmessage = evt =>{
+        ws1.onmessage = evt => {
             const messagee = JSON.parse(evt.data)
             console.log(messagee)
             console.log(messagee.message)
 
-            
-            if(messagee.command == "chat_client" ){
 
-                if (messagee.user == window.localStorage.getItem('username')){
-                    $(".pm").append("<div id='pmeman'>"+"me : "+messagee.message+"</div>");
+            if (messagee.command == "chat_client") {
 
-                }
-                else{
-                     $(".pm").append("<div id='pmeoon'>"+ messagee.user + " : " + messagee.message+"</div>");
+                if (messagee.user == window.localStorage.getItem('username')) {
+                    $(".pm").append("<div id='pmeman'>" + "me : " + messagee.message + "</div>");
+
+                } else {
+                    $(".pm").append("<div id='pmeoon'>" + messagee.user + " : " + messagee.message + "</div>");
                 }
                 // $(".pm").append("<br>")
 
-                
+
             }
 
 
-        } 
+        }
         ws.onmessage = evt => {
             console.log("messsssssage")
             const messagee = JSON.parse(evt.data)
             this.setState({server_pm: messagee})
             console.log(messagee)
             console.log(messagee.message)
-            if ( clienthashok==0 && messagee.status == 1 && localresponse.created_by != window.localStorage.getItem('username')) {
+            if (clienthashok == 0 && messagee.status == 1 && localresponse.created_by != window.localStorage.getItem('username')) {
                 $('#movietxt').fadeOut('slow');
                 $('#moviebtnd').fadeIn('slow');
                 adminhash = messagee.hash;
@@ -100,159 +99,143 @@ class chat_room extends Component {
             console.log(window.localStorage.getItem('username'))
 
 
-
-
-
-
-
-
-
-
-
-
-
-
         };
 
 
         const {id} = this.props.match.params
         $(document).ready(function () {
+                var id = window.localStorage.getItem('id_gp');
 
-            $(".send_btn").click(function (){
-                var massage = $(".formback_text_input").val();
+                $(".send_btn").click(function () {
+                    var massage = $(".formback_text_input").val();
 
-                const message_send_chat = { "command": "chat_client", "message_client": massage}
-                        ws1.send(JSON.stringify(message_send_chat))
+                    const message_send_chat = {"command": "chat_client", "message_client": massage}
+                    ws1.send(JSON.stringify(message_send_chat))
 
-                        console.log(JSON.stringify(message_send_chat))
-
-
-
-            });
+                    console.log(JSON.stringify(message_send_chat))
 
 
+                });
 
 
+                var settings = {
+
+                    "url": "  http://127.0.0.1:8000/group/messages/?target=" + id,
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+                        //'X-CSRFToken': csrftoken,
+                        //  "Authorization": "token " + token,
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    }
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                    for (var counterchathistory = response.results.length - 1; counterchathistory >= 0; counterchathistory--) {
+                        if (response.results[counterchathistory].message_sender == window.localStorage.getItem('username')) {
+                            $(".pm").append("<div id='pmeman'>" + "me : " + response.results[counterchathistory].message_text + "</div>");
+
+                        } else {
+                            $(".pm").append("<div id='pmeoon'>" + response.results[counterchathistory].message_sender + " : " + response.results[counterchathistory].message_text + "</div>");
+                        }
+                    }
+                    var element = document.getElementById("pmid");
+                    element.scrollTop = element.scrollHeight;
+
+                });
 
 
+                if (window.localStorage.getItem('token') == null) {
+
+                    alert("Login first !");
+
+                    window.location.replace("/login/");
+
+                }
+                $('.logout').click(function () {
+                    window.location.replace('/homepage/');
+                });
+                $('.username').text(window.localStorage.getItem('username'));
+                //id_gp = "test";
+                //This will open the connection*
+                document.getElementById('moviebtnd').style.display = 'none';
+                document.getElementById('movietxt').style.display = 'none';
+                document.getElementById('firstprogress').style.display = 'block';
+
+                setTimeout(function () {
+                    document.getElementById('firstprogress').style.display = 'none';
+                    if (localresponse.created_by == window.localStorage.getItem('username')) {
+                        document.getElementById('moviebtnd').style.display = 'block';
+                        document.getElementById('movietxt').style.display = 'none';
+
+                        //$('#videopickbtn').fadeIn('fast');
+                        //    $('#movietxt').fadeOut('fast');
+
+                    } else {
+                        document.getElementById('moviebtnd').style.display = 'none';
+                        document.getElementById('movietxt').style.display = 'block';
+                        //   $('#videopickbtn').fadeOut('fast');
+                        // $('#movietxt').fadeIn('fast');
+                    }
+
+                }, 2000);
 
 
+                $('#videopicks').change(function () {
+                    if (localresponse.created_by == window.localStorage.getItem('username')) {
+                        $('#videopickbtn').fadeOut();
+                        $('#progress').fadeIn();
+                    } else {
+
+                    }
+                });
 
 
+                // if (localStorage.getItem('token') == null) {
+                //     alert("Login please !");
+                //     window.location.replace("/login/");
+                // }
 
 
+                var settings = {
+                    "url": "http://127.0.0.1:8000/groups/" + id + '/',
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+                        //'X-CSRFToken': csrftoken,
+                        //  "Authorization": "token " + token,
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    }
+                };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            if (window.localStorage.getItem('token') == null) {
-
-                alert("Login first !");
-
-                window.location.replace("/login/");
-
+                $.ajax(settings).done(function (response) {
+                    localresponse = response;
+                    console.log("111111");
+                    console.log(response);
+                    /*  for (var i = 0; i < response.members.length; i++) {
+                          var hoverout = 'onMouseOut="this.style.color=';
+                          var hoverrout = hoverout + "'white'";
+                          var htmlcode = '';
+                          var hover = 'onMouseOver="this.style.color=';
+                          var hoverr = hover + "'red'";
+                          htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
+                          $(".textarea_member").append(htmlcode);
+                          console.log("2")
+                          //$(".textarea_member").append(response.members[i] + "\n")
+                      }*/
+                    //  $(".textarea_bio").append(response.describtion + "\n")
+                    $(".name").append(response.title);
+                });
             }
-            $('.logout').click(function () {
-                window.location.replace('/homepage/');
-            });
-            $('.username').text(window.localStorage.getItem('username'));
-            //id_gp = "test";
-            //This will open the connection*
-            document.getElementById('moviebtnd').style.display = 'none';
-            document.getElementById('movietxt').style.display = 'none';
-            document.getElementById('firstprogress').style.display = 'block';
-
-            setTimeout(function () {
-                document.getElementById('firstprogress').style.display = 'none';
-                if (localresponse.created_by == window.localStorage.getItem('username')) {
-                    document.getElementById('moviebtnd').style.display = 'block';
-                    document.getElementById('movietxt').style.display = 'none';
-
-                    //$('#videopickbtn').fadeIn('fast');
-                    //    $('#movietxt').fadeOut('fast');
-
-                } else {
-                    document.getElementById('moviebtnd').style.display = 'none';
-                    document.getElementById('movietxt').style.display = 'block';
-                    //   $('#videopickbtn').fadeOut('fast');
-                    // $('#movietxt').fadeIn('fast');
-                }
-
-            }, 2000);
-
-
-            $('#videopicks').change(function () {
-                if (localresponse.created_by == window.localStorage.getItem('username')) {
-                    $('#videopickbtn').fadeOut();
-                    $('#progress').fadeIn();
-                } else {
-
-                }
-            });
-
-
-            // if (localStorage.getItem('token') == null) {
-            //     alert("Login please !");
-            //     window.location.replace("/login/");
-            // }
-
-
-            var id = window.localStorage.getItem('id_gp');
-            var settings = {
-                "url": "http://127.0.0.1:8000/groups/" + id + '/',
-                "method": "GET",
-                "timeout": 0,
-                "headers": {
-                    //'X-CSRFToken': csrftoken,
-                    //  "Authorization": "token " + token,
-                    "accept": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Headers": "*",
-                    "Content-Type": "application/json"
-                }
-            };
-
-            $.ajax(settings).done(function (response) {
-                localresponse = response;
-                console.log("111111");
-                console.log(response);
-                /*  for (var i = 0; i < response.members.length; i++) {
-                      var hoverout = 'onMouseOut="this.style.color=';
-                      var hoverrout = hoverout + "'white'";
-                      var htmlcode = '';
-                      var hover = 'onMouseOver="this.style.color=';
-                      var hoverr = hover + "'red'";
-                      htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
-                      $(".textarea_member").append(htmlcode);
-                      console.log("2")
-                      //$(".textarea_member").append(response.members[i] + "\n")
-                  }*/
-                //  $(".textarea_bio").append(response.describtion + "\n")
-                $(".name").append(response.title);
-            });
-        });
+        )
+        ;
 
 
         //Log the messages that are returned from the server
@@ -272,13 +255,16 @@ class chat_room extends Component {
         }
         this.onChange = this.onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        //this.updateScroll = this.updateScroll.bind(this);
     }
 
-    //handleChange(event) {
-    //    this.setState({
-    //        file_select: URL.createObjectURL(event.target.files[0])
-    //    })
-    //}
+//handleChange(event) {
+//    this.setState({
+//        file_select: URL.createObjectURL(event.target.files[0])
+//    })
+//}
+
+
     handleSubmit(e) {
 
 
@@ -292,13 +278,13 @@ class chat_room extends Component {
 
     }
 
-    //send_play() {
-    //    const message_send_play = { "command": "play"}
+//send_play() {
+//    const message_send_play = { "command": "play"}
 
-    //    // ws.send(JSON.stringify(message_send))
-    //    ws.send(JSON.stringify(message_send_play))
-    //    console.log(JSON.stringify(message_send_play))
-    //}
+//    // ws.send(JSON.stringify(message_send))
+//    ws.send(JSON.stringify(message_send_play))
+//    console.log(JSON.stringify(message_send_play))
+//}
 
     onChange(e) {
         document.getElementById('blaybtndiv').style.display = 'none';
@@ -407,7 +393,7 @@ class chat_room extends Component {
                 document.getElementById('progress').style.display = 'none';
             } else {
                 if (encrypted == adminhash) {
-                    clienthashok=1;
+                    clienthashok = 1;
                     document.getElementById('progress').style.display = 'none';
                     $('#movietxt').text('Wait for admin to play the video');
                     $('#moviebtnd').fadeOut();
@@ -428,7 +414,6 @@ class chat_room extends Component {
 
         console.log("aa");
     }
-
 
 
     Send_data() {
@@ -526,35 +511,28 @@ class chat_room extends Component {
                             <div className="name"/>
                         </div>
 
-                        <div className="formback_text"  style={{width: '350px', height: '395px',}}>
-                      
-                                
-                                    <div className="pm" >
-             
-
-                                    </div>
+                        <div className="formback_text" style={{width: '350px', height: '395px',}}>
 
 
-                                    <div className = "input_send"> 
-
-                                        <input className="formback_text_input" id="formback_text_input"></input>
-
-                                        <IconButton style={{
-                                             color: 'white',
-                                             fontSize:'80px'
-                                            }}
-                                                className="send_btn">
-                                            <SendIcon />
-                                        </IconButton>
-                            
-                                    </div>
+                            <div id='pmid' className="pm">
 
 
+                            </div>
 
 
-                                
-                            
-                            
+                            <div className="input_send">
+
+                                <input className="formback_text_input" id="formback_text_input"></input>
+
+                                <IconButton style={{
+                                    color: 'white',
+                                    fontSize: '80px'
+                                }}
+                                            className="send_btn">
+                                    <SendIcon/>
+                                </IconButton>
+
+                            </div>
 
 
                         </div>
