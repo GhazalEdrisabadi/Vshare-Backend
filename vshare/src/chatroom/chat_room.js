@@ -5,6 +5,7 @@ import Websocket from 'react-websocket';
 import Home from './home.png'
 import Button from '@material-ui/core/Button';
 
+
 //import '../../node_modules/video-react/dist/video-react.css';
 import './video-react.css';
 import {Player, ControlBar, PlayToggle} from 'video-react';
@@ -22,6 +23,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import IconButton from "@material-ui/core/IconButton";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { TextField } from '@material-ui/core';
+import SendIcon from '@material-ui/icons/Send';
 
 var percant = 0;
 var id_gp = window.localStorage.getItem('id_gp')
@@ -65,11 +68,84 @@ class chat_room extends Component {
                 document.getElementById('blaybtndiv').style.display = 'none';
                 document.getElementById('movietxt').style.display = 'none';
             }
+            console.log(window.localStorage.getItem('username'))
+
+            if(messagee.command == "chat_client" ){
+
+                if (messagee.user == window.localStorage.getItem('username')){
+                    $(".pm").append("<div id='pmeman'>"+messagee.message+"</div>");
+
+                }
+                else{
+                     $(".pm").append("<div id='pmeoon'>"+ messagee.user + " : " + messagee.message+"</div>");
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
         };
 
 
         const {id} = this.props.match.params
         $(document).ready(function () {
+
+            $(".send_btn").click(function (){
+                var massage = $(".formback_text_input").val();
+
+                const message_send_chat = { "command": "chat_client", "message_client": massage}
+                        ws.send(JSON.stringify(message_send_chat))
+
+                        console.log(JSON.stringify(message_send_chat))
+
+
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             if (window.localStorage.getItem('token') == null) {
@@ -334,6 +410,8 @@ class chat_room extends Component {
         console.log("aa");
     }
 
+
+
     Send_data() {
 
     }
@@ -429,7 +507,35 @@ class chat_room extends Component {
                             <div className="name"/>
                         </div>
 
-                        <div className="formback_text" style={{width: '350px', height: '395px',}}>
+                        <div className="formback_text"  style={{width: '350px', height: '395px',}}>
+                      
+                                
+                                    <div className="pm" >
+             
+
+                                    </div>
+
+
+                                    <div className = "input_send"> 
+
+                                        <input className="formback_text_input" id="formback_text_input"></input>
+
+                                        <IconButton style={{
+                                             color: 'white',
+                                             fontSize:'80px'
+                                            }}
+                                                className="send_btn">
+                                            <SendIcon />
+                                        </IconButton>
+                            
+                                    </div>
+
+
+
+
+                                
+                            
+                            
 
 
                         </div>
