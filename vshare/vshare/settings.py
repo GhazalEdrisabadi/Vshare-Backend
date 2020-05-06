@@ -63,6 +63,8 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
+    #'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    #'PAGE_SIZE': 3,
 }
 
 AUTH_USER_MODEL = 'users.Account'
@@ -140,7 +142,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'vshare',
-        'USER' : 'postgres',
+        'USER' : 'admin',
         'PASSWORD' : '123qwe',
         'HOST' : 'localhost',
         'PORT' : '5432',
@@ -206,4 +208,7 @@ STATIC_URL = '/static/'
 MEDIA_URL =  '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR , 'users/media')
-
+#ws://127.0.0.1:8000/chat/groups/thisgp1/?token=363308709fd2353a54260640ace6184fdb44f23a
+#7f59afbe38e47119477b34171f2f0a3260549eec
+#daphne -b 0.0.0.0 -p 8000 vshare.asgi:application
+#{ "command": "chat_client", "message_client": pm}
