@@ -16,19 +16,20 @@
 
 }
 #pmeoon{
-    width: 100%;
+    width: 70%;
     white-space: initial;
     text-align: left;
-    float: left;
+    
+    
     
     
    
 }
 #pmeman{
-    width: 100%;
+    width:70%;
     white-space: initial;
-    text-align: right;
-    float:right;
+    text-align: left;
+    
     
    
 }

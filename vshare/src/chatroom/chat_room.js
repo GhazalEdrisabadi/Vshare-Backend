@@ -29,6 +29,8 @@ import SendIcon from '@material-ui/icons/Send';
 var percant = 0;
 var id_gp = window.localStorage.getItem('id_gp')
 const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
+const url1 = "ws://127.0.0.1:8000/chat/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
+var ws1 = new WebSocket(url1)
 var encrypted
 var ws = new WebSocket(url);
 var adminhash;
@@ -46,6 +48,33 @@ class chat_room extends Component {
         ws.onopen = function () {
             console.log("Ping");
         };
+        ws1.onopen=function(){
+            console.log("ws1.open")
+
+        }
+
+        ws1.onmessage = evt =>{
+            const messagee = JSON.parse(evt.data)
+            console.log(messagee)
+            console.log(messagee.message)
+
+            
+            if(messagee.command == "chat_client" ){
+
+                if (messagee.user == window.localStorage.getItem('username')){
+                    $(".pm").append("<div id='pmeman'>"+"me : "+messagee.message+"</div>");
+
+                }
+                else{
+                     $(".pm").append("<div id='pmeoon'>"+ messagee.user + " : " + messagee.message+"</div>");
+                }
+                // $(".pm").append("<br>")
+
+                
+            }
+
+
+        } 
         ws.onmessage = evt => {
             console.log("messsssssage")
             const messagee = JSON.parse(evt.data)
@@ -70,16 +99,6 @@ class chat_room extends Component {
             }
             console.log(window.localStorage.getItem('username'))
 
-            if(messagee.command == "chat_client" ){
-
-                if (messagee.user == window.localStorage.getItem('username')){
-                    $(".pm").append("<div id='pmeman'>"+messagee.message+"</div>");
-
-                }
-                else{
-                     $(".pm").append("<div id='pmeoon'>"+ messagee.user + " : " + messagee.message+"</div>");
-                }
-            }
 
 
 
@@ -103,7 +122,7 @@ class chat_room extends Component {
                 var massage = $(".formback_text_input").val();
 
                 const message_send_chat = { "command": "chat_client", "message_client": massage}
-                        ws.send(JSON.stringify(message_send_chat))
+                        ws1.send(JSON.stringify(message_send_chat))
 
                         console.log(JSON.stringify(message_send_chat))
 
