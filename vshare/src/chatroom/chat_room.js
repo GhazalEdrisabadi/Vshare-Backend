@@ -520,37 +520,89 @@ class chat_room extends Component {
 
             },
 
-            // {
+            {
 
-            //    keyCode: 39, // Right arrow
+               keyCode: 75, // Right arrow
 
-            //    // Ctrl/Cmd
+               // Ctrl/Cmd
 
-            //    handle: (player, actions) => {
-            //        if(isadmin==0){
-            //            console.log("no")
-            //        }
+               handle: (player, actions) => {
+               console.log("press k")
 
-            //    }
+               }
 
-            // },
+            },
 
-            // {
+            {
 
-            //    keyCode: 37, // Right arrow
+               keyCode: 74, // Right arrow
 
-            //    // Ctrl/Cmd
+               // Ctrl/Cmd
 
-            //    handle: (player, actions) => {
+               handle: (player, actions) => {
 
-            //     if(isadmin==0){
-            //         console.log("no")
-            //     }
+                    console.log("press j")
+                
 
-            //    }
+               }
 
-            // }
+            },
+            {
 
+                keyCode: 76, // Right arrow
+ 
+                // Ctrl/Cmd
+ 
+                handle: (player, actions) => {
+ 
+                     console.log("press l")
+                 
+ 
+                }
+ 
+             },
+                 {
+
+               keyCode: 36, // Right arrow
+
+               // Ctrl/Cmd
+
+               handle: (player, actions) => {
+
+                    console.log("press home")
+                
+
+               }
+
+            },
+                {
+
+               keyCode: 74, // Right arrow
+
+               // Ctrl/Cmd
+
+               handle: (player, actions) => {
+
+                    console.log("press end")
+                
+
+               }
+
+            }, 
+               {
+
+               keyCode: 70, // Right arrow
+
+               // Ctrl/Cmd
+
+               handle: (player, actions) => {
+
+                    console.log("press f")
+                
+
+               }
+
+            },
 
         ];
 
