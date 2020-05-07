@@ -1,5 +1,4 @@
 
-
 .back {
     background-image: url("./1561985.jpg");
 
@@ -16,7 +15,6 @@
 
 
 }
-
 
 
 .formback_text {
@@ -49,13 +47,10 @@
     text-align: center;
 }
 
-.control {
-    display:none;
-    width:700px;
-    margin-top:50%;
-    background-color: black;
-    opacity: 70%;
-  
+#controll_div {
+    margin-top: 36%;
+    position: fixed;
+
 }
 
 .formback_info {
@@ -109,8 +104,13 @@
     display: inline-block;
 }
 
+#videopicks{
+    cursor: pointer;
+}
 #progress {
-    display: none;
+    margin-top: 16.5%;
+    position: fixed;
+
 }
 
 .moviebtns {
@@ -141,16 +141,28 @@
 }
 
 #firstprogress {
-
+    display: none;
     margin-top: 16.5%;
     position: fixed;
 }
 
-#movietxt {
-    margin-top: 17.5%;
+#controllbuttons {
+    width: 700px;
+    background-color: black;
+    opacity: 80%;
+    margin-top: 700px;
+    position: fixed;
+    height: 55px;
+
+}
+
+
+#movietxtdiv {
+    margin-top: 18.5%;
     position: fixed;
     font-size: 18px;
 }
+
 
 .upload-btn-wrapper input[type=file] {
 
