@@ -68,7 +68,7 @@ class UserLogin(APIView):
 		return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 class UserByUsername(generics.RetrieveUpdateDestroyAPIView):
-    #queryset = Account.objects.all()
+    queryset = Account.objects.all()
     serializer_class = AccountSerializer
     lookup_field = 'username'
     permission_classes = [AllowAny]
