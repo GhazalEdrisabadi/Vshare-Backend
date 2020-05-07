@@ -62,15 +62,19 @@ class chat_room extends Component {
             if (messagee.command == "chat_client") {
 
                 if (messagee.user == window.localStorage.getItem('username')) {
-                    $(".pm").append("<div id='pmeman'>" + "me : " + messagee.message + "</div>");
+                    $(".pm").append("<div id='pmeman'>" + "me: " + messagee.message + "</div>");
 
                 } else {
-                    $(".pm").append("<div id='pmeoon'>" + messagee.user + " : " + messagee.message + "</div>");
+                    $(".pm").append("<div id='pmeoon'>" + messagee.user + ": " + messagee.message + "</div>");
                 }
-                // $(".pm").append("<br>")
+                
+                
+                var element = document.getElementById("pmid");
+                element.scrollTop = element.scrollHeight;
 
 
             }
+                
 
 
         }
@@ -112,8 +116,10 @@ class chat_room extends Component {
                     const message_send_chat = {"command": "chat_client", "message_client": massage}
                     ws1.send(JSON.stringify(message_send_chat))
 
-                    console.log(JSON.stringify(message_send_chat))
 
+
+                    console.log(JSON.stringify(message_send_chat))
+                    
 
                 });
 
@@ -137,10 +143,10 @@ class chat_room extends Component {
                     console.log(response);
                     for (var counterchathistory = response.results.length - 1; counterchathistory >= 0; counterchathistory--) {
                         if (response.results[counterchathistory].message_sender == window.localStorage.getItem('username')) {
-                            $(".pm").append("<div id='pmeman'>" + "me : " + response.results[counterchathistory].message_text + "</div>");
+                            $(".pm").append("<div id='pmeman'>" + "me: " + response.results[counterchathistory].message_text + "</div>");
 
                         } else {
-                            $(".pm").append("<div id='pmeoon'>" + response.results[counterchathistory].message_sender + " : " + response.results[counterchathistory].message_text + "</div>");
+                            $(".pm").append("<div id='pmeoon'>" + response.results[counterchathistory].message_sender + ": " + response.results[counterchathistory].message_text + "</div>");
                         }
                     }
                     var element = document.getElementById("pmid");

@@ -19,7 +19,8 @@
     width: 70%;
     white-space: initial;
     text-align: left;
-    
+    /* background-color: blue; */
+    color:  #bdbdbd;
     
     
     
@@ -27,8 +28,9 @@
 }
 #pmeman{
     width:70%;
-    white-space: initial;
+     white-space: initial; 
     text-align: left;
+   
     
     
    
@@ -101,9 +103,10 @@
 
 .pm{
     height: 35%;
-    width: 50% ;
+    width: 17% ;
     color: whitesmoke;
-    background-color: rgba(0, 0, 0, 0);
+     background-color: rgba(0, 0, 0, 0); 
+    /* background-color: blueviolet; */
     
     
     font-size: 14px;
@@ -113,9 +116,13 @@
     
     
      overflow-x:hidden; 
-     
+     overflow-y: scroll;
     
     
+    
+}
+::-webkit-scrollbar { 
+    display: none; 
 }
 
 .formback_info {
