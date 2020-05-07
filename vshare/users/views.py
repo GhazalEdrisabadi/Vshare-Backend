@@ -68,8 +68,33 @@ class UserLogin(APIView):
 		return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 class UserByUsername(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Account.objects.all()
+    #queryset = Account.objects.all()
     serializer_class = AccountSerializer
     lookup_field = 'username'
     permission_classes = [AllowAny]
 
+class FriendshipList(generics.ListCreateAPIView):
+	queryset = Friendship.objects.all()
+	serializer_class = FriendshipSerializer
+	permission_classes = [AllowAny]
+	def perform_create(self, serializer):
+		req = serializer.context['request']
+		serializer.save(who_follows=req.user)
+
+class UserFollowers(ListAPIView):
+	#queryset = OnlineUser.objects.all()
+    serializer_class = FriendshipSerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+        queryset = Friendship.objects.all()
+        get_param = self.request.query_params.get('user','')
+        return queryset.filter(who_is_followed=get_param)
+
+class UserFollowings(ListAPIView):
+	#queryset = OnlineUser.objects.all()
+    serializer_class = FriendshipSerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+        queryset = Friendship.objects.all()
+        get_param = self.request.query_params.get('user','')
+        return queryset.filter(who_follows=get_param)
