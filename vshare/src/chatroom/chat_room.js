@@ -598,12 +598,219 @@ class chat_room extends Component {
                handle: (player, actions) => {
 
                     console.log("press f")
-                
+       
 
                }
 
             },
+                {
 
+               keyCode: 49, // Right arrow
+
+               // Ctrl/Cmd
+
+               handle: (player, actions) => {
+
+                  
+                          const duration = player.duration;
+          // jump to the postion of 10%
+        
+          const message_send_play = {"command": "play_video", "currentTime": duration*0.1}
+
+                        // ws.send(JSON.stringify(message_send))
+
+                        ws.send(JSON.stringify(message_send_play))
+
+                        console.log(JSON.stringify(message_send_play))
+
+               }
+
+            },
+             {
+
+               keyCode: 57, // Right arrow
+
+               // Ctrl/Cmd
+
+               handle: (player, actions) => {
+
+           
+                          const duration = player.duration;
+          // jump to the postion of 10%
+        
+          const message_send_play = {"command": "play_video", "currentTime": duration*0.9}
+
+                        // ws.send(JSON.stringify(message_send))
+
+                        ws.send(JSON.stringify(message_send_play))
+
+                        console.log(JSON.stringify(message_send_play))
+
+               }
+
+            },
+            {
+
+                keyCode: 50, // Right arrow
+ 
+                // Ctrl/Cmd
+ 
+                handle: (player, actions) => {
+ 
+            
+                           const duration = player.duration;
+           // jump to the postion of 10%
+         
+           const message_send_play = {"command": "play_video", "currentTime": duration*0.2}
+ 
+                         // ws.send(JSON.stringify(message_send))
+ 
+                         ws.send(JSON.stringify(message_send_play))
+ 
+                         console.log(JSON.stringify(message_send_play))
+ 
+                }
+ 
+             },
+                        {
+
+               keyCode: 51, // Right arrow
+
+               // Ctrl/Cmd
+
+               handle: (player, actions) => {
+
+           
+                          const duration = player.duration;
+          // jump to the postion of 10%
+        
+          const message_send_play = {"command": "play_video", "currentTime": duration*0.3}
+
+                        // ws.send(JSON.stringify(message_send))
+
+                        ws.send(JSON.stringify(message_send_play))
+
+                        console.log(JSON.stringify(message_send_play))
+
+               }
+
+            },
+                       {
+
+               keyCode: 52, // Right arrow
+
+               // Ctrl/Cmd
+
+               handle: (player, actions) => {
+
+           
+                          const duration = player.duration;
+          // jump to the postion of 10%
+        
+          const message_send_play = {"command": "play_video", "currentTime": duration*0.4}
+
+                        // ws.send(JSON.stringify(message_send))
+
+                        ws.send(JSON.stringify(message_send_play))
+
+                        console.log(JSON.stringify(message_send_play))
+
+               }
+
+               
+            },
+                       {
+
+               keyCode: 53, // Right arrow
+
+               // Ctrl/Cmd
+
+               handle: (player, actions) => {
+
+           
+                          const duration = player.duration;
+          // jump to the postion of 10%
+        
+          const message_send_play = {"command": "play_video", "currentTime": duration*0.5}
+
+                        // ws.send(JSON.stringify(message_send))
+
+                        ws.send(JSON.stringify(message_send_play))
+
+                        console.log(JSON.stringify(message_send_play))
+
+               }
+
+            },
+                       {
+
+               keyCode: 54, // Right arrow
+
+               // Ctrl/Cmd
+
+               handle: (player, actions) => {
+
+           
+                          const duration = player.duration;
+          // jump to the postion of 10%
+        
+          const message_send_play = {"command": "play_video", "currentTime": duration*0.6}
+
+                        // ws.send(JSON.stringify(message_send))
+
+                        ws.send(JSON.stringify(message_send_play))
+
+                        console.log(JSON.stringify(message_send_play))
+
+               }
+
+            },
+                       {
+
+               keyCode: 55, // Right arrow
+
+               // Ctrl/Cmd
+
+               handle: (player, actions) => {
+
+           
+                          const duration = player.duration;
+          // jump to the postion of 10%
+        
+          const message_send_play = {"command": "play_video", "currentTime": duration*0.7}
+
+                        // ws.send(JSON.stringify(message_send))
+
+                        ws.send(JSON.stringify(message_send_play))
+
+                        console.log(JSON.stringify(message_send_play))
+
+               }
+
+            },
+                       {
+
+               keyCode: 56, // Right arrow
+
+               // Ctrl/Cmd
+
+               handle: (player, actions) => {
+
+           
+                          const duration = player.duration;
+          // jump to the postion of 10%
+        
+          const message_send_play = {"command": "play_video", "currentTime": duration*0.8}
+
+                        // ws.send(JSON.stringify(message_send))
+
+                        ws.send(JSON.stringify(message_send_play))
+
+                        console.log(JSON.stringify(message_send_play))
+
+               }
+
+            },
         ];
 
 
