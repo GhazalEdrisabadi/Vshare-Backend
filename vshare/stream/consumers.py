@@ -7,7 +7,7 @@ from channels.exceptions import DenyConnection
 from stream.utils import *
 import asyncio
 import json
-
+#this is friendship :)
 class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 	# Connect websocket
