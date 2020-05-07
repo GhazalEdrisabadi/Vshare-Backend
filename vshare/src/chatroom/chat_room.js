@@ -164,7 +164,8 @@ class chat_room extends Component {
                 document.getElementById('playbtnid').style.display = 'none';
                 document.getElementById('movietxt').style.display = 'none';
                 document.getElementById('controll_div').style.display = 'block'
-
+                if(isadmin==0){
+  document.getElementById("movie").style.pointerEvents = "none";}
             }
 
 
@@ -201,6 +202,8 @@ class chat_room extends Component {
         const {id} = this.props.match.params
 
         $(document).ready(function () {
+ 
+         
 
             $("#playbtnid").click(function () {
                 filmplayed = 1;
@@ -517,39 +520,22 @@ class chat_room extends Component {
 
             },
 
-            //{
+            // {
 
             //    keyCode: 39, // Right arrow
 
             //    // Ctrl/Cmd
 
             //    handle: (player, actions) => {
-
-            //        const current_time = player.currentTime;
-
-            //        if (!player.hasStarted) {
-
-            //            return;
-
+            //        if(isadmin==0){
+            //            console.log("no")
             //        }
-
-            //        console.log("curent " + player.currentTime)
-
-
-            //        const message_send_play = { "command": "play_video", "currentTime": current_time + 5 }
-
-
-            //        ws.send(JSON.stringify(message_send_play))
-
-            //        console.log(JSON.stringify(message_send_play))
-
-            //        actions.forward(5); // Go forward 30 seconds
 
             //    }
 
-            //},
+            // },
 
-            //{
+            // {
 
             //    keyCode: 37, // Right arrow
 
@@ -557,29 +543,13 @@ class chat_room extends Component {
 
             //    handle: (player, actions) => {
 
-            //        const current_time = player.currentTime;
-
-            //        if (!player.hasStarted) {
-
-            //            return;
-
-            //        }
-
-            //        console.log("curent " + player.currentTime)
-
-
-            //        const message_send_play = { "command": "play_video", "currentTime": current_time - 5 }
-
-
-            //        ws.send(JSON.stringify(message_send_play))
-
-            //        console.log(JSON.stringify(message_send_play))
-
-            //        actions.forward(-5); // Go forward 30 seconds
+            //     if(isadmin==0){
+            //         console.log("no")
+            //     }
 
             //    }
 
-            //}
+            // }
 
 
         ];
@@ -1001,7 +971,7 @@ filmplayed=1;
 
                     <div id='formback_movie_id' className="formback_movie">
 
-                        <div id="movie">
+                        <div id="movie" className="div_player_movie">
 
                             <Player
 
@@ -1014,7 +984,7 @@ filmplayed=1;
                                 autoPlay
 
                                 src={this.state.file_show_when_click}
-
+id='players'
 
                             >
 
