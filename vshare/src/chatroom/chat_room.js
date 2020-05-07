@@ -41,6 +41,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import Forward10Icon from '@material-ui/icons/Forward10';
+import EjectIcon from '@material-ui/icons/Eject';
 
 
 var logoutclicked = 0;
@@ -116,14 +117,17 @@ class chat_room extends Component {
             }
 
 
-
             if (clienthashok == 0 && messagee.status == 1 && isadmin == 0) {
-
-                $('#movietxt').fadeOut('slow');
-
-                $('#moviebtnd').fadeIn('slow');
-
                 adminhash = messagee.hash;
+                $('#movietxt').fadeOut('slow');
+                $('#reselect').fadeOut('fast');
+                $('#moviebtnd').fadeIn('slow');
+                document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                document.getElementById('videopickbtn').style.pointerEvents = 'auto';
+                document.getElementById('videopicks').style.pointerEvents = 'auto';
+                $('#movietxt').text('Click ▲ to select your video ');
+                $('#movietxt').fadeIn();
+                console.log('admin hash : ' + adminhash);
 
 
             }
@@ -135,11 +139,14 @@ class chat_room extends Component {
                 azavalbude = 1;
             }
 
-            if (messagee.status == 2 && isadmin == 0 && filmplayed==0) {
+            if (messagee.status == 2 && isadmin == 0 && filmplayed == 0 && azavalbude == 0) {
                 rejoined = 1;
                 $('#movietxt').text('Admin has played the video , select your video too , to join it');
                 $('#moviebtnd').fadeIn('slow');
+                document.getElementById('videopickbtn').style.pointerEvents = 'auto';
+                document.getElementById('videopicks').style.pointerEvents = 'auto';
                 adminhash = messagee.hash;
+                console.log("admin hash in state 2 : " + adminhash);
             }
 
 
@@ -159,13 +166,21 @@ class chat_room extends Component {
                     file_show_when_click: this.state.file_select
 
                 })
-
+                document.getElementById("formback_movie_id").style.background = "black";
                 document.getElementById('movie').style.display = 'block';
-                document.getElementById('playbtnid').style.display = 'none';
+                filmplayed = 1;
                 document.getElementById('movietxt').style.display = 'none';
-                document.getElementById('controll_div').style.display = 'block'
-                if(isadmin==0){
-  document.getElementById("movie").style.pointerEvents = "none";}
+
+                if (isadmin == 0) {
+                    document.getElementById('controllbuttons').style.display = 'none';
+                    document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                    document.getElementById('videopicks').style.pointerEvents = 'none';
+                    document.getElementById('movie').style.pointerEvents = 'none';
+
+                }
+                // document.getElementById('controll_div').style.display = 'block'
+
+
             }
 
 
@@ -205,6 +220,12 @@ class chat_room extends Component {
  
          
 
+            if (isadmin == 1) {
+                $('#videopicks').fadeIn('fast');
+            } else {
+                document.getElementById('controllbuttons').style.pointerEvents = 'none';
+
+            }
             $("#playbtnid").click(function () {
                 filmplayed = 1;
             });
@@ -254,6 +275,7 @@ class chat_room extends Component {
                 //
 
             });
+
             $( "#movie" ).dblclick(function(e) {
   	e.preventDefault();
  
@@ -262,17 +284,18 @@ class chat_room extends Component {
  
 	return;
 });
-            $("#formback_movie_id").mouseover(function () {
 
-                if (filmplayed == 1)
-                    $('#controll_div').fadeIn();
+            /*  $("#formback_movie_id").mouseover(function () {
+>>>>>>> features/stream-frontend
 
-            });
-            $("#formback_movie_id").mouseleave(function () {
+                  if (filmplayed == 1)
+                      $('#controll_div').fadeIn();
 
-                $('#controll_div').fadeOut();
-            });
-
+              });
+              $("#formback_movie_id").mouseleave(function () {
+                  $('#controll_div').fadeOut();
+              });
+  */
 
             $('.username').text(window.localStorage.getItem('username'));
 
@@ -284,50 +307,59 @@ class chat_room extends Component {
 
             document.getElementById('movietxt').style.display = 'none';
 
-            document.getElementById('firstprogress').style.display = 'block';
+
+            if (isadmin == 1) {
+
+                document.getElementById('moviebtnd').style.display = 'block';
 
 
-            setTimeout(function () {
-
-                document.getElementById('firstprogress').style.display = 'none';
-
-                if (isadmin == 1) {
-
-                    document.getElementById('moviebtnd').style.display = 'block';
+                document.getElementById('movietxt').style.display = 'block';
+                $('#movietxt').text('Click ▲ to select your video ');
+                document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                document.getElementById('videopickbtn').style.pointerEvents = 'auto';
+                document.getElementById('videopicks').style.pointerEvents = 'auto';
 
 
-                    document.getElementById('movietxt').style.display = 'none';
+                //$('#videopickbtn').fadeIn('fast');
+
+                //    $('#movietxt').fadeOut('fast');
 
 
-                    //$('#videopickbtn').fadeIn('fast');
+            } else {
+                document.getElementById('reselect').style.display = 'none';
+                if (rejoined == 0)
+                    document.getElementById('moviebtnd').style.display = 'none';
 
-                    //    $('#movietxt').fadeOut('fast');
+                document.getElementById('movietxt').style.display = 'block';
 
+                //   $('#videopickbtn').fadeOut('fast');
 
-                } else {
-                    document.getElementById('reselect').style.display = 'none';
-                    if (rejoined == 0)
-                        document.getElementById('moviebtnd').style.display = 'none';
+                // $('#movietxt').fadeIn('fast');
 
-                    document.getElementById('movietxt').style.display = 'block';
+            }
 
-                    //   $('#videopickbtn').fadeOut('fast');
+            $("#formback_movie_id").mouseover(function () {
 
-                    // $('#movietxt').fadeIn('fast');
+                if (filmplayed == 1 && isadmin == 1)
+                    $('#controllbuttons').fadeIn();
 
-                }
-
-
-            }, 2000);
+            });
+            $("#formback_movie_id").mouseleave(function () {
+                if (filmplayed == 1 && isadmin == 1)
+                    $('#controllbuttons').fadeOut();
+            });
 
 
             $('#videopicks').change(function () {
 
                 if (isadmin == 1) {
 
-                    $('#videopickbtn').fadeOut();
+                    $('#videopickbtn').fadeOut('fast');
+                    $('#reselect').fadeIn('fast');
 
-                    $('#progress').fadeIn();
+
+                    $('#firstprogress').fadeIn();
+                    $('#movietxt').fadeOut();
 
                 } else {
 
@@ -459,6 +491,7 @@ class chat_room extends Component {
 
                 keyCode: 32, // Number 1
 
+
                 // handle is the function to control the player
 
                 // player: the player's state
@@ -490,6 +523,8 @@ class chat_room extends Component {
                         ws.send(JSON.stringify(message_send_play))
 
                         console.log(JSON.stringify(message_send_play))
+                        $('#play_btnid').fadeIn('fast');
+                        $('#pause_btnid').fadeOut('fast');
 
                         // this.player.pause();
 
@@ -517,6 +552,9 @@ class chat_room extends Component {
                         ws.send(JSON.stringify(message_send_play))
 
                         console.log(JSON.stringify(message_send_play))
+
+                        $('#play_btnid').fadeOut('fast');
+                        $('#pause_btnid').fadeIn('fast');
 
                         // this.player.play();
 
@@ -872,7 +910,8 @@ double(){
 
         document.getElementById('blaybtndiv').style.display = 'none';
 
-        document.getElementById('progress').style.display = 'block';
+        document.getElementById('firstprogress').style.display = 'block';
+        $('#movietxt').fadeOut();
 
         this.setState({
 
@@ -985,7 +1024,7 @@ double(){
 
 
         function Send_data2() {
- $('#moviebtnd').fadeOut('slow');
+            $('#moviebtnd').fadeOut('slow');
             const message_send = {"command": "send_client_hash", "vhash": encrypted}
 
             play_or_no = true
@@ -1050,28 +1089,35 @@ double(){
                     Send_data();
 
                     document.getElementById('blaybtndiv').style.display = 'block';
+                    $('#movietxt').text('Click ► to play your video');
+                    $('#movietxt').fadeIn();
+                    document.getElementById('controllbuttons').style.pointerEvents = 'auto';
 
-                    document.getElementById('progress').style.display = 'none';
+
+                    document.getElementById('firstprogress').style.display = 'none';
 
                 } else {
 
                     if (encrypted == adminhash) {
                         clienthashok = 1;
-filmplayed=1;
-                        document.getElementById('progress').style.display = 'none';
+                        filmplayed = 1;
+                        document.getElementById('firstprogress').style.display = 'none';
 
                         $('#movietxt').text('Wait for admin to play the video');
 
                         $('#moviebtnd').fadeOut();
 
+
                         $('#movietxt').fadeIn();
+                        document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                        document.getElementById('videopicks').style.pointerEvents = 'none';
                         //  play_or_no = true
                         Send_data2();
 
 
                     } else {
 
-                        document.getElementById('progress').style.display = 'none';
+                        document.getElementById('firstprogress').style.display = 'none';
 
                         $('#movietxt').text('Your video is not same with admin\'s video , please chose another one');
 
@@ -1081,9 +1127,11 @@ filmplayed=1;
 
                 }
             } else {
-                document.getElementById('progress').style.display = 'none';
+
+                document.getElementById('firstprogress').style.display = 'none';
                 $('#movietxt').text('Something went wrong in selecting movie , Please reselect the video ');
                 $('#movietxt').fadeIn();
+
 
             }
 
@@ -1114,6 +1162,10 @@ filmplayed=1;
         ws.send(JSON.stringify(message_send_play))
 
         console.log(JSON.stringify(message_send_play))
+        play_or_no = true
+
+        $('#play_btnid').fadeOut('fast');
+        $('#pause_btnid').fadeIn('fast');
 
         //this.player.play();
 
@@ -1134,6 +1186,8 @@ filmplayed=1;
         ws.send(JSON.stringify(message_send_play))
 
         console.log(JSON.stringify(message_send_play))
+        $('#play_btnid').fadeIn('fast');
+        $('#pause_btnid').fadeOut('fast');
 
         //this.player.pause();
 
@@ -1270,20 +1324,43 @@ id='players'
                             <CircularProgress disableShrink color="secondary"/>
 
                         </div>
+                        <div id='movietxtdiv'>
 
-                        <div id='blaybtndiv'>
+                            <p id='movietxt'>Wait for admin to select the video</p>
 
-                            <Button onClick={this.handleSubmit} startIcon={<PlayCircleFilledWhiteIcon/>} style={{
+                        </div>
+                        <div id='controllbuttons'>
 
-                                backgroundColor: 'red',
+                            <div className="upload-btn-wrapper">
+
+                                <IconButton style={{
+                                    color: 'white'
 
 
-                            }} size='large' id='playbtnid' variant="contained" color="secondary">
+                                }} size='large' id='videopickbtn' className="btn" variant="contained" color="secondary">
 
-                                <p>Play</p>
+                                    <EjectIcon/>
+                                </IconButton>
 
-                            </Button>
-                            <div className="control" id='controll_div'>
+
+                                <input type="file" id='videopicks' className='videopicsk' name="file"
+
+                                       onChange={(e) => this.onChange(e)}/>
+
+
+                                <IconButton style={{
+                                    position: 'fixed',
+                                    marginLeft: '-48px',
+                                    marginTop: '3px',
+                                    color: 'white',
+                                    display: 'none'
+
+                                }} size='large' id="reselect">
+
+
+                                    <EjectIcon/>
+
+                                </IconButton>
 
 
                                 <IconButton onClick={this.changeCurrentTime(-10)} style={{
@@ -1304,12 +1381,18 @@ id='players'
                                     color: 'white'
 
                                 }}
+                                            id='play_btnid'
                                             className="play_btn">
                                     <PlayArrowIcon fontSize="large"/>
                                 </IconButton>
 
 
-                                <IconButton onClick={this.pause} style={{color: 'white'}} size='large'
+                                <IconButton onClick={this.pause} style={{
+                                    color: 'white',
+                                    marginTop: '2px',
+                                    display: 'none'
+                                }} size='large'
+                                            id="pause_btnid"
                                             className="pause_btn">
 
 
@@ -1329,42 +1412,66 @@ id='players'
 
 
                             </div>
-                        </div>
 
-                        <p id='movietxt'>Wait for admin to select the video</p>
-
-
-                        <div id='moviebtnd' className='moviebtns'>
+                            <div id='blaybtndiv'>
 
 
-                            <div className="upload-btn-wrapper">
+                                <div className="control" id='controll_div'>
 
-                                <Button startIcon={<PublishIcon/>} style={{
+                                    <IconButton onClick={this.changeCurrentTime(-10)} style={{
 
-                                    backgroundColor: 'rgba(255,0,0)',
-
-
-                                }} size='large' id='videopickbtn' className="btn" variant="contained" color="secondary">
+                                        transform: 'scaleX(-1)',
+                                        color: 'white'
 
 
-                                    <p>Select a video</p>
-
-                                </Button>
+                                    }} size='large' className="mr-3">
 
 
-                                <input type="file" id='videopicks' className='videopicsk' name="file"
+                                        <Forward10Icon/>
 
-                                       onChange={(e) => this.onChange(e)}/>
+                                    </IconButton>
+
+
+                                    <IconButton onClick={this.play} style={{
+                                        color: 'white'
+
+                                    }}
+                                                className="play_btn">
+                                        <PlayArrowIcon fontSize="large"/>
+                                    </IconButton>
+
+
+                                    <IconButton onClick={this.pause} style={{color: 'white'}} size='large'
+                                                className="pause_btn">
+
+
+                                        <PauseIcon/>
+
+                                    </IconButton>
+
+                                    <IconButton onClick={this.changeCurrentTime(10)} style={{
+                                        color: 'white'
+
+
+                                    }} size='large' className="mr-3">
+
+
+                                        <Forward10Icon/>
+                                    </IconButton>
+
+
+                                </div>
+                            </div>
+
+
+                            <div id='moviebtnd' className='moviebtns'>
 
 
                                 <br/><br/><br/><br/>
 
 
                                 <div id='progress'>
-
                                     <CircularProgress disableShrink color="secondary"/>
-
-
                                 </div>
 
 
@@ -1386,16 +1493,6 @@ id='players'
 
                         </div>
 
-                        <Button startIcon={<RedoIcon/>} style={{
-
-                            backgroundColor: 'rgb(0,0,0)',
-
-
-                        }} size='large' id='reselect' variant="contained" color="secondary">
-
-                            <p>Reselect the video</p>
-
-                        </Button>
 
                         <div className="formback_text" style={{width: '350px', height: '395px',}}>
 
