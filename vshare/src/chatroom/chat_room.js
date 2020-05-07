@@ -254,6 +254,14 @@ class chat_room extends Component {
                 //
 
             });
+            $( "#movie" ).dblclick(function(e) {
+  	e.preventDefault();
+ 
+	/*  Prevents event bubbling  */
+	e.stopPropagation();
+ 
+	return;
+});
             $("#formback_movie_id").mouseover(function () {
 
                 if (filmplayed == 1)
@@ -438,7 +446,7 @@ class chat_room extends Component {
 
         this.pause = this.pause.bind(this);
         this.handlereq_forward_backward = this.handlereq_forward_backward.bind(this);
-
+        this.double = this.double.bind(this);
         this.changeCurrentTime = this.changeCurrentTime.bind(this);
 
         this.newShortcuts = [
@@ -826,7 +834,9 @@ class chat_room extends Component {
     //    })
 
     //}
-
+double(){
+    console.log("double")
+}
     handleSubmit(e) {
 
 
@@ -1230,7 +1240,7 @@ filmplayed=1;
 
                     <div id='formback_movie_id' className="formback_movie">
 
-                        <div id="movie" className="div_player_movie">
+                        <div id="movie" className="div_player_movie" >
 
                             <Player
 
