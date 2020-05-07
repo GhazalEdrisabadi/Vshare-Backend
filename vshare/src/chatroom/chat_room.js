@@ -138,14 +138,14 @@ class chat_room extends Component {
                 azavalbude = 1;
             }
 
-            if (messagee.status == 2 && isadmin == 0 && filmplayed == 0 && azavalbude==0) {
+            if (messagee.status == 2 && isadmin == 0 && filmplayed == 0 && azavalbude == 0) {
                 rejoined = 1;
                 $('#movietxt').text('Admin has played the video , select your video too , to join it');
                 $('#moviebtnd').fadeIn('slow');
-                    document.getElementById('videopickbtn').style.pointerEvents = 'auto';
+                document.getElementById('videopickbtn').style.pointerEvents = 'auto';
                 document.getElementById('videopicks').style.pointerEvents = 'auto';
                 adminhash = messagee.hash;
-                console.log("admin hash in state 2 : "+ adminhash);
+                console.log("admin hash in state 2 : " + adminhash);
             }
 
 
@@ -167,12 +167,13 @@ class chat_room extends Component {
                 })
                 document.getElementById("formback_movie_id").style.background = "black";
                 document.getElementById('movie').style.display = 'block';
-
+                filmplayed = 1;
                 document.getElementById('movietxt').style.display = 'none';
                 if (isadmin == 0) {
-
+                    document.getElementById('controllbuttons').style.display = 'none';
                     document.getElementById('controllbuttons').style.pointerEvents = 'none';
                     document.getElementById('videopicks').style.pointerEvents = 'none';
+
 
                 }
                 // document.getElementById('controll_div').style.display = 'block'
@@ -318,6 +319,17 @@ class chat_room extends Component {
                 // $('#movietxt').fadeIn('fast');
 
             }
+
+            $("#formback_movie_id").mouseover(function () {
+
+                if (filmplayed == 1 && isadmin == 1)
+                    $('#controllbuttons').fadeIn();
+
+            });
+            $("#formback_movie_id").mouseleave(function () {
+                if (filmplayed == 1 && isadmin == 1)
+                    $('#controllbuttons').fadeOut();
+            });
 
 
             $('#videopicks').change(function () {
@@ -844,10 +856,9 @@ class chat_room extends Component {
                         $('#moviebtnd').fadeOut();
 
 
-
                         $('#movietxt').fadeIn();
-                                     document.getElementById('controllbuttons').style.pointerEvents = 'none';
-                    document.getElementById('videopicks').style.pointerEvents = 'none';
+                        document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                        document.getElementById('videopicks').style.pointerEvents = 'none';
                         //  play_or_no = true
                         Send_data2();
 

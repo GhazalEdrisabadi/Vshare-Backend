@@ -163,6 +163,8 @@
     font-size: 18px;
 }
 
+.HoverClass1:hover {display: none;}
+.HoverClass2:hover {display: block;}
 
 .upload-btn-wrapper input[type=file] {
 
