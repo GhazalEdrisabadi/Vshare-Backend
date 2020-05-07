@@ -148,8 +148,8 @@
 
 #controllbuttons {
     width: 700px;
-    background-color: black;
-    opacity: 80%;
+    background-color: #000000;
+   border-radius: 5px;
     margin-top: 700px;
     position: fixed;
     height: 55px;

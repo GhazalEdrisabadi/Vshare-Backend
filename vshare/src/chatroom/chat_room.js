@@ -122,6 +122,7 @@ class chat_room extends Component {
                 $('#movietxt').fadeOut('slow');
                 $('#reselect').fadeOut('fast');
                 $('#moviebtnd').fadeIn('slow');
+                document.getElementById('controllbuttons').style.pointerEvents = 'none';
                 document.getElementById('videopickbtn').style.pointerEvents = 'auto';
                 document.getElementById('videopicks').style.pointerEvents = 'auto';
                 $('#movietxt').text('Click ▲ to select your video ');
@@ -220,7 +221,6 @@ class chat_room extends Component {
             } else {
                 document.getElementById('controllbuttons').style.pointerEvents = 'none';
 
-
             }
             $("#playbtnid").click(function () {
                 filmplayed = 1;
@@ -300,6 +300,9 @@ class chat_room extends Component {
 
                 document.getElementById('movietxt').style.display = 'block';
                 $('#movietxt').text('Click ▲ to select your video ');
+                document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                document.getElementById('videopickbtn').style.pointerEvents = 'auto';
+                document.getElementById('videopicks').style.pointerEvents = 'auto';
 
 
                 //$('#videopickbtn').fadeIn('fast');
@@ -505,6 +508,8 @@ class chat_room extends Component {
                         ws.send(JSON.stringify(message_send_play))
 
                         console.log(JSON.stringify(message_send_play))
+                        $('#play_btnid').fadeIn('fast');
+                        $('#pause_btnid').fadeOut('fast');
 
                         // this.player.pause();
 
@@ -532,6 +537,9 @@ class chat_room extends Component {
                         ws.send(JSON.stringify(message_send_play))
 
                         console.log(JSON.stringify(message_send_play))
+
+                        $('#play_btnid').fadeOut('fast');
+                        $('#pause_btnid').fadeIn('fast');
 
                         // this.player.play();
 
@@ -840,6 +848,7 @@ class chat_room extends Component {
                     document.getElementById('blaybtndiv').style.display = 'block';
                     $('#movietxt').text('Click ► to play your video');
                     $('#movietxt').fadeIn();
+                    document.getElementById('controllbuttons').style.pointerEvents = 'auto';
 
 
                     document.getElementById('firstprogress').style.display = 'none';
@@ -912,6 +921,9 @@ class chat_room extends Component {
         console.log(JSON.stringify(message_send_play))
         play_or_no = true
 
+        $('#play_btnid').fadeOut('fast');
+        $('#pause_btnid').fadeIn('fast');
+
         //this.player.play();
 
 
@@ -931,6 +943,8 @@ class chat_room extends Component {
         ws.send(JSON.stringify(message_send_play))
 
         console.log(JSON.stringify(message_send_play))
+        $('#play_btnid').fadeIn('fast');
+        $('#pause_btnid').fadeOut('fast');
 
         //this.player.pause();
 
@@ -1094,7 +1108,7 @@ class chat_room extends Component {
                                 <IconButton style={{
                                     position: 'fixed',
                                     marginLeft: '-48px',
-                                    marginTop: '5px',
+                                    marginTop: '3px',
                                     color: 'white',
                                     display: 'none'
 
@@ -1124,12 +1138,18 @@ class chat_room extends Component {
                                     color: 'white'
 
                                 }}
+                                            id='play_btnid'
                                             className="play_btn">
                                     <PlayArrowIcon fontSize="large"/>
                                 </IconButton>
 
 
-                                <IconButton onClick={this.pause} style={{color: 'white'}} size='large'
+                                <IconButton onClick={this.pause} style={{
+                                    color: 'white',
+                                    marginTop: '2px',
+                                    display: 'none'
+                                }} size='large'
+                                            id="pause_btnid"
                                             className="pause_btn">
 
 

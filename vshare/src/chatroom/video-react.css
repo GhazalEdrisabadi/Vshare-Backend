@@ -391,13 +391,14 @@ body.video-react-full-window .video-react-fullscreen {
 }
 
 .video-react .video-react-big-play-button {
+
     font-size: 3em;
     line-height: 1.5em;
     height: 1.5em;
     width: 3em;
     display: block;
     position: absolute;
-    top: 10px;
+    top: 1000px;
     left: 10px;
     padding: 0;
     cursor: pointer;
