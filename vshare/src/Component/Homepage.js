@@ -243,6 +243,7 @@ class Homepage extends Component {
             });
 
             $(".userprofile").click(function () {
+                window.localStorage.setItem('myac' , 1)
                 window.location.replace("/profile/" + username + "");
               //  alert("im just a MVP version :)");
             });

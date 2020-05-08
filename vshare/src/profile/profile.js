@@ -3,17 +3,29 @@ import './profile.css'
 import $ from 'jquery';
 import Left from './left.png'
 import Right from './right.png'
+import Home from './home-icon.png'
+import HomeIcon from '@material-ui/icons/Home';
+import IconButton from '@material-ui/core/IconButton';
 var respone_get
 class profile extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
         $(document).ready(function () {
 
-            var member = $(".inp").val();
+            
 
-            var username = window.localStorage.getItem('username');
+            var username = window.localStorage.getItem('user');
             var id_gp = window.localStorage.getItem('id_group')
-
+if(username==window.localStorage.getItem('username')){
+       document.getElementById("edite-btn").style.display = 'block'
+       document.getElementById("f-btn").style.display = 'none'
+       document.getElementById("uf-btn").style.display = 'none'
+}
+else{
+         document.getElementById("edite-btn").style.display = 'none'
+       document.getElementById("f-btn").style.display = 'block'
+       document.getElementById("uf-btn").style.display = 'none'
+}
 
             var settings = {
                 "url": "http://127.0.0.1:8000/user/" + username + "",
@@ -36,16 +48,143 @@ class profile extends Component {
                 $(".username_prof").text(respone_get.username)
 
             });
+            $(".btn-search").click(function () {
+                var user_search=$('.inp-search').val()
+                console.log(user_search)
+                var settings = {
+                    "url": "http://127.0.0.1:8000/user/find/username/?search="+user_search+"",
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+    
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+    
+                };
+    
+                $.ajax(settings).done(function (response) {
+                    // 
+                    console.log(response);
+if(response.length==0){
+    $(".search-result").append("user not found")
+    $(".search-result").fadeIn()
+}
+else{
+        var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'black'";
 
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
+    var htmlcode='<br/>'
+  //   $(".search-result").append(htmlcode)
+                htmlcode = '';
+               $(".search-result").append(htmlcode)
+                for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
+var a2 = "window.localStorage.setItem('user'," + response[counter1].username + ")";
+ var r = "window.location.replace('/profile/" + response[counter1].username + "')";
+                    htmlcode += '<div>'
+                    // htmlcode+='<br/>'
+                    htmlcode += '<div class="user-search">';
+                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].username + '</p>';
+                
+                 htmlcode+='<br/>'
+                  
+                       
+                    htmlcode+='</div>'
+                    
+                    htmlcode += '</div>'
+                      htmlcode+='<hr/>'
+                    $(".search-result").append(htmlcode)
+}
+$(".search-result").fadeIn()                
+}
+          
+    
+                });
+              
+
+            })
+            $(".home-btn ").click(function () {
+               window.location.replace('../homepage')
+
+            })
+                $(".back_profile").click(function () {
+                    $(".search-result").text("")
+               $(".search-result").fadeOut();
+
+            })
             $(".edite_profile").click(function () {
                 $(".modal_edite_profile").fadeIn();
+
+            })
+              $(".follow-btn").click(function () {
+                     var settings = {
+                "url": "http://127.0.0.1:8000/user/relations/follow/",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+  "Authorization": "token " + window.localStorage.getItem('token'),
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                },
+                   "data": JSON.stringify({
+                            "who_is_followed": window.localStorage.getItem('user'),
+                          "who_follows":"",
+                        }
+                    ),
+
+            };
+
+            $.ajax(settings).done(function (response) {
+                // 
+                console.log(response);
+            
+
+            })
 
             })
             $(".follower").click(function(){
                 $(".modal-follower").fadeIn();
             })
+                 $(".back-prof").click(function(){
+                window.localStorage.setItem('user' , window.localStorage.getItem('username'))
+                window.location.replace("/profile/"+window.localStorage.getItem('username')+"")
+            })
             $(".modal-follower").click(function () {
                 $(".modal-follower").fadeOut();
+            })
+                  $(".following").click(function(){
+                $(".modal-following").fadeIn();
+                            var settings = {
+                "url": "http://127.0.0.1:8000/user/relations/followings/?user="+username+"",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                },
+
+            };
+
+            $.ajax(settings).done(function (response) {
+                // 
+                console.log(response);
+                respone_get = response
+                $(".username_prof").text(respone_get.username)
+
+            });
+
+            })
+            $(".modal-following").click(function () {
+                $(".modal-following").fadeOut();
             })
             $(".modal_edite_profile").click(function () {
                 $(".modal_edite_profile").fadeOut();
@@ -185,9 +324,31 @@ class profile extends Component {
     render() {
         return (
             <div className="back_profile" >
+                <div className="div-head-prof">
+                      <div className="div_site_name">
+                            <h1 className="site_name" style={{marginTop:'5px'}}>Vshare</h1>
+                        </div>
+                        <div className="div-inp-btn">
+                        <input placeholder='search' className='inp-search'/>
+                        <div className="btn-search">search</div>
+                        <div className="home-div">
+                             <IconButton style={{
+                                color: 'white'
+
+                            }}className="home-btn"
+                                        >
+                                <HomeIcon  fontSize="large"/>
+                            </IconButton>
+                            </div>
+                            <div className="back-prof"></div>
+                        </div>
+                         
+                </div>
                 <div className="photo" />
-                <div className="username_prof">USERNAME</div>
-                <div className="edite_profile">   Edite Profile</div>
+                <div className="username_prof" >USERNAME</div>
+                <div className="edite_profile" id='edite-btn'>   Edite Profile</div>
+                 <div className="follow-btn" id='f-btn'>   follow !</div>
+                  <div className="unfollow-btn" id='uf-btn'>   unfollow</div>
                 <div id="myModal" class="modal_edite_profile">
                     <div class="modal-content_edite_profile" >
                         <h3 class="texx_edite">Edit your profile deatails</h3>
@@ -219,12 +380,23 @@ class profile extends Component {
                     </div>
 
                 </div>
+                                           <div id="myModal-following" class="modal-following">
+                    <div class="modal-content-following" >
+                        <h3 class="texx_following">Following!</h3>
+                        <hr></hr>
+                 
+                        <br></br>
+                
+
+                    </div>
+
+                </div>
                 <div className="follower_count">0</div>
                 <div className="follower">followers</div>
                 <div className="following_count">0</div>
                 <div className="following">following</div>
 
-
+<div className="search-result" id='res'></div>
 
                 <img id="left-button" className="left_div" src={Left} />
                        
