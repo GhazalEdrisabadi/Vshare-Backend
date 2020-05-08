@@ -65,14 +65,21 @@ if(response.length==0){
 }
 else{
                var htmlcode = '';
+               $(".search-result").append(htmlcode)
                 for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
 
                     htmlcode += '<div>'
+                    // htmlcode+='<br/>'
                     htmlcode += '<div class="user-search">';
-
+                   
                     htmlcode += '<p class="username-result">' +response[counter1].username + '</p>'
+                 htmlcode+='<br/>'
+                  
+                       
                     htmlcode+='</div>'
+                    
                     htmlcode += '</div>'
+                      htmlcode+='<hr/>'
                     $(".search-result").append(htmlcode)
 }
 $(".search-result").fadeIn()                
