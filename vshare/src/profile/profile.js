@@ -186,8 +186,11 @@ class profile extends Component {
                     <div class="modal-content_edite_profile" >
                         <h3 class="texx_edite">Edit your profile deatails</h3>
                         <hr></hr>
-                        <input class="inputedit" id='edittitle' placeholder="Title"></input>
-                        <input class="inputedit" id='editdes' placeholder="Description"></input>
+                        <input class="inputedit" id='editfirstname' placeholder="FirstName"></input>
+                        <input class="inputedit" id='editlastname' placeholder="LastName"></input>
+                           <input class="inputedit" id='editusername' placeholder="UserName"></input>
+                              <input class="inputedit" id='editemail' placeholder="PassWord"></input>
+                                 <input class="inputedit" id='editpassword' placeholder="Email"></input>
                         <br></br>
                         <button style={{
                             backgroundColor: "Red",
