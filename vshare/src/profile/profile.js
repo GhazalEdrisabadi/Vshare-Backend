@@ -113,6 +113,10 @@ $(".search-result").fadeIn()
             $(".follower").click(function(){
                 $(".modal-follower").fadeIn();
             })
+                 $(".back-prof").click(function(){
+                window.localStorage.setItem('user' , window.localStorage.getItem('username'))
+                window.location.replace("/profile/"+window.localStorage.getItem('username')+"")
+            })
             $(".modal-follower").click(function () {
                 $(".modal-follower").fadeOut();
             })
@@ -298,12 +302,15 @@ $(".search-result").fadeIn()
                                 <HomeIcon  fontSize="large"/>
                             </IconButton>
                             </div>
+                            <div className="back-prof"></div>
                         </div>
                          
                 </div>
                 <div className="photo" />
                 <div className="username_prof">USERNAME</div>
                 <div className="edite_profile">   Edite Profile</div>
+                 <div className="follow-btn">   follow !</div>
+                  <div className="unfollow-btn">   unfollow</div>
                 <div id="myModal" class="modal_edite_profile">
                     <div class="modal-content_edite_profile" >
                         <h3 class="texx_edite">Edit your profile deatails</h3>
