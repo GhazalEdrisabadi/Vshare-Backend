@@ -39,7 +39,43 @@ class profile extends Component {
                 $(".username_prof").text(respone_get.username)
 
             });
-   $(".home-btn ").click(function () {
+            $(".btn-search").click(function () {
+                var user_search=$('.inp-search').val()
+                console.log(user_search)
+                var settings = {
+                    "url": "http://127.0.0.1:8000/user/find/username/?search="+user_search+"",
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+    
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+    
+                };
+    
+                $.ajax(settings).done(function (response) {
+                    // 
+                    console.log(response);
+
+                //      var htmlcode = '';
+                // for (var counter1 = 0; counter1 < mygroups.length; counter1++ , htmlcode = '') {
+
+                //     htmlcode += '<div>'
+                //     htmlcode += '<div class="admin_gp"></div>';
+
+                //     htmlcode += '<p class="id_group">' + mygroups[counter1].id + '</p>'
+                //     htmlcode += '</div>'
+                //     $('.group_prof').append(htmlcode);
+                  
+    
+                });
+               
+
+            })
+            $(".home-btn ").click(function () {
                window.location.replace('../homepage')
 
             })
@@ -288,7 +324,7 @@ class profile extends Component {
                 <div className="following_count">0</div>
                 <div className="following">following</div>
 
-
+<div className="search-result"></div>
 
                 <img id="left-button" className="left_div" src={Left} />
                        
