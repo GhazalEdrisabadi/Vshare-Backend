@@ -73,13 +73,25 @@ else{
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Headers": "*",
                     "Content-Type": "application/json"
-                },
+                },       success: function (event) {
+
+                          
+                           if(event.status==404){
+                            document.getElementById("f-btn").style.display = 'block'
+                            document.getElementById("uf-btn").style.display = 'none'
+                           }
+                           else{
+                                document.getElementById("f-btn").style.display = 'none'
+       document.getElementById("uf-btn").style.display = 'block'
+                           }
+                        },
+                
 
             };
 
             $.ajax(settings).done(function (response) {
-                // 
-                console.log(response);
+               
+                console.log(response.status);
               
 
             });
@@ -109,7 +121,9 @@ else{
                 $(".username_prof").text(respone_get.username)
 
             });
-            $(".btn-search").click(function () {
+            $(".inp-search").change(function () {
+                $(".search-result").text("")
+                console.log("change")
                 var user_search=$('.inp-search').val()
                 console.log(user_search)
                 var settings = {
@@ -418,7 +432,7 @@ $(".search-result").fadeIn()
                         </div>
                         <div className="div-inp-btn">
                         <input placeholder='search' className='inp-search'/>
-                        <div className="btn-search">search</div>
+                      
                         <div className="home-div">
                              <IconButton style={{
                                 color: 'white'
