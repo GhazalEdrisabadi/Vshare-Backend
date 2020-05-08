@@ -320,4 +320,8 @@ position: absolute;
 }
 .username-result{
 color: black;
+position: absolute;
+margin-left: 30px;
+font-size: large;
+font-weight: bold;
 }

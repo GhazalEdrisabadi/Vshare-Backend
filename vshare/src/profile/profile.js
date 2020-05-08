@@ -64,15 +64,23 @@ if(response.length==0){
     $(".search-result").fadeIn()
 }
 else{
-               var htmlcode = '';
+        var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'black'";
+
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
+    var htmlcode='<br/>'
+  //   $(".search-result").append(htmlcode)
+                htmlcode = '';
                $(".search-result").append(htmlcode)
                 for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
-
+var a2 = "window.localStorage.setItem('user'," + response[counter1].username + ")";
+ var r = "window.location.replace('/profile/" + response[counter1].username + "')";
                     htmlcode += '<div>'
                     // htmlcode+='<br/>'
                     htmlcode += '<div class="user-search">';
-                   
-                    htmlcode += '<p class="username-result">' +response[counter1].username + '</p>'
+                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].username + '</p>';
+                
                  htmlcode+='<br/>'
                   
                        
