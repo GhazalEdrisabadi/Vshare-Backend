@@ -6,15 +6,56 @@ import Right from './right.png'
 import Home from './home-icon.png'
 import HomeIcon from '@material-ui/icons/Home';
 import IconButton from '@material-ui/core/IconButton';
+var username = window.localStorage.getItem('user');
 var respone_get
 class profile extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
         $(document).ready(function () {
+            var settings = {
+                "url": "http://127.0.0.1:8000/user/relations/followers/?user="+username+"",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                },
+
+            };
+
+            $.ajax(settings).done(function (response) {
+                // 
+                console.log(response);
+               
+                $(".follower_count").text(response.followers_count)
+
+            });
+                    var settings = {
+                "url": "http://127.0.0.1:8000/user/relations/followings/?user="+username+"",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                },
+
+            };
+
+            $.ajax(settings).done(function (response) {
+                // 
+                console.log(response);
+               
+                $(".following_count").text(response.followings_count)
+
+            });
 
             
-
-            var username = window.localStorage.getItem('user');
             var id_gp = window.localStorage.getItem('id_group')
 if(username==window.localStorage.getItem('username')){
        document.getElementById("edite-btn").style.display = 'block'
@@ -22,6 +63,26 @@ if(username==window.localStorage.getItem('username')){
        document.getElementById("uf-btn").style.display = 'none'
 }
 else{
+           var settings = {
+                "url": "http://127.0.0.1:8000/user/followings/find/"+username+"/",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+ "Authorization": "token " + window.localStorage.getItem('token'),
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                },
+
+            };
+
+            $.ajax(settings).done(function (response) {
+                // 
+                console.log(response);
+              
+
+            });
          document.getElementById("edite-btn").style.display = 'none'
        document.getElementById("f-btn").style.display = 'block'
        document.getElementById("uf-btn").style.display = 'none'
@@ -120,6 +181,32 @@ $(".search-result").fadeIn()
                 $(".modal_edite_profile").fadeIn();
 
             })
+           
+                          $(".unfollow-btn").click(function () {
+                     var settings = {
+                "url": "http://127.0.0.1:8000/user/followers/unfollow/"+username+"/",
+                "method": "DELETE",
+                "timeout": 0,
+                "headers": {
+  "Authorization": "token " + window.localStorage.getItem('token'),
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                },
+            
+
+            };
+
+            $.ajax(settings).done(function (response) {
+                // 
+                console.log(response);
+              document.getElementById("f-btn").style.display = 'block'
+       document.getElementById("uf-btn").style.display = 'none'
+
+            })
+
+            })
               $(".follow-btn").click(function () {
                      var settings = {
                 "url": "http://127.0.0.1:8000/user/relations/follow/",
@@ -143,7 +230,8 @@ $(".search-result").fadeIn()
             $.ajax(settings).done(function (response) {
                 // 
                 console.log(response);
-            
+              document.getElementById("f-btn").style.display = 'none'
+       document.getElementById("uf-btn").style.display = 'block'
 
             })
 
