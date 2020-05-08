@@ -16,7 +16,16 @@ class profile extends Component {
 
             var username = window.localStorage.getItem('user');
             var id_gp = window.localStorage.getItem('id_group')
-
+if(username==window.localStorage.getItem('username')){
+       document.getElementById("edite-btn").style.display = 'block'
+       document.getElementById("f-btn").style.display = 'none'
+       document.getElementById("uf-btn").style.display = 'none'
+}
+else{
+         document.getElementById("edite-btn").style.display = 'none'
+       document.getElementById("f-btn").style.display = 'block'
+       document.getElementById("uf-btn").style.display = 'none'
+}
 
             var settings = {
                 "url": "http://127.0.0.1:8000/user/" + username + "",
@@ -103,11 +112,40 @@ $(".search-result").fadeIn()
 
             })
                 $(".back_profile").click(function () {
+                    $(".search-result").text("")
                $(".search-result").fadeOut();
 
             })
             $(".edite_profile").click(function () {
                 $(".modal_edite_profile").fadeIn();
+
+            })
+              $(".follow-btn").click(function () {
+                     var settings = {
+                "url": "http://127.0.0.1:8000/user/relations/follow/",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+  "Authorization": "token " + window.localStorage.getItem('token'),
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                },
+                   "data": JSON.stringify({
+                            "who_is_followed": window.localStorage.getItem('user'),
+                          "who_follows":"",
+                        }
+                    ),
+
+            };
+
+            $.ajax(settings).done(function (response) {
+                // 
+                console.log(response);
+            
+
+            })
 
             })
             $(".follower").click(function(){
@@ -307,10 +345,10 @@ $(".search-result").fadeIn()
                          
                 </div>
                 <div className="photo" />
-                <div className="username_prof">USERNAME</div>
-                <div className="edite_profile">   Edite Profile</div>
-                 <div className="follow-btn">   follow !</div>
-                  <div className="unfollow-btn">   unfollow</div>
+                <div className="username_prof" >USERNAME</div>
+                <div className="edite_profile" id='edite-btn'>   Edite Profile</div>
+                 <div className="follow-btn" id='f-btn'>   follow !</div>
+                  <div className="unfollow-btn" id='uf-btn'>   unfollow</div>
                 <div id="myModal" class="modal_edite_profile">
                     <div class="modal-content_edite_profile" >
                         <h3 class="texx_edite">Edit your profile deatails</h3>
