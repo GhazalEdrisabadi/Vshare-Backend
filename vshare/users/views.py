@@ -98,3 +98,36 @@ class UserFollowings(ListAPIView):
         queryset = Friendship.objects.all()
         get_param = self.request.query_params.get('user','')
         return queryset.filter(who_follows=get_param)
+
+
+class FindFollower(generics.RetrieveUpdateDestroyAPIView):
+	serializer_class = FriendshipSerializer
+	permission_classes = [AllowAny]
+	lookup_field = 'who_is_followed'
+	def get_queryset(self):
+		follower = self.request.user
+		queryset = Friendship.objects.filter(who_follows=follower)
+		return queryset
+	#def perform_destroy(self , instance):
+	#	follower = self.request.user
+	#	queryset = Friendship.objects.get(who_follows=follower)
+	#	queryset.delete()
+	#	return queryset
+	#RetrieveUpdateDestroyAPIView
+class UnfollowUser(generics.DestroyAPIView):
+	serializer_class = FriendshipSerializer
+	permission_classes = [AllowAny]
+	lookup_field = 'who_is_followed'
+	def get_queryset(self):
+		follower = self.request.user
+		queryset = Friendship.objects.filter(who_follows=follower)
+		return queryset
+	#def delete(self, request, *args, **kwargs):
+	#	quer = Friendship.objects.filter(who_follows=follower)
+	#	quer.delete()
+	#	return Response("Question deleted", status=status.HTTP_204_NO_CONTENT)
+	#def delete(self, request, *args, **kwargs):
+	#	quer = Friendship.objects.filter(who_follows=follower)
+     #   quer.delete()
+     #   return Response("Question deleted", status=status.HTTP_204_NO_CONTENT)
+
