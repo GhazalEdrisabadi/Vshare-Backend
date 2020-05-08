@@ -47,6 +47,12 @@ class profile extends Component {
             $(".modal-follower").click(function () {
                 $(".modal-follower").fadeOut();
             })
+                  $(".following").click(function(){
+                $(".modal-following").fadeIn();
+            })
+            $(".modal-following").click(function () {
+                $(".modal-following").fadeOut();
+            })
             $(".modal_edite_profile").click(function () {
                 $(".modal_edite_profile").fadeOut();
             })
@@ -211,6 +217,17 @@ class profile extends Component {
                                <div id="myModal-follower" class="modal-follower">
                     <div class="modal-content-follower" >
                         <h3 class="texx_follower">Follower!</h3>
+                        <hr></hr>
+                 
+                        <br></br>
+                
+
+                    </div>
+
+                </div>
+                                           <div id="myModal-following" class="modal-following">
+                    <div class="modal-content-following" >
+                        <h3 class="texx_following">Following!</h3>
                         <hr></hr>
                  
                         <br></br>
