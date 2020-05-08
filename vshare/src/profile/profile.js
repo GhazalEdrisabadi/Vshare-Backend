@@ -11,7 +11,7 @@ class profile extends Component {
 
             var member = $(".inp").val();
 
-            var username = window.localStorage.getItem('username');
+            var username = window.localStorage.getItem('user');
             var id_gp = window.localStorage.getItem('id_group')
 
 
@@ -49,6 +49,28 @@ class profile extends Component {
             })
                   $(".following").click(function(){
                 $(".modal-following").fadeIn();
+                            var settings = {
+                "url": "http://127.0.0.1:8000/user/relations/followings/?user="+username+"",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                },
+
+            };
+
+            $.ajax(settings).done(function (response) {
+                // 
+                console.log(response);
+                respone_get = response
+                $(".username_prof").text(respone_get.username)
+
+            });
+
             })
             $(".modal-following").click(function () {
                 $(".modal-following").fadeOut();
