@@ -213,6 +213,12 @@ class profile extends Component {
     render() {
         return (
             <div className="back_profile" >
+                <div className="div-head-prof">
+                      <div className="div_site_name">
+                            <h1 className="site_name">Vshare</h1>
+                        </div>
+                        <input placeholder='search' className='inp-search'/>
+                </div>
                 <div className="photo" />
                 <div className="username_prof">USERNAME</div>
                 <div className="edite_profile">   Edite Profile</div>

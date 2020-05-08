@@ -242,3 +242,31 @@
     font-family: Arial;
 
 }
+.div-head-prof {
+    margin-top: 7px;
+    margin-left: 3px;
+position:absolute;
+background-color: black;
+height: 50px;
+flex-direction: row;
+width:99.8%;
+
+}
+.inp-search{
+      color: whitesmoke;
+    padding: 10px;
+    float: left;
+    background-color: rgb(51, 51, 51);
+    border-radius: 10px;
+    font-size: 20px;
+    height: 35px;
+    width: 300px;
+  
+    margin-left: 30%;
+    border-top: solid;
+    border-left: solid;
+    border-bottom: solid;
+    border-right: solid;
+    border-color: black;
+    flex-direction: row
+}
