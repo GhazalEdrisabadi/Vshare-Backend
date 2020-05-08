@@ -41,6 +41,12 @@ class profile extends Component {
                 $(".modal_edite_profile").fadeIn();
 
             })
+            $(".follower").click(function(){
+                $(".modal-follower").fadeIn();
+            })
+            $(".modal-follower").click(function () {
+                $(".modal-follower").fadeOut();
+            })
             $(".modal_edite_profile").click(function () {
                 $(".modal_edite_profile").fadeOut();
             })
@@ -198,6 +204,17 @@ class profile extends Component {
                         }} size='large' className="submitedit" variant="contained" color="secondary">
                             <p>Edit</p>
                         </button>
+
+                    </div>
+
+                </div>
+                               <div id="myModal-follower" class="modal-follower">
+                    <div class="modal-content-follower" >
+                        <h3 class="texx_follower">Follower!</h3>
+                        <hr></hr>
+                 
+                        <br></br>
+                
 
                     </div>
 
