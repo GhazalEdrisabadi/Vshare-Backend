@@ -59,24 +59,36 @@ class profile extends Component {
                 $.ajax(settings).done(function (response) {
                     // 
                     console.log(response);
+if(response.length==0){
+    $(".search-result").append("user not found")
+    $(".search-result").fadeIn()
+}
+else{
+               var htmlcode = '';
+                for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
 
-                //      var htmlcode = '';
-                // for (var counter1 = 0; counter1 < mygroups.length; counter1++ , htmlcode = '') {
+                    htmlcode += '<div>'
+                    htmlcode += '<div class="user-search">';
 
-                //     htmlcode += '<div>'
-                //     htmlcode += '<div class="admin_gp"></div>';
-
-                //     htmlcode += '<p class="id_group">' + mygroups[counter1].id + '</p>'
-                //     htmlcode += '</div>'
-                //     $('.group_prof').append(htmlcode);
-                  
+                    htmlcode += '<p class="username-result">' +response[counter1].username + '</p>'
+                    htmlcode+='</div>'
+                    htmlcode += '</div>'
+                    $(".search-result").append(htmlcode)
+}
+$(".search-result").fadeIn()                
+}
+          
     
                 });
-               
+              
 
             })
             $(".home-btn ").click(function () {
                window.location.replace('../homepage')
+
+            })
+                $(".back_profile").click(function () {
+               $(".search-result").fadeOut();
 
             })
             $(".edite_profile").click(function () {
@@ -324,7 +336,7 @@ class profile extends Component {
                 <div className="following_count">0</div>
                 <div className="following">following</div>
 
-<div className="search-result"></div>
+<div className="search-result" id='res'></div>
 
                 <img id="left-button" className="left_div" src={Left} />
                        
