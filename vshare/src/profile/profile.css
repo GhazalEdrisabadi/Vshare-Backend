@@ -273,12 +273,13 @@ width:99.8%;
 .btn-search{
 border-color: white;
 border-style: solid;
-
+ border-radius: 10px;
 margin-top: 7px;
 height: 35px;
 width: 100px;
 margin-left: 310px;
 text-align: center;
+font-size: 20px;
 position: absolute;
   
 }
