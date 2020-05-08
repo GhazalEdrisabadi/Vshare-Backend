@@ -6,15 +6,56 @@ import Right from './right.png'
 import Home from './home-icon.png'
 import HomeIcon from '@material-ui/icons/Home';
 import IconButton from '@material-ui/core/IconButton';
+var username = window.localStorage.getItem('user');
 var respone_get
 class profile extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
         $(document).ready(function () {
+            var settings = {
+                "url": "http://127.0.0.1:8000/user/relations/followers/?user="+username+"",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                },
+
+            };
+
+            $.ajax(settings).done(function (response) {
+                // 
+                console.log(response);
+               
+                $(".follower_count").text(response.followers_count)
+
+            });
+                    var settings = {
+                "url": "http://127.0.0.1:8000/user/relations/followings/?user="+username+"",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                },
+
+            };
+
+            $.ajax(settings).done(function (response) {
+                // 
+                console.log(response);
+               
+                $(".following_count").text(response.followings_count)
+
+            });
 
             
-
-            var username = window.localStorage.getItem('user');
             var id_gp = window.localStorage.getItem('id_group')
 if(username==window.localStorage.getItem('username')){
        document.getElementById("edite-btn").style.display = 'block'
@@ -22,6 +63,38 @@ if(username==window.localStorage.getItem('username')){
        document.getElementById("uf-btn").style.display = 'none'
 }
 else{
+           var settings = {
+                "url": "http://127.0.0.1:8000/user/followings/find/"+username+"/",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+ "Authorization": "token " + window.localStorage.getItem('token'),
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                },       success: function (event) {
+
+                          
+                           if(event.status==404){
+                            document.getElementById("f-btn").style.display = 'block'
+                            document.getElementById("uf-btn").style.display = 'none'
+                           }
+                           else{
+                                document.getElementById("f-btn").style.display = 'none'
+       document.getElementById("uf-btn").style.display = 'block'
+                           }
+                        },
+                
+
+            };
+
+            $.ajax(settings).done(function (response) {
+               
+                console.log(response.status);
+              
+
+            });
          document.getElementById("edite-btn").style.display = 'none'
        document.getElementById("f-btn").style.display = 'block'
        document.getElementById("uf-btn").style.display = 'none'
@@ -48,7 +121,9 @@ else{
                 $(".username_prof").text(respone_get.username)
 
             });
-            $(".btn-search").click(function () {
+            $(".inp-search").change(function () {
+                $(".search-result").text("")
+                console.log("change")
                 var user_search=$('.inp-search').val()
                 console.log(user_search)
                 var settings = {
@@ -74,7 +149,7 @@ if(response.length==0){
 }
 else{
         var hoverout = 'onMouseOut="this.style.color=';
-                        var hoverrout = hoverout + "'black'";
+                        var hoverrout = hoverout + "'white'";
 
                         var hover = 'onMouseOver="this.style.color=';
                         var hoverr = hover + "'red'";
@@ -120,6 +195,32 @@ $(".search-result").fadeIn()
                 $(".modal_edite_profile").fadeIn();
 
             })
+           
+                          $(".unfollow-btn").click(function () {
+                     var settings = {
+                "url": "http://127.0.0.1:8000/user/followers/unfollow/"+username+"/",
+                "method": "DELETE",
+                "timeout": 0,
+                "headers": {
+  "Authorization": "token " + window.localStorage.getItem('token'),
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                },
+            
+
+            };
+
+            $.ajax(settings).done(function (response) {
+                // 
+                console.log(response);
+              document.getElementById("f-btn").style.display = 'block'
+       document.getElementById("uf-btn").style.display = 'none'
+
+            })
+
+            })
               $(".follow-btn").click(function () {
                      var settings = {
                 "url": "http://127.0.0.1:8000/user/relations/follow/",
@@ -143,7 +244,8 @@ $(".search-result").fadeIn()
             $.ajax(settings).done(function (response) {
                 // 
                 console.log(response);
-            
+              document.getElementById("f-btn").style.display = 'none'
+       document.getElementById("uf-btn").style.display = 'block'
 
             })
 
@@ -159,7 +261,13 @@ $(".search-result").fadeIn()
                 $(".modal-follower").fadeOut();
             })
                   $(".following").click(function(){
-                $(".modal-following").fadeIn();
+                    $(".modal-content-following").html("")
+                      var html=''
+                     html+='  <h3 class="texx_following">Following!</h3>'
+                      html+='  <hr></hr>'
+                 
+               
+                    $(".modal-content-following").append(html)
                             var settings = {
                 "url": "http://127.0.0.1:8000/user/relations/followings/?user="+username+"",
                 "method": "GET",
@@ -176,9 +284,87 @@ $(".search-result").fadeIn()
 
             $.ajax(settings).done(function (response) {
                 // 
+                   var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'white'";
+
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
+                var htmlcode=''
                 console.log(response);
-                respone_get = response
-                $(".username_prof").text(respone_get.username)
+                               for (var counter1 = 0; counter1 < response.result.length; counter1++ , htmlcode = '') {
+                                   console.log("1")
+var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_is_followed+ ")";
+ var r = "window.location.replace('/profile/" + response.result[counter1].who_is_followed + "')";
+                    htmlcode += '<div>'
+                    // htmlcode+='<br/>'
+                    htmlcode += '<div class="user-search">';
+                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response.result[counter1].who_is_followed + '</p>';
+                
+                 htmlcode+='<br/>'
+                  
+                       
+                    htmlcode+='</div>'
+                    
+                    htmlcode += '</div>'
+                      htmlcode+='<hr/>'
+                    $(".modal-content-following").append(htmlcode)
+}
+ $(".modal-following").fadeIn();   
+
+            });
+
+            })
+                           $(".follower").click(function(){
+                                 $(".modal-content-follower").html("")
+                               var html=''
+                               
+                              html+= '  <h3 class="texx_follower">Follower!</h3>'
+                        html+='<hr></hr>'
+                 
+                        
+                          $(".modal-content-follower").append(html)
+                            var settings = {
+                "url": "http://127.0.0.1:8000/user/relations/followers/?user="+username+"",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                },
+
+            };
+
+            $.ajax(settings).done(function (response) {
+                // 
+                   var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'white'";
+
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
+                var htmlcode=''
+                console.log(response);
+                               for (var counter1 = 0; counter1 < response.result.length; counter1++ , htmlcode = '') {
+                                   console.log("1")
+var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_follows+ ")";
+ var r = "window.location.replace('/profile/" + response.result[counter1].who_follows + "')";
+                    htmlcode += '<div>'
+                    // htmlcode+='<br/>'
+                    htmlcode += '<div class="user-search">';
+                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response.result[counter1].who_follows + '</p>';
+                
+                 htmlcode+='<br/>'
+                  
+                       
+                    htmlcode+='</div>'
+                    
+                    htmlcode += '</div>'
+                      htmlcode+='<hr/>'
+                    $(".modal-content-follower").append(htmlcode)
+}
+ $(".modal-follower").fadeIn();   
 
             });
 
@@ -330,7 +516,7 @@ $(".search-result").fadeIn()
                         </div>
                         <div className="div-inp-btn">
                         <input placeholder='search' className='inp-search'/>
-                        <div className="btn-search">search</div>
+                      
                         <div className="home-div">
                              <IconButton style={{
                                 color: 'white'
@@ -371,10 +557,7 @@ $(".search-result").fadeIn()
                 </div>
                                <div id="myModal-follower" class="modal-follower">
                     <div class="modal-content-follower" >
-                        <h3 class="texx_follower">Follower!</h3>
-                        <hr></hr>
-                 
-                        <br></br>
+                   
                 
 
                     </div>
@@ -382,17 +565,14 @@ $(".search-result").fadeIn()
                 </div>
                                            <div id="myModal-following" class="modal-following">
                     <div class="modal-content-following" >
-                        <h3 class="texx_following">Following!</h3>
-                        <hr></hr>
-                 
-                        <br></br>
+                    
                 
 
                     </div>
 
                 </div>
                 <div className="follower_count">0</div>
-                <div className="follower">followers</div>
+                <div className="follower">follower</div>
                 <div className="following_count">0</div>
                 <div className="following">following</div>
 

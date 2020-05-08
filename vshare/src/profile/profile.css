@@ -273,12 +273,13 @@ width:99.8%;
 .btn-search{
 border-color: white;
 border-style: solid;
-
+ border-radius: 10px;
 margin-top: 7px;
 height: 35px;
 width: 100px;
 margin-left: 310px;
 text-align: center;
+font-size: 20px;
 position: absolute;
   
 }
@@ -305,7 +306,7 @@ position: absolute;
 }
 .search-result{
     display: none;
-    background-color: white;
+       background-color: rgb(35, 35, 35);
     border-radius: 10px;
     width: 300px;
     position: absolute;
@@ -319,11 +320,12 @@ position: absolute;
     height: 30px;
 }
 .username-result{
-color: black;
+color:white;
 position: absolute;
 margin-left: 30px;
 font-size: large;
-font-weight: bold;
+cursor: pointer;
+
 }
 .back-prof{
     position: absolute;
