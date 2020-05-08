@@ -16,14 +16,14 @@
     position: absolute;
     height: 200px;
     width: 200px;
-    margin-top: 5%;
+    margin-top: 10%;
     margin-left: 20%;
     border-radius: 100px;
     background-color:white
 }
 .username_prof {
     position: absolute;
-    margin-top: 9%;
+    margin-top: 14%;
     margin-left: 43.5%;
     font-size: 20px;
     color: white;
@@ -34,7 +34,7 @@
 .edite_profile {
     text-align: center;
     position: absolute;
-    margin-top: 9.5%;
+    margin-top: 14.5%;
     margin-left: 53.5%;
     font-size: 20px;
     color: white;
@@ -78,7 +78,7 @@
 }
 .follower_count {
     position: absolute;
-    margin-top: 14%;
+    margin-top: 19%;
     margin-left: 43.5%;
     font-size: 20px;
     color: white;
@@ -88,7 +88,7 @@
 }
 .follower {
     position: absolute;
-    margin-top: 14%;
+    margin-top: 19%;
     margin-left: 45%;
     font-size: 20px;
     color: white;
@@ -98,7 +98,7 @@
 }
 .following_count {
     position: absolute;
-    margin-top: 14%;
+    margin-top: 19%;
     margin-left: 53.5%;
     font-size: 20px;
     color: white;
@@ -107,7 +107,7 @@
 }
 .following {
     position: absolute;
-    margin-top: 14%;
+    margin-top: 19%;
     margin-left: 55%;
     font-size: 20px;
     color: white;
@@ -118,7 +118,7 @@
     display: flex;
     flex-wrap: nowrap;
     position: absolute;
-    margin-top: 30%;
+    margin-top: 35%;
     margin-left: 15%;
     font-size: 20px;
     color: white;
@@ -153,7 +153,7 @@
 .left_div {
     /*background-image: url('./left.png');*/
     position: absolute;
-    margin-top: 32.2%;
+    margin-top: 37.2%;
     margin-left: 13%;
     font-size: 20px;
     height:50px;
@@ -168,7 +168,7 @@
 .right_div {
     /*background-image: url('./right.png');*/
     position: absolute;
-    margin-top: 32%;
+    margin-top: 37%;
     margin-left: 82%;
     font-size: 20px;
     color: white;
@@ -244,9 +244,9 @@
 }
 .div-head-prof {
     margin-top: 7px;
-    margin-left: 3px;
+    margin-left: 20px;
 position:absolute;
-background-color: black;
+
 height: 50px;
 flex-direction: row;
 width:99.8%;
@@ -256,17 +256,50 @@ width:99.8%;
       color: whitesmoke;
     padding: 10px;
     float: left;
-    background-color: rgb(51, 51, 51);
+    background-color: rgba(32, 32, 32, 0.9);
     border-radius: 10px;
     font-size: 20px;
     height: 35px;
     width: 300px;
   
-    margin-left: 30%;
+  
     border-top: solid;
     border-left: solid;
     border-bottom: solid;
     border-right: solid;
     border-color: black;
     flex-direction: row
+}
+.btn-search{
+border-color: white;
+border-style: solid;
+
+margin-top: 7px;
+height: 35px;
+width: 100px;
+margin-left: 310px;
+text-align: center;
+position: absolute;
+  
+}
+.div-inp-btn{
+    height: 50px;
+
+    float: right;
+    width: 65%;
+    flex-direction: row;
+}
+.home-btn{
+
+  float:right;
+
+}
+.home-div{
+    float: right;
+   
+ 
+    height: 20px;
+   width:100px;
+    margin-top: -2px;
+    margin-right: 10px;
 }

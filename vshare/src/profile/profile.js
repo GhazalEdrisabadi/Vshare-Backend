@@ -3,13 +3,16 @@ import './profile.css'
 import $ from 'jquery';
 import Left from './left.png'
 import Right from './right.png'
+import Home from './home-icon.png'
+import HomeIcon from '@material-ui/icons/Home';
+import IconButton from '@material-ui/core/IconButton';
 var respone_get
 class profile extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
         $(document).ready(function () {
 
-            var member = $(".inp").val();
+            
 
             var username = window.localStorage.getItem('user');
             var id_gp = window.localStorage.getItem('id_group')
@@ -36,7 +39,10 @@ class profile extends Component {
                 $(".username_prof").text(respone_get.username)
 
             });
+   $(".home-btn ").click(function () {
+               window.location.replace('../homepage')
 
+            })
             $(".edite_profile").click(function () {
                 $(".modal_edite_profile").fadeIn();
 
@@ -215,9 +221,22 @@ class profile extends Component {
             <div className="back_profile" >
                 <div className="div-head-prof">
                       <div className="div_site_name">
-                            <h1 className="site_name">Vshare</h1>
+                            <h1 className="site_name" style={{marginTop:'5px'}}>Vshare</h1>
                         </div>
+                        <div className="div-inp-btn">
                         <input placeholder='search' className='inp-search'/>
+                        <div className="btn-search">search</div>
+                        <div className="home-div">
+                             <IconButton style={{
+                                color: 'white'
+
+                            }}className="home-btn"
+                                        >
+                                <HomeIcon  fontSize="large"/>
+                            </IconButton>
+                            </div>
+                        </div>
+                         
                 </div>
                 <div className="photo" />
                 <div className="username_prof">USERNAME</div>
