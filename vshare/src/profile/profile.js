@@ -261,7 +261,13 @@ $(".search-result").fadeIn()
                 $(".modal-follower").fadeOut();
             })
                   $(".following").click(function(){
-                $(".modal-following").fadeIn();
+                    $(".modal-content-following").html("")
+                      var html=''
+                     html+='  <h3 class="texx_following">Following!</h3>'
+                      html+='  <hr></hr>'
+                 
+               
+                    $(".modal-content-following").append(html)
                             var settings = {
                 "url": "http://127.0.0.1:8000/user/relations/followings/?user="+username+"",
                 "method": "GET",
@@ -278,9 +284,87 @@ $(".search-result").fadeIn()
 
             $.ajax(settings).done(function (response) {
                 // 
+                   var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'black'";
+
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
+                var htmlcode=''
                 console.log(response);
-                respone_get = response
-                $(".username_prof").text(respone_get.username)
+                               for (var counter1 = 0; counter1 < response.result.length; counter1++ , htmlcode = '') {
+                                   console.log("1")
+var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_is_followed+ ")";
+ var r = "window.location.replace('/profile/" + response.result[counter1].who_is_followed + "')";
+                    htmlcode += '<div>'
+                    // htmlcode+='<br/>'
+                    htmlcode += '<div class="user-search">';
+                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response.result[counter1].who_is_followed + '</p>';
+                
+                 htmlcode+='<br/>'
+                  
+                       
+                    htmlcode+='</div>'
+                    
+                    htmlcode += '</div>'
+                      htmlcode+='<hr/>'
+                    $(".modal-content-following").append(htmlcode)
+}
+ $(".modal-following").fadeIn();   
+
+            });
+
+            })
+                           $(".follower").click(function(){
+                                 $(".modal-content-follower").html("")
+                               var html=''
+                               
+                              html+= '  <h3 class="texx_follower">Follower!</h3>'
+                        html+='<hr></hr>'
+                 
+                        
+                          $(".modal-content-follower").append(html)
+                            var settings = {
+                "url": "http://127.0.0.1:8000/user/relations/followers/?user="+username+"",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                },
+
+            };
+
+            $.ajax(settings).done(function (response) {
+                // 
+                   var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'black'";
+
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
+                var htmlcode=''
+                console.log(response);
+                               for (var counter1 = 0; counter1 < response.result.length; counter1++ , htmlcode = '') {
+                                   console.log("1")
+var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_follows+ ")";
+ var r = "window.location.replace('/profile/" + response.result[counter1].who_follows + "')";
+                    htmlcode += '<div>'
+                    // htmlcode+='<br/>'
+                    htmlcode += '<div class="user-search">';
+                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response.result[counter1].who_follows + '</p>';
+                
+                 htmlcode+='<br/>'
+                  
+                       
+                    htmlcode+='</div>'
+                    
+                    htmlcode += '</div>'
+                      htmlcode+='<hr/>'
+                    $(".modal-content-follower").append(htmlcode)
+}
+ $(".modal-follower").fadeIn();   
 
             });
 
@@ -473,10 +557,7 @@ $(".search-result").fadeIn()
                 </div>
                                <div id="myModal-follower" class="modal-follower">
                     <div class="modal-content-follower" >
-                        <h3 class="texx_follower">Follower!</h3>
-                        <hr></hr>
-                 
-                        <br></br>
+                   
                 
 
                     </div>
@@ -484,10 +565,7 @@ $(".search-result").fadeIn()
                 </div>
                                            <div id="myModal-following" class="modal-following">
                     <div class="modal-content-following" >
-                        <h3 class="texx_following">Following!</h3>
-                        <hr></hr>
-                 
-                        <br></br>
+                    
                 
 
                     </div>
