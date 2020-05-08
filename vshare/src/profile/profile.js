@@ -149,7 +149,7 @@ if(response.length==0){
 }
 else{
         var hoverout = 'onMouseOut="this.style.color=';
-                        var hoverrout = hoverout + "'black'";
+                        var hoverrout = hoverout + "'white'";
 
                         var hover = 'onMouseOver="this.style.color=';
                         var hoverr = hover + "'red'";
@@ -285,7 +285,7 @@ $(".search-result").fadeIn()
             $.ajax(settings).done(function (response) {
                 // 
                    var hoverout = 'onMouseOut="this.style.color=';
-                        var hoverrout = hoverout + "'black'";
+                        var hoverrout = hoverout + "'white'";
 
                         var hover = 'onMouseOver="this.style.color=';
                         var hoverr = hover + "'red'";
@@ -340,7 +340,7 @@ var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_i
             $.ajax(settings).done(function (response) {
                 // 
                    var hoverout = 'onMouseOut="this.style.color=';
-                        var hoverrout = hoverout + "'black'";
+                        var hoverrout = hoverout + "'white'";
 
                         var hover = 'onMouseOver="this.style.color=';
                         var hoverr = hover + "'red'";
@@ -572,7 +572,7 @@ var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_f
 
                 </div>
                 <div className="follower_count">0</div>
-                <div className="follower">followers</div>
+                <div className="follower">follower</div>
                 <div className="following_count">0</div>
                 <div className="following">following</div>
 
