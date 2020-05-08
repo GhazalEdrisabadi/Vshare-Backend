@@ -13,6 +13,7 @@ urlpatterns = [
     path('relations/followers/', UserFollowers.as_view(), name="user_followers"),
     path('relations/followings/', UserFollowings.as_view(), name="user_followings"),
     path('followers/find/<str:who_follows>/', FindFollower.as_view(), name="search_follower"),
+    path('followings/find/<str:who_is_followed>/', FindFollowing.as_view(), name="search_following"),
     path('followers/unfollow/<str:who_is_followed>/', UnfollowUser.as_view(), name="search_follower"),
 
 ]

@@ -123,6 +123,14 @@ class FindFollower(generics.RetrieveUpdateDestroyAPIView):
 		queryset = Friendship.objects.filter(who_is_followed=following)
 		return queryset
 
+class FindFollowing(generics.RetrieveUpdateDestroyAPIView):
+	serializer_class = FriendshipSerializer
+	permission_classes = [AllowAny]
+	lookup_field = 'who_is_followed'
+	def get_queryset(self):
+		following = self.request.user
+		queryset = Friendship.objects.filter(who_follows=following)
+		return queryset
 
 class UnfollowUser(generics.DestroyAPIView):
 	serializer_class = FriendshipSerializer
