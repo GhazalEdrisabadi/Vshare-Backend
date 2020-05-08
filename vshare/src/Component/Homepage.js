@@ -243,7 +243,8 @@ class Homepage extends Component {
             });
 
             $(".userprofile").click(function () {
-                alert("im just a MVP version :)");
+                window.location.replace("/profile/" + username + "");
+              //  alert("im just a MVP version :)");
             });
 
 
