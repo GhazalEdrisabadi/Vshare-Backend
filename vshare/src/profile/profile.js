@@ -254,7 +254,16 @@ $(".search-result").fadeIn()
                     "url": "http://127.0.0.1:8000/group/join/",
                     "method": "POST",
                     "timeout": 0,
-              
+                           error: function (event) {
+                        if (event.status == 500) {
+                           alert("You are already a member of this group !");
+                        } 
+                    },
+                    success: function () {
+                        //  window.localStorage.setItem('id_gp', id);
+                         alert("join !");
+                         window.location.replace('/profile/'+username)
+                    },
                
                     "headers": {
                         //'X-CSRFToken': csrftoken,
@@ -275,7 +284,7 @@ $(".search-result").fadeIn()
                 $.ajax(settings).done(function (response) {
                     console.log("done")
                     console.log(response);
-                    console.log(response.status);
+               
                 });
             })
 
@@ -489,14 +498,20 @@ var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_f
                 for (var counter = 0; counter < response.length; counter++)
                     mygroups.push({ name: response[counter].title, id: response[counter].groupid });
 
+   var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'white'";
 
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
                 var htmlcode = '';
                 for (var counter1 = 0; counter1 < mygroups.length; counter1++ , htmlcode = '') {
-
+var a2 = " document.getElementById('Modal-join').style.display = 'block'";
+var r = "window.localStorage.setItem('id-join','" + mygroups[counter1].id + "')"; //id of the group
                     htmlcode += '<div>'
                     htmlcode += '<div class="admin_gp"></div>';
-
-                    htmlcode += '<p class="id_group">' + mygroups[counter1].id + '</p>'
+                    htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + mygroups[counter1].id + '</p>';
+                
+                   
                     htmlcode += '</div>'
                     $('.group_prof').append(htmlcode);
 
@@ -545,11 +560,18 @@ var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_f
                     console.log(groups[1]);
                     var counter2 = 0;
                     var htmlcode2 = '';
+                     var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'white'";
+
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
                     while (counter2 < groups.length) {
+                        var a2 = " document.getElementById('Modal-join').style.display = 'block'";
+var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')"; //id of the group
                         htmlcode2 += '<div>'
                         htmlcode2 += '<div class="member_gp"></div>';
-
-                        htmlcode2 += '<p class="id_group">' + groups[counter2].id + '</p>'
+ htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].id + '</p>';
+                      
                         htmlcode2 += '</div>'
 
 

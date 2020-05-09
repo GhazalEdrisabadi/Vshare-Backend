@@ -146,9 +146,9 @@
 }
 .id_group {
     text-align: center;
-    
+    cursor: pointer;
     color: white;
-    margin-left: 50px;
+    margin-left: 30px;
 }
 .left_div {
     /*background-image: url('./left.png');*/
