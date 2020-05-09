@@ -280,7 +280,48 @@ $(".search-result").fadeIn()
                 $('.formback').fadeOut();
             });
 
-
+$(".join-no ").click(function () {
+               $(".modal-join").fadeOut()
+ 
+             })
+                $(".join-yes ").click(function () {
+                        var settings = {
+                    "url": "http://127.0.0.1:8000/group/join/",
+                    "method": "POST",
+                    "timeout": 0,
+                           error: function (event) {
+                        if (event.status == 500) {
+                           alert("You are already a member of this group !");
+                        } 
+                    },
+                    success: function () {
+                        //  window.localStorage.setItem('id_gp', id);
+                         alert("join !");
+                         window.location.replace('/homepage')
+                    },
+               
+                    "headers": {
+                        //'X-CSRFToken': csrftoken,
+                        "Authorization": "token " + window.localStorage.getItem('token'),
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+                    "data": JSON.stringify({
+                            "the_group": window.localStorage.getItem('id-join'),
+                            "the_member": "",
+                        }
+                    ),
+                };
+                console.log(settings.headers);
+                console.log(settings.method);
+                $.ajax(settings).done(function (response) {
+                    console.log("done")
+                    console.log(response);
+               
+                });
+            })
             if (localStorage.getItem('token') == null) {
                 alert("Login please !");
                 window.location.replace("/startpage/");
@@ -832,7 +873,31 @@ $(".search-result").fadeIn()
                     </div>
                 </div>
 
+               <div id="Modal-join" class="modal-join">
+                    <div class="modal-content_join" >
+                                <h3 className='join-txt'>Are you sure you want to join this group ? </h3>
+                        
+                        <div className='join-btns'>
 
+                            <Button style={{backgroundColor: "Red"}} size='large'
+                                    className="join-no" variant="contained" color="secondary">
+                                <p>No&nbsp;</p>
+                            </Button>
+
+                            <Button style={{
+                                backgroundColor: 'gray',
+                                marginRight: "4px"
+
+                            }} size='large' className="join-yes" variant="contained" color="secondary">
+                                <p>Yes</p>
+                            </Button>
+
+                        </div>
+                    
+
+                    </div>
+
+                </div>
         <header className="head">
 
                     <div className='leftheader'>
