@@ -279,7 +279,11 @@ $(".search-result").fadeIn()
 
                 $('.formback').fadeOut();
             });
+          $(".Homepage").click(function () {
+                    $(".search-result").text("")
+               $(".search-result").fadeOut();
 
+            })
 $(".join-no ").click(function () {
                $(".modal-join").fadeOut()
  
