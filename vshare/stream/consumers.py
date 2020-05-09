@@ -7,7 +7,6 @@ from channels.exceptions import DenyConnection
 from stream.utils import *
 import asyncio
 import json
-
 class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 	# Connect websocket
@@ -85,35 +84,9 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			elif command == "reset":
 				await self.reset_state()
 
-			elif command == "chat_client":
-				await self.recieve_message(content["message_client"])
-
 		except ClientError as e:
 			await self.send_json({"error": e.code})
 
-	async def recieve_message(self,message_client):
-		user = self.scope["user"]
-		ismember = await is_member(user,self.roomid)
-		status = await get_status(self.roomid)
-		if ismember:
-			await self.channel_layer.group_send(
-					self.roomid,
-				{
-					"type":"send_message",
-					"message":message_client,
-					"command":"chat_client",
-					"user":user.username,
-				}
-			)
-			#here we will store the message in our DB
-			await store_message(user,message_client,self.roomid)
-		else:
-			await self.send_json(
-				{	
-					"username":user.username,
-					"message" : "you must be in the group to send messages through it!",
-				}
-			)
 
 	async def recieve_stream(self,vhash):	
 
@@ -408,8 +381,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			}
 		)
 
-
-async def send_time(self, event):
+	async def send_time(self, event):
 		await self.send_json(
 			{
 				"msg_type":"send time",
@@ -428,14 +400,8 @@ async def send_time(self, event):
 				"status":event["status"],
 				"hash":event["hash"],
 				"message":event["message"],
-
-
-
-
-
-
-
-
+			}
+		)
 
 #created to implement chat feature
 class TextChat(AsyncJsonWebsocketConsumer):
@@ -551,3 +517,4 @@ class TextChat(AsyncJsonWebsocketConsumer):
 				"offline":event["offline"],
 			}
 		)
+

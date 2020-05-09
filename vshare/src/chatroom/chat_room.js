@@ -109,8 +109,11 @@ class chat_room extends Component {
             console.log(messagee)
               console.log(messagee.message)
             if(messagee.message=='is_offline' || messagee.message=='is_online'){
-                  $('.onlinemembers').html('');
-                var settings = {
+                 
+
+                    setTimeout(function () {
+                        $('.onlinemembers').html('');
+                            var settings = {
                     "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
                     "method": "GET",
                     "timeout": 0,
@@ -133,6 +136,9 @@ class chat_room extends Component {
                       //  },500);
                 });
 
+                    }, 250);
+
+            
             }
 
         }
@@ -321,9 +327,15 @@ class chat_room extends Component {
                 window.localStorage.setItem('id_gp','');
                 ws1.close();
                 logoutclicked = 1;
-                const message_reselect = {"command": "reset"}
-                ws.send(JSON.stringify(message_reselect));
-                window.location.replace('/homepage/');
+                
+                
+                   setTimeout(function () {
+                    const message_reselect = {"command": "reset"}
+                    ws.send(JSON.stringify(message_reselect));
+                    window.location.replace('/homepage/');
+                     }, 300);
+ 
+              
 
             });
 
@@ -584,7 +596,7 @@ class chat_room extends Component {
 
         this.pause = this.pause.bind(this);
         this.handlereq_forward_backward = this.handlereq_forward_backward.bind(this);
-        this.double = this.double.bind(this);
+       
         this.changeCurrentTime = this.changeCurrentTime.bind(this);
 
         this.newShortcuts = [
