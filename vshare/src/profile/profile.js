@@ -15,6 +15,11 @@ class profile extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
         $(document).ready(function () {
+            if(username==window.localStorage.getItem('username')){
+               document.getElementById("content").style.display = 'none'
+                document.getElementById("right-button").style.display = 'none'
+                 document.getElementById("left-button").style.display = 'none'
+            }
             var settings = {
                 "url": "http://127.0.0.1:8000/user/relations/followers/?user="+username+"",
                 "method": "GET",
