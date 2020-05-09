@@ -24,14 +24,16 @@ import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined"
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 var percant = 0;
-var id_gp = window.localStorage.getItem('id_gp')
+var id_gp = window.localStorage.getItem('id_gp');
 const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
 var encrypted
 var ws = new WebSocket(url);
 var adminhash;
 var localresponse;
 var play_or_no;
-var clienthashok=0;
+var clienthashok = 0;
+const url1 = "ws://127.0.0.1:8000/chat/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
+var ws1 = new WebSocket(url1)
 
 class chat_room extends Component {
 
@@ -43,13 +45,48 @@ class chat_room extends Component {
         ws.onopen = function () {
             console.log("Ping");
         };
+
+        ws1.onmessage = evt => {
+            const messagee = JSON.parse(evt.data)
+            console.log(messagee)
+              console.log(messagee.message)
+            if(messagee.message=='is_offline' || messagee.message=='is_online'){
+                  $('.onlinemembers').html('');
+                var settings = {
+                    "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+                        //'X-CSRFToken': csrftoken,
+                        //  "Authorization": "token " + token,
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    }
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log('aaaa');
+                    console.log(response);
+                    for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
+                      //  setTimeout(function () {
+                            $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
+                      //  },500);
+                });
+
+            }
+
+        }
+
+
         ws.onmessage = evt => {
             console.log("messsssssage")
             const messagee = JSON.parse(evt.data)
             this.setState({server_pm: messagee})
             console.log(messagee)
             console.log(messagee.message)
-            if ( clienthashok==0 && messagee.status == 1 && localresponse.created_by != window.localStorage.getItem('username')) {
+            if (clienthashok == 0 && messagee.status == 1 && localresponse.created_by != window.localStorage.getItem('username')) {
                 $('#movietxt').fadeOut('slow');
                 $('#moviebtnd').fadeIn('slow');
                 adminhash = messagee.hash;
@@ -72,92 +109,129 @@ class chat_room extends Component {
         $(document).ready(function () {
 
 
-            if (window.localStorage.getItem('token') == null) {
+                if (window.localStorage.getItem('token') == null) {
 
-                alert("Login first !");
+                    alert("Login first !");
 
-                window.location.replace("/login/");
+                    window.location.replace("/login/");
 
+                }
+                $('.logout').click(function () {
+                    console.log('dc');
+                    window.localStorage.setItem('id_gp','');
+                    ws1.close();
+
+
+                   // setTimeout(function () {
+                        window.location.assign("http://localhost:3000/homepage/");
+                        //  window.location.href = "http://localhost:3000/homepage/";
+                 //   }, 3000);
+                    //  window.location.replace('/homepage/');
+                });
+                $('.username').text(window.localStorage.getItem('username'));
+                //id_gp = "test";
+                //This will open the connection*
+                document.getElementById('moviebtnd').style.display = 'none';
+                document.getElementById('movietxt').style.display = 'none';
+                document.getElementById('firstprogress').style.display = 'block';
+
+                setTimeout(function () {
+                    document.getElementById('firstprogress').style.display = 'none';
+                    if (localresponse.created_by == window.localStorage.getItem('username')) {
+                        document.getElementById('moviebtnd').style.display = 'block';
+                        document.getElementById('movietxt').style.display = 'none';
+
+                        //$('#videopickbtn').fadeIn('fast');
+                        //    $('#movietxt').fadeOut('fast');
+
+                    } else {
+                        document.getElementById('moviebtnd').style.display = 'none';
+                        document.getElementById('movietxt').style.display = 'block';
+                        //   $('#videopickbtn').fadeOut('fast');
+                        // $('#movietxt').fadeIn('fast');
+                    }
+
+                }, 2000);
+
+
+                $('#videopicks').change(function () {
+                    if (localresponse.created_by == window.localStorage.getItem('username')) {
+                        $('#videopickbtn').fadeOut();
+                        $('#progress').fadeIn();
+                    } else {
+
+                    }
+                });
+
+
+                // if (localStorage.getItem('token') == null) {
+                //     alert("Login please !");
+                //     window.location.replace("/login/");
+                // }
+
+
+                var id = window.localStorage.getItem('id_gp');
+
+
+                var settings = {
+                    "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+                        //'X-CSRFToken': csrftoken,
+                        //  "Authorization": "token " + token,
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    }
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log('aaaa');
+                    console.log(response);
+                    for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
+                      //  setTimeout(function () {
+                            $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
+                      //  },500);
+                });
+
+
+                var settings = {
+                    "url": "http://127.0.0.1:8000/groups/" + id + '/',
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+                        //'X-CSRFToken': csrftoken,
+                        //  "Authorization": "token " + token,
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    }
+                };
+
+                $.ajax(settings).done(function (response) {
+                    localresponse = response;
+                    console.log("111111");
+                    console.log(response);
+                    /*  for (var i = 0; i < response.members.length; i++) {
+                          var hoverout = 'onMouseOut="this.style.color=';
+                          var hoverrout = hoverout + "'white'";
+                          var htmlcode = '';
+                          var hover = 'onMouseOver="this.style.color=';
+                          var hoverr = hover + "'red'";
+                          htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
+                          $(".textarea_member").append(htmlcode);
+                          console.log("2")
+                          //$(".textarea_member").append(response.members[i] + "\n")
+                      }*/
+                    //  $(".textarea_bio").append(response.describtion + "\n")
+                    $(".name").append(response.title);
+                });
             }
-            $('.logout').click(function () {
-                window.location.replace('/homepage/');
-            });
-            $('.username').text(window.localStorage.getItem('username'));
-            //id_gp = "test";
-            //This will open the connection*
-            document.getElementById('moviebtnd').style.display = 'none';
-            document.getElementById('movietxt').style.display = 'none';
-            document.getElementById('firstprogress').style.display = 'block';
-
-            setTimeout(function () {
-                document.getElementById('firstprogress').style.display = 'none';
-                if (localresponse.created_by == window.localStorage.getItem('username')) {
-                    document.getElementById('moviebtnd').style.display = 'block';
-                    document.getElementById('movietxt').style.display = 'none';
-
-                    //$('#videopickbtn').fadeIn('fast');
-                    //    $('#movietxt').fadeOut('fast');
-
-                } else {
-                    document.getElementById('moviebtnd').style.display = 'none';
-                    document.getElementById('movietxt').style.display = 'block';
-                    //   $('#videopickbtn').fadeOut('fast');
-                    // $('#movietxt').fadeIn('fast');
-                }
-
-            }, 2000);
-
-
-            $('#videopicks').change(function () {
-                if (localresponse.created_by == window.localStorage.getItem('username')) {
-                    $('#videopickbtn').fadeOut();
-                    $('#progress').fadeIn();
-                } else {
-
-                }
-            });
-
-
-            // if (localStorage.getItem('token') == null) {
-            //     alert("Login please !");
-            //     window.location.replace("/login/");
-            // }
-
-
-            var id = window.localStorage.getItem('id_gp');
-            var settings = {
-                "url": "http://127.0.0.1:8000/groups/" + id + '/',
-                "method": "GET",
-                "timeout": 0,
-                "headers": {
-                    //'X-CSRFToken': csrftoken,
-                    //  "Authorization": "token " + token,
-                    "accept": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Headers": "*",
-                    "Content-Type": "application/json"
-                }
-            };
-
-            $.ajax(settings).done(function (response) {
-                localresponse = response;
-                console.log("111111");
-                console.log(response);
-                /*  for (var i = 0; i < response.members.length; i++) {
-                      var hoverout = 'onMouseOut="this.style.color=';
-                      var hoverrout = hoverout + "'white'";
-                      var htmlcode = '';
-                      var hover = 'onMouseOver="this.style.color=';
-                      var hoverr = hover + "'red'";
-                      htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
-                      $(".textarea_member").append(htmlcode);
-                      console.log("2")
-                      //$(".textarea_member").append(response.members[i] + "\n")
-                  }*/
-                //  $(".textarea_bio").append(response.describtion + "\n")
-                $(".name").append(response.title);
-            });
-        });
+        )
+        ;
 
 
         //Log the messages that are returned from the server
@@ -179,11 +253,11 @@ class chat_room extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    //handleChange(event) {
-    //    this.setState({
-    //        file_select: URL.createObjectURL(event.target.files[0])
-    //    })
-    //}
+//handleChange(event) {
+//    this.setState({
+//        file_select: URL.createObjectURL(event.target.files[0])
+//    })
+//}
     handleSubmit(e) {
 
 
@@ -197,13 +271,13 @@ class chat_room extends Component {
 
     }
 
-    //send_play() {
-    //    const message_send_play = { "command": "play"}
+//send_play() {
+//    const message_send_play = { "command": "play"}
 
-    //    // ws.send(JSON.stringify(message_send))
-    //    ws.send(JSON.stringify(message_send_play))
-    //    console.log(JSON.stringify(message_send_play))
-    //}
+//    // ws.send(JSON.stringify(message_send))
+//    ws.send(JSON.stringify(message_send_play))
+//    console.log(JSON.stringify(message_send_play))
+//}
 
     onChange(e) {
         document.getElementById('blaybtndiv').style.display = 'none';
@@ -312,7 +386,7 @@ class chat_room extends Component {
                 document.getElementById('progress').style.display = 'none';
             } else {
                 if (encrypted == adminhash) {
-                    clienthashok=1;
+                    clienthashok = 1;
                     document.getElementById('progress').style.display = 'none';
                     $('#movietxt').text('Wait for admin to play the video');
                     $('#moviebtnd').fadeOut();
@@ -427,6 +501,11 @@ class chat_room extends Component {
 
                         <div className="formback_info" style={{width: '350px', height: '395px'}}>
                             <div className="name"/>
+                            <p className="khat">_______________________</p>
+
+                            <p className='titleofonlines'>Online members :</p>
+
+                            <div className="onlinemembers"></div>
                         </div>
 
                         <div className="formback_text" style={{width: '350px', height: '395px',}}>
