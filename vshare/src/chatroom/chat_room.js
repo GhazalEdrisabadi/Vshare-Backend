@@ -143,13 +143,13 @@ class chat_room extends Component {
                 azavalbude = 1;
             }
 
-            if (messagee.status == 2 && isadmin == 0 && filmplayed == 0 && azavalbude == 0) {
+            if (messagee.status == 2 && isadmin == 0 && filmplayed == 0 ) {
                 rejoined = 1;
-                $('#movietxt').text('Admin has played the video , select your video too , to join it');
+                $('#movietxt').text('Admin has played the video , select your video too by clicking on ▲ ');
                 $('#moviebtnd').fadeIn('slow');
                 document.getElementById('videopickbtn').style.pointerEvents = 'auto';
                 document.getElementById('videopicks').style.pointerEvents = 'auto';
-                if (comeinstate1 == 0)
+                if (comeinstate1 == 0 && azavalbude == 0)
                     adminhash = messagee.hash;
                 //console.log("admin hash in state 2 : " + adminhash);
             }
