@@ -157,7 +157,7 @@ else{
                     // 
                     console.log(response);
 if(response.length==0){
-    $(".search-result").append("user not found")
+    $(".search-result").append("not found")
     $(".search-result").fadeIn()
 }
 else{

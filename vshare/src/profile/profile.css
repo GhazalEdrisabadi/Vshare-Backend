@@ -261,7 +261,7 @@ width:99.8%;
     font-size: 20px;
     height: 35px;
     width: 300px;
-  
+  margin-left: 130%;
   
     border-top: solid;
     border-left: solid;
@@ -313,8 +313,8 @@ position: absolute;
     width: 300px;
     position: absolute;
     height: 400px;
-    margin-top: 64px;
-    margin-left: 9.5%;
+    margin-top: 50px;
+    margin-left: 38%;
     color: black;
         white-space: initial;
      overflow-x:hidden; 
