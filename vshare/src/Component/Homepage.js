@@ -37,8 +37,8 @@ class Homepage extends Component {
 
 
                             $('#Status-Id').html('group with this groupid already exists!');
-                            $('#Status-Id').fadeIn();
-                            $('#Status-Id').delay(3000).toggle('slow');
+                        $('#Status-Id').fadeIn();
+                        $('#Status-Id').delay(3000).toggle('slow');
                     },
                     success: function () {
                         //  document.getElementById("myModel").style.display = 'block'
@@ -272,6 +272,7 @@ class Homepage extends Component {
                     var s = "document.getElementById('myModal')";
                     var ss = s + ".style.display = 'block'";
                     var a = "window.localStorage.setItem('id_gp','" + mygroups[counter1].id + "')"; //id of the group
+                    var ad = "window.localStorage.setItem('isadmin','" + '1' + "')"; //id of the group
                     //  console.log("mygroupssss" + mygroups[counter1].id);
                     var d = "document.getElementById('myModal2')";
                     var dd = d + ".style.display = 'block'";
@@ -309,7 +310,7 @@ class Homepage extends Component {
                          var hoverr=hover+"'green'";*/
                     htmlcode += '</br>';
                     htmlcode += '<div class="admin"></div>';
-                    htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" + mygroups[counter1].name + '</p>';
+                    htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + ad + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" + mygroups[counter1].name + '</p>';
 
 
                     htmlcode += '<div class="buttonsforgp">';
@@ -318,7 +319,12 @@ class Homepage extends Component {
                     htmlcode += '<div  onclick="' + a + "," + ss + '" class="edit"></div>';
                     htmlcode += '</div>';
                     htmlcode += '</br>';
-                    $('.groupsShow').append(htmlcode);
+
+
+                   // setTimeout(function () {
+                        $('.groupsShow').append(htmlcode);
+                   // }, 100);
+
 
                 }
 
@@ -534,7 +540,7 @@ class Homepage extends Component {
                         var a2 = "window.localStorage.setItem('id_gp','" + groups[counter2].id + "')";
                         var d2 = "document.getElementById('myModal2')";
                         var dd2 = d2 + ".style.display = 'block'";
-
+                        var ad2 = "window.localStorage.setItem('isadmin','" + '0' + "')"; //id of the group
 
                         var r = "window.location.replace('/group/" + groups[counter2].id + "')";
                         //window.location.replace("/group/" + id + "");
@@ -556,7 +562,7 @@ class Homepage extends Component {
                         htmlcode+=+'<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close2' + counter1 + '">&times;</span>';*/
 
                         htmlcode2 += '</br>';
-                        htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].name + '</p>';
+                        htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a2 + "," + ad2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].name + '</p>';
                         htmlcode2 += '<div class="buttonsforgp">';
 
                         htmlcode2 += '<div onclick="' + a2 + "," + dd2 + '" class="leave" ></div>';
@@ -569,7 +575,7 @@ class Homepage extends Component {
                         htmlcode2 = '';
                     }
                     console.log("groups :" + groups);
-                }, 500);
+                }, 1000);
 
 
             });
@@ -669,8 +675,6 @@ class Homepage extends Component {
 
             <div class="Homepage">
                 {/* {this.renderEfect()} */}
-
-
 
 
                 <div id="myModal" class="modal">
@@ -794,7 +798,7 @@ class Homepage extends Component {
                             width: '65%'
                         }}/>
 
-                            <div className="Status-Id" id="Status-Id"></div>
+                        <div className="Status-Id" id="Status-Id"></div>
 
 
                         <br></br>
