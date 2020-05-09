@@ -3,7 +3,7 @@ import './profile.css'
 import $ from 'jquery';
 import Left from './left.png'
 import Right from './right.png'
-import Home from './home-icon.png'
+
 import HomeIcon from '@material-ui/icons/Home';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import IconButton from '@material-ui/core/IconButton';
@@ -211,12 +211,12 @@ $.ajax(settings).done(function (response) {
                 htmlcode = '';
                $(".search-result").append(htmlcode)
                 for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
-var a2 = " document.getElementById("+"Modal"+").style.display = 'block'";
-
+var a2 = " document.getElementById('Modal-join').style.display = 'block'";
+var r = "window.localStorage.setItem('id-join','" + response[counter1].groupid + "')"; //id of the group
                     htmlcode += '<div>'
                     // htmlcode+='<br/>'
                     htmlcode += '<div class="group-search">';
-                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + ","  + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].groupid + '</p>';
+                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="'  + a2 + "," + r +'" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].groupid + '</p>';
                 
                  htmlcode+='<br/>'
                   
@@ -241,8 +241,43 @@ $(".search-result").fadeIn()
 
             })
 
-
-
+            $(".modal-join ").click(function () {
+               $(".modal-join").fadeOut()
+ 
+             })
+   $(".join-no ").click(function () {
+               $(".modal-join").fadeOut()
+ 
+             })
+                $(".join-yes ").click(function () {
+                        var settings = {
+                    "url": "http://127.0.0.1:8000/group/join/",
+                    "method": "POST",
+                    "timeout": 0,
+              
+               
+                    "headers": {
+                        //'X-CSRFToken': csrftoken,
+                        "Authorization": "token " + window.localStorage.getItem('token'),
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+                    "data": JSON.stringify({
+                            "the_group": window.localStorage.getItem('id-join'),
+                            "the_member": "",
+                        }
+                    ),
+                };
+                console.log(settings.headers);
+                console.log(settings.method);
+                $.ajax(settings).done(function (response) {
+                    console.log("done")
+                    console.log(response);
+                    console.log(response.status);
+                });
+            })
 
             $(".home-btn ").click(function () {
                window.location.replace('../homepage')
@@ -634,22 +669,27 @@ var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_f
                     </div>
 
                 </div>
-                        <div id="Modal" class="modal_edite_profile">
-                    <div class="modal-content_edite_profile" >
-                        <h3 class="texx_edite">Edit your profile deatails</h3>
-                        <hr></hr>
-                        <input class="inputedit" id='editfirstname' placeholder="FirstName"></input>
-                        <input class="inputedit" id='editlastname' placeholder="LastName"></input>
-                           <input class="inputedit" id='editusername' placeholder="UserName"></input>
-                              <input class="inputedit" id='editemail' placeholder="PassWord"></input>
-                                 <input class="inputedit" id='editpassword' placeholder="Email"></input>
-                        <br></br>
-                        <button style={{
-                            backgroundColor: "Red",
-                            marginTop: "20px"
-                        }} size='large' className="submitedit" variant="contained" color="secondary">
-                            <p>Edit</p>
-                        </button>
+                        <div id="Modal-join" class="modal-join">
+                    <div class="modal-content_join" >
+                                <h3 className='join-txt'>Are you sure you want to join this group ? </h3>
+                        
+                        <div className='join-btns'>
+
+                            <Button style={{backgroundColor: "Red"}} size='large'
+                                    className="join-no" variant="contained" color="secondary">
+                                <p>No&nbsp;</p>
+                            </Button>
+
+                            <Button style={{
+                                backgroundColor: 'gray',
+                                marginRight: "4px"
+
+                            }} size='large' className="join-yes" variant="contained" color="secondary">
+                                <p>Yes</p>
+                            </Button>
+
+                        </div>
+                    
 
                     </div>
 

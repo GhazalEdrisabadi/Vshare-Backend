@@ -314,34 +314,27 @@ position: absolute;
     position: absolute;
     height: 400px;
     margin-top: 64px;
-    margin-left: 9%;
+    margin-left: 9.5%;
     color: black;
         white-space: initial;
-
-    /* opacity: 100%; */
-
-    position: absolute;
-
-    
-
-    
-
      overflow-x:hidden; 
 
-     overflow-y: scroll;
+     
 }
 .user-search{
     width: 300px;
     height: 30px;
     background-image: url('./2.png');
     background-repeat: no-repeat;
+    margin: 10px;
     
 }
 .group-search{
     width: 300px;
     height: 30px;
-    background-image: url('./1.png');
+    background-image: url('./123467.png');
     background-repeat: no-repeat; 
+    margin: 10px;
 }
 .username-result{
 color:white;
@@ -391,4 +384,50 @@ cursor: pointer;
     border-style: solid;
     border-color: rgba(201, 76, 76, 0.3);
     font-family: 'Malgun Gothic'
+}
+.join-txt{
+    margin-left: 11%;
+    margin-top: 10%;
+}
+.join-btns{
+    float: right;
+}
+.join-no{
+ float: right;
+}
+.join-yes{
+      float: left;
+}
+.modal-join{
+   display: none;
+
+    position: fixed;
+
+    z-index: 1;
+
+    padding-top: 100px;
+
+    left: 0;
+    top: 0;
+    width: 100%;
+
+    height: 100%;
+
+    overflow: auto;
+
+    background-color: rgb(0, 0, 0);
+
+    background-color: rgba(0, 0, 0, 0.7);
+}
+.modal-content_join{
+      border-radius: 27px;
+    text-align: center;
+    background-color: rgb(35, 35, 35);
+    color: whitesmoke;
+    margin: auto;
+
+    border: 1px solid #888;
+    width: 30%;
+    height: 30%;
+    font-family: Arial;
 }
