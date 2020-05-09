@@ -37,10 +37,16 @@ var adminhash;
 var localresponse;
 var play_or_no;
 var clienthashok = 0;
-
+var messagee1 = null ;
 class chat_room extends Component {
 
+
+     componentWillUnmount() {
+         document.removeEventListener("keyup", this.escFunction, false);
+            
+     }
     componentDidMount() {
+        document.addEventListener("keyup", this.handlereq_Enter, false);
         console.log(localStorage.getItem('token'))
         //  id_gp = "test";
         //This will open the connection*
@@ -53,37 +59,54 @@ class chat_room extends Component {
 
         }
 
+
+        
+
         ws1.onmessage = evt => {
-            const messagee = JSON.parse(evt.data)
-            console.log(messagee)
-            console.log(messagee.message)
+            messagee1 = JSON.parse(evt.data)
+            console.log(messagee1)
+            console.log(messagee1.message)
 
 
-            if (messagee.command == "chat_client") {
+            if (messagee1.command == "chat_client") {
 
-                if (messagee.user == window.localStorage.getItem('username')) {
-                    $(".pm").append("<div id='pmeman'>" + "me : " + messagee.message + "</div>");
+                if (messagee1.user == window.localStorage.getItem('username')) {
+                    $(".pm").append("<div id='pmeman'>" + "me: " + messagee1.message + "</div>");
 
                 } else {
-                    $(".pm").append("<div id='pmeoon'>" + messagee.user + " : " + messagee.message + "</div>");
+                    $(".pm").append("<div id='pmeoon'>" + messagee1.user + ": " + messagee1.message + "</div>");
                 }
-                // $(".pm").append("<br>")
+
+                $(".pm").append("<br>")
+                
+                
+                var element = document.getElementById("pmid");
+                element.scrollTop = element.scrollHeight;
 
 
             }
+                
 
 
         }
         ws.onmessage = evt => {
             console.log("messsssssage")
+           
             const messagee = JSON.parse(evt.data)
+            
             this.setState({server_pm: messagee})
+            
             console.log(messagee)
+          
             console.log(messagee.message)
+            
             if (clienthashok == 0 && messagee.status == 1 && localresponse.created_by != window.localStorage.getItem('username')) {
+              
                 $('#movietxt').fadeOut('slow');
+                
                 $('#moviebtnd').fadeIn('slow');
                 adminhash = messagee.hash;
+                
 
 
             }
@@ -91,12 +114,16 @@ class chat_room extends Component {
             if (messagee.status == 2 && play_or_no == true) {
                 this.setState({
                     file_show_when_click: this.state.file_select
+                    
                 })
+               
                 document.getElementById('movie').style.display = 'block';
                 document.getElementById('blaybtndiv').style.display = 'none';
                 document.getElementById('movietxt').style.display = 'none';
+
             }
             console.log(window.localStorage.getItem('username'))
+            
 
 
         };
@@ -104,6 +131,39 @@ class chat_room extends Component {
 
         const {id} = this.props.match.params
         $(document).ready(function () {
+
+
+
+
+            $(document).on("keypress", "input", function(e){
+                
+                if(e.which == 13){
+
+                    var massage = $(".formback_text_input").val();
+                    const message_send_chat = {"command": "chat_client", "message_client": massage}
+                    ws1.send(JSON.stringify(message_send_chat))
+                    $('.formback_text_input').val('');
+
+
+                    
+                    e.preventDefault();
+
+                    
+                //  var inputVal = $(this).val();
+                // alert("You've entered: " + inputVal);
+
+
+                    // if (messagee1.user == window.localStorage.getItem('username')) {
+                    //      $(".pm").append("<div id='pmeman'>" + "me: " + messagee1.message + "</div>");
+    
+                    //  } else {
+                    //      $(".pm").append("<div id='pmeoon'>" + messagee1.user + ": " + messagee1.message + "</div>");
+                    //  }
+                    
+                }
+
+            });
+
                 var id = window.localStorage.getItem('id_gp');
 
                 $(".send_btn").click(function () {
@@ -111,9 +171,14 @@ class chat_room extends Component {
 
                     const message_send_chat = {"command": "chat_client", "message_client": massage}
                     ws1.send(JSON.stringify(message_send_chat))
+                    $('.formback_text_input').val('');
+
+
+
 
                     console.log(JSON.stringify(message_send_chat))
 
+                    
 
                 });
 
@@ -137,11 +202,12 @@ class chat_room extends Component {
                     console.log(response);
                     for (var counterchathistory = response.results.length - 1; counterchathistory >= 0; counterchathistory--) {
                         if (response.results[counterchathistory].message_sender == window.localStorage.getItem('username')) {
-                            $(".pm").append("<div id='pmeman'>" + "me : " + response.results[counterchathistory].message_text + "</div>");
+                            $(".pm").append("<div id='pmeman'>" + "me: " + response.results[counterchathistory].message_text + "</div>");
 
                         } else {
-                            $(".pm").append("<div id='pmeoon'>" + response.results[counterchathistory].message_sender + " : " + response.results[counterchathistory].message_text + "</div>");
+                            $(".pm").append("<div id='pmeoon'>" + response.results[counterchathistory].message_sender + ": " + response.results[counterchathistory].message_text + "</div>");
                         }
+                        $(".pm").append("<br>");
                     }
                     var element = document.getElementById("pmid");
                     element.scrollTop = element.scrollHeight;
@@ -242,6 +308,32 @@ class chat_room extends Component {
 
 
     }
+
+    
+
+    // componentDidMount() {
+
+    //     console.log("is admin : " + isadmin);
+    //     
+
+    //     console.log(localStorage.getItem('token'))
+    // }
+
+    // handlereq_Enter(event) {
+    //     console.log("ffffffffffffffffffffffffffffff")
+    //     if (event.keyCode == 13) {
+            
+           
+
+
+    //     }
+    // }
+
+
+
+
+    
+
 
 
     constructor(props) {
@@ -501,7 +593,7 @@ class chat_room extends Component {
 
                             </div>
 
-                        </div>
+                        </div> 
 
 
                     </div>
@@ -522,7 +614,10 @@ class chat_room extends Component {
 
                             <div className="input_send">
 
-                                <input className="formback_text_input" id="formback_text_input"></input>
+
+                                <input className="formback_text_input" id="formback_text_input" autocomplete="off">
+                                    
+                                </input>
 
                                 <IconButton style={{
                                     color: 'white',
