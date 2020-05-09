@@ -42,12 +42,14 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import Forward10Icon from '@material-ui/icons/Forward10';
 import EjectIcon from '@material-ui/icons/Eject';
+import StopIcon from '@material-ui/icons/Stop';
 
-
+var adminisinstatezero = 1;
 var logoutclicked = 0;
 var azavalbude = 0;
 var percant = 0;
 var rejoined = 0;
+var played = 0;
 var id_gp = window.localStorage.getItem('id_gp');
 
 const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + "";
@@ -63,6 +65,7 @@ var localresponse;
 var play_or_no;
 var isadmin = window.localStorage.getItem('isadmin');
 var filmplayed = 0;
+var comeinstate1 = 0;
 var Play_pause_space = 0;
 
 var clienthashok = 0;
@@ -105,13 +108,13 @@ class chat_room extends Component {
 
             console.log(messagee.message)
 
-            if (logoutclicked == 0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
+            if (logoutclicked == 0 && adminisinstatezero == 0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
                 window.location.reload();
             }
 
             if ("this is current time for new users" == messagee.message) {
                 this.changeCurrentTime(messagee.time);
-                this.pause();
+
                 this.play();
                 $('#moviebtnd').fadeOut();
             }
@@ -120,7 +123,8 @@ class chat_room extends Component {
             if (clienthashok == 0 && messagee.status == 1 && isadmin == 0) {
                 adminhash = messagee.hash;
                 $('#movietxt').fadeOut('slow');
-                $('#reselect').fadeOut('fast');
+                //  $('#reselect').fadeOut('fast');
+                document.getElementById('reselect').style.pointerEvents = 'none';
                 $('#moviebtnd').fadeIn('slow');
                 document.getElementById('controllbuttons').style.pointerEvents = 'none';
                 document.getElementById('videopickbtn').style.pointerEvents = 'auto';
@@ -145,16 +149,20 @@ class chat_room extends Component {
                 $('#moviebtnd').fadeIn('slow');
                 document.getElementById('videopickbtn').style.pointerEvents = 'auto';
                 document.getElementById('videopicks').style.pointerEvents = 'auto';
-                adminhash = messagee.hash;
-                console.log("admin hash in state 2 : " + adminhash);
+                if (comeinstate1 == 0)
+                    adminhash = messagee.hash;
+                //console.log("admin hash in state 2 : " + adminhash);
             }
 
 
             if (messagee.status == 1 && isadmin == 0 && azavalbude == 0 && clienthashok == 0) {
+                adminhash = messagee.hash;
+                console.log("admin hash in state 2 : " + adminhash);
                 rejoined = 1;
                 $('#movietxt').text('Admin has selected the video , select it too');
                 $('#moviebtnd').fadeIn('slow');
-
+                adminhash = messagee.hash;
+                comeinstate1 = 1;
 
             }
 
@@ -217,8 +225,11 @@ class chat_room extends Component {
         const {id} = this.props.match.params
 
         $(document).ready(function () {
- 
-         
+            setTimeout(function () {
+                const message_reselect = {"command": "reset"}
+                ws.send(JSON.stringify(message_reselect));
+            }, 100);
+
 
             if (isadmin == 1) {
                 $('#videopicks').fadeIn('fast');
@@ -276,14 +287,14 @@ class chat_room extends Component {
 
             });
 
-            $( "#movie" ).dblclick(function(e) {
-  	e.preventDefault();
- 
-	/*  Prevents event bubbling  */
-	e.stopPropagation();
- 
-	return;
-});
+            $("#movie").dblclick(function (e) {
+                e.preventDefault();
+
+                /*  Prevents event bubbling  */
+                e.stopPropagation();
+
+                return;
+            });
 
             /*  $("#formback_movie_id").mouseover(function () {
 >>>>>>> features/stream-frontend
@@ -316,6 +327,7 @@ class chat_room extends Component {
                 document.getElementById('movietxt').style.display = 'block';
                 $('#movietxt').text('Click ▲ to select your video ');
                 document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                document.getElementById('reselect').style.pointerEvents = 'auto';
                 document.getElementById('videopickbtn').style.pointerEvents = 'auto';
                 document.getElementById('videopicks').style.pointerEvents = 'auto';
 
@@ -326,7 +338,10 @@ class chat_room extends Component {
 
 
             } else {
-                document.getElementById('reselect').style.display = 'none';
+
+                // document.getElementById('reselect').style.display = 'none';
+                document.getElementById('reselect').style.pointerEvents = 'none';
+
                 if (rejoined == 0)
                     document.getElementById('moviebtnd').style.display = 'none';
 
@@ -354,9 +369,12 @@ class chat_room extends Component {
 
                 if (isadmin == 1) {
 
-                    $('#videopickbtn').fadeOut('fast');
-                    $('#reselect').fadeIn('fast');
+                    //   $('#videopickbtn').fadeOut('fast');
+                    document.getElementById('videopickbtn').style.pointerEvents = 'none';
+                    document.getElementById('videopicks').style.pointerEvents = 'none';
 
+                    // $('#reselect').fadeIn('fast');
+                    document.getElementById('reselect').style.pointerEvents = 'auto';
 
                     $('#firstprogress').fadeIn();
                     $('#movietxt').fadeOut();
@@ -510,7 +528,7 @@ class chat_room extends Component {
                     if (Play_pause_space == 0) {
 
                         console.log("pause")
-
+                        played = 0;
                         //  actions.pause()
 
 
@@ -536,7 +554,7 @@ class chat_room extends Component {
                     }
 
                     if (Play_pause_space == 1) {
-
+                        played = 1;
                         console.log("play")
 
                         //  actions.play()
@@ -568,293 +586,293 @@ class chat_room extends Component {
 
             {
 
-               keyCode: 75, // Right arrow
+                keyCode: 75, // Right arrow
 
-               // Ctrl/Cmd
+                // Ctrl/Cmd
 
-               handle: (player, actions) => {
-               console.log("press k")
+                handle: (player, actions) => {
+                    console.log("press k")
 
-               }
+                }
 
             },
 
             {
 
-               keyCode: 74, // Right arrow
+                keyCode: 74, // Right arrow
 
-               // Ctrl/Cmd
+                // Ctrl/Cmd
 
-               handle: (player, actions) => {
+                handle: (player, actions) => {
 
                     console.log("press j")
-                
 
-               }
+
+                }
 
             },
             {
 
                 keyCode: 76, // Right arrow
- 
+
                 // Ctrl/Cmd
- 
+
                 handle: (player, actions) => {
- 
-                     console.log("press l")
-                 
- 
+
+                    console.log("press l")
+
+
                 }
- 
-             },
-                 {
 
-               keyCode: 36, // Right arrow
+            },
+            {
 
-               // Ctrl/Cmd
+                keyCode: 36, // Right arrow
 
-               handle: (player, actions) => {
+                // Ctrl/Cmd
+
+                handle: (player, actions) => {
 
                     console.log("press home")
-                
 
-               }
+
+                }
 
             },
-                {
+            {
 
-               keyCode: 74, // Right arrow
+                keyCode: 74, // Right arrow
 
-               // Ctrl/Cmd
+                // Ctrl/Cmd
 
-               handle: (player, actions) => {
+                handle: (player, actions) => {
 
                     console.log("press end")
-                
 
-               }
 
-            }, 
-               {
+                }
 
-               keyCode: 70, // Right arrow
+            },
+            {
 
-               // Ctrl/Cmd
+                keyCode: 70, // Right arrow
 
-               handle: (player, actions) => {
+                // Ctrl/Cmd
+
+                handle: (player, actions) => {
 
                     console.log("press f")
-       
 
-               }
 
-            },
-                {
-
-               keyCode: 49, // Right arrow
-
-               // Ctrl/Cmd
-
-               handle: (player, actions) => {
-
-                  
-                          const duration = player.duration;
-          // jump to the postion of 10%
-        
-          const message_send_play = {"command": "play_video", "currentTime": duration*0.1}
-
-                        // ws.send(JSON.stringify(message_send))
-
-                        ws.send(JSON.stringify(message_send_play))
-
-                        console.log(JSON.stringify(message_send_play))
-
-               }
+                }
 
             },
-             {
+            {
 
-               keyCode: 57, // Right arrow
+                keyCode: 49, // Right arrow
 
-               // Ctrl/Cmd
+                // Ctrl/Cmd
 
-               handle: (player, actions) => {
+                handle: (player, actions) => {
 
-           
-                          const duration = player.duration;
-          // jump to the postion of 10%
-        
-          const message_send_play = {"command": "play_video", "currentTime": duration*0.9}
 
-                        // ws.send(JSON.stringify(message_send))
+                    const duration = player.duration;
+                    // jump to the postion of 10%
 
-                        ws.send(JSON.stringify(message_send_play))
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.1}
 
-                        console.log(JSON.stringify(message_send_play))
+                    // ws.send(JSON.stringify(message_send))
 
-               }
+                    ws.send(JSON.stringify(message_send_play))
+
+                    console.log(JSON.stringify(message_send_play))
+
+                }
+
+            },
+            {
+
+                keyCode: 57, // Right arrow
+
+                // Ctrl/Cmd
+
+                handle: (player, actions) => {
+
+
+                    const duration = player.duration;
+                    // jump to the postion of 10%
+
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.9}
+
+                    // ws.send(JSON.stringify(message_send))
+
+                    ws.send(JSON.stringify(message_send_play))
+
+                    console.log(JSON.stringify(message_send_play))
+
+                }
 
             },
             {
 
                 keyCode: 50, // Right arrow
- 
+
                 // Ctrl/Cmd
- 
+
                 handle: (player, actions) => {
- 
-            
-                           const duration = player.duration;
-           // jump to the postion of 10%
-         
-           const message_send_play = {"command": "play_video", "currentTime": duration*0.2}
- 
-                         // ws.send(JSON.stringify(message_send))
- 
-                         ws.send(JSON.stringify(message_send_play))
- 
-                         console.log(JSON.stringify(message_send_play))
- 
+
+
+                    const duration = player.duration;
+                    // jump to the postion of 10%
+
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.2}
+
+                    // ws.send(JSON.stringify(message_send))
+
+                    ws.send(JSON.stringify(message_send_play))
+
+                    console.log(JSON.stringify(message_send_play))
+
                 }
- 
-             },
-                        {
-
-               keyCode: 51, // Right arrow
-
-               // Ctrl/Cmd
-
-               handle: (player, actions) => {
-
-           
-                          const duration = player.duration;
-          // jump to the postion of 10%
-        
-          const message_send_play = {"command": "play_video", "currentTime": duration*0.3}
-
-                        // ws.send(JSON.stringify(message_send))
-
-                        ws.send(JSON.stringify(message_send_play))
-
-                        console.log(JSON.stringify(message_send_play))
-
-               }
 
             },
-                       {
+            {
 
-               keyCode: 52, // Right arrow
+                keyCode: 51, // Right arrow
 
-               // Ctrl/Cmd
+                // Ctrl/Cmd
 
-               handle: (player, actions) => {
+                handle: (player, actions) => {
 
-           
-                          const duration = player.duration;
-          // jump to the postion of 10%
-        
-          const message_send_play = {"command": "play_video", "currentTime": duration*0.4}
 
-                        // ws.send(JSON.stringify(message_send))
+                    const duration = player.duration;
+                    // jump to the postion of 10%
 
-                        ws.send(JSON.stringify(message_send_play))
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.3}
 
-                        console.log(JSON.stringify(message_send_play))
+                    // ws.send(JSON.stringify(message_send))
 
-               }
+                    ws.send(JSON.stringify(message_send_play))
 
-               
-            },
-                       {
+                    console.log(JSON.stringify(message_send_play))
 
-               keyCode: 53, // Right arrow
-
-               // Ctrl/Cmd
-
-               handle: (player, actions) => {
-
-           
-                          const duration = player.duration;
-          // jump to the postion of 10%
-        
-          const message_send_play = {"command": "play_video", "currentTime": duration*0.5}
-
-                        // ws.send(JSON.stringify(message_send))
-
-                        ws.send(JSON.stringify(message_send_play))
-
-                        console.log(JSON.stringify(message_send_play))
-
-               }
+                }
 
             },
-                       {
+            {
 
-               keyCode: 54, // Right arrow
+                keyCode: 52, // Right arrow
 
-               // Ctrl/Cmd
+                // Ctrl/Cmd
 
-               handle: (player, actions) => {
+                handle: (player, actions) => {
 
-           
-                          const duration = player.duration;
-          // jump to the postion of 10%
-        
-          const message_send_play = {"command": "play_video", "currentTime": duration*0.6}
 
-                        // ws.send(JSON.stringify(message_send))
+                    const duration = player.duration;
+                    // jump to the postion of 10%
 
-                        ws.send(JSON.stringify(message_send_play))
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.4}
 
-                        console.log(JSON.stringify(message_send_play))
+                    // ws.send(JSON.stringify(message_send))
 
-               }
+                    ws.send(JSON.stringify(message_send_play))
 
-            },
-                       {
+                    console.log(JSON.stringify(message_send_play))
 
-               keyCode: 55, // Right arrow
+                }
 
-               // Ctrl/Cmd
-
-               handle: (player, actions) => {
-
-           
-                          const duration = player.duration;
-          // jump to the postion of 10%
-        
-          const message_send_play = {"command": "play_video", "currentTime": duration*0.7}
-
-                        // ws.send(JSON.stringify(message_send))
-
-                        ws.send(JSON.stringify(message_send_play))
-
-                        console.log(JSON.stringify(message_send_play))
-
-               }
 
             },
-                       {
+            {
 
-               keyCode: 56, // Right arrow
+                keyCode: 53, // Right arrow
 
-               // Ctrl/Cmd
+                // Ctrl/Cmd
 
-               handle: (player, actions) => {
+                handle: (player, actions) => {
 
-           
-                          const duration = player.duration;
-          // jump to the postion of 10%
-        
-          const message_send_play = {"command": "play_video", "currentTime": duration*0.8}
 
-                        // ws.send(JSON.stringify(message_send))
+                    const duration = player.duration;
+                    // jump to the postion of 10%
 
-                        ws.send(JSON.stringify(message_send_play))
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.5}
 
-                        console.log(JSON.stringify(message_send_play))
+                    // ws.send(JSON.stringify(message_send))
 
-               }
+                    ws.send(JSON.stringify(message_send_play))
+
+                    console.log(JSON.stringify(message_send_play))
+
+                }
+
+            },
+            {
+
+                keyCode: 54, // Right arrow
+
+                // Ctrl/Cmd
+
+                handle: (player, actions) => {
+
+
+                    const duration = player.duration;
+                    // jump to the postion of 10%
+
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.6}
+
+                    // ws.send(JSON.stringify(message_send))
+
+                    ws.send(JSON.stringify(message_send_play))
+
+                    console.log(JSON.stringify(message_send_play))
+
+                }
+
+            },
+            {
+
+                keyCode: 55, // Right arrow
+
+                // Ctrl/Cmd
+
+                handle: (player, actions) => {
+
+
+                    const duration = player.duration;
+                    // jump to the postion of 10%
+
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.7}
+
+                    // ws.send(JSON.stringify(message_send))
+
+                    ws.send(JSON.stringify(message_send_play))
+
+                    console.log(JSON.stringify(message_send_play))
+
+                }
+
+            },
+            {
+
+                keyCode: 56, // Right arrow
+
+                // Ctrl/Cmd
+
+                handle: (player, actions) => {
+
+
+                    const duration = player.duration;
+                    // jump to the postion of 10%
+
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.8}
+
+                    // ws.send(JSON.stringify(message_send))
+
+                    ws.send(JSON.stringify(message_send_play))
+
+                    console.log(JSON.stringify(message_send_play))
+
+                }
 
             },
         ];
@@ -872,9 +890,10 @@ class chat_room extends Component {
     //    })
 
     //}
-double(){
-    console.log("double")
-}
+    double() {
+        console.log("double")
+    }
+
     handleSubmit(e) {
 
 
@@ -909,7 +928,7 @@ double(){
     onChange(e) {
 
         document.getElementById('blaybtndiv').style.display = 'none';
-
+        adminisinstatezero = 0;
         document.getElementById('firstprogress').style.display = 'block';
         $('#movietxt').fadeOut();
 
@@ -1131,6 +1150,9 @@ double(){
                 document.getElementById('firstprogress').style.display = 'none';
                 $('#movietxt').text('Something went wrong in selecting movie , Please reselect the video ');
                 $('#movietxt').fadeIn();
+                document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                document.getElementById('videopickbtn').style.pointerEvents = 'auto';
+                document.getElementById('videopicks').style.pointerEvents = 'auto';
 
 
             }
@@ -1163,7 +1185,7 @@ double(){
 
         console.log(JSON.stringify(message_send_play))
         play_or_no = true
-
+        played = 1;
         $('#play_btnid').fadeOut('fast');
         $('#pause_btnid').fadeIn('fast');
 
@@ -1186,6 +1208,9 @@ double(){
         ws.send(JSON.stringify(message_send_play))
 
         console.log(JSON.stringify(message_send_play))
+
+        played = 0;
+        console.log('played : ' + played);
         $('#play_btnid').fadeIn('fast');
         $('#pause_btnid').fadeOut('fast');
 
@@ -1201,12 +1226,15 @@ double(){
             const {player} = this.player.getState();
 
             console.log("curent " + player.currentTime)
-
-            const message_send_play = {"command": "play_video", "currentTime": player.currentTime + seconds}
-
+            var message_send_play;
+            if (played == 1)
+                message_send_play = {"command": "play_video", "currentTime": player.currentTime + seconds}
+            else
+                message_send_play = {"command": "pause_video", "currentTime": player.currentTime + seconds}
             ws.send(JSON.stringify(message_send_play))
 
             console.log(JSON.stringify(message_send_play))
+
 
             // this.player.seek(player.currentTime + seconds);
 
@@ -1217,18 +1245,20 @@ double(){
     handlereq_forward_backward(event) {
         console.log("hoooooooold")
         if (event.keyCode == 39 || event.keyCode == 37) {
-
+            console.log('played : ' + played);
             const {player} = this.player.getState();
 
             console.log("curent " + player.currentTime)
-
-            const message_send_play = {"command": "play_video", "currentTime": player.currentTime}
-
+            var message_send_play2;
+            if (played == 1)
+                message_send_play2 = {"command": "play_video", "currentTime": player.currentTime}
+            else
+                message_send_play2 = {"command": "pause_video", "currentTime": player.currentTime}
             // ws.send(JSON.stringify(message_send))
 
-            ws.send(JSON.stringify(message_send_play))
+            ws.send(JSON.stringify(message_send_play2))
 
-            console.log(JSON.stringify(message_send_play))
+            console.log(JSON.stringify(message_send_play2))
             //console.log("11111111111111111111111111111111")
         }
     }
@@ -1294,7 +1324,7 @@ double(){
 
                     <div id='formback_movie_id' className="formback_movie">
 
-                        <div id="movie" className="div_player_movie" >
+                        <div id="movie" className="div_player_movie">
 
                             <Player
 
@@ -1307,7 +1337,7 @@ double(){
                                 autoPlay
 
                                 src={this.state.file_show_when_click}
-id='players'
+                                id='players'
 
                             >
 
@@ -1346,21 +1376,6 @@ id='players'
                                 <input type="file" id='videopicks' className='videopicsk' name="file"
 
                                        onChange={(e) => this.onChange(e)}/>
-
-
-                                <IconButton style={{
-                                    position: 'fixed',
-                                    marginLeft: '-48px',
-                                    marginTop: '3px',
-                                    color: 'white',
-                                    display: 'none'
-
-                                }} size='large' id="reselect">
-
-
-                                    <EjectIcon/>
-
-                                </IconButton>
 
 
                                 <IconButton onClick={this.changeCurrentTime(-10)} style={{
@@ -1408,6 +1423,16 @@ id='players'
 
 
                                     <Forward10Icon/>
+                                </IconButton>
+
+                                <IconButton id='reselect' style={{
+                                    color: 'white'
+
+
+                                }} size='large' className="mr-3">
+
+
+                                    <StopIcon/>
                                 </IconButton>
 
 
