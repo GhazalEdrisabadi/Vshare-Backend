@@ -3,15 +3,23 @@ import './profile.css'
 import $ from 'jquery';
 import Left from './left.png'
 import Right from './right.png'
-import Home from './home-icon.png'
+
 import HomeIcon from '@material-ui/icons/Home';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import IconButton from '@material-ui/core/IconButton';
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+import Button from '@material-ui/core/Button';
 var username = window.localStorage.getItem('user');
 var respone_get
 class profile extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
         $(document).ready(function () {
+            if(username==window.localStorage.getItem('username')){
+               document.getElementById("content").style.display = 'none'
+                document.getElementById("right-button").style.display = 'none'
+                 document.getElementById("left-button").style.display = 'none'
+            }
             var settings = {
                 "url": "http://127.0.0.1:8000/user/relations/followers/?user="+username+"",
                 "method": "GET",
@@ -119,8 +127,13 @@ else{
                 console.log(response);
                 respone_get = response
                 $(".username_prof").text(respone_get.username)
+                 $(".username").text(respone_get.username)
 
             });
+
+
+
+
             $(".inp-search").change(function () {
                 $(".search-result").text("")
                 console.log("change")
@@ -144,7 +157,7 @@ else{
                     // 
                     console.log(response);
 if(response.length==0){
-    $(".search-result").append("user not found")
+    $(".search-result").append("not found")
     $(".search-result").fadeIn()
 }
 else{
@@ -174,6 +187,56 @@ var a2 = "window.localStorage.setItem('user'," + response[counter1].username + "
                       htmlcode+='<hr/>'
                     $(".search-result").append(htmlcode)
 }
+
+var settings = {
+    "url": "http://127.0.0.1:8000/groups/?search="+user_search+"",
+    "method": "GET",
+    "timeout": 0,
+    "headers": {
+"Authorization": "token " + window.localStorage.getItem('token'),
+        "accept": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+        "Content-Type": "application/json"
+    },      
+            
+    
+
+};
+
+$.ajax(settings).done(function (response) {
+   
+      var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'white'";
+
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
+    var htmlcode='<br/>'
+  //   $(".search-result").append(htmlcode)
+                htmlcode = '';
+               $(".search-result").append(htmlcode)
+                for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
+var a2 = " document.getElementById('Modal-join').style.display = 'block'";
+var r = "window.localStorage.setItem('id-join','" + response[counter1].groupid + "')"; //id of the group
+                    htmlcode += '<div>'
+                    // htmlcode+='<br/>'
+                    htmlcode += '<div class="group-search">';
+                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="'  + a2 + "," + r +'" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].groupid + '</p>';
+                
+                 htmlcode+='<br/>'
+                  
+                       
+                    htmlcode+='</div>'
+                    
+                    htmlcode += '</div>'
+                      htmlcode+='<hr/>'
+                    $(".search-result").append(htmlcode)
+                }
+
+});
+
+
+
 $(".search-result").fadeIn()                
 }
           
@@ -182,6 +245,54 @@ $(".search-result").fadeIn()
               
 
             })
+
+            $(".modal-join ").click(function () {
+               $(".modal-join").fadeOut()
+ 
+             })
+   $(".join-no ").click(function () {
+               $(".modal-join").fadeOut()
+ 
+             })
+                $(".join-yes ").click(function () {
+                        var settings = {
+                    "url": "http://127.0.0.1:8000/group/join/",
+                    "method": "POST",
+                    "timeout": 0,
+                           error: function (event) {
+                        if (event.status == 500) {
+                           alert("You are already a member of this group !");
+                        } 
+                    },
+                    success: function () {
+                        //  window.localStorage.setItem('id_gp', id);
+                         alert("join !");
+                         window.location.replace('/profile/'+username)
+                    },
+               
+                    "headers": {
+                        //'X-CSRFToken': csrftoken,
+                        "Authorization": "token " + window.localStorage.getItem('token'),
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+                    "data": JSON.stringify({
+                            "the_group": window.localStorage.getItem('id-join'),
+                            "the_member": "",
+                        }
+                    ),
+                };
+                console.log(settings.headers);
+                console.log(settings.method);
+                $.ajax(settings).done(function (response) {
+                    console.log("done")
+                    console.log(response);
+               
+                });
+            })
+
             $(".home-btn ").click(function () {
                window.location.replace('../homepage')
 
@@ -253,7 +364,7 @@ $(".search-result").fadeIn()
             $(".follower").click(function(){
                 $(".modal-follower").fadeIn();
             })
-                 $(".back-prof").click(function(){
+                 $(".userprofile").click(function(){
                 window.localStorage.setItem('user' , window.localStorage.getItem('username'))
                 window.location.replace("/profile/"+window.localStorage.getItem('username')+"")
             })
@@ -392,14 +503,20 @@ var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_f
                 for (var counter = 0; counter < response.length; counter++)
                     mygroups.push({ name: response[counter].title, id: response[counter].groupid });
 
+   var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'white'";
 
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
                 var htmlcode = '';
                 for (var counter1 = 0; counter1 < mygroups.length; counter1++ , htmlcode = '') {
-
+var a2 = " document.getElementById('Modal-join').style.display = 'block'";
+var r = "window.localStorage.setItem('id-join','" + mygroups[counter1].id + "')"; //id of the group
                     htmlcode += '<div>'
                     htmlcode += '<div class="admin_gp"></div>';
-
-                    htmlcode += '<p class="id_group">' + mygroups[counter1].id + '</p>'
+                    htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + mygroups[counter1].id + '</p>';
+                
+                   
                     htmlcode += '</div>'
                     $('.group_prof').append(htmlcode);
 
@@ -448,11 +565,18 @@ var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_f
                     console.log(groups[1]);
                     var counter2 = 0;
                     var htmlcode2 = '';
+                     var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'white'";
+
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
                     while (counter2 < groups.length) {
+                        var a2 = " document.getElementById('Modal-join').style.display = 'block'";
+var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')"; //id of the group
                         htmlcode2 += '<div>'
                         htmlcode2 += '<div class="member_gp"></div>';
-
-                        htmlcode2 += '<p class="id_group">' + groups[counter2].id + '</p>'
+ htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].id + '</p>';
+                      
                         htmlcode2 += '</div>'
 
 
@@ -510,26 +634,43 @@ var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_f
     render() {
         return (
             <div className="back_profile" >
-                <div className="div-head-prof">
-                      <div className="div_site_name">
-                            <h1 className="site_name" style={{marginTop:'5px'}}>Vshare</h1>
-                        </div>
-                        <div className="div-inp-btn">
-                        <input placeholder='search' className='inp-search'/>
-                      
-                        <div className="home-div">
-                             <IconButton style={{
+     <header className="head">
+
+                    <div className='leftheader'>
+                        <div className='userprofile'>
+                            <IconButton style={{
                                 color: 'white'
 
-                            }}className="home-btn"
-                                        >
-                                <HomeIcon  fontSize="large"/>
+                            }}
+                                        className="profilepic">
+                                <AccountCircleOutlinedIcon fontSize="large"/>
                             </IconButton>
-                            </div>
-                            <div className="back-prof"></div>
+
                         </div>
-                         
-                </div>
+
+                        <div className='searchgp'>
+
+
+                            <input placeholder='search' className='inp-search'/>
+
+
+                            <div id='joinstatus' className='statusofjoin'>
+                                Group not found !
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div className='home-btn'>
+                        
+                        <IconButton style={{
+                            color: 'white'
+                        }}
+                                    className="div_leave">
+                            <HomeIcon fontSize="large"/>
+                        </IconButton>
+                    </div>
+                </header>
                 <div className="photo" />
                 <div className="username_prof" >USERNAME</div>
                 <div className="edite_profile" id='edite-btn'>   Edite Profile</div>
@@ -551,6 +692,31 @@ var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_f
                         }} size='large' className="submitedit" variant="contained" color="secondary">
                             <p>Edit</p>
                         </button>
+
+                    </div>
+
+                </div>
+                        <div id="Modal-join" class="modal-join">
+                    <div class="modal-content_join" >
+                                <h3 className='join-txt'>Are you sure you want to join this group ? </h3>
+                        
+                        <div className='join-btns'>
+
+                            <Button style={{backgroundColor: "Red"}} size='large'
+                                    className="join-no" variant="contained" color="secondary">
+                                <p>No&nbsp;</p>
+                            </Button>
+
+                            <Button style={{
+                                backgroundColor: 'gray',
+                                marginRight: "4px"
+
+                            }} size='large' className="join-yes" variant="contained" color="secondary">
+                                <p>Yes</p>
+                            </Button>
+
+                        </div>
+                    
 
                     </div>
 
