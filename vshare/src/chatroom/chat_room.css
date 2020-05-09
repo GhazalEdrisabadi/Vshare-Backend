@@ -105,6 +105,7 @@
 }
 
 #videopicks{
+    margin-bottom: 100px;
     cursor: pointer;
     width: 10px;
 }
@@ -155,6 +156,15 @@
     position: fixed;
     height: 55px;
 
+}
+#controllbuttons2{
+    width: 700px;
+    background-color: rgba(0, 0, 0, 0);
+   border-radius: 5px;
+    margin-top: 700px;
+    position: fixed;
+    height: 55px;
+    cursor: not-allowed;
 }
 
 

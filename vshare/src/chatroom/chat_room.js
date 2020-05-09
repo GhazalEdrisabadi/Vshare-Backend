@@ -180,7 +180,8 @@ class chat_room extends Component {
                 document.getElementById('movietxt').style.display = 'none';
 
                 if (isadmin == 0) {
-                    document.getElementById('controllbuttons').style.display = 'none';
+                    // document.getElementById('controllbuttons').style.display = 'none';
+                    document.getElementById("controllbuttons2").style.zIndex = "1";
                     document.getElementById('controllbuttons').style.pointerEvents = 'none';
                     document.getElementById('videopicks').style.pointerEvents = 'none';
                     document.getElementById('movie').style.pointerEvents = 'none';
@@ -228,7 +229,7 @@ class chat_room extends Component {
             setTimeout(function () {
                 const message_reselect = {"command": "reset"}
                 ws.send(JSON.stringify(message_reselect));
-            }, 100);
+            }, 300);
 
 
             if (isadmin == 1) {
@@ -355,12 +356,12 @@ class chat_room extends Component {
 
             $("#formback_movie_id").mouseover(function () {
 
-                if (filmplayed == 1 && isadmin == 1)
+                if (filmplayed == 1)
                     $('#controllbuttons').fadeIn();
 
             });
             $("#formback_movie_id").mouseleave(function () {
-                if (filmplayed == 1 && isadmin == 1)
+                if (filmplayed == 1)
                     $('#controllbuttons').fadeOut();
             });
 
@@ -1359,6 +1360,7 @@ class chat_room extends Component {
                             <p id='movietxt'>Wait for admin to select the video</p>
 
                         </div>
+                        <div id='controllbuttons2'></div>
                         <div id='controllbuttons'>
 
                             <div className="upload-btn-wrapper">
