@@ -5,7 +5,10 @@ import Left from './left.png'
 import Right from './right.png'
 import Home from './home-icon.png'
 import HomeIcon from '@material-ui/icons/Home';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import IconButton from '@material-ui/core/IconButton';
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+import Button from '@material-ui/core/Button';
 var username = window.localStorage.getItem('user');
 var respone_get
 class profile extends Component {
@@ -119,8 +122,13 @@ else{
                 console.log(response);
                 respone_get = response
                 $(".username_prof").text(respone_get.username)
+                 $(".username").text(respone_get.username)
 
             });
+
+
+
+
             $(".inp-search").change(function () {
                 $(".search-result").text("")
                 console.log("change")
@@ -174,6 +182,56 @@ var a2 = "window.localStorage.setItem('user'," + response[counter1].username + "
                       htmlcode+='<hr/>'
                     $(".search-result").append(htmlcode)
 }
+
+var settings = {
+    "url": "http://127.0.0.1:8000/groups/?search="+user_search+"",
+    "method": "GET",
+    "timeout": 0,
+    "headers": {
+"Authorization": "token " + window.localStorage.getItem('token'),
+        "accept": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+        "Content-Type": "application/json"
+    },      
+            
+    
+
+};
+
+$.ajax(settings).done(function (response) {
+   
+      var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'white'";
+
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
+    var htmlcode='<br/>'
+  //   $(".search-result").append(htmlcode)
+                htmlcode = '';
+               $(".search-result").append(htmlcode)
+                for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
+var a2 = " document.getElementById("+"Modal"+").style.display = 'block'";
+
+                    htmlcode += '<div>'
+                    // htmlcode+='<br/>'
+                    htmlcode += '<div class="group-search">';
+                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + ","  + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].groupid + '</p>';
+                
+                 htmlcode+='<br/>'
+                  
+                       
+                    htmlcode+='</div>'
+                    
+                    htmlcode += '</div>'
+                      htmlcode+='<hr/>'
+                    $(".search-result").append(htmlcode)
+                }
+
+});
+
+
+
 $(".search-result").fadeIn()                
 }
           
@@ -182,6 +240,10 @@ $(".search-result").fadeIn()
               
 
             })
+
+
+
+
             $(".home-btn ").click(function () {
                window.location.replace('../homepage')
 
@@ -253,7 +315,7 @@ $(".search-result").fadeIn()
             $(".follower").click(function(){
                 $(".modal-follower").fadeIn();
             })
-                 $(".back-prof").click(function(){
+                 $(".userprofile").click(function(){
                 window.localStorage.setItem('user' , window.localStorage.getItem('username'))
                 window.location.replace("/profile/"+window.localStorage.getItem('username')+"")
             })
@@ -510,32 +572,69 @@ var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_f
     render() {
         return (
             <div className="back_profile" >
-                <div className="div-head-prof">
-                      <div className="div_site_name">
-                            <h1 className="site_name" style={{marginTop:'5px'}}>Vshare</h1>
-                        </div>
-                        <div className="div-inp-btn">
-                        <input placeholder='search' className='inp-search'/>
-                      
-                        <div className="home-div">
-                             <IconButton style={{
+     <header className="head">
+
+                    <div className='leftheader'>
+                        <div className='userprofile'>
+                            <IconButton style={{
                                 color: 'white'
 
-                            }}className="home-btn"
-                                        >
-                                <HomeIcon  fontSize="large"/>
+                            }}
+                                        className="profilepic">
+                                <AccountCircleOutlinedIcon fontSize="large"/>
                             </IconButton>
-                            </div>
-                            <div className="back-prof"></div>
+
                         </div>
-                         
-                </div>
+
+                        <div className='searchgp'>
+
+
+                            <input placeholder='search' className='inp-search'/>
+
+
+                            <div id='joinstatus' className='statusofjoin'>
+                                Group not found !
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div className='home-btn'>
+                        
+                        <IconButton style={{
+                            color: 'white'
+                        }}
+                                    className="div_leave">
+                            <HomeIcon fontSize="large"/>
+                        </IconButton>
+                    </div>
+                </header>
                 <div className="photo" />
                 <div className="username_prof" >USERNAME</div>
                 <div className="edite_profile" id='edite-btn'>   Edite Profile</div>
                  <div className="follow-btn" id='f-btn'>   follow !</div>
                   <div className="unfollow-btn" id='uf-btn'>   unfollow</div>
                 <div id="myModal" class="modal_edite_profile">
+                    <div class="modal-content_edite_profile" >
+                        <h3 class="texx_edite">Edit your profile deatails</h3>
+                        <hr></hr>
+                        <input class="inputedit" id='editfirstname' placeholder="FirstName"></input>
+                        <input class="inputedit" id='editlastname' placeholder="LastName"></input>
+                           <input class="inputedit" id='editusername' placeholder="UserName"></input>
+                              <input class="inputedit" id='editemail' placeholder="PassWord"></input>
+                                 <input class="inputedit" id='editpassword' placeholder="Email"></input>
+                        <br></br>
+                        <button style={{
+                            backgroundColor: "Red",
+                            marginTop: "20px"
+                        }} size='large' className="submitedit" variant="contained" color="secondary">
+                            <p>Edit</p>
+                        </button>
+
+                    </div>
+
+                </div>
+                        <div id="Modal" class="modal_edite_profile">
                     <div class="modal-content_edite_profile" >
                         <h3 class="texx_edite">Edit your profile deatails</h3>
                         <hr></hr>

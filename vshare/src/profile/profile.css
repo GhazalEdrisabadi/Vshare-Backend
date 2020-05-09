@@ -292,7 +292,9 @@ position: absolute;
 }
 .home-btn{
 
-  float:right;
+  cursor: pointer;
+    float: right;
+    margin-right: 10px;;
 
 }
 .home-div{
@@ -311,13 +313,35 @@ position: absolute;
     width: 300px;
     position: absolute;
     height: 400px;
-    margin-top: 60px;
-    margin-left: 36.5%;
+    margin-top: 64px;
+    margin-left: 9%;
     color: black;
+        white-space: initial;
+
+    /* opacity: 100%; */
+
+    position: absolute;
+
+    
+
+    
+
+     overflow-x:hidden; 
+
+     overflow-y: scroll;
 }
 .user-search{
     width: 300px;
     height: 30px;
+    background-image: url('./2.png');
+    background-repeat: no-repeat;
+    
+}
+.group-search{
+    width: 300px;
+    height: 30px;
+    background-image: url('./1.png');
+    background-repeat: no-repeat; 
 }
 .username-result{
 color:white;
