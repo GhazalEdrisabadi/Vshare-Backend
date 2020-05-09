@@ -7,7 +7,6 @@ from channels.exceptions import DenyConnection
 from stream.utils import *
 import asyncio
 import json
-
 class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 	# Connect websocket
@@ -29,12 +28,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			# Reject connection
 			await self.close()
 
-		# Check state (in state=2 client can't connect)
-		elif status == 2:
-			# Reject connection
-			await self.close()
-
-		else:
+		elif status == 0 or status == 1:
 			# Add clients to stream group and accept connection
 			await self.channel_layer.group_add(roomid,self.channel_name)
 			await self.accept()
@@ -49,6 +43,22 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 					"message":"you connect successfully.",
 				}
 			)
+		else:
+			await self.channel_layer.group_add(roomid,self.channel_name)
+			await self.accept()
+
+			await self.channel_layer.group_send(
+				self.roomid,
+				{
+					"type":"send_info",
+					"room":roomid,
+					"username":user.username,
+					"status":status,
+					"hash":grouphash,
+					"message":"new user connect successfully.",
+				}
+			)
+
 
 	# Recieve websocket requests
 	async def receive_json(self, content):
@@ -62,41 +72,21 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			elif command == "send_client_hash":
 				await self.check_client_hash(content["vhash"])
 
+			elif command == "send_current_time":
+				await self.get_current_time(content["currentTime"])
+
 			elif command == "play_video":
-				await self.play()
+				await self.play(content["currentTime"])
+
+			elif command == "pause_video":
+				await self.pause(content["currentTime"])
 
 			elif command == "reset":
 				await self.reset_state()
 
-			elif command == "chat_client":
-				await self.recieve_message(content["message_client"])
-
 		except ClientError as e:
 			await self.send_json({"error": e.code})
 
-	async def recieve_message(self,message_client):
-		user = self.scope["user"]
-		ismember = await is_member(user,self.roomid)
-		status = await get_status(self.roomid)
-		if ismember:
-			await self.channel_layer.group_send(
-					self.roomid,
-				{
-					"type":"send_message",
-					"message":message_client,
-					"command":"chat_client",
-					"user":user.username,
-				}
-			)
-			#here we will store the message in our DB
-			await store_message(user,message_client,self.roomid)
-		else:
-			await self.send_json(
-				{	
-					"username":user.username,
-					"message" : "you must be in the group to send messages through it!",
-				}
-			)
 
 	async def recieve_stream(self,vhash):	
 
@@ -116,22 +106,23 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			
 			# Notify to clients that state is 1 and send hash to them
 			await self.channel_layer.group_send(
-					self.roomid,
-					{
-						"type":"send_hash",
-						"status":groupstatus,
-						"hash":videohash,
-						"message":"video sent by owner.",
-					}
-				)
+				self.roomid,
+				{
+					"type":"send_hash",
+					"status":groupstatus,
+					"hash":videohash,
+					"message":"video sent by owner.",
+				}
+			)
+
 		else:
 			await self.send_json(
-					{
-						"username":user.username,
-						"status":status,
-						"message":"you can't send video!",
-					}
-				)
+				{
+					"username":user.username,
+					"status":status,
+					"message":"you can't send video!",
+				}
+			)
 
 	async def check_client_hash(self,vhash):
 
@@ -140,69 +131,138 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		ismember = await is_member(user,self.roomid)
 		status = await get_status(self.roomid)
 
-		if status == 1 and ismember and not iscreator:
+		if ismember and not iscreator:
+			if status == 1:
 
-			ownerhash = await get_group_hash(self.roomid)
-			
-			# Check client hash with owner hash
-			if ownerhash == vhash:
+				ownerhash = await get_group_hash(self.roomid)
+				
+				# Check client hash with owner hash
+				if ownerhash == vhash:
 
-				await self.send_json(
-					{
-						"username":user.username,
-						"status":status,
-						"message":"you add to stream successfully.",
-					}
-				)
+					await self.send_json(
+						{
+							"username":user.username,
+							"status":status,
+							"message":"you add to stream successfully.",
+						}
+					)
+
+				else:
+					await self.send_json(
+						{
+							"username":user.username,
+							"message":"your hash is not match. you should send it again!",
+						}
+					)
+			elif status == 2:
+
+				ownerhash = await get_group_hash(self.roomid)
+				
+				# Check client hash with owner hash
+				if ownerhash == vhash:
+
+					await self.channel_layer.group_send(
+						self.roomid,
+						{
+							"type":"send_state",
+							"status":status,
+							"message":"new user's hash is ok.",
+						}
+					)
+
+				else:
+					await self.send_json(
+						{
+							"username":user.username,
+							"message":"your hash is not match. you should send it again!",
+						}
+					)
+
 			else:
 				await self.send_json(
-					{
-						"username":user.username,
-						"message":"your hash is not match. you should send it again!",
-					}
-				)
-		else:
-			await self.send_json(
 					{
 						"username":user.username,
 						"status":status,
 						"message":"you can't send video in this state!",
 					}
 				)
-
-
-	# When video is played change state and notify clients
-	async def play(self):
-
-		user = self.scope["user"]
-		iscreator = await is_creator(user,self.roomid)
-		ismember = await is_member(user,self.roomid)
-		status = await get_status(self.roomid)
-
-		if status == 1 and iscreator:
-		# Change state to 2
-			groupstatus = await set_status(self.roomid,state=2)
-
-			await self.channel_layer.group_send(
-						self.roomid,
-						{
-							"type":"send_state",
-							"status":groupstatus,
-							"message":"video played by owner",
-						}
-					)
-
-		elif status == 1 and ismember:
+		else:
 			await self.send_json(
 				{
 					"username":user.username,
-					"status":status,
-					"message":"you can't play video before owner!",
+					"message":"Permission denied!",
 				}
 			)
 
-		elif status == 0 and iscreator:
+	async def get_current_time(self,currentTime):
+		user = self.scope["user"]
+		iscreator = await is_creator(user,self.roomid)
+		status = await get_status(self.roomid)
+
+		if iscreator:
+			if status == 2:
+
+				await self.channel_layer.group_send(
+					self.roomid,
+					{
+						"type":"send_time",
+						"status":status,
+						"currentTime":currentTime,
+						"message":"this is current time for new users",
+					}
+				)
+			else:
+				await self.send_json(
+					{
+						"username":user.username,
+						"status":status,
+						"message":"you can't send time in this state!",
+					}
+				)
+		else:
 			await self.send_json(
+				{
+					"username":user.username,
+					"message":"Permission denied!",
+				}
+			)
+
+
+	# When video played change state and notify clients
+	async def play(self,currentTime):
+
+		user = self.scope["user"]
+		iscreator = await is_creator(user,self.roomid)
+		status = await get_status(self.roomid)
+
+		if iscreator:
+			if status == 1:
+				# Change state to 2
+				groupstatus = await set_status(self.roomid,state=2)
+
+				await self.channel_layer.group_send(
+					self.roomid,
+					{
+						"type":"send_time",
+						"status":groupstatus,
+						"currentTime":currentTime,
+						"message":"video played by owner",
+					}
+				)
+
+			elif status == 2:
+				await self.channel_layer.group_send(
+					self.roomid,
+					{
+						"type":"send_time",
+						"status":status,
+						"currentTime":currentTime,
+						"message":"video played by owner again",
+					}
+				)
+
+			else:
+				await self.send_json(
 				{
 					"username":user.username,
 					"status":status,
@@ -210,20 +270,55 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				}
 			)
 
-		elif status == 0 and ismember:
-			await self.send_json(
-				{
-					"username":user.username,
-					"status":status,
-					"message":"video was not selected by owner!",
-				}
-			)
 		else:
 			await self.send_json(
 				{
 					"username":user.username,
-					"status":status,
-					"message":"video is playing now!",
+					"message":"Permission denied!",
+				}
+			)
+
+	# When video paused notify clients
+	async def pause(self,currentTime):
+		user = self.scope["user"]
+		iscreator = await is_creator(user,self.roomid)
+		status = await get_status(self.roomid)
+
+		if iscreator:
+			if status == 1:
+				await self.send_json(
+					{
+						"username":user.username,
+						"status":status,
+						"message":"video is hashing now.Please wait!",
+					}
+				)
+
+			elif status == 2:
+				await self.channel_layer.group_send(
+					self.roomid,
+					{
+						"type":"send_time",
+						"status":status,
+						"currentTime":currentTime,
+						"message":"video paused by owner",
+					}
+				)
+
+			else:
+				await self.send_json(
+					{
+						"username":user.username,
+						"status":status,
+						"message":"you should select video first!",
+					}
+				)
+
+		else:
+			await self.send_json(
+				{
+					"username":user.username,
+					"message":"Permission denied!"
 				}
 			)
 
@@ -235,27 +330,29 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		if iscreator:
 			if status == 1 or status == 2:
 				groupstatus = await set_status(self.roomid,state=0)
-				await channel_layer.group_send(
+				await self.channel_layer.group_send(
 					self.roomid,
-				{
-					"type":"send_state",
-					"status":groupstatus,
-					"message":"group was reset!",
-				}
-			)
+					{
+						"type":"send_state",
+						"status":groupstatus,
+						"message":"group was reset!",
+					}
+				)
 			else:
+
 				await self.send_json(
-				{
-					"username":user.username,
-					"status":status,
-					"message":"Nothing to reset in this state!",
-				}
-			)
+					{
+						"username":user.username,
+						"status":status,
+						"message":"Nothing to reset in this state!",
+					}
+				)
 		else:
+
 			await self.send_json(
 				{
 					"username":user.username,
-					"message":"Permission is denied!",
+					"message":"Permission denied!",
 				}
 			)
 
@@ -284,23 +381,27 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			}
 		)
 
-	async def send_message(self, event):
+	async def send_time(self, event):
 		await self.send_json(
 			{
-				"msg_type":"send message",
+				"msg_type":"send time",
+				"status":event["status"],
+				"time":event["currentTime"],
 				"message":event["message"],
-				"command":event["command"],
-				"user":event["user"],
 			}
 		)
 
-
-
-
-
-
-
-
+	async def send_info(self, event):
+		await self.send_json(
+			{
+				"msg_type":"send info",
+				"room":event["room"],
+				"username":event["username"],
+				"status":event["status"],
+				"hash":event["hash"],
+				"message":event["message"],
+			}
+		)
 
 #created to implement chat feature
 class TextChat(AsyncJsonWebsocketConsumer):
@@ -323,7 +424,7 @@ class TextChat(AsyncJsonWebsocketConsumer):
 			# Add clients to chat and accept connection
 			await self.channel_layer.group_add(roomid,self.channel_name)
 			await self.accept()
-
+			await add_online_user(user,roomid)
 			# Send welcome message to user
 			await self.send_json(
 				{
@@ -332,7 +433,30 @@ class TextChat(AsyncJsonWebsocketConsumer):
 					"message":"you connected to chat successfully.",
 				}
 			)
+			await self.channel_layer.group_send(
+					self.roomid,
+				{
+					"type":"send_online",
+					"message":"is_online",
+					"online":user.username,
+				}
+			)
 
+	#called when ws has been closed
+	async def disconnect(self, close_code):
+		user = self.scope["user"]
+		roomid = self.scope['url_route']['kwargs']['groupid']
+		await self.channel_layer.group_send(
+					self.roomid,
+				{
+					"type":"send_offline",
+					"message":"is_offline",
+					"offline":user.username,
+				}
+			)
+		await remove_online_user(user,roomid)
+	#	self.close()
+		
 	# Recieve websocket request
 	async def receive_json(self, content):
 		command = content.get("command",None)
@@ -373,5 +497,23 @@ class TextChat(AsyncJsonWebsocketConsumer):
 				"message":event["message"],
 				"command":event["command"],
 				"user":event["user"],
+			}
+		)
+	
+	async def send_online(self, event):
+		await self.send_json(
+			{
+				"msg_type":"send online",
+				"message":event["message"],
+				"online":event["online"],
+			}
+		)
+	
+	async def send_offline(self, event):
+		await self.send_json(
+			{
+				"msg_type":"send offline",
+				"message":event["message"],
+				"offline":event["offline"],
 			}
 		)
