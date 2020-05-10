@@ -495,7 +495,7 @@ class TextChat(AsyncJsonWebsocketConsumer):
 				self.roomid,
 				{
 					"type":"send_message",
-					"message":storedmessage,
+					"message":"message_client",
 					"user":user.username,
 				}
 			)
