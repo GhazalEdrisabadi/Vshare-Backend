@@ -14,7 +14,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
-		self.roomid = roomid
+		self.roomid = 'stream'
 		# Check room is valid or not
 		room = await get_room(roomid)
 		ismember = await is_member(user,roomid)
@@ -30,7 +30,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 		elif status == 0 or status == 1:
 			# Add clients to stream group and accept connection
-			await self.channel_layer.group_add(roomid,self.channel_name)
+			await self.channel_layer.group_add(self.roomid,self.channel_name)
 			await self.accept()
 
 			# Send welcome message to user
@@ -44,7 +44,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				}
 			)
 		else:
-			await self.channel_layer.group_add(roomid,self.channel_name)
+			await self.channel_layer.group_add(self.roomid,self.channel_name)
 			await self.accept()
 
 			await self.channel_layer.group_send(
@@ -91,18 +91,19 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 	async def recieve_stream(self,vhash):	
 
 		user = self.scope["user"]
-		iscreator = await is_creator(user,self.roomid)
-		ismember = await is_member(user,self.roomid)
-		status = await get_status(self.roomid)
+		roomid = self.scope['url_route']['kwargs']['groupid']
+		iscreator = await is_creator(user,roomid)
+		ismember = await is_member(user,roomid)
+		status = await get_status(roomid)
 
 		# In state 1 only owner can send video
 		if status == 0 and iscreator:
 
 	    	# Save hash to database
-			videohash = await set_group_hash(self.roomid,vhash)
+			videohash = await set_group_hash(roomid,vhash)
 
 			# Change state to 1
-			groupstatus = await set_status(self.roomid,state=1)
+			groupstatus = await set_status(roomid,state=1)
 			
 			# Notify to clients that state is 1 and send hash to them
 			await self.channel_layer.group_send(
@@ -127,14 +128,15 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 	async def check_client_hash(self,vhash):
 
 		user = self.scope["user"]
-		iscreator = await is_creator(user,self.roomid)
-		ismember = await is_member(user,self.roomid)
-		status = await get_status(self.roomid)
+		roomid = self.scope['url_route']['kwargs']['groupid']
+		iscreator = await is_creator(user,roomid)
+		ismember = await is_member(user,roomid)
+		status = await get_status(roomid)
 
 		if ismember and not iscreator:
 			if status == 1:
 
-				ownerhash = await get_group_hash(self.roomid)
+				ownerhash = await get_group_hash(roomid)
 				
 				# Check client hash with owner hash
 				if ownerhash == vhash:
@@ -156,7 +158,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 					)
 			elif status == 2:
 
-				ownerhash = await get_group_hash(self.roomid)
+				ownerhash = await get_group_hash(roomid)
 				
 				# Check client hash with owner hash
 				if ownerhash == vhash:
@@ -196,8 +198,9 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 	async def get_current_time(self,currentTime):
 		user = self.scope["user"]
-		iscreator = await is_creator(user,self.roomid)
-		status = await get_status(self.roomid)
+		roomid = self.scope['url_route']['kwargs']['groupid']
+		iscreator = await is_creator(user,roomid)
+		status = await get_status(roomid)
 
 		if iscreator:
 			if status == 2:
@@ -232,13 +235,14 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 	async def play(self,currentTime):
 
 		user = self.scope["user"]
-		iscreator = await is_creator(user,self.roomid)
-		status = await get_status(self.roomid)
+		roomid = self.scope['url_route']['kwargs']['groupid']
+		iscreator = await is_creator(user,roomid)
+		status = await get_status(roomid)
 
 		if iscreator:
 			if status == 1:
 				# Change state to 2
-				groupstatus = await set_status(self.roomid,state=2)
+				groupstatus = await set_status(roomid,state=2)
 
 				await self.channel_layer.group_send(
 					self.roomid,
@@ -281,8 +285,9 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 	# When video paused notify clients
 	async def pause(self,currentTime):
 		user = self.scope["user"]
-		iscreator = await is_creator(user,self.roomid)
-		status = await get_status(self.roomid)
+		roomid = self.scope['url_route']['kwargs']['groupid']
+		iscreator = await is_creator(user,roomid)
+		status = await get_status(roomid)
 
 		if iscreator:
 			if status == 1:
@@ -324,12 +329,13 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 	async def reset_state(self):
 		user = self.scope["user"]
-		iscreator = await is_creator(user,self.roomid)
-		status = await get_status(self.roomid)
+		roomid = self.scope['url_route']['kwargs']['groupid']
+		iscreator = await is_creator(user,oomid)
+		status = await get_status(roomid)
 
 		if iscreator:
 			if status == 1 or status == 2:
-				groupstatus = await set_status(self.roomid,state=0)
+				groupstatus = await set_status(roomid,state=0)
 				await self.channel_layer.group_send(
 					self.roomid,
 					{
@@ -446,10 +452,12 @@ class TextChat(AsyncJsonWebsocketConsumer):
 			)
 
 	#called when ws has been closed
-	async def disconnect(self):
+	async def disconnect(self,close_code):
 
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
+
+		removeduser = await remove_online_user(user,roomid)
 
 		await self.channel_layer.group_send(
 					self.roomid,
@@ -459,8 +467,6 @@ class TextChat(AsyncJsonWebsocketConsumer):
 					"offline":user.username,
 				}
 			)
-		removeduser = await remove_online_user(user,roomid)
-
 		
 	# Recieve websocket request
 	async def recieve_json(self, content):
