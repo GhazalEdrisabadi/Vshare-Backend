@@ -11,6 +11,7 @@ def remove_online_user(the_user,the_room):
 		obj = Group.objects.get(groupid=the_room)
 		instance = OnlineUser.objects.get(online_user=the_user, joined_group=obj)
 		instance.delete()
+		return instance
 	except Group.DoesNotExist:
 		raise ClientError("ROOM_INVALID")
 
@@ -21,6 +22,7 @@ def add_online_user(the_user,the_room):
 		obj = Group.objects.get(groupid=the_room)	
 		new_obj=OnlineUser(online_user=the_user, joined_group=obj)
 		new_obj.save()
+		return new_obj
 	except Group.DoesNotExist:
 		raise ClientError("ROOM_INVALID")
 
@@ -31,6 +33,7 @@ def store_message(user,message_client,the_room):
 		obj = Group.objects.get(groupid=the_room)	
 		new_obj=Message(message_text=message_client, target_group=obj, message_sender=user)
 		new_obj.save()
+		return new_obj
 	except Group.DoesNotExist:
 		raise ClientError("ROOM_INVALID")
 

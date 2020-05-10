@@ -61,7 +61,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 
 	# Recieve websocket requests
-	async def receive_json(self, content):
+	async def recieve_json(self, content):
 
 		command = content.get("command",None)
 
@@ -424,7 +424,9 @@ class TextChat(AsyncJsonWebsocketConsumer):
 			# Add clients to chat and accept connection
 			await self.channel_layer.group_add(roomid,self.channel_name)
 			await self.accept()
-			await add_online_user(user,roomid)
+			
+			onlineduser = await add_online_user(user,roomid)
+
 			# Send welcome message to user
 			await self.send_json(
 				{
@@ -433,56 +435,67 @@ class TextChat(AsyncJsonWebsocketConsumer):
 					"message":"you connected to chat successfully.",
 				}
 			)
+
 			await self.channel_layer.group_send(
-					self.roomid,
+				self.roomid,
 				{
 					"type":"send_online",
-					"message":"is_online",
+					"message":"isonline",
 					"online":user.username,
 				}
 			)
 
 	#called when ws has been closed
-	async def disconnect(self, close_code):
+	async def disconnect(self):
+
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
+
 		await self.channel_layer.group_send(
 					self.roomid,
 				{
 					"type":"send_offline",
-					"message":"is_offline",
+					"message":"isoffline",
 					"offline":user.username,
 				}
 			)
-		await remove_online_user(user,roomid)
-	#	self.close()
+		removeduser = await remove_online_user(user,roomid)
+
 		
 	# Recieve websocket request
-	async def receive_json(self, content):
+	async def recieve_json(self, content):
+
 		command = content.get("command",None)
+
 		try:
 			if command == "chat_client":
 				await self.recieve_message(content["message_client"])
+
 		except ClientError as e:
 			await self.send_json({"error": e.code})
 
 	#send recieved message to all clients in this group
 	async def recieve_message(self,message_client):
+
 		user = self.scope["user"]
 		ismember = await is_member(user,self.roomid)
+
 		if ismember:
+
+			#here we will store the message in our DB
+			storedmessage = await store_message(user,message_client,self.roomid)
+
 			await self.channel_layer.group_send(
-					self.roomid,
+				self.roomid,
 				{
 					"type":"send_message",
-					"message":message_client,
-					"command":"chat_client",
+					"message":storedmessage,
 					"user":user.username,
 				}
 			)
-			#here we will store the message in our DB
-			await store_message(user,message_client,self.roomid)
+
 		else:
+
 			await self.send_json(
 				{	
 					"username":user.username,
@@ -495,7 +508,6 @@ class TextChat(AsyncJsonWebsocketConsumer):
 			{
 				"msg_type":"send message",
 				"message":event["message"],
-				"command":event["command"],
 				"user":event["user"],
 			}
 		)
