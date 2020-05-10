@@ -14,7 +14,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
-		self.roomid = 'stream'
+		self.roomid = roomid
 		# Check room is valid or not
 		room = await get_room(roomid)
 		ismember = await is_member(user,roomid)
@@ -30,7 +30,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 		elif status == 0 or status == 1:
 			# Add clients to stream group and accept connection
-			await self.channel_layer.group_add(self.roomid,self.channel_name)
+			await self.channel_layer.group_add("stream",self.channel_name)
 			await self.accept()
 
 			# Send welcome message to user
@@ -44,11 +44,11 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				}
 			)
 		else:
-			await self.channel_layer.group_add(self.roomid,self.channel_name)
+			await self.channel_layer.group_add("stream",self.channel_name)
 			await self.accept()
 
 			await self.channel_layer.group_send(
-				self.roomid,
+				"stream",
 				{
 					"type":"send_info",
 					"room":roomid,
@@ -107,7 +107,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			
 			# Notify to clients that state is 1 and send hash to them
 			await self.channel_layer.group_send(
-				self.roomid,
+				"stream",
 				{
 					"type":"send_hash",
 					"status":groupstatus,
@@ -164,7 +164,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				if ownerhash == vhash:
 
 					await self.channel_layer.group_send(
-						self.roomid,
+						"stream",
 						{
 							"type":"send_state",
 							"status":status,
@@ -206,7 +206,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			if status == 2:
 
 				await self.channel_layer.group_send(
-					self.roomid,
+					"stream",
 					{
 						"type":"send_time",
 						"status":status,
@@ -245,7 +245,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				groupstatus = await set_status(roomid,state=2)
 
 				await self.channel_layer.group_send(
-					self.roomid,
+					"stream",
 					{
 						"type":"send_time",
 						"status":groupstatus,
@@ -256,7 +256,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 			elif status == 2:
 				await self.channel_layer.group_send(
-					self.roomid,
+					"stream",
 					{
 						"type":"send_time",
 						"status":status,
@@ -301,7 +301,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 			elif status == 2:
 				await self.channel_layer.group_send(
-					self.roomid,
+					"stream",
 					{
 						"type":"send_time",
 						"status":status,
@@ -337,7 +337,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			if status == 1 or status == 2:
 				groupstatus = await set_status(roomid,state=0)
 				await self.channel_layer.group_send(
-					self.roomid,
+					"stream",
 					{
 						"type":"send_state",
 						"status":groupstatus,
