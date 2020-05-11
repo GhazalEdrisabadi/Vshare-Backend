@@ -11,7 +11,6 @@ import Home from './home.png'
 import Button from '@material-ui/core/Button';
 
 import RedoIcon from '@material-ui/icons/Redo';
-//import '../../node_modules/video-react/dist/video-react.css';
 
 import './video-react.css';
 
@@ -36,8 +35,10 @@ import HomeIcon from '@material-ui/icons/Home';
 import IconButton from "@material-ui/core/IconButton";
 
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import {TextField} from '@material-ui/core';
+import SendIcon from '@material-ui/icons/Send';
+
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import Forward10Icon from '@material-ui/icons/Forward10';
@@ -49,13 +50,16 @@ var logoutclicked = 0;
 var azavalbude = 0;
 var percant = 0;
 
+var id_gp = window.localStorage.getItem('id_gp')
+const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
+const url1 = "ws://127.0.0.1:8000/chat/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
+var ws1 = new WebSocket(url1)
+var encrypted
+
 var rejoined = 0;
 var played = 0;
-var id_gp = window.localStorage.getItem('id_gp');
+var messagee1;
 
-const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + "";
-
-var encrypted;
 
 
 var ws = new WebSocket(url);
@@ -67,8 +71,7 @@ var localresponse;
 var play_or_no;
 
 var clienthashok = 0;
-const url1 = "ws://127.0.0.1:8000/chat/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
-var ws1 = new WebSocket(url1)
+
 
 var isadmin = window.localStorage.getItem('isadmin');
 var filmplayed = 0;
@@ -103,13 +106,37 @@ console.log(url1)
             console.log("Ping");
 
         };
+        ws1.onopen = function () {
+            console.log("ws1.open")
+
+        }
 
 
         ws1.onmessage = evt => {
-            const messagee = JSON.parse(evt.data)
-            console.log(messagee)
-              console.log(messagee.message)
-            if(messagee.message=='isoffline' || messagee.message=='isonline'){
+            messagee1 = JSON.parse(evt.data)
+            console.log(messagee1)
+            console.log(messagee1.message)
+
+
+            if (messagee1.command == "chat_client") {
+
+                if (messagee1.user == window.localStorage.getItem('username')) {
+                    $(".pm").append("<div id='pmeman'>" + "me: " + messagee1.message + "</div>");
+
+                } else {
+                    $(".pm").append("<div id='pmeoon'>" + messagee1.user + ": " + messagee1.message + "</div>");
+                }
+
+                $(".pm").append("<br>")
+
+
+
+                var element = document.getElementById("pmid");
+                element.scrollTop = element.scrollHeight;
+
+
+            }
+                        if(messagee1.message=='isoffline' || messagee1.message=='isonline'){
                  console.log("onlineeeeeee")
 
                     setTimeout(function () {
@@ -142,9 +169,8 @@ console.log(url1)
             
             }
 
+
         }
-
-
 
         ws.onmessage = evt => {
 
@@ -190,7 +216,7 @@ console.log(url1)
                 azavalbude = 1;
             }
 
-            if (messagee.status == 2 && isadmin == 0 && filmplayed == 0 ) {
+            if (messagee.status == 2 && isadmin == 0 && filmplayed == 0) {
                 rejoined = 1;
                 $('#movietxt').text('Admin has played the video , select your video too by clicking on ▲ ');
                 $('#moviebtnd').fadeIn('slow');
@@ -225,6 +251,7 @@ console.log(url1)
                 document.getElementById('movie').style.display = 'block';
                 filmplayed = 1;
                 document.getElementById('movietxt').style.display = 'none';
+
 
                 if (isadmin == 0) {
                     // document.getElementById('controllbuttons').style.display = 'none';
@@ -308,10 +335,23 @@ console.log(url1)
             //});
 
 
-                if (window.localStorage.getItem('token') == null) {
+
+            $(document).on("keypress", "input", function (e) {
+
+                if (e.which == 13) {
+
+                    var massage = $(".formback_text_input").val();
+                    const message_send_chat = {"command": "chat_client", "message_client": massage}
+                    ws1.send(JSON.stringify(message_send_chat))
+                    $('.formback_text_input').val('');
 
 
-                 
+                    e.preventDefault();
+                }
+            });
+
+
+            if (window.localStorage.getItem('token') == null) {
 
 
        
@@ -358,11 +398,14 @@ console.log(url1)
             });
 
             /*  $("#formback_movie_id").mouseover(function () {
+<<<<<<< HEAD
+>>>>>>> features/stream-frontend
+=======
 
 
+>>>>>>> dev
                   if (filmplayed == 1)
                       $('#controll_div').fadeIn();
-
               });
               $("#formback_movie_id").mouseleave(function () {
                   $('#controll_div').fadeOut();
@@ -534,25 +577,15 @@ console.log(url1)
                 console.log(response);
 
                 /*  for (var i = 0; i < response.members.length; i++) {
-
                       var hoverout = 'onMouseOut="this.style.color=';
-
                       var hoverrout = hoverout + "'white'";
-
                       var htmlcode = '';
-
                       var hover = 'onMouseOver="this.style.color=';
-
                       var hoverr = hover + "'red'";
-
                       htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
-
                       $(".textarea_member").append(htmlcode);
-
                       console.log("2")
-
                       //$(".textarea_member").append(response.members[i] + "\n")
-
                   }*/
 
                 //  $(".textarea_bio").append(response.describtion + "\n")
@@ -561,14 +594,65 @@ console.log(url1)
 
             });
 
+
+            //Log the messages that are returned from the server
+
+
+            $(".send_btn").click(function () {
+                var massage = $(".formback_text_input").val();
+
+                const message_send_chat = {"command": "chat_client", "message_client": massage}
+                ws1.send(JSON.stringify(message_send_chat))
+                $('.formback_text_input').val('');
+
+
+
+                console.log(JSON.stringify(message_send_chat))
+
+
+
+            });
+
+
+            var settings = {
+
+                "url": "  http://127.0.0.1:8000/group/messages/?target=" + id,
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+                    //'X-CSRFToken': csrftoken,
+                    //  "Authorization": "token " + token,
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                }
+            };
+
+            $.ajax(settings).done(function (response) {
+                console.log(response);
+                for (var counterchathistory = response.results.length - 1; counterchathistory >= 0; counterchathistory--) {
+                    if (response.results[counterchathistory].message_sender == window.localStorage.getItem('username')) {
+                        $(".pm").append("<div id='pmeman'>" + "me: " + response.results[counterchathistory].message_text + "</div>");
+
+                    } else {
+                        $(".pm").append("<div id='pmeoon'>" + response.results[counterchathistory].message_sender + ": " + response.results[counterchathistory].message_text + "</div>");
+                    }
+                    $(".pm").append("<br>");
+                }
+                var element = document.getElementById("pmid");
+                element.scrollTop = element.scrollHeight;
+
+            });
+
         });
-
-
-
-        //Log the messages that are returned from the server
-
-
     }
+
+    
+
+
+    
+
 
 
     constructor(props) {
@@ -592,6 +676,7 @@ console.log(url1)
         this.onChange = this.onChange.bind(this);
 
         this.handleSubmit = this.handleSubmit.bind(this);
+
 
         this.play = this.play.bind(this);
 
@@ -1580,7 +1665,7 @@ console.log(url1)
                             </div>
 
 
-                        </div>
+                        </div> 
 
 
                     </div>
@@ -1603,6 +1688,30 @@ console.log(url1)
 
 
                         <div className="formback_text" style={{width: '350px', height: '395px',}}>
+
+
+                            <div id='pmid' className="pm">
+
+
+                            </div>
+
+
+                            <div className="input_send">
+
+
+                                <input className="formback_text_input" id="formback_text_input" autocomplete="off">
+                                    
+                                </input>
+
+                                <IconButton style={{
+                                    color: 'white',
+                                    fontSize: '80px'
+                                }}
+                                            className="send_btn">
+                                    <SendIcon/>
+                                </IconButton>
+
+                            </div>
 
 
                         </div>

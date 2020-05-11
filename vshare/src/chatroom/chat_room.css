@@ -1,5 +1,87 @@
 
 
+    .formback_text_input{
+        height: 35px;
+        width: 150%;
+        font-size: 14px;
+        border-radius: 10px;
+         color: whitesmoke;
+         background-color: rgba(36, 32, 32, 0.77);
+    
+    
+    
+    }
+    .input_send{
+        display: flex;
+         /* background-color: blue;   */
+        width: 105%;
+        height: 40%;
+    
+        flex-direction: row;
+    
+        justify-content: center;
+    
+        align-items: center;
+        margin-top: 100%;
+        margin-right: -5%;
+    
+    }
+    .send_btn{
+        margin-left: 30%;
+    }
+     .all{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    
+        align-items: left;
+        height: 100%;
+        width: 130% ;
+        /* background-color: white; */
+    }
+    .pm{
+        height: 35%;
+        width: 17% ;
+        color: whitesmoke;
+         background-color: rgba(0, 0, 0, 0); 
+        font-size: 14px;
+        white-space: initial;
+    
+        position: absolute;
+    
+    
+         overflow-x:hidden; 
+         overflow-y: scroll;
+    
+    
+    
+    
+    }
+    ::-webkit-scrollbar { 
+        display: none;
+    }
+    #pmeoon{
+        width: 70%;
+        white-space: initial;
+        text-align: left;
+        /* background-color: blue; */
+        color:  #bdbdbd;
+    
+    
+    
+    
+    }
+    #pmeman{
+        width:70%;
+         white-space: initial; 
+        text-align: left;
+    
+    
+    
+    
+    }
+
+
 .titleofonlines{
     
 margin-top: 10px;
@@ -227,3 +309,4 @@ margin-top: 10px;
 .video {
     display: none;
 }
+

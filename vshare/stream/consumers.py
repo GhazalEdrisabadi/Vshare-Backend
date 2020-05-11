@@ -7,7 +7,6 @@ from channels.exceptions import DenyConnection
 from stream.utils import *
 import asyncio
 import json
-
 class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 	# Connect websocket
@@ -433,8 +432,8 @@ class TextChat(AsyncJsonWebsocketConsumer):
 			# Add clients to chat and accept connection
 			await self.channel_layer.group_add(roomid,self.channel_name)
 			await self.accept()
-			
 			onlineduser = await add_online_user(user,roomid)
+
 
 			# Send welcome message to user
 			await self.send_json(
@@ -445,16 +444,19 @@ class TextChat(AsyncJsonWebsocketConsumer):
 				}
 			)
 
+
 			await self.channel_layer.group_send(
 				self.roomid,
 				{
 					"type":"send_online",
 					"message":"isonline",
+
 					"online":user.username,
 				}
 			)
 
 	#called when ws has been closed
+
 	async def disconnect(self,close_code):
 
 		user = self.scope["user"]
@@ -462,10 +464,12 @@ class TextChat(AsyncJsonWebsocketConsumer):
 
 		removeduser = await remove_online_user(user,roomid)
 
+
 		await self.channel_layer.group_send(
 					self.roomid,
 				{
 					"type":"send_offline",
+
 					"message":"isoffline",
 					"offline":user.username,
 				}
@@ -480,10 +484,12 @@ class TextChat(AsyncJsonWebsocketConsumer):
 			if command == "chat_client":
 				await self.receive_message(content["message_client"])
 
+
 		except ClientError as e:
 			await self.send_json({"error": e.code})
 
 	#send recieved message to all clients in this group
+
 	async def receive_message(self,message_client):
 
 		user = self.scope["user"]
@@ -499,11 +505,13 @@ class TextChat(AsyncJsonWebsocketConsumer):
 				{
 					"type":"send_message",
 					"message":message_client,
+					"command":"chat_client",
 					"user":user.username,
 				}
 			)
 
 		else:
+
 
 			await self.send_json(
 				{	
@@ -517,6 +525,7 @@ class TextChat(AsyncJsonWebsocketConsumer):
 			{
 				"msg_type":"send message",
 				"message":event["message"],
+				"command":event["command"],
 				"user":event["user"],
 			}
 		)

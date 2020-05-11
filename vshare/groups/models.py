@@ -100,3 +100,4 @@ class OnlineUser(models.Model):
 	class Meta:
 		ordering = ['data_joined']
 		unique_together = ("joined_group", "online_user")
+
