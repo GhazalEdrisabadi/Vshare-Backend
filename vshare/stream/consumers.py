@@ -7,6 +7,7 @@ from channels.exceptions import DenyConnection
 from stream.utils import *
 import asyncio
 import json
+
 class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 	# Connect websocket
@@ -15,6 +16,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
 		self.roomid = roomid
+
 		# Check room is valid or not
 		room = await get_room(roomid)
 		ismember = await is_member(user,roomid)
@@ -29,6 +31,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			await self.close()
 
 		elif status == 0 or status == 1:
+
 			# Add clients to stream group and accept connection
 			await self.channel_layer.group_add("stream",self.channel_name)
 			await self.accept()
@@ -61,7 +64,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 
 	# Recieve websocket requests
-	async def recieve_json(self, content):
+	async def receive_json(self, content):
 
 		command = content.get("command",None)
 
@@ -88,7 +91,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			await self.send_json({"error": e.code})
 
 
-	async def recieve_stream(self,vhash):	
+	async def receive_stream(self,vhash):	
 
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
@@ -330,7 +333,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 	async def reset_state(self):
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
-		iscreator = await is_creator(user,oomid)
+		iscreator = await is_creator(user,roomid)
 		status = await get_status(roomid)
 
 		if iscreator:
@@ -469,19 +472,19 @@ class TextChat(AsyncJsonWebsocketConsumer):
 			)
 		
 	# Recieve websocket request
-	async def recieve_json(self, content):
+	async def receive_json(self, content):
 
 		command = content.get("command",None)
 
 		try:
 			if command == "chat_client":
-				await self.recieve_message(content["message_client"])
+				await self.receive_message(content["message_client"])
 
 		except ClientError as e:
 			await self.send_json({"error": e.code})
 
 	#send recieved message to all clients in this group
-	async def recieve_message(self,message_client):
+	async def receive_message(self,message_client):
 
 		user = self.scope["user"]
 		ismember = await is_member(user,self.roomid)
@@ -495,7 +498,7 @@ class TextChat(AsyncJsonWebsocketConsumer):
 				self.roomid,
 				{
 					"type":"send_message",
-					"message":"message_client",
+					"message":message_client,
 					"user":user.username,
 				}
 			)

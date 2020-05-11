@@ -3,7 +3,7 @@ from channels.http import AsgiHandler
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 from stream.middlewares import TokenAuthMiddlewareStack
-from stream.consumers import VideoConsumer , TextChat
+from stream.consumers import VideoConsumer, TextChat
 from groups.models import *
 
 application = ProtocolTypeRouter({
