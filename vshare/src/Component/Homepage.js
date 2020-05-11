@@ -784,7 +784,7 @@ class Homepage extends Component {
                         </div>
                         <input onChange={this.change_name} type="text"
 
-                               className="input1" placeholder="name" style={{
+                               className="input1" placeholder="id" style={{
                             height: '40px',
                             width: '65%',
                         }}/>
@@ -793,7 +793,7 @@ class Homepage extends Component {
 
                         <br></br>
                         <input onChange={this.change_id} type="text"
-                               className="input2" placeholder="id" style={{
+                               className="input2" placeholder="name" style={{
                             height: '40px',
                             width: '65%'
                         }}/>

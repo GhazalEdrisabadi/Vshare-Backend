@@ -48,6 +48,7 @@ var adminisinstatezero = 1;
 var logoutclicked = 0;
 var azavalbude = 0;
 var percant = 0;
+
 var rejoined = 0;
 var played = 0;
 var id_gp = window.localStorage.getItem('id_gp');
@@ -56,6 +57,7 @@ const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localSto
 
 var encrypted;
 
+
 var ws = new WebSocket(url);
 
 var adminhash;
@@ -63,12 +65,17 @@ var adminhash;
 var localresponse;
 
 var play_or_no;
+
+var clienthashok = 0;
+const url1 = "ws://127.0.0.1:8000/chat/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
+var ws1 = new WebSocket(url1)
+
 var isadmin = window.localStorage.getItem('isadmin');
 var filmplayed = 0;
 var comeinstate1 = 0;
 var Play_pause_space = 0;
 
-var clienthashok = 0;
+
 
 
 class chat_room extends Component {
@@ -79,7 +86,8 @@ class chat_room extends Component {
     }
 
     componentDidMount() {
-
+console.log(url)
+console.log(url1)
         console.log("is admin : " + isadmin);
         document.addEventListener("keyup", this.handlereq_forward_backward, false);
 
@@ -96,6 +104,48 @@ class chat_room extends Component {
 
         };
 
+
+        ws1.onmessage = evt => {
+            const messagee = JSON.parse(evt.data)
+            console.log(messagee)
+              console.log(messagee.message)
+            if(messagee.message=='isoffline' || messagee.message=='isonline'){
+                 console.log("onlineeeeeee")
+
+                    setTimeout(function () {
+                        $('.onlinemembers').html('');
+                            var settings = {
+                    "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+                        //'X-CSRFToken': csrftoken,
+                        //  "Authorization": "token " + token,
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    }
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log('aaaa12');
+                    console.log(response);
+                    for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
+                      //  setTimeout(function () {
+                            $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
+                      //  },500);
+                });
+
+                    }, 250);
+
+            
+            }
+
+        }
+
+
+
         ws.onmessage = evt => {
 
             console.log("messsssssage")
@@ -108,18 +158,15 @@ class chat_room extends Component {
 
             console.log(messagee.message)
 
+
             if (logoutclicked == 0 && adminisinstatezero == 0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
                 window.location.reload();
             }
-
             if ("this is current time for new users" == messagee.message) {
                 this.changeCurrentTime(messagee.time);
-
                 this.play();
                 $('#moviebtnd').fadeOut();
             }
-
-
             if (clienthashok == 0 && messagee.status == 1 && isadmin == 0) {
                 adminhash = messagee.hash;
                 $('#movietxt').fadeOut('slow');
@@ -226,10 +273,10 @@ class chat_room extends Component {
         const {id} = this.props.match.params
 
         $(document).ready(function () {
-            setTimeout(function () {
-                const message_reselect = {"command": "reset"}
-                ws.send(JSON.stringify(message_reselect));
-            }, 300);
+            // setTimeout(function () {
+            //     const message_reselect = {"command": "reset"}
+            //     ws.send(JSON.stringify(message_reselect));
+            // }, 300);
 
 
             if (isadmin == 1) {
@@ -261,8 +308,13 @@ class chat_room extends Component {
             //});
 
 
-            if (window.localStorage.getItem('token') == null) {
+                if (window.localStorage.getItem('token') == null) {
 
+
+                 
+
+
+       
 
                 alert("Login first !");
 
@@ -273,10 +325,18 @@ class chat_room extends Component {
             }
 
             $('.logout').click(function () {
+                window.localStorage.setItem('id_gp','');
+                // ws1.close();
                 logoutclicked = 1;
-                const message_reselect = {"command": "reset"}
-                ws.send(JSON.stringify(message_reselect));
-                window.location.replace('/homepage/');
+                
+                
+                   setTimeout(function () {
+                    const message_reselect = {"command": "reset"}
+                    ws.send(JSON.stringify(message_reselect));
+                    window.location.replace('/homepage/');
+                     }, 300);
+ 
+              
 
             });
 
@@ -298,7 +358,7 @@ class chat_room extends Component {
             });
 
             /*  $("#formback_movie_id").mouseover(function () {
->>>>>>> features/stream-frontend
+
 
                   if (filmplayed == 1)
                       $('#controll_div').fadeIn();
@@ -366,6 +426,49 @@ class chat_room extends Component {
             });
 
 
+                        //$('#videopickbtn').fadeIn('fast');
+                        //    $('#movietxt').fadeOut('fast');
+
+
+                    
+
+
+                
+
+
+                // if (localStorage.getItem('token') == null) {
+                //     alert("Login please !");
+                //     window.location.replace("/login/");
+                // }
+
+
+                var id = window.localStorage.getItem('id_gp');
+
+
+                var settings = {
+                    "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+                        //'X-CSRFToken': csrftoken,
+                        //  "Authorization": "token " + token,
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    }
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log('aaaa');
+                    console.log(response);
+                    for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
+                      //  setTimeout(function () {
+                            $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
+                      //  },500);
+                });
+
+
             $('#videopicks').change(function () {
 
                 if (isadmin == 1) {
@@ -379,9 +482,6 @@ class chat_room extends Component {
 
                     $('#firstprogress').fadeIn();
                     $('#movietxt').fadeOut();
-
-                } else {
-
 
                 }
 
@@ -397,7 +497,6 @@ class chat_room extends Component {
             // }
 
 
-            var id = window.localStorage.getItem('id_gp');
 
             var settings = {
 
@@ -465,6 +564,7 @@ class chat_room extends Component {
         });
 
 
+
         //Log the messages that are returned from the server
 
 
@@ -497,7 +597,7 @@ class chat_room extends Component {
 
         this.pause = this.pause.bind(this);
         this.handlereq_forward_backward = this.handlereq_forward_backward.bind(this);
-        this.double = this.double.bind(this);
+       
         this.changeCurrentTime = this.changeCurrentTime.bind(this);
 
         this.newShortcuts = [
@@ -881,21 +981,7 @@ class chat_room extends Component {
 
     }
 
-
-    //handleChange(event) {
-
-    //    this.setState({
-
-    //        file_select: URL.createObjectURL(event.target.files[0])
-
-    //    })
-
-    //}
-    double() {
-        console.log("double")
-    }
-
-    handleSubmit(e) {
+  handleSubmit(e) {
 
 
         const message_send_play = {"command": "play_video", "currentTime": "0"}
@@ -912,18 +998,6 @@ class chat_room extends Component {
 
     }
 
-    //send_play() {
-
-    //    const message_send_play = { "command": "play"}
-
-
-    //    // ws.send(JSON.stringify(message_send))
-
-    //    ws.send(JSON.stringify(message_send_play))
-
-    //    console.log(JSON.stringify(message_send_play))
-
-    //}
 
 
     onChange(e) {
@@ -1101,6 +1175,7 @@ class chat_room extends Component {
 
 
             // eslint-disable-next-line no-undef
+
 
             if (percant == 100) {
                 if (isadmin == 1) {
@@ -1518,6 +1593,12 @@ class chat_room extends Component {
 
                             <div className="name"/>
 
+                            <p className="khat">_______________________</p>
+
+                            <p className='titleofonlines'>Online members :</p>
+
+                            <div className="onlinemembers"></div>
+ 
                         </div>
 
 

@@ -4,6 +4,38 @@ from channels.db import database_sync_to_async
 from .exceptions import ClientError
 from groups.models import *
 
+#remove the disconected user from the online users
+@database_sync_to_async
+def remove_online_user(the_user,the_room):
+	try:
+		obj = Group.objects.get(groupid=the_room)
+		instance = OnlineUser.objects.get(online_user=the_user, joined_group=obj)
+		instance.delete()
+		return instance
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
+
+#add the connected user to online users
+@database_sync_to_async
+def add_online_user(the_user,the_room):
+	try:
+		obj = Group.objects.get(groupid=the_room)	
+		new_obj=OnlineUser(online_user=the_user, joined_group=obj)
+		new_obj.save()
+		return new_obj
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
+
+#store the recieved message to the database
+@database_sync_to_async
+def store_message(user,message_client,the_room):
+	try:
+		obj = Group.objects.get(groupid=the_room)	
+		new_obj=Message(message_text=message_client, target_group=obj, message_sender=user)
+		new_obj.save()
+		return new_obj
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
 
 # Check a user is a member of group
 @database_sync_to_async
@@ -103,4 +135,3 @@ def get_client_hash(the_user, the_group):
 			raise ClientError("Client_INVALID")
 	except Group.DoesNotExist:
 		raise ClientError("ROOM_INVALID")
-
