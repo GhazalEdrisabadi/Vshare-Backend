@@ -86,7 +86,8 @@ class chat_room extends Component {
     }
 
     componentDidMount() {
-
+console.log(url)
+console.log(url1)
         console.log("is admin : " + isadmin);
         document.addEventListener("keyup", this.handlereq_forward_backward, false);
 
@@ -108,8 +109,8 @@ class chat_room extends Component {
             const messagee = JSON.parse(evt.data)
             console.log(messagee)
               console.log(messagee.message)
-            if(messagee.message=='is_offline' || messagee.message=='is_online'){
-                 
+            if(messagee.message=='isoffline' || messagee.message=='isonline'){
+                 console.log("onlineeeeeee")
 
                     setTimeout(function () {
                         $('.onlinemembers').html('');
@@ -128,7 +129,7 @@ class chat_room extends Component {
                 };
 
                 $.ajax(settings).done(function (response) {
-                    console.log('aaaa');
+                    console.log('aaaa12');
                     console.log(response);
                     for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
                       //  setTimeout(function () {
@@ -272,10 +273,10 @@ class chat_room extends Component {
         const {id} = this.props.match.params
 
         $(document).ready(function () {
-            setTimeout(function () {
-                const message_reselect = {"command": "reset"}
-                ws.send(JSON.stringify(message_reselect));
-            }, 300);
+            // setTimeout(function () {
+            //     const message_reselect = {"command": "reset"}
+            //     ws.send(JSON.stringify(message_reselect));
+            // }, 300);
 
 
             if (isadmin == 1) {
@@ -325,7 +326,7 @@ class chat_room extends Component {
 
             $('.logout').click(function () {
                 window.localStorage.setItem('id_gp','');
-                ws1.close();
+                // ws1.close();
                 logoutclicked = 1;
                 
                 
