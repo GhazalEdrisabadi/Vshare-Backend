@@ -168,4 +168,3 @@ def GroupRegistration(request):
         else:
             data = serializer_class.errors
         return Response(data)
-

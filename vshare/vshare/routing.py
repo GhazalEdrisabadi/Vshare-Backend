@@ -3,7 +3,9 @@ from channels.http import AsgiHandler
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 from stream.middlewares import TokenAuthMiddlewareStack
+
 from stream.consumers import VideoConsumer , TextChat
+
 from groups.models import *
 
 application = ProtocolTypeRouter({
@@ -18,10 +20,7 @@ application = ProtocolTypeRouter({
 })
 
 """
-
 Request to VideoConsumer
-
 "ws://127.0.0.1:8000/stream/groups/<groupid>/?token=token_id
 {"command":"send_client_hash","roomid":"starwars", "vhash":"fffffffffff"}
-
 """

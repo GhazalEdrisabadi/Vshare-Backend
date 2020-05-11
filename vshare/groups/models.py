@@ -101,4 +101,3 @@ class OnlineUser(models.Model):
 		ordering = ['data_joined']
 		unique_together = ("joined_group", "online_user")
 
-
