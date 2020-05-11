@@ -8,7 +8,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 #this is features/online-users-backend
 import os
-from datetime import timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -59,12 +58,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.SessionAuthentication',
-        # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
-    #'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    #'PAGE_SIZE': 3,
 }
 
 AUTH_USER_MODEL = 'users.Account'
@@ -85,9 +80,6 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-# CORS_ORIGIN_WHITELIST = [
-# 	"http://127.0.0.1:3000"
-# ]
 
 CORS_ALLOW_METHODS = [
     'DELETE',
@@ -208,7 +200,3 @@ STATIC_URL = '/static/'
 MEDIA_URL =  '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR , 'users/media')
-#ws://127.0.0.1:8000/chat/groups/thisgp1/?token=363308709fd2353a54260640ace6184fdb44f23a
-#7f59afbe38e47119477b34171f2f0a3260549eec
-#daphne -b 0.0.0.0 -p 8000 vshare.asgi:application
-#{ "command": "chat_client", "message_client": pm}
