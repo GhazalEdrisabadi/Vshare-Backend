@@ -70,7 +70,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 		try:
 			if command == "set_video_hash":
-				await self.recieve_stream(content["vhash"])
+				await self.receive_stream(content["vhash"])
 
 			elif command == "send_client_hash":
 				await self.check_client_hash(content["vhash"])
