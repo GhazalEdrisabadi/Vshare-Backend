@@ -5,6 +5,7 @@
     height: 100%;
     margin:0;
     padding:0;
+    overflow-y: scroll;
 }
 .back_startpage {
     width: 100%;
@@ -22,6 +23,11 @@
     margin: 0;
     padding: 0;
 }
+  ::-webkit-scrollbar { 
+
+        display: none;
+
+    }
 .page-header {
     margin-top:-40px;
     margin: 0;
@@ -103,11 +109,12 @@ color:white;
 .btn_start {
     background-color: whitesmoke;
     color: black;
-    height: 60px;
+    height:70px;
     width: 180px;
     border-radius: 0px;
     border-color: white;
     margin-top: 40px;
+    
 }
 .body{
     margin:0;

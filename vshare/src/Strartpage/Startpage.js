@@ -12,7 +12,7 @@ class startpage extends Component {
 
             <div className="back_startpage">
                 <div className="Main_div">
-                  <Navbar collapseOnSelect expand="lg"  style={{backgroundColor:'transparent' , borderBottomColor:'white'}}>
+                  <Navbar collapseOnSelect expand="lg"  style={{backgroundColor:'transparent' , borderBottomColor:'white' , borderBottomStyle:'solid'}}>
   <Navbar.Brand href="#home" style={{color:'white' , fontSize:'35px' , fontWeight:'bold'}}>Vshare</Navbar.Brand>
   <Navbar.Toggle aria-controls="responsive-navbar-nav " style={{backgroundColor:'white' , color:'white'}}  />
   <Navbar.Collapse id="responsive-navbar-nav" style={{marginLeft:"30px"}}>
@@ -24,7 +24,7 @@ class startpage extends Component {
        contact
       </Nav.Link>
        <Nav.Link href="#deets" style={{color:'white' , fontSize:'20px' , paddingRight:'100px' , fontWeight:'bold'}}>Application</Nav.Link>
-      <Nav.Link eventKey={2} href="#memes" style={{color:'white' , fontSize:'20px'  , fontWeight:'bold'}}>
+      <Nav.Link eventKey={2} href="/login" style={{color:'white' , fontSize:'20px'  , fontWeight:'bold' , borderStyle:'solid' , width:'200px' , textAlign:'center'}}>
        login/signup
       </Nav.Link>
     </Nav>
@@ -39,7 +39,7 @@ class startpage extends Component {
                                                                             at the same time.
                                                                             You can talk through the movie with each other
                                     </div>
-                                <button className="btn_start"><a href="../login"style={{color:'black'}}>Get Start</a></button>
+                                <button className="btn_start"><a href="../login"style={{color:'black' }}>Get Start</a></button>
                             </div>
                         </div>
 
