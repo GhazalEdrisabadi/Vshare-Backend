@@ -12,13 +12,12 @@ class startpage extends Component {
 
             <div className="back_startpage">
                 <div className="Main_div">
-                  <Navbar collapseOnSelect expand="lg"  style={{backgroundColor:'transparent' }}>
+                  <Navbar collapseOnSelect expand="lg"  style={{backgroundColor:'transparent' , borderBottomColor:'white'}}>
   <Navbar.Brand href="#home" style={{color:'white' , fontSize:'35px' , fontWeight:'bold'}}>Vshare</Navbar.Brand>
-  <Navbar.Toggle aria-controls="responsive-navbar-nav " style={{backgroundColor:'transparent' , color:'white'}}  variant="white"/>
-  <Navbar.Collapse id="responsive-navbar-nav">
-    <Nav className="mr-auto">
+  <Navbar.Toggle aria-controls="responsive-navbar-nav " style={{backgroundColor:'white' , color:'white'}}  />
+  <Navbar.Collapse id="responsive-navbar-nav" style={{marginLeft:"30px"}}>
+    <Nav className="mr-auto"/>
   
-    </Nav>
     <Nav>
       <Nav.Link href="/about" style={{color:'white' , fontSize:'20px' , paddingRight:'100px'  , fontWeight:'bold'}}>about</Nav.Link>
       <Nav.Link eventKey={2} href="#memes" style={{color:'white' , fontSize:'20px' , paddingRight:'100px' , fontWeight:'bold'}}>
@@ -32,7 +31,7 @@ class startpage extends Component {
   </Navbar.Collapse>
 </Navbar>
                     
-                    <div className="container-lg" style={{ backgroundColor: "transparent" , marginTop:'150px' }}>
+                    <div className="container-lg" style={{ backgroundColor: "transparent" , marginTop:'200px' }}>
                         <div className="row">
                             <div className="txt-container col-sm-12 col-lg-12 col-xl-12 col-md-12">
                                 <div className="txt-content" style={{ display: "block" }}>
