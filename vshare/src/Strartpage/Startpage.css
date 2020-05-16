@@ -113,7 +113,9 @@ color:white;
     padding:0;
 }
 
-
+.custom-toggler.navbar-toggler { 
+    border-color: white; 
+} 
 
 
 
