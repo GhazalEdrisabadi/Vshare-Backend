@@ -22,6 +22,7 @@
     "react-dom": "^16.13.1",
     "react-file-picker": "0.0.6",
     "react-fontawesome": "^1.7.1",
+    "react-material-stepper": "^1.0.0",
     "react-player": "^1.15.3",
     "react-router-dom": "^4.2.0",
     "react-scripts": "^3.4.1",

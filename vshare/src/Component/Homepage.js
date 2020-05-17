@@ -8,8 +8,7 @@ import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
-
-
+import Modal from 'react-bootstrap/Modal'
 const name = window.$name;
 
 class Homepage extends Component {
@@ -17,7 +16,9 @@ class Homepage extends Component {
     componentDidMount() {
         const {id} = this.props.match.params;
         $(document).ready(function () {
-            $('.nextbtn').click(function () {
+            $(document).on('click', '.nextbtn', function(){
+           
+             
                 var id = $(".input1").val();
 
                 var name = $(".input2").val();
@@ -42,6 +43,7 @@ class Homepage extends Component {
                     },
                     success: function () {
                         //  document.getElementById("myModel").style.display = 'block'
+                        console.log("asasssssss")
                         $('.formback-content').fadeOut();
                         $('.addmember-content').fadeIn();
 
@@ -74,7 +76,8 @@ class Homepage extends Component {
                     console.log(response);
                 });
             });
-            $(".addbtn").click(function () {
+            $(document).on('click', '.addbtn', function(){
+           
                 var member = $(".inp").val();
 
                 var token = window.localStorage.getItem('token');
@@ -150,19 +153,14 @@ class Homepage extends Component {
 
             });
 
-
-            $(".skipbtn").click(function () {
+$(document).on('click', '.skipbtn', function(){
+           
                 window.location.replace("/homepage");
 
             });
 
 
-            $(".createnewgp").click(function () {
-
-                $('.formback').fadeIn();
-
-
-            });
+        
 
 
             $(".KeyboardBackspaceIcon").click(function () {
@@ -594,7 +592,8 @@ class Homepage extends Component {
         this.states = {
 
             // anchorPosition:null ,
-            value: ''
+            value: '',
+            show:false
 
 
         }
@@ -602,7 +601,7 @@ class Homepage extends Component {
         this.handleChange = this.handleChange.bind(this);
 
         this.handleSubmit = this.handleSubmit.bind(this);
-
+        
     }
 
     handleChange(event) {
@@ -659,7 +658,16 @@ class Homepage extends Component {
     //         return(null)
     //     }
     // };
+  
 
+   handleClose = () => {
+       this.setState({show:false})
+   };
+   handleShow = () => {
+     
+       this.setState({show:true})
+       
+   };
 
     render() {
 
@@ -766,11 +774,12 @@ class Homepage extends Component {
                 </header>
 
 
-                <div className="formback">
-                    <div className="formback-content">
+                <Modal size="lg" show={this.state.show} onHide={this.handleClose} >
+                    <Modal.Body>
+<div className="formback-content">
                         <div className="TTitle">
                             <IconButton style={{color: 'white', marginRight: '130%', marginTop: '4%'}}
-                                        className="KeyboardBackspaceIcon">
+                                        className="KeyboardBackspaceIcon" onClick={this.handleClose}>
                                 <CloseIcon fontSize="large"/>
                             </IconButton>
 
@@ -817,8 +826,7 @@ class Homepage extends Component {
                             next
                         </Button>
                     </div>
-
-                    <div className="addmember-content">
+                         <div className="addmember-content">
                         <p classname='tit' style={{fontSize: "100%", marginBottom: "8%", marginTop: "8%",}}>Add your
                             member</p>
                         <hr></hr>
@@ -846,6 +854,10 @@ class Homepage extends Component {
 
                         </div>
                     </div>
+                    </Modal.Body>
+                    {/* 
+
+                */}
                     {/* <div id="myModel" className="modal2">
                         <div id="mymodal2" class="modal-content2">
                             <p class='tit'>Add your member</p>
@@ -859,7 +871,7 @@ class Homepage extends Component {
                     </div> */}
 
 
-                </div>
+                </Modal>
               
                 <div className="container-lg no-gutters" style={{ backgroundColor: "transparent", marginTop: "80px", overflowY: "visible" }}>
                     <div className="row-1 ">
@@ -871,7 +883,8 @@ class Homepage extends Component {
                         backgroundColor: "Red",
                         marginRight: "10px",
                         marginTop: "20px"
-                    }} className='createnewgp' startIcon={<AddIcon/>} variant="contained" color="secondary">
+                    }} className='createnewgp' startIcon={<AddIcon/>} variant="contained" color="secondary"
+                    onClick={this.handleShow}>
 
                         Create new group
                     </Button>
