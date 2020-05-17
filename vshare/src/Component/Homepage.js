@@ -470,11 +470,7 @@ class Homepage extends Component {
 
             var username = window.localStorage.getItem('username');
 
-            $('.groupsShow').append('<h4> Your Groups </h4>');
-
-
-
-            $('.groupsShow').append("<hr>");
+        
 
             $('.username').text(username);
 
@@ -648,7 +644,7 @@ class Homepage extends Component {
 
                    // setTimeout(function () {
 
-                        $('.groupsShow').append(htmlcode);
+                        $('.groupshowbody').append(htmlcode);
 
                    // }, 100);
 
@@ -1144,7 +1140,7 @@ class Homepage extends Component {
 
 
 
-                        $('.groupsShow').append(htmlcode2);
+                        $('.groupshowbody').append(htmlcode2);
 
                         counter2++;
 
@@ -1737,18 +1733,17 @@ class Homepage extends Component {
 
 
                 <div className="groupsShow">
-
-
+<div className="headershow">
+<h4> Your Groups </h4>
 
 
 
                     <Button style={{
 
                         backgroundColor: "Red",
-
-                        marginRight: "10px",
-
-                        marginTop: "20px"
+fontSize:'10px',
+                       marginLeft:'140px',
+                       marginTop:'10px'
 
                     }} className='createnewgp' startIcon={<AddIcon/>} variant="contained" color="secondary">
 
@@ -1757,8 +1752,11 @@ class Homepage extends Component {
                         Create new group
 
                     </Button>
+                    </div>
+<hr></hr>
+<div className=' groupshowbody'>
 
-
+</div>
 
                 </div>
 
