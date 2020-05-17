@@ -593,7 +593,8 @@ $(document).on('click', '.skipbtn', function(){
 
             // anchorPosition:null ,
             value: '',
-            show:false
+            show:false,
+            show_edite:false
 
 
         }
@@ -668,7 +669,14 @@ $(document).on('click', '.skipbtn', function(){
        this.setState({show:true})
        
    };
-
+ handleClose_edite = () => {
+       this.setState({show:false})
+   };
+   handleShow_edite = () => {
+     
+       this.setState({show_:true})
+       
+   };
     render() {
 
 
@@ -683,7 +691,7 @@ $(document).on('click', '.skipbtn', function(){
 
                 <div id="myModal" class="modal">
                     <div class="modal-content">
-                        <h3 class="texx">Edit your groups deatails</h3>
+                        <h3 class="texx">Edit your groups deatails </h3>
 
                         <hr></hr>
 
@@ -703,7 +711,7 @@ $(document).on('click', '.skipbtn', function(){
                     </div>
 
                 </div>
-
+    
                 <div id="myModal2" className="modal2">
                     <div className="modal-content2">
                         <h3 className='deleteTEXT'>Are you sure you want to leave this group ? </h3>

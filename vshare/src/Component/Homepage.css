@@ -496,15 +496,63 @@ svg {
 
     height: 100%;
 
-    overflow: auto;
+    overflow-x: scroll;
 
     background-color: rgb(0, 0, 0);
 
     background-color: rgba(0, 0, 0, 0.7);
-
+min-width: 50%;
 }
+  ::-webkit-scrollbar { 
 
+        display: none;
 
+    }
+@media screen and (min-width: 500px) and (max-width:780px)  {
+  .modal {
+    width: 100%;
+
+  }
+  .inputedit{
+      width: 150px;
+    
+  }
+  .texx {
+
+    font-size: 20px;
+ 
+}
+}
+@media screen and (min-width: 780px) and (max-width:1200px)  {
+  .modal {
+    width: 100%;
+  
+  }
+  .inputedit{
+      width: 200px;
+  
+  }
+}
+@media screen and (min-width: 1200px)  {
+  .modal {
+    width: 100%;
+   
+  }
+  .inputedit{
+      width: 300px;
+    
+  }
+}
+/* @media screen and (min-width: 400px)  and (max-width:500px) {
+  .modal {
+    width: 100%;
+   background-color: blue;
+  }
+  .inputedit{
+      width: 300px;
+    
+  }
+} */
 .modal-content {
     border-radius: 27px;
     text-align: center;
@@ -564,11 +612,11 @@ svg {
     color: black;
     padding: 10px;
 
-    background-color: rgb(215, 215, 215);
+   
     border-radius: 10px;
     font-size: 20px;
     height: 35px;
-    width: 300px;
+ 
     margin-top: 7px;
     margin-right: 10px;
     border-top: solid;
@@ -604,7 +652,7 @@ svg {
 
 .texx {
 
-    font-size: 30px;
+  
     font-family: Arial;
 }
 
