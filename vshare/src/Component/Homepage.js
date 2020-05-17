@@ -716,6 +716,7 @@ $(document).on('click', '.skipbtn', function(){
                     <div className="modal-content2">
                         <h3 className='deleteTEXT'>Are you sure you want to leave this group ? </h3>
                         <p className='admintext'></p>
+                        <br/>
                         <div className='dltbtns'>
 
                             <Button style={{backgroundColor: "Red"}} size='large'
