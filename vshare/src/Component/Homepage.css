@@ -107,7 +107,7 @@ svg {
     box-shadow: black;
     /* overflow-y: scroll; */
     border-radius: 27px;
-    margin-left: 55%;
+    /* margin-left: 55%; */
     margin-top: 9%;
     color: white;
 
@@ -372,7 +372,9 @@ min-width: 50%;
     width: 100%;
 
   }
- 
+ .input{
+     width: 200px;
+ }
   .inputedit{
       width: 150px;
     
@@ -398,6 +400,44 @@ min-width: 50%;
     flex-direction: row;
 
     margin-right: 7%;
+}
+.groupsShow{
+    width: 70%;
+    margin-top: 13%;
+}
+.formback {
+width: 70%;
+margin-top: 15%;
+margin-left: 3%;
+z-index: 1;
+}
+
+}
+@media screen and (min-width: 780px) and (max-width:800px)  {
+
+.groupsShow{
+    width: 44%;
+    margin-top: 10%;
+}
+.formback {
+width: 44%;
+margin-top: 11%;
+margin-left: 40%;
+z-index: 1;
+}
+
+}
+@media screen and (min-width: 800px)   {
+
+.groupsShow{
+    width: 30%;
+    margin-top: 5%;
+}
+.formback {
+width: 26%;
+margin-top: 8%;
+margin-left: 54%;
+z-index: 1;
 }
 
 }
@@ -428,6 +468,16 @@ min-width: 50%;
     flex-direction: row;
 
     margin-right: 18%;
+}
+.groupsShow{
+    width: 47%;
+    margin-top: 13%;
+}
+.formback {
+width: 35%;
+margin-top: 15%;
+margin-left: 54%;
+z-index: 1;
 }
 
 }
