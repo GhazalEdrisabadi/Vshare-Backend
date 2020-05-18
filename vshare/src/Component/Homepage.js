@@ -1752,6 +1752,7 @@ class Homepage extends Component {
                         Create new group
 
                     </Button>
+               
                     </div>
 <hr></hr>
 <div className=' groupshowbody'>

@@ -245,6 +245,14 @@ svg {
   
     float: right;
 }
+.createnewgp1 {
+
+   
+   display: none;
+    height: 50px;
+  
+    float: right;
+}
 
 .edit {
     background-image: url(./edit.png);
