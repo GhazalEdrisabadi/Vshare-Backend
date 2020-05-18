@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 
-
+import 'bootstrap/dist/css/bootstrap.min.css'
 import './Startpage.css'
-
+import { Navbar , Nav} from 'react-bootstrap';
 
 class startpage extends Component {
 
@@ -12,30 +12,26 @@ class startpage extends Component {
 
             <div className="back_startpage">
                 <div className="Main_div">
-                    <header className="page-header" >
-                        <div className="div_header_start " >
-                            <div className="div_site_name">
-                                <h1 className="site_name">Vshare</h1>
-                            </div>
-                            <div className="button_header">
-                                <button className="btn_about"  ghost><a href="./about">
-                                    about</a>
-                                </button>
-                                <button className="btn_contact"  ghost><a href="./contact">
-                                    contact
-                                                                                </a>
-                                </button>
-                                <button className="btn_app"  ghost><a href="./app">
-                                    Application
-                                                                            </a>
-                                </button>
-                                <button className="btn_login-singup" ghost>
-                                    <a href="../login">  login/signup</a>
-                                </button>
-                            </div>
-                        </div>
-                    </header>
-                    <div className="container-lg" style={{ backgroundColor: "transparent" }}>
+                  <Navbar collapseOnSelect expand="lg"  style={{backgroundColor:'transparent' , borderBottomColor:'white' , borderBottomStyle:'solid'}}>
+  <Navbar.Brand href="#home" style={{color:'white' , fontSize:'35px' , fontWeight:'bold'}}>Vshare</Navbar.Brand>
+  <Navbar.Toggle aria-controls="responsive-navbar-nav " style={{backgroundColor:'white' , color:'white'}}  />
+  <Navbar.Collapse id="responsive-navbar-nav" style={{marginLeft:"30px"}}>
+    <Nav className="mr-auto"/>
+  
+    <Nav>
+      <Nav.Link href="/about" style={{color:'white' , fontSize:'20px' , paddingRight:'100px'  , fontWeight:'bold'}}>about</Nav.Link>
+      <Nav.Link eventKey={2} href="#memes" style={{color:'white' , fontSize:'20px' , paddingRight:'100px' , fontWeight:'bold'}}>
+       contact
+      </Nav.Link>
+       <Nav.Link href="#deets" style={{color:'white' , fontSize:'20px' , paddingRight:'100px' , fontWeight:'bold'}}>Application</Nav.Link>
+      <Nav.Link eventKey={2} href="/login" style={{color:'white' , fontSize:'20px'  , fontWeight:'bold' , borderStyle:'solid' , width:'200px' , textAlign:'center'}}>
+       login/signup
+      </Nav.Link>
+    </Nav>
+  </Navbar.Collapse>
+</Navbar>
+                    
+                    <div className="container-lg" style={{ backgroundColor: "transparent" , marginTop:'200px' }}>
                         <div className="row">
                             <div className="txt-container col-sm-12 col-lg-12 col-xl-12 col-md-12">
                                 <div className="txt-content" style={{ display: "block" }}>
@@ -43,7 +39,7 @@ class startpage extends Component {
                                                                             at the same time.
                                                                             You can talk through the movie with each other
                                     </div>
-                                <button className="btn_start"><a href="../login">Get Start</a></button>
+                                <button className="btn_start"><a href="../login"style={{color:'black' }}>Get Start</a></button>
                             </div>
                         </div>
 

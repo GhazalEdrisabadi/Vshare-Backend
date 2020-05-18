@@ -5,6 +5,7 @@
     height: 100%;
     margin:0;
     padding:0;
+    overflow-y: scroll;
 }
 .back_startpage {
     width: 100%;
@@ -22,6 +23,11 @@
     margin: 0;
     padding: 0;
 }
+  ::-webkit-scrollbar { 
+
+        display: none;
+
+    }
 .page-header {
     margin-top:-40px;
     margin: 0;
@@ -91,29 +97,33 @@ color:white;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
 }
 .txt-content {
     font-size: 28px;
     line-height: 42px;
     text-align: center;
     width:500px;
-    margin-top:120px;
+   
 }
 .btn_start {
     background-color: whitesmoke;
     color: black;
-    height: 60px;
+    height:70px;
     width: 180px;
     border-radius: 0px;
     border-color: white;
     margin-top: 40px;
+    
 }
 .body{
     margin:0;
     padding:0;
 }
 
-
+.custom-toggler.navbar-toggler { 
+    border-color: white; 
+} 
 
 
 
