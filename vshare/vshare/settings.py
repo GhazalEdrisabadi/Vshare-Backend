@@ -141,7 +141,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'vshare',
         'USER' : 'postgres',
-        'PASSWORD' : '123qwe',
+        'PASSWORD' : 'Kamyab78',
         'HOST' : 'localhost',
         'PORT' : '5432',
     }
