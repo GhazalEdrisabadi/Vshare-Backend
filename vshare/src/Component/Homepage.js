@@ -1486,7 +1486,7 @@ class Homepage extends Component {
 
 
 
-                            <input placeholder='Enter id of the group' className='input'/>
+                            <input placeholder='id' className='input'/>
 
 
 
@@ -1741,7 +1741,7 @@ class Homepage extends Component {
                     <Button style={{
 
                         backgroundColor: "Red",
-fontSize:'10px',
+
                        marginLeft:'140px',
                        marginTop:'10px'
 

@@ -240,7 +240,7 @@ svg {
 .createnewgp {
 
    
-    width: 189px;
+   
     height: 50px;
   
     float: right;
@@ -333,7 +333,7 @@ width: 100%;
 .headershow{
    display: flex;
    flex-direction: row;
-   
+   font-size: '10px';
 }
 
 .sidenav {
@@ -386,7 +386,7 @@ min-width: 50%;
         display: none;
 
     }
-@media screen and (min-width: 500px) and (max-width:780px)  {
+    @media screen and (min-width: 500px) and (max-width:780px)  {
   .modal {
     width: 100%;
 
@@ -430,10 +430,94 @@ margin-top: 15%;
 margin-left: 3%;
 z-index: 1;
 }
+.createnewgp{
+    width: 200px;
+   
+}
+    }
+@media screen and (min-width: 400px) and (max-width:595px)  {
+   .modal {
+    width: 150%;
+    margin-left: -120px;
+  
+  }
+  .inputedit{
+      width: 200px;
+  
+  }
+  .createnewgp{
+      width: 700px;
+     height: 70px;
+      font-size: 5px;
+      
+  }
+ 
+  .modal2{
+    background-color: red;
+  width: 150%;
+}
+.modal-content2{
+    height: 70%;
+   width: 150%;
+}
+.dltyes{width: 2px;}
+.dltno{
+    width: 2px;
+   
+}
+.deleteTEXT{
+    font-size: 15px;
+}
 
+.admintext{
+    font-size: 12px;
+}
+.dltbtns{
+    display: flex;
+   
+    flex-direction: column;
+
+    margin-right: 24%;
+}
+  .logout_text{
+      display: none;
+  }
+ .input{
+     width: 80px;
+     
+ }
+ 
+  .inputedit{
+      width: 150px;
+    
+  }
+  .texx {
+
+    font-size: 20px;
+ 
+}
+
+
+.groupsShow{
+    width: 70%;
+    margin-top: 13%;
+}
+.formback {
+width: 70%;
+margin-top: 15%;
+margin-left: 3%;
+z-index: 1;
+}
+.createnewgp{
+    width: 200px;
+   
+}
 }
 @media screen and (min-width: 780px) and (max-width:800px)  {
-
+.createnewgp{
+    width: 400px;
+   
+}
 .groupsShow{
     width: 44%;
     margin-top: 10%;
@@ -501,6 +585,10 @@ z-index: 1;
 .groupshowbody{
     height: 80%;
 }
+.createnewgp{
+    width: 200px;
+   
+}
 }
 @media screen and (min-width: 1200px)  {
   .modal {
@@ -520,6 +608,10 @@ z-index: 1;
 .dltbtns {
     margin-top: 5%;
     margin-right: 38%;
+}
+.createnewgp{
+    width: 200px;
+   
 }
 }
 @media screen and (min-width: 1200px) and (max-width:1600px)  {
@@ -788,7 +880,7 @@ min-width: 50%;
 
 .head {
     position: fixed;
-
+z-index: 1;
     width: 100%;
     background: rgb(0, 0, 0);
 
