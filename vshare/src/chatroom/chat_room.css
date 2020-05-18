@@ -12,19 +12,19 @@
     
     }
     .input_send{
+       z-index: 1;
         display: flex;
          /* background-color: blue;   */
-        width: 105%;
+        width: 345px;
         height: 40%;
-    
+
         flex-direction: row;
-    
+
         justify-content: center;
-    
+
         align-items: center;
-        margin-top: 100%;
+        margin-top:315px;
         margin-right: -5%;
-    
     }
     .send_btn{
         margin-left: 30%;
@@ -40,20 +40,18 @@
         /* background-color: white; */
     }
     .pm{
-        height: 35%;
+       height: 35%;
         width: 17% ;
         color: whitesmoke;
-         background-color: rgba(0, 0, 0, 0); 
+         background-color: rgba(0, 0, 0, 0);
         font-size: 14px;
         white-space: initial;
-    
+        margin-top: -35px;
         position: absolute;
-    
-    
-         overflow-x:hidden; 
+
+
+         overflow-x:hidden;
          overflow-y: scroll;
-    
-    
     
     
     }
