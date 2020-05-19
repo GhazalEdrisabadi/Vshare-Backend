@@ -19,11 +19,11 @@ class startpage extends Component {
     <Nav className="mr-auto"/>
   
     <Nav>
-      <Nav.Link href="/about" style={{color:'white' , fontSize:'20px' , paddingRight:'100px'  , fontWeight:'bold'}}>about</Nav.Link>
+      <Nav.Link href="/about" style={{color:'white' , fontSize:'20px' , paddingRight:'100px'  , fontWeight:'bold'}}>About</Nav.Link>
       <Nav.Link eventKey={2} href="#memes" style={{color:'white' , fontSize:'20px' , paddingRight:'100px' , fontWeight:'bold'}}>
-       contact
+       Contact
       </Nav.Link>
-       <Nav.Link href="#deets" style={{color:'white' , fontSize:'20px' , paddingRight:'100px' , fontWeight:'bold'}}>Application</Nav.Link>
+       <Nav.Link   style={{color:'white' , fontSize:'20px' , paddingRight:'100px' , fontWeight:'bold'}}>Application</Nav.Link>
       <Nav.Link eventKey={2} href="/login" style={{color:'white' , fontSize:'20px'  , fontWeight:'bold' , borderStyle:'solid' , width:'200px' , textAlign:'center'}}>
        login/signup
       </Nav.Link>
@@ -39,7 +39,7 @@ class startpage extends Component {
                                                                             at the same time.
                                                                             You can talk through the movie with each other
                                     </div>
-                                <button className="btn_start"><a href="../login"style={{color:'black' }}>Get Start</a></button>
+                              <a href="../login"style={{color:'black'}}>  <button style={{cursor:'pointer'}}className="btn_start">Get Start</button></a>
                             </div>
                         </div>
 

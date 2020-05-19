@@ -1,5 +1,3 @@
-   
-
 import React, {Component} from 'react'
 
 import './Homepage.css'
@@ -21,15 +19,10 @@ import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 
 
-
-
-
 const name = window.$name;
 
 
-
 class Homepage extends Component {
-
 
 
     componentDidMount() {
@@ -43,19 +36,14 @@ class Homepage extends Component {
                 var id = $(".input1").val();
 
 
-
                 var name = $(".input2").val();
 
                 var bio = $(".textarea").val();
 
 
-
                 var mem = [];
 
                 var token = window.localStorage.getItem('token');
-
-
-
 
 
                 var settings = {
@@ -71,9 +59,6 @@ class Homepage extends Component {
                         if (event.status == 400)
 
                             // alert("group with this groupid already exists");
-
-
-
 
 
                             $('#Status-Id').html('group with this groupid already exists!');
@@ -93,11 +78,7 @@ class Homepage extends Component {
                         $('.addmember-content').fadeIn();
 
 
-
                         window.localStorage.setItem('id_group', id);
-
-
-
 
 
                     },
@@ -105,13 +86,10 @@ class Homepage extends Component {
                     "headers": {
 
 
-
                         "accept": "application/json",
 
 
-
                         "Authorization": "token " + token,
-
 
 
                         "Access-Control-Allow-Origin": "*",
@@ -135,11 +113,8 @@ class Homepage extends Component {
                             "members": mem
 
 
-
                         }
-
                     ),
-
 
 
                 }
@@ -157,13 +132,9 @@ class Homepage extends Component {
                 var member = $(".inp").val();
 
 
-
                 var token = window.localStorage.getItem('token');
 
                 var id_gp = window.localStorage.getItem('id_group')
-
-
-
 
 
                 var settings = {
@@ -177,9 +148,6 @@ class Homepage extends Component {
                     error: function (event) {
 
 
-
-
-
                         $('#Addmember-Status').html('User not found !');
 
                         $('#Addmember-Status').fadeIn();
@@ -187,15 +155,9 @@ class Homepage extends Component {
                         $('#Addmember-Status').delay(3000).toggle('slow');
 
 
-
-
-
                     },
 
                     success: function () {
-
-
-
 
 
                         var settings = {
@@ -207,7 +169,6 @@ class Homepage extends Component {
                             error: function () {
 
 
-
                                 $('#Addmember-Status').html('User is already a member of this group !');
 
                                 $('#Addmember-Status').fadeIn();
@@ -215,13 +176,9 @@ class Homepage extends Component {
                                 $('#Addmember-Status').delay(3000).toggle('slow');
 
 
-
-
-
                             },
 
                             success: function () {
-
 
 
                                 $(".textarea-addmember").append(member + '-');
@@ -231,7 +188,6 @@ class Homepage extends Component {
                             "timeout": 0,
 
                             "headers": {
-
 
 
                                 "accept": "application/json",
@@ -251,15 +207,12 @@ class Homepage extends Component {
                                     "the_member": member
 
                                 }
-
                             ),
 
                         };
 
 
-
                         $.ajax(settings).done(function (response) {
-
 
 
                             console.log(response);
@@ -269,7 +222,6 @@ class Homepage extends Component {
                     },
 
                     "headers": {
-
 
 
                         "accept": "application/json",
@@ -283,9 +235,7 @@ class Homepage extends Component {
                     },
 
 
-
                 };
-
 
 
                 $.ajax(settings).done(function (response) {
@@ -295,15 +245,10 @@ class Homepage extends Component {
                     console.log(response);
 
 
-
                 });
 
 
-
             });
-
-
-
 
 
             $(".skipbtn").click(function () {
@@ -311,39 +256,24 @@ class Homepage extends Component {
                 window.location.replace("/homepage");
 
 
-
             });
-
-
-
 
 
             $(".createnewgp").click(function () {
 
 
-
                 $('.formback').fadeIn();
 
 
-
-
-
             });
-
-
-
 
 
             $(".KeyboardBackspaceIcon").click(function () {
 
 
-
                 $('.formback').fadeOut();
 
             });
-
-
-
 
 
             if (localStorage.getItem('token') == null) {
@@ -361,11 +291,9 @@ class Homepage extends Component {
                 console.log("aaaa" + id);
 
 
-
                 var token = window.localStorage.getItem('token');
 
                 console.log(token);
-
 
 
                 var settings = {
@@ -429,7 +357,6 @@ class Homepage extends Component {
                             "the_member": "",
 
                         }
-
                     ),
 
                 };
@@ -451,26 +378,16 @@ class Homepage extends Component {
             });
 
 
-
-
-
             window.localStorage.removeItem('id_gp');
 
 
-
-
-
             console.log("aa");
-
-
-
 
 
             var token = window.localStorage.getItem('token');
 
             var username = window.localStorage.getItem('username');
 
-        
 
             $('.username').text(username);
 
@@ -483,7 +400,6 @@ class Homepage extends Component {
             });
 
 
-
             $(".userprofile").click(function () {
 
                 alert("im just a MVP version :)");
@@ -491,15 +407,9 @@ class Homepage extends Component {
             });
 
 
-
-
-
             var groups = [];
 
             var mygroups = [];
-
-
-
 
 
             var settings = {
@@ -519,7 +429,6 @@ class Homepage extends Component {
             };
 
 
-
             $.ajax(settings).done(function (response) {
 
                 console.log(response);
@@ -529,13 +438,9 @@ class Homepage extends Component {
                     mygroups.push({name: response[counter].title, id: response[counter].groupid});
 
 
-
-
-
                 var htmlcode = '';
 
                 for (var counter1 = 0; counter1 < mygroups.length; counter1++, htmlcode = '') {
-
 
 
                     var s = "document.getElementById('myModal')";
@@ -553,9 +458,6 @@ class Homepage extends Component {
                     var dd = d + ".style.display = 'block'";
 
 
-
-
-
                     //   var l = "window.localStorage.setItem('id_gp','" + mygroups[counter1].id + "')";
 
                     //  console.log("mygroupssss" + mygroups[counter1].id);
@@ -569,13 +471,9 @@ class Homepage extends Component {
                     //window.location.replace("/group/" + id + "");
 
 
-
-
-
                     var hoverout = 'onMouseOut="this.style.color=';
 
                     var hoverrout = hoverout + "'white'";
-
 
 
                     var hover = 'onMouseOver="this.style.color=';
@@ -603,9 +501,6 @@ class Homepage extends Component {
                     //  onMouseOut="this.style.color='green'" >GeeksforGeeks</a>
 
 
-
-
-
                     /*     var hoverout='onMouseOut="this.style.color=';
 
                          var hoverrout=hoverout+"'red'";
@@ -623,11 +518,7 @@ class Homepage extends Component {
                     htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + ad + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" + mygroups[counter1].name + '</p>';
 
 
-
-
-
                     htmlcode += '<div class="buttonsforgp">';
-
 
 
                     htmlcode += '<div  onclick="' + a + "," + dd + '" class="leave"  style={{ width:45px , height:45px}} ></div>';
@@ -639,35 +530,26 @@ class Homepage extends Component {
                     htmlcode += '</br>';
 
 
+                    // setTimeout(function () {
 
+                    $('.groupshowbody').append(htmlcode);
 
-
-                   // setTimeout(function () {
-
-                        $('.groupshowbody').append(htmlcode);
-
-                   // }, 100);
-
-
-
+                    // }, 100);
 
 
                 }
 
 
-
             });
-
 
 
             var localresponse;
 
-            $('.modal2').mouseover(function () {
+            $('.modal2').mouseenter(function () {
 
                 var gpid = window.localStorage.getItem("id_gp");
 
                 console.log(gpid);
-
 
 
                 var settings = {
@@ -681,13 +563,10 @@ class Homepage extends Component {
                     "Content-Type": "application/json",
 
 
-
                 };
 
 
-
                 $.ajax(settings).done(function (response) {
-
 
 
                     localresponse = response;
@@ -705,27 +584,16 @@ class Homepage extends Component {
                         $('.admintext').text("");
 
 
-
-
-
                 });
-
-
-
 
 
             });
 
 
-
-
-
             $('.dltyes').click(function () {
 
 
-
                 var gpid = window.localStorage.getItem("id_gp");
-
 
 
                 if (localresponse.created_by == window.localStorage.getItem('username')) {
@@ -747,7 +615,6 @@ class Homepage extends Component {
                         success: function () {
 
 
-
                             window.location.replace('/homepage/');
 
                         },
@@ -765,9 +632,7 @@ class Homepage extends Component {
                         "contentType": false,
 
 
-
                     };
-
 
 
                     $.ajax(settings).done(function (response) {
@@ -795,7 +660,6 @@ class Homepage extends Component {
                         success: function () {
 
 
-
                             window.location.replace('/homepage/');
 
                         },
@@ -813,9 +677,7 @@ class Homepage extends Component {
                         "contentType": false,
 
 
-
                     };
-
 
 
                     $.ajax(settings).done(function (response) {
@@ -829,9 +691,6 @@ class Homepage extends Component {
             });
 
 
-
-
-
             $('.dltno').click(function () {
 
                 $('.modal2').fadeOut('slow');
@@ -839,11 +698,9 @@ class Homepage extends Component {
             });
 
 
-
-            $('.modal').mouseover(function () {
+            $('.modal').mouseenter(function () {
 
                 var gpid = window.localStorage.getItem("id_gp");
-
 
 
                 var settings = {
@@ -857,9 +714,7 @@ class Homepage extends Component {
                     "Content-Type": "application/json",
 
 
-
                 };
-
 
 
                 $.ajax(settings).done(function (response) {
@@ -869,11 +724,7 @@ class Homepage extends Component {
                 });
 
 
-
-
-
             });
-
 
 
             console.log("shomarash : " + window.localStorage.getItem('id_gp'));
@@ -881,11 +732,7 @@ class Homepage extends Component {
             $('.submitedit').click(function () {
 
 
-
                 var gpid = window.localStorage.getItem("id_gp");
-
-
-
 
 
                 var title = $('#edittitle').val();
@@ -897,7 +744,6 @@ class Homepage extends Component {
                 var form = new FormData();
 
 
-
                 if (title != "")
 
                     form.append("title", title);
@@ -905,9 +751,6 @@ class Homepage extends Component {
                 if (des != '')
 
                     form.append("describtion", des);
-
-
-
 
 
                 var settings = {
@@ -925,7 +768,6 @@ class Homepage extends Component {
                     },
 
                     success: function () {
-
 
 
                         window.location.replace("/homepage/");
@@ -955,7 +797,6 @@ class Homepage extends Component {
                 };
 
 
-
                 $.ajax(settings).done(function (response) {
 
                     console.log(response);
@@ -963,9 +804,7 @@ class Homepage extends Component {
                 });
 
 
-
             })
-
 
 
             window.onclick = function (event) {
@@ -975,7 +814,6 @@ class Homepage extends Component {
                     $('.modal').fadeOut("slow");
 
 
-
                 }
 
                 if (event.target == document.getElementById("myModal2")) {
@@ -983,11 +821,9 @@ class Homepage extends Component {
                     $('.modal2').fadeOut("slow");
 
 
-
                 }
 
             }
-
 
 
             var settings = {
@@ -1005,9 +841,6 @@ class Homepage extends Component {
                 },
 
             };
-
-
-
 
 
             $.ajax(settings).done(function (response) {
@@ -1029,9 +862,7 @@ class Homepage extends Component {
                         "Content-Type": "application/json",
 
 
-
                     };
-
 
 
                     $.ajax(settings2).done(function (response2) {
@@ -1045,7 +876,6 @@ class Homepage extends Component {
                                 booll = 1;
 
 
-
                         }
 
                         if (booll == 0)
@@ -1055,13 +885,7 @@ class Homepage extends Component {
                     });
 
 
-
-
-
                 }
-
-
-
 
 
                 setTimeout(function () {
@@ -1083,13 +907,9 @@ class Homepage extends Component {
                         var ad2 = "window.localStorage.setItem('isadmin','" + '0' + "')"; //id of the group
 
 
-
                         var r = "window.location.replace('/group/" + groups[counter2].id + "')";
 
                         //window.location.replace("/group/" + id + "");
-
-
-
 
 
                         var hoverout = 'onMouseOut="this.style.color=';
@@ -1097,11 +917,9 @@ class Homepage extends Component {
                         var hoverrout = hoverout + "'white'";
 
 
-
                         var hover = 'onMouseOver="this.style.color=';
 
                         var hoverr = hover + "'red'";
-
 
 
                         /*    var s="document.getElementById('close2"+counter1+"')";
@@ -1121,7 +939,6 @@ class Homepage extends Component {
                         htmlcode+=+'<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close2' + counter1 + '">&times;</span>';*/
 
 
-
                         htmlcode2 += '</br>';
 
                         htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a2 + "," + ad2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].name + '</p>';
@@ -1129,15 +946,12 @@ class Homepage extends Component {
                         htmlcode2 += '<div class="buttonsforgp">';
 
 
-
                         htmlcode2 += '<div onclick="' + a2 + "," + dd2 + '" class="leave" ></div>';
-
 
 
                         htmlcode2 += '</div>';
 
                         htmlcode2 += '</br>';
-
 
 
                         $('.groupshowbody').append(htmlcode2);
@@ -1153,27 +967,16 @@ class Homepage extends Component {
                 }, 1000);
 
 
-
-
-
             });
-
-
-
 
 
         });
 
 
-
-
-
         $(document).ready(function () {
 
 
-
             console.log(window.localStorage.getItem('token'));
-
 
 
         })
@@ -1181,21 +984,13 @@ class Homepage extends Component {
     };
 
 
-
-
-
     constructor(props) {
-
 
 
         super(props);
 
 
-
-
-
         this.states = {
-
 
 
             // anchorPosition:null ,
@@ -1203,107 +998,67 @@ class Homepage extends Component {
             value: ''
 
 
-
-
-
         }
-
 
 
         this.handleChange = this.handleChange.bind(this);
 
 
-
         this.handleSubmit = this.handleSubmit.bind(this);
 
 
-
     }
-
 
 
     handleChange(event) {
 
 
-
-
-
         this.setState({value: event.target.value});
 
 
-
-
-
     }
-
 
 
     handleSubmit(event) {
 
 
-
-
-
         alert('A name was submitted: ' + this.state.value);
-
-
-
 
 
         event.preventDefault();
 
 
-
     }
-
 
 
     state = {
 
 
-
         sidedraweropen: false
 
 
-
     };
-
-
-
 
 
     drawertoggleclickhandler = () => {
 
 
-
         this.setState((prevState) => {
-
-
-
 
 
             return {sidedraweropen: !prevState.sidedraweropen}
 
 
-
-
-
         });
-
 
 
     };
 
 
-
-
-
     backdropclickhandeler = () => {
 
 
-
         this.setState({sidedraweropen: false})
-
 
 
     };
@@ -1321,7 +1076,6 @@ class Homepage extends Component {
     //     }
 
 
-
     //     else{
 
     //         return(null)
@@ -1331,27 +1085,15 @@ class Homepage extends Component {
     // };
 
 
-
-
-
     render() {
-
-
-
 
 
         return (
 
 
-
-
-
             <div class="Homepage">
 
                 {/* {this.renderEfect()} */}
-
-
-
 
 
                 <div id="myModal" class="modal">
@@ -1361,21 +1103,15 @@ class Homepage extends Component {
                         <h3 class="texx">Edit your groups deatails</h3>
 
 
-
                         <hr></hr>
-
 
 
                         <input class="inputedit" id='edittitle' placeholder="Title"></input>
 
 
-
-
-
                         <input class="inputedit" id='editdes' placeholder="Description"></input>
 
                         <br></br>
-
 
 
                         <Button style={{
@@ -1391,13 +1127,10 @@ class Homepage extends Component {
                         </Button>
 
 
-
                     </div>
 
 
-
                 </div>
-
 
 
                 <div id="myModal2" className="modal2">
@@ -1411,7 +1144,6 @@ class Homepage extends Component {
                         <div className='dltbtns'>
 
 
-
                             <Button style={{backgroundColor: "Red"}} size='large'
 
                                     className="dltno" variant="contained" color="secondary">
@@ -1421,7 +1153,6 @@ class Homepage extends Component {
                             </Button>
 
 
-
                             <Button style={{
 
                                 backgroundColor: 'gray',
@@ -1429,13 +1160,11 @@ class Homepage extends Component {
                                 marginRight: "4px"
 
 
-
                             }} size='large' className="dltyes" variant="contained" color="secondary">
 
                                 <p>Yes</p>
 
                             </Button>
-
 
 
                         </div>
@@ -1447,11 +1176,7 @@ class Homepage extends Component {
                 </div>
 
 
-
-
-
                 <header className="head">
-
 
 
                     <div className='leftheader'>
@@ -1463,7 +1188,6 @@ class Homepage extends Component {
                                 color: 'white'
 
 
-
                             }}
 
                                         className="profilepic">
@@ -1473,21 +1197,15 @@ class Homepage extends Component {
                             </IconButton>
 
 
-
                             <p className='username'>Username</p>
 
                         </div>
 
 
-
                         <div className='searchgp'>
 
 
-
-
-
                             <input placeholder='id' className='input'/>
-
 
 
                             <Button style={{
@@ -1509,9 +1227,6 @@ class Homepage extends Component {
                             </div>
 
                         </div>
-
-
-
 
 
                     </div>
@@ -1537,9 +1252,6 @@ class Homepage extends Component {
                 </header>
 
 
-
-
-
                 <div className="formback">
 
                     <div className="formback-content">
@@ -1555,17 +1267,14 @@ class Homepage extends Component {
                             </IconButton>
 
 
-
                             <h4 className="textForm">create new group</h4>
 
                             <hr></hr>
 
 
-
                         </div>
 
                         <input onChange={this.change_name} type="text"
-
 
 
                                className="input1" placeholder="id" style={{
@@ -1577,9 +1286,7 @@ class Homepage extends Component {
                         }}/>
 
 
-
                         <br></br>
-
 
 
                         <br></br>
@@ -1595,15 +1302,10 @@ class Homepage extends Component {
                         }}/>
 
 
-
                         <div className="Status-Id" id="Status-Id"></div>
 
 
-
-
-
                         <br></br>
-
 
 
                         <textarea onChange={this.change_bio} type="text"
@@ -1617,11 +1319,7 @@ class Homepage extends Component {
                             marginTop: '8%'
 
 
-
-
-
                         }}/>
-
 
 
                         <Button style={{
@@ -1643,7 +1341,6 @@ class Homepage extends Component {
                     </div>
 
 
-
                     <div className="addmember-content">
 
                         <p classname='tit' style={{fontSize: "100%", marginBottom: "8%", marginTop: "8%",}}>Add your
@@ -1651,7 +1348,6 @@ class Homepage extends Component {
                             member</p>
 
                         <hr></hr>
-
 
 
                         <input class='inp' placeholder=" enter your user's id"></input>
@@ -1665,7 +1361,6 @@ class Homepage extends Component {
                         <div class="center">
 
 
-
                             <Button style={{marginTop: "14%", backgroundColor: "Red"}} size='large'
 
                                     className="addbtn" variant="contained" color="secondary">
@@ -1673,7 +1368,6 @@ class Homepage extends Component {
                                 <p>Add&nbsp;</p>
 
                             </Button>
-
 
 
                             <Button style={{
@@ -1685,15 +1379,11 @@ class Homepage extends Component {
                                 marginLeft: "3%"
 
 
-
                             }} size='large' className="skipbtn" variant="contained" color="secondary">
 
                                 <p>Done</p>
 
                             </Button>
-
-
-
 
 
                         </div>
@@ -1721,68 +1411,45 @@ class Homepage extends Component {
                         </div>
 
                     </div> */}
-
-
-
-
-
                 </div>
-
-
-
-
-
                 <div className="groupsShow">
-<div className="headershow">
-<h4> Your Groups </h4>
+                    <div className="headershow">
+
+                        <h4 className='yourgroupstext'> Your Groups </h4>
 
 
+                        <Button style={{
 
-                    <Button style={{
+                            backgroundColor: "Red",
+                            width:'30%',
 
-                        backgroundColor: "Red",
+                            marginTop: '10px'
 
-                       marginLeft:'140px',
-                       marginTop:'10px'
+                        }} className='createnewgp' startIcon={<AddIcon/>} variant="contained" color="secondary">
 
-                    }} className='createnewgp' startIcon={<AddIcon/>} variant="contained" color="secondary">
+                            Create group
 
+                        </Button>
 
-
-                        Create new group
-
-                    </Button>
-               
                     </div>
-<hr></hr>
-<div className=' groupshowbody'>
+                    <div className=' groupshowbody'>
+                        <hr></hr>
 
-</div>
+                    </div>
 
                 </div>
-
-
-
 
 
             </div>
 
 
-
-
-
         )
-
 
 
     }
 
 
-
-
-
 }
-
 
 
 export default Homepage

@@ -224,10 +224,10 @@ input {
     color:red;
 }
 .homepagebtn2 {
-
+padding: 5px;
     height: 30px;
     width: 150px;
-    font-size: 20px;
+    font-size: 14px;
     cursor: pointer;
     background-color: #FFFFFF;
     border-radius: 20px;

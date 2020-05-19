@@ -141,7 +141,7 @@ class sl extends Component {
             <dev>
 
                 <h2 className='boro'>Weekly Coding Challenge #1: Sign in/up FormFDNSKN</h2>
-                <div class='homepagebtn2'><a href='./startpage'>Start page</a></div>
+                <a href='./startpage'><div class='homepagebtn2'>Start page</div></a>
                 <div class="container" id="container">
                     <div class="form-container sign-up-container">
                         <form action="#">
