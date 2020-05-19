@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import 'bootstrap/dist/css/bootstrap.min.css'
+
 import './Startpage.css'
 import { Navbar , Nav} from 'react-bootstrap';
 
