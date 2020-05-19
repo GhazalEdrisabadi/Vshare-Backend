@@ -19,7 +19,7 @@ urlpatterns = [
     path('group/users_ready_to_watch/<str:entered_group>/',views.GroupAcceptedClientDetail.as_view(), name='group_users_ready_to_watch'),
     path('group/messages/', views.MessageHistory.as_view(), name='all_messages'),
     path('group/online_users/', views.OnlineUserList.as_view(), name='online_users'),
-
+    path('group/permissions/', views.PermissionList.as_view(), name='Permission_list'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
