@@ -300,6 +300,18 @@ console.log(url1)
         const {id} = this.props.match.params
 
         $(document).ready(function () {
+                window.onclick = function (event) {
+
+                if (event.target == document.getElementById("myModal")) {
+
+                    $('.modal').fadeOut("slow");
+
+
+                }
+
+        
+
+            }
             // setTimeout(function () {
             //     const message_reselect = {"command": "reset"}
             //     ws.send(JSON.stringify(message_reselect));
@@ -591,12 +603,18 @@ console.log(url1)
                 //  $(".textarea_bio").append(response.describtion + "\n")
 
                 $(".name").append(response.title);
-
+                $(".namegp").append(response.title);
+                 $(".idgp").append('@ '+response.groupid);
+   $(".desbody").append(response.describtion);
             });
 
 
             //Log the messages that are returned from the server
+$(".name").click(function(){
+        document.getElementById('myModal').style.display = 'block'
 
+                    
+});
 
             $(".send_btn").click(function () {
                 var massage = $(".formback_text_input").val();
@@ -1482,7 +1500,23 @@ console.log(url1)
                         </div>
 
                     </header>
+             <div id="myModal" class="modal">
 
+                    <div class="modal-content">
+                        <div className='headModal'>
+<div className='photogp'/>
+<div className='infogp'>
+<div className='namegp'/>
+<div className='idgp'/>
+</div>
+</div>
+<div className='destitle'>Description:</div>
+<div className='desbody'/>
+
+                    </div>
+
+
+                </div>
                     <div id='formback_movie_id' className="formback_movie">
 
                         <div id="movie" className="div_player_movie">
