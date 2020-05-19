@@ -921,6 +921,7 @@ z-index: 1;
 }
 
 
+
 .container {
     width: 100%;
     padding-right: 15px;
@@ -1135,4 +1136,9 @@ z-index: 1;
     max-width: 100%
 }
 
+
+
+#reselect{
+    margin-bottom: 5px;
+}
 

@@ -63,9 +63,11 @@ class Homepage extends Component {
 
                             $('#Status-Id').html('group with this groupid already exists!');
 
+
                         $('#Status-Id').fadeIn();
 
                         $('#Status-Id').delay(3000).toggle('slow');
+
 
                     },
 
@@ -530,11 +532,13 @@ class Homepage extends Component {
                     htmlcode += '</br>';
 
 
+
                     // setTimeout(function () {
 
                     $('.groupshowbody').append(htmlcode);
 
                     // }, 100);
+
 
 
                 }
@@ -940,7 +944,6 @@ class Homepage extends Component {
 
 
                         htmlcode2 += '</br>';
-
                         htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a2 + "," + ad2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].name + '</p>';
 
                         htmlcode2 += '<div class="buttonsforgp">';
@@ -1092,8 +1095,6 @@ class Homepage extends Component {
 
 
             <div class="Homepage">
-
-                {/* {this.renderEfect()} */}
 
 
                 <div id="myModal" class="modal">
@@ -1277,7 +1278,9 @@ class Homepage extends Component {
                         <input onChange={this.change_name} type="text"
 
 
+
                                className="input1" placeholder="id" style={{
+
 
                             height: '40px',
 
