@@ -397,42 +397,7 @@ min-width: 50%;
 
     }
     @media screen and (min-width: 500px) and (max-width:780px)  {
-  .modal {
-    width: 100%;
 
-  }
-  .modal2{
-    width: 500px;
-  }
- .input{
-     width: 200px;
- }
-  .inputedit{
-      width: 150px;
-
-  }
-  .texx {
-
-    font-size: 20px;
-
-}
-
-.deleteTEXT{
-    font-size: 15px;
-}
-.admintext{
-    font-size: 12px;
-}
-.modal-content2{
-
-}
-.dltbtns{
-    display: flex;
-
-    flex-direction: row;
-
-    margin-right: 7%;
-}
 .groupsShow{
     width: 70%;
     margin-top: 13%;
@@ -449,15 +414,7 @@ z-index: 1;
 }
     }
 @media screen and (min-width: 400px) and (max-width:595px)  {
-   .modal {
-    width: 150%;
-    margin-left: -120px;
 
-  }
-  .inputedit{
-      width: 200px;
-
-  }
   .createnewgp{
       width: 700px;
      height: 70px;
@@ -465,33 +422,7 @@ z-index: 1;
 
   }
 
-  .modal2{
-    background-color: red;
-  width: 150%;
-}
-.modal-content2{
-
-   width: 150%;
-}
-.dltyes{width: 2px;}
-.dltno{
-    width: 2px;
-
-}
-.deleteTEXT{
-    font-size: 15px;
-}
-
-.admintext{
-    font-size: 12px;
-}
-.dltbtns{
-    display: flex;
-
-    flex-direction: column;
-
-    margin-right: 24%;
-}
+ 
   .logout_text{
       display: none;
   }
@@ -558,33 +489,7 @@ z-index: 1;
 
 }
 @media screen and (min-width: 780px) and (max-width:1200px)  {
-  .modal {
-    width: 100%;
-
-  }
-  .inputedit{
-      width: 200px;
-
-  }
-  .modal2{
-    background-color: red;
-}
-.modal-content2{
-
-}
-.deleteTEXT{
-    font-size: 23px;
-}
-.admintext{
-    font-size: 20px;
-}
-.dltbtns{
-    display: flex;
-
-    flex-direction: row;
-
-    margin-right: 18%;
-}
+ 
 .groupsShow{
     width: 47%;
     margin-top: 10%;
@@ -604,48 +509,19 @@ z-index: 1;
 }
 }
 @media screen and (min-width: 1200px)  {
-  .modal {
-    width: 100%;
 
-  }
-  .inputedit{
-      width: 300px;
-
-  }
-  .modal2{
-    background-color: white;
-}
-.modal-content2{
-
-}
-.dltbtns {
-    margin-top: 5%;
-    margin-right: 38%;
-}
 .createnewgp{
     width: 200px;
 
 }
 }
 @media screen and (min-width: 1200px) and (max-width:1600px)  {
-  .modal {
-    width: 100%;
-
-  }
+  
   .inputedit{
       width: 300px;
 
   }
-  .modal2{
-    background-color: white;
-}
-.modal-content2{
 
-}
-.dltbtns {
-    margin-top: 5%;
-    margin-right: 30%;
-}
 .groupshowbody{
     height: 80%;
 }
@@ -668,9 +544,11 @@ z-index: 1;
     color: whitesmoke;
     margin: auto;
     padding-left: 30px;
+    padding-right: 30px;
     padding-bottom: 40px;
     border: 1px solid #888;
     width: 30%;
+    min-width: 400px;
 }
 
 .modal2 {
@@ -704,16 +582,18 @@ min-width: 50%;
 
 .dltbtns {
 
-    float: right;
+   
 
 }
 
+
+
 .dltyes {
-    float: left;
+    float: initial;
 }
 
 .dltno {
-    float: right;
+    float: initial;
 }
 
 .inputedit {
@@ -723,7 +603,9 @@ min-width: 50%;
 
     border-radius: 10px;
     font-size: 20px;
-    height: 35px;
+   height: 35px;
+
+    width: 300px;;
 
     margin-top: 7px;
     margin-right: 10px;
@@ -755,7 +637,7 @@ min-width: 50%;
     width: 30%;
   min-height: 350px;
     font-family: Arial;
-
+min-width: 300px;
 
 }
 
