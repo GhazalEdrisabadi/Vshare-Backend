@@ -411,6 +411,11 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			}
 		)
 
+
+
+
+
+
 #created to implement chat feature
 class TextChat(AsyncJsonWebsocketConsumer):
 
@@ -494,8 +499,9 @@ class TextChat(AsyncJsonWebsocketConsumer):
 
 		user = self.scope["user"]
 		ismember = await is_member(user,self.roomid)
-
-		if ismember:
+		has_chat_permission = await chat_permission(user,self.roomid) 
+		
+		if ismember and has_chat_permission:
 
 			#here we will store the message in our DB
 			storedmessage = await store_message(user,message_client,self.roomid)
@@ -516,7 +522,8 @@ class TextChat(AsyncJsonWebsocketConsumer):
 			await self.send_json(
 				{	
 					"username":user.username,
-					"message" : "you must be in the group to send messages through it!",
+					"message" : "you must be in the group and have permission to send messages!",
+					"needed_permission" : "0"
 				}
 			)
 

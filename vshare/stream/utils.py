@@ -4,6 +4,19 @@ from channels.db import database_sync_to_async
 from .exceptions import ClientError
 from groups.models import *
 
+#check if user has the permission of chating in the group or not
+@database_sync_to_async
+def chat_permission(the_user,the_room):
+	try:
+		group_obj = Group.objects.get(groupid=the_room)
+		permission_obj=Permission.objects.get(group=group_obj, member=the_user)
+		if permission_obj.chat_permission:
+			return True
+		else:
+			return False
+	except Group.DoesNotExist:
+			raise ClientError("ROOM_INVALID")
+
 #remove the disconected user from the online users
 @database_sync_to_async
 def remove_online_user(the_user,the_room):

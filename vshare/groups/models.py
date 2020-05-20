@@ -33,14 +33,8 @@ class Group(models.Model):
 			created_group = Group.objects.get(groupid=self.groupid)
 			owner_to_members=Membership(the_group=created_group , the_member=created_group.created_by)
 			owner_to_members.save()
-			default_permit0=Permission(group=created_group , member=created_group.created_by , permit=0)
-			default_permit0.save()
-
-			default_permit1=Permission(group=created_group , member=created_group.created_by , permit=1)
-			default_permit1.save()
-
-			default_permit2=Permission(group=created_group , member=created_group.created_by , permit=2)
-			default_permit2.save()
+			default_permit=Permission(group=created_group , member=created_group.created_by , chat_permission=True , playback_permission=True , choose_video_permission=True)
+			default_permit.save()
 
 	state0 = 0
 	state1 = 1
@@ -112,23 +106,10 @@ class OnlineUser(models.Model):
 class Permission(models.Model):
 	member = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE)
 	group = models.ForeignKey(Group, to_field="groupid" , on_delete=models.CASCADE)
+	chat_permission = models.BooleanField(default=True,)
+	choose_video_permission = models.BooleanField(default=False,)
+	playback_permission = models.BooleanField(default=False,)
 	date_set = models.DateTimeField(auto_now_add=True)
-	
-	type0 = 0
-	type1 = 1
-	type2 = 2
-
-	PermitChoice = (
-		(type0, _('Able to chat')),
-		(type1, _('Able to select the video')),
-		(type2, _('Able to control the playback')),
-	)
-
-	permit = models.PositiveSmallIntegerField(
-		choices=PermitChoice,
-		default=type0,
-	)
-
 	class Meta:
 		ordering = ['date_set']
-		unique_together = ("member", "group","permit")
+		unique_together = ("member", "group")
