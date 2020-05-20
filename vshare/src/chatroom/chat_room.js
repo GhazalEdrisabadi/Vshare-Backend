@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 
 import RedoIcon from '@material-ui/icons/Redo';
 
+import Avatar from '@material-ui/core/Avatar';
 import './video-react.css';
 
 import {Player, ControlBar, PlayToggle, Shortcut} from 'video-react';
@@ -79,7 +80,7 @@ var comeinstate1 = 0;
 var Play_pause_space = 0;
 
 
-
+var create_by=null
 
 class chat_room extends Component {
 
@@ -354,8 +355,6 @@ console.log(url1)
             if (window.localStorage.getItem('token') == null) {
 
 
-       
-
                 alert("Login first !");
 
 
@@ -363,7 +362,12 @@ console.log(url1)
 
 
             }
+    window.onclick = function (event) {
 
+                if (event.target == document.getElementById("myModal")) {
+                    $('.modal-').fadeOut("slow");
+     }
+            }
             $('.logout').click(function () {
                 window.localStorage.setItem('id_gp','');
                 // ws1.close();
@@ -590,10 +594,118 @@ console.log(url1)
 
                 //  $(".textarea_bio").append(response.describtion + "\n")
 
+         $(".photogp").html(response.title.toUpperCase()[0]);
+
                 $(".name").append(response.title);
 
+                $(".namegp").append(response.title);
+
+                 $(".idgp").append('@ '+response.groupid);
+
+   $(".desbody").append(response.describtion);
+create_by=response.created_by
+  
+
+
+
+                for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
+
+var htmlcode = '';
+var controller=null
+var selector=null
+     
+  var settings = {
+
+                "url": "http://127.0.0.1:8000/group/"+id_gp+"/permissions/?member="+response.members[counter1]+"",
+
+                "method": "GET",
+
+                "timeout": 0,
+
+                "headers": {
+
+                    //'X-CSRFToken': csrftoken,
+
+                    //  "Authorization": "token " + token,
+
+                    "accept": "application/json",
+
+                    "Access-Control-Allow-Origin": "*",
+
+                    "Access-Control-Allow-Headers": "*",
+
+                    "Content-Type": "application/json"
+
+                }
+
+            };
+
+
+            $.ajax(settings).done(function (response_) {
+
+              
+
+                console.log(response_);
+                 controller=response_.playback_permission
+                 selector=response_.choose_video_permission
+                
+                 console.log("117778878")
+                 var r = "window.open('/profile/" + response_.member + "')";
+                    var a = "window.localStorage.setItem('user','" + response_.member + "')"; //id of the group
+                    var hoverout = 'onMouseOut="this.style.color=';
+                    var hoverrout = hoverout + "'white'";
+                    var hover = 'onMouseOver="this.style.color=';
+                    var hoverr = hover + "'red'";
+                   var hoverout1 = 'onMouseOut="this.style.backgroundColor=';
+                   var hoverrout1 = hoverout1 + "'rgb(35, 35, 35)'";
+                    var hover1 = 'onMouseOver="this.style.backgroundColor=';
+                   var hoverr1 = hover1 + "'rgb(365, 365,365,0.1)'";
+                   htmlcode=''
+htmlcode+='<div class="divMem"' + hoverr1 + '"' + hoverrout1 + '"' + '>'
+                      htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + r + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" +response_.member + '</p>';
+                     ;
+
+                    if(response_.member == create_by){
+ htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >admin</p>';
+}
+else{
+  
+    if(controller && selector){
+htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
+    }
+    if(controller && !selector){
+htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
+    }
+    if(!controller && selector){
+htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
+    }
+             
+}
+
+htmlcode += '</div>';
+console.log(htmlcode)
+ $(".infobody").append(htmlcode);
+ 
+            })
+      
+                   }
             });
 
+
+
+
+
+            //Log the messages that are returned from the server
+
+$(".name").click(function(){
+
+        document.getElementById('myModal').style.display = 'block'
+
+
+
+                    
+
+});
 
             //Log the messages that are returned from the server
 
@@ -1482,7 +1594,43 @@ console.log(url1)
                         </div>
 
                     </header>
+          <div id="myModal" class="modal-">
 
+
+
+                    <div class="modal-content-">
+
+                        <div className='headModal'>
+
+                            <Avatar style={{backgroundColor:'rgba(0,0,0,0.5)' , width:'100px' , height:'100px' , fontSize:'50px'}} className='photogp'>&nbsp;</Avatar>
+
+
+
+<div className='infogp'>
+
+<div className='namegp'/>
+
+<div className='idgp'/>
+
+</div>
+
+</div>
+
+<div className='destitle'>Description:</div>
+
+<div className='desbody'/>
+
+<hr/>
+
+<div className='infobody'/>
+
+                    </div>
+
+
+
+
+
+                </div>
                     <div id='formback_movie_id' className="formback_movie">
 
                         <div id="movie" className="div_player_movie">
