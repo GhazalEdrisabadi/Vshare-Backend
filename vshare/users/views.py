@@ -73,3 +73,72 @@ class UserByUsername(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'username'
     permission_classes = [AllowAny]
 
+class FriendshipList(generics.ListCreateAPIView):
+	queryset = Friendship.objects.all()
+	serializer_class = FriendshipSerializer
+	permission_classes = [AllowAny]
+	def perform_create(self, serializer):
+		req = serializer.context['request']
+		serializer.save(who_follows=req.user)
+
+class UserFollowers(ListAPIView):
+	#queryset = OnlineUser.objects.all()
+	serializer_class = FriendshipSerializer
+	permission_classes = [AllowAny]
+	def get_queryset(self):
+		queryset = Friendship.objects.all()
+		get_param = self.request.query_params.get('user','')
+		return queryset.filter(who_is_followed=get_param)
+	def list(self, request, *args, **kwargs):
+		get_param = self.request.query_params.get('user','')
+		queryset = Friendship.objects.all()
+		queryset = queryset.filter(who_is_followed=get_param)
+		serializer = self.get_serializer(queryset, many=True)
+		response_data = {'followers_count': queryset.count(),'result': serializer.data}
+		return Response(response_data)
+
+class UserFollowings(ListAPIView):
+	#queryset = OnlineUser.objects.all()
+	serializer_class = FriendshipSerializer
+	permission_classes = [AllowAny]
+	def get_queryset(self):
+		queryset = Friendship.objects.all()
+		get_param = self.request.query_params.get('user','')
+		return queryset.filter(who_follows=get_param)
+	def list(self, request, *args, **kwargs):
+		get_param = self.request.query_params.get('user','')
+		queryset = Friendship.objects.all()
+		queryset = queryset.filter(who_follows=get_param)
+		serializer = self.get_serializer(queryset, many=True)
+		response_data = {'followings_count': queryset.count(),'result': serializer.data}
+		return Response(response_data)
+
+
+class FindFollower(generics.RetrieveUpdateDestroyAPIView):
+	serializer_class = FriendshipSerializer
+	permission_classes = [AllowAny]
+	lookup_field = 'who_follows'
+	def get_queryset(self):
+		following = self.request.user
+		queryset = Friendship.objects.filter(who_is_followed=following)
+		return queryset
+
+class FindFollowing(generics.RetrieveUpdateDestroyAPIView):
+	serializer_class = FriendshipSerializer
+	permission_classes = [AllowAny]
+	lookup_field = 'who_is_followed'
+	def get_queryset(self):
+		following = self.request.user
+		queryset = Friendship.objects.filter(who_follows=following)
+		return queryset
+
+class UnfollowUser(generics.DestroyAPIView):
+	serializer_class = FriendshipSerializer
+	permission_classes = [AllowAny]
+	lookup_field = 'who_is_followed'
+	def get_queryset(self):
+		follower = self.request.user
+		queryset = Friendship.objects.filter(who_follows=follower)
+		return queryset
+
+
