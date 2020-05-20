@@ -32,8 +32,7 @@ class DeletePermission(generics.RetrieveUpdateDestroyAPIView):
     lookup_field='group'
     def get_queryset(self):
         the_member= self.request.query_params.get('member')
-        the_permit= self.request.query_params.get('permit')
-        queryset = Permission.objects.filter(member=the_member,permit=the_permit)
+        queryset = Permission.objects.filter(member=the_member)
         return queryset
 
 class OnlineUserList(generics.ListAPIView):
