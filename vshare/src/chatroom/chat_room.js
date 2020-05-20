@@ -304,7 +304,7 @@ console.log(url1)
 
                 if (event.target == document.getElementById("myModal")) {
 
-                    $('.modal').fadeOut("slow");
+                    $('.modal-').fadeOut("slow");
 
 
                 }
@@ -1550,9 +1550,9 @@ $(".name").click(function(){
                         </div>
 
                     </header>
-             <div id="myModal" class="modal">
+             <div id="myModal" class="modal-">
 
-                    <div class="modal-content">
+                    <div class="modal-content-">
                         <div className='headModal'>
                             <Avatar style={{backgroundColor:'rgba(0,0,0,0.5)' , width:'100px' , height:'100px' , fontSize:'50px'}} className='photogp'>&nbsp;</Avatar>
 
