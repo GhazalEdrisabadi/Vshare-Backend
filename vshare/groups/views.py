@@ -26,6 +26,16 @@ class PermissionList(generics.ListCreateAPIView):
     serializer_class = PermissionSerializer
     permission_classes = [AllowAny]
 
+class DeletePermission(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = PermissionSerializer
+    permission_classes = [AllowAny]
+    lookup_field='group'
+    def get_queryset(self):
+        the_member= self.request.query_params.get('member')
+        the_permit= self.request.query_params.get('permit')
+        queryset = Permission.objects.filter(member=the_member,permit=the_permit)
+        return queryset
+
 class OnlineUserList(generics.ListAPIView):
     #queryset = OnlineUser.objects.all()
     serializer_class = OnlineUserSerializer
