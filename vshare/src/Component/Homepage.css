@@ -412,6 +412,9 @@ z-index: 1;
     width: 200px;
 
 }
+.input{
+    width: 230px;
+}
     }
 @media screen and (min-width: 400px) and (max-width:595px)  {
 
