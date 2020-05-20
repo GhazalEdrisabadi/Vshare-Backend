@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import React, { useState , Component } from "react";
+import MultiSelect from "react-multi-select-component"
 import './Homepage.css'
 import AddIcon from '@material-ui/icons/Add';
 import $ from 'jquery';
@@ -8,8 +9,16 @@ import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
-
-
+import Select from 'react-select';
+var Able_chat=0;
+var Able_controll=0;
+var Able_select=0;
+const options = [
+ 
+  { value: '1', label: 'Able to select video' },
+  { value: '2', label: 'Able to controll the playback' },
+]
+var per=[]
 const name = window.$name;
 
 class Homepage extends Component {
@@ -17,6 +26,9 @@ class Homepage extends Component {
     componentDidMount() {
         const {id} = this.props.match.params;
         $(document).ready(function () {
+           
+
+
             $('.nextbtn').click(function () {
                 var id = $(".input1").val();
 
@@ -74,7 +86,17 @@ class Homepage extends Component {
                     console.log(response);
                 });
             });
-            $(".addbtn").click(function () {
+            $(".addbtn").click(function () {console.log(per)
+                for(var count_per=0 ;count_per<per.length;count_per++){
+                    if(per[count_per].value==1){
+                        Able_select=true
+                    }
+                    if(per[count_per].value==2){
+                        Able_controll=false
+                    }
+                }
+                console.log(Able_select)
+                console.log(Able_controll)
                 var member = $(".inp").val();
 
                 var token = window.localStorage.getItem('token');
@@ -95,9 +117,7 @@ class Homepage extends Component {
 
                     },
                     success: function () {
-
-
-                        var settings = {
+     var settings = {
                             "url": "http://127.0.0.1:8000/group/add_member/",
                             "method": "POST",
                             error: function () {
@@ -110,7 +130,41 @@ class Homepage extends Component {
                             },
                             success: function () {
 
+                                       var settings = {
+                            "url": "http://127.0.0.1:8000/group/permissions/",
+                            "method": "POST",
+                            error: function () {
+
+                           alert("nooooooo")
+
+
+                            },
+                            success: function () {
+
                                 $(".textarea-addmember").append(member + '-');
+                            },
+                            "timeout": 0,
+                            "headers": {
+
+                                "accept": "application/json",
+                                "Access-Control-Allow-Origin": "*",
+                                "Access-Control-Allow-Headers": "*",
+                                "Content-Type": "application/json"
+                            },
+                            "data": JSON.stringify({
+                                    "group": id_gp,
+                                    "member": member,
+                                    "chat_permission":1,
+                                    "playback_permission":Able_controll,
+                                    "Choose_video_permission":Able_select
+                                }
+                            ),
+                        };
+
+                        $.ajax(settings).done(function (response) {
+
+                            console.log(response);
+                        });;
                             },
                             "timeout": 0,
                             "headers": {
@@ -131,6 +185,8 @@ class Homepage extends Component {
 
                             console.log(response);
                         });
+
+                
                     },
                     "headers": {
 
@@ -600,7 +656,8 @@ class Homepage extends Component {
         this.states = {
 
             // anchorPosition:null ,
-            value: ''
+            value: '',
+          selectedOption: null,
 
 
         }
@@ -610,7 +667,13 @@ class Homepage extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
 
     }
-
+  handleChanges = selectedOption => {
+    this.setState(
+      { selectedOption },
+      () => per= this.state.selectedOption
+    );
+    
+  };
     handleChange(event) {
 
 
@@ -666,10 +729,19 @@ class Homepage extends Component {
     //     }
     // };
 
+onSelect(selectedList, selectedItem) {
+    console.log(selectedItem)
+    console.log(selectedList)
+}
+ 
+onRemove(selectedList, removedItem) {
+    console.log(selectedList)
+    console.log(removedItem)
+}
 
     render() {
 
-
+const { selectedOption } = this.state;
         return (
 
 
@@ -828,8 +900,14 @@ class Homepage extends Component {
                         <hr></hr>
 
                         <input class='inp' placeholder=" enter your user's id"></input>
+                         <Select className='selector' isMulti placeholder="select your permission"
+        value={selectedOption}
+        onChange={this.handleChanges}
+        options={options}
+      />
                         <div className="textarea-addmember"
                              style={{borderRadius: "10px", marginTop: "10%", marginBottom: "5%",}}></div>
+ 
                         <div className="Status-Addmember" id="Addmember-Status"></div>
                         <div class="center">
 
