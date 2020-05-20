@@ -44,6 +44,7 @@ import PauseIcon from '@material-ui/icons/Pause';
 import Forward10Icon from '@material-ui/icons/Forward10';
 import EjectIcon from '@material-ui/icons/Eject';
 import StopIcon from '@material-ui/icons/Stop';
+import FirstPageIcon from '@material-ui/icons/FirstPage';
 
 var adminisinstatezero = 1;
 var logoutclicked = 0;
@@ -59,7 +60,6 @@ var encrypted
 var rejoined = 0;
 var played = 0;
 var messagee1;
-
 
 
 var ws = new WebSocket(url);
@@ -79,8 +79,6 @@ var comeinstate1 = 0;
 var Play_pause_space = 0;
 
 
-
-
 class chat_room extends Component {
 
 
@@ -89,8 +87,24 @@ class chat_room extends Component {
     }
 
     componentDidMount() {
-console.log(url)
-console.log(url1)
+        $('.openonlinemember').click(function () {
+            if(document.getElementById("mySidenav").style.width == '0px') {
+                document.getElementById("mySidenav").style.width = "250px";
+                //    document.getElementById("openonlinemember").style.display = "none";
+                $(".openonlinemember").css("transform", "scaleX(1)");
+                //   $('.openonlinemember').fadeOut('fast');
+            }
+            else {
+                document.getElementById("mySidenav").style.width = "0px";
+                $(".openonlinemember").css("transform", "scaleX(-1)");
+            }
+            });
+        $('.closebtn').click(function () {
+            document.getElementById("mySidenav").style.width = "0px";
+        });
+
+        console.log(url)
+        console.log(url1)
         console.log("is admin : " + isadmin);
         document.addEventListener("keyup", this.handlereq_forward_backward, false);
 
@@ -130,43 +144,42 @@ console.log(url1)
                 $(".pm").append("<br>")
 
 
-
                 var element = document.getElementById("pmid");
                 element.scrollTop = element.scrollHeight;
 
 
             }
-                        if(messagee1.message=='isoffline' || messagee1.message=='isonline'){
-                 console.log("onlineeeeeee")
+            if (messagee1.message == 'isoffline' || messagee1.message == 'isonline') {
+                console.log("onlineeeeeee")
 
-                    setTimeout(function () {
-                        $('.onlinemembers').html('');
-                            var settings = {
-                    "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
-                    "method": "GET",
-                    "timeout": 0,
-                    "headers": {
-                        //'X-CSRFToken': csrftoken,
-                        //  "Authorization": "token " + token,
-                        "accept": "application/json",
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Headers": "*",
-                        "Content-Type": "application/json"
-                    }
-                };
+                setTimeout(function () {
+                    $('.onlinemembers').html('');
+                    var settings = {
+                        "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                        "method": "GET",
+                        "timeout": 0,
+                        "headers": {
+                            //'X-CSRFToken': csrftoken,
+                            //  "Authorization": "token " + token,
+                            "accept": "application/json",
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Headers": "*",
+                            "Content-Type": "application/json"
+                        }
+                    };
 
-                $.ajax(settings).done(function (response) {
-                    console.log('aaaa12');
-                    console.log(response);
-                    for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
-                      //  setTimeout(function () {
+                    $.ajax(settings).done(function (response) {
+                        console.log('aaaa12');
+                        console.log(response);
+                        for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
+                            //  setTimeout(function () {
                             $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
-                      //  },500);
-                });
+                        //  },500);
+                    });
 
-                    }, 250);
+                }, 250);
 
-            
+
             }
 
 
@@ -300,7 +313,7 @@ console.log(url1)
         const {id} = this.props.match.params
 
         $(document).ready(function () {
-                window.onclick = function (event) {
+            window.onclick = function (event) {
 
                 if (event.target == document.getElementById("myModal")) {
 
@@ -309,7 +322,6 @@ console.log(url1)
 
                 }
 
-        
 
             }
             // setTimeout(function () {
@@ -347,7 +359,6 @@ console.log(url1)
             //});
 
 
-
             $(document).on("keypress", "input", function (e) {
 
                 if (e.which == 13) {
@@ -366,8 +377,6 @@ console.log(url1)
             if (window.localStorage.getItem('token') == null) {
 
 
-       
-
                 alert("Login first !");
 
 
@@ -377,18 +386,17 @@ console.log(url1)
             }
 
             $('.logout').click(function () {
-                window.localStorage.setItem('id_gp','');
+                window.localStorage.setItem('id_gp', '');
                 // ws1.close();
                 logoutclicked = 1;
-                
-                
-                   setTimeout(function () {
+
+
+                setTimeout(function () {
                     const message_reselect = {"command": "reset"}
                     ws.send(JSON.stringify(message_reselect));
                     window.location.replace('/homepage/');
-                     }, 300);
- 
-              
+                }, 300);
+
 
             });
 
@@ -481,47 +489,41 @@ console.log(url1)
             });
 
 
-                        //$('#videopickbtn').fadeIn('fast');
-                        //    $('#movietxt').fadeOut('fast');
+            //$('#videopickbtn').fadeIn('fast');
+            //    $('#movietxt').fadeOut('fast');
 
 
-                    
+            // if (localStorage.getItem('token') == null) {
+            //     alert("Login please !");
+            //     window.location.replace("/login/");
+            // }
 
 
-                
+            var id = window.localStorage.getItem('id_gp');
 
 
-                // if (localStorage.getItem('token') == null) {
-                //     alert("Login please !");
-                //     window.location.replace("/login/");
-                // }
+            var settings = {
+                "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+                    //'X-CSRFToken': csrftoken,
+                    //  "Authorization": "token " + token,
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                }
+            };
 
-
-                var id = window.localStorage.getItem('id_gp');
-
-
-                var settings = {
-                    "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
-                    "method": "GET",
-                    "timeout": 0,
-                    "headers": {
-                        //'X-CSRFToken': csrftoken,
-                        //  "Authorization": "token " + token,
-                        "accept": "application/json",
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Headers": "*",
-                        "Content-Type": "application/json"
-                    }
-                };
-
-                $.ajax(settings).done(function (response) {
-                    console.log('aaaa');
-                    console.log(response);
-                    for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
-                      //  setTimeout(function () {
-                            $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
-                      //  },500);
-                });
+            $.ajax(settings).done(function (response) {
+                console.log('aaaa');
+                console.log(response);
+                for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
+                    //  setTimeout(function () {
+                    $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
+                //  },500);
+            });
 
 
             $('#videopicks').change(function () {
@@ -550,7 +552,6 @@ console.log(url1)
             //     window.location.replace("/login/");
 
             // }
-
 
 
             var settings = {
@@ -602,19 +603,16 @@ console.log(url1)
 
                 //  $(".textarea_bio").append(response.describtion + "\n")
 
- $(".photogp").html(response.title.toUpperCase()[0]);
+                $(".photogp").html(response.title.toUpperCase()[0]);
                 $(".name").append(response.title);
                 $(".namegp").append(response.title);
-                 $(".idgp").append('@ '+response.groupid);
-   $(".desbody").append(response.describtion);
-    
+                $(".idgp").append('@ ' + response.groupid);
+                $(".desbody").append(response.describtion);
+
 
                 for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
-var htmlcode = '';
+                    var htmlcode = '';
 
-               
-
-              
 
                     var r = "window.open('/profile/" + response.members[counter1] + "')";
 
@@ -631,7 +629,7 @@ var htmlcode = '';
                     var hoverr = hover + "'red'";
 
 
-                   var hoverout1 = 'onMouseOut="this.style.backgroundColor=';
+                    var hoverout1 = 'onMouseOut="this.style.backgroundColor=';
 
                     var hoverrout1 = hoverout1 + "'rgb(35, 35, 35)'";
 
@@ -641,30 +639,28 @@ var htmlcode = '';
                     var hoverr1 = hover1 + "'rgb(365, 365,365,0.1)'";
 
 
-                  htmlcode+='<div class="divMem"' + hoverr1 + '"' + hoverrout1 + '"' + '>'
-                 
-                    htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a +  "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" + response.members[counter1]  + '</p>';
- htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >admin</p>';
+                    htmlcode += '<div class="divMem"' + hoverr1 + '"' + hoverrout1 + '"' + '>'
 
-            
+                    htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" + response.members[counter1] + '</p>';
+                    htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >admin</p>';
+
 
                     htmlcode += '</div>';
-                    
-$(".infobody").append(htmlcode);
+
+                    $(".infobody").append(htmlcode);
 
                 }
 
-     
-   
+
             });
 
 
             //Log the messages that are returned from the server
-$(".name").click(function(){
-        document.getElementById('myModal').style.display = 'block'
+            $(".name").click(function () {
+                document.getElementById('myModal').style.display = 'block'
 
-                    
-});
+
+            });
 
             $(".send_btn").click(function () {
                 var massage = $(".formback_text_input").val();
@@ -674,9 +670,7 @@ $(".name").click(function(){
                 $('.formback_text_input').val('');
 
 
-
                 console.log(JSON.stringify(message_send_chat))
-
 
 
             });
@@ -716,12 +710,6 @@ $(".name").click(function(){
         });
     }
 
-    
-
-
-    
-
-
 
     constructor(props) {
 
@@ -750,7 +738,7 @@ $(".name").click(function(){
 
         this.pause = this.pause.bind(this);
         this.handlereq_forward_backward = this.handlereq_forward_backward.bind(this);
-       
+
         this.changeCurrentTime = this.changeCurrentTime.bind(this);
 
         this.newShortcuts = [
@@ -1134,7 +1122,7 @@ $(".name").click(function(){
 
     }
 
-  handleSubmit(e) {
+    handleSubmit(e) {
 
 
         const message_send_play = {"command": "play_video", "currentTime": "0"}
@@ -1150,7 +1138,6 @@ $(".name").click(function(){
 
 
     }
-
 
 
     onChange(e) {
@@ -1502,7 +1489,7 @@ $(".name").click(function(){
             <div>
 
 
-                < form className="back">
+                <form className="back">
 
 
                     <header class="header_s">
@@ -1550,25 +1537,53 @@ $(".name").click(function(){
                         </div>
 
                     </header>
-             <div id="myModal" class="modal-">
+                    <div id="myModal" class="modal-">
 
-                    <div class="modal-content-">
-                        <div className='headModal'>
-                            <Avatar style={{backgroundColor:'rgba(0,0,0,0.5)' , width:'100px' , height:'100px' , fontSize:'50px'}} className='photogp'>&nbsp;</Avatar>
+                        <div class="modal-content-">
+                            <div className='headModal'>
+                                <Avatar style={{
+                                    backgroundColor: 'rgba(0,0,0,0.5)',
+                                    width: '100px',
+                                    height: '100px',
+                                    fontSize: '50px'
+                                }} className='photogp'>&nbsp;</Avatar>
 
-<div className='infogp'>
-<div className='namegp'/>
-<div className='idgp'/>
-</div>
-</div>
-<div className='destitle'>Description:</div>
-<div className='desbody'/>
-<hr/>
-<div className='infobody'/>
+                                <div className='infogp'>
+                                    <div className='namegp'/>
+                                    <div className='idgp'/>
+                                </div>
+                            </div>
+                            <div className='destitle'>Description:</div>
+                            <div className='desbody'/>
+                            <hr/>
+                            <div className='infobody'/>
+                        </div>
+
+
                     </div>
 
+                    <div id="mySidenav" className="sidenav">
+                       <div className="name"/>
+                            <p className="khat">_______________________</p>
+                            <p className='titleofonlines'>Online members :</p>
+                            <div className="onlinemembers"></div>
+                    </div>
 
-                </div>
+                    
+
+                      <abbr title="Online Members">
+                           <IconButton style={{
+                        transform: 'scaleX(-1)',
+                        color: 'white'
+                    }}
+
+                                className="openonlinemember">
+
+                        <FirstPageIcon fontSize="large"/>
+
+                    </IconButton>
+                      </abbr>
+
                     <div id='formback_movie_id' className="formback_movie">
 
                         <div id="movie" className="div_player_movie">
@@ -1751,7 +1766,7 @@ $(".name").click(function(){
                             </div>
 
 
-                        </div> 
+                        </div>
 
 
                     </div>
@@ -1769,7 +1784,7 @@ $(".name").click(function(){
                             <p className='titleofonlines'>Online members :</p>
 
                             <div className="onlinemembers"></div>
- 
+
                         </div>
 
 
@@ -1786,7 +1801,7 @@ $(".name").click(function(){
 
 
                                 <input className="formback_text_input" id="formback_text_input" autocomplete="off">
-                                    
+
                                 </input>
 
                                 <IconButton style={{
