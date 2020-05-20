@@ -1,29 +1,24 @@
 
 .formback_text_input {
     height: 35px;
-    width: 150%;
+    width: 350px;
     font-size: 14px;
     border-radius: 10px;
     color: whitesmoke;
     background-color: rgba(36, 32, 32, 0.77);
-
-
+text-align: left;
+margin-left: 5px;
 }
 
 .input_send {
     z-index: 1;
     display: flex;
     /* background-color: blue;   */
-    width: 345px;
-    height: 40%;
-
+    width: 100%;
+float: left;
     flex-direction: row;
 
-    justify-content: center;
 
-    align-items: center;
-    margin-top: 315px;
-    margin-right: -5%;
 }
 
 .modal- {
@@ -82,16 +77,13 @@
 }
 
 .pm {
-    height: 35%;
-    width: 17%;
+    margin-top: 15px;
+  margin-left: 30px;
+    height: 100%;
+    width: 100%;
     color: whitesmoke;
-    background-color: rgba(0, 0, 0, 0);
     font-size: 14px;
     white-space: initial;
-    margin-top: -35px;
-    position: absolute;
-
-
     overflow-x: hidden;
     overflow-y: scroll;
 
@@ -162,14 +154,13 @@
 
 
 .formback_text {
-    background-color: rgba(0, 0, 0, 0.77);
+    padding-top: 5px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: left;
     flex-direction: column;
-    padding: 50px;
-    height: 50%;
+    height: 100%;
     width: 100%;
     text-align: center;
 }
@@ -183,7 +174,7 @@
     align-items: center;
     justify-content: left;
     flex-direction: column;
-    height: 90%;
+    height: 91%;
     width: 100%;
     text-align: center;
 
@@ -237,17 +228,18 @@
 }
 
 .back_coulom {
-  margin-top: 60px;
-    height: 92%;
 
+    margin-top: 60px;
+    height: 93%;
+    width: 0px;
     position: initial;
     z-index: 1;
     top: 0;
     right: 0;
-    background-color: #111;
+    background-color: #141414;
     overflow-x: hidden;
     transition: 0.5s;
-    padding-top: 60px;
+
     flex-direction: column;
     display: block;
 
@@ -501,7 +493,7 @@
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #111;
+    background-color: #141414;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
@@ -513,25 +505,4 @@
     }
 }
 
-.sidenav2 {
-    margin-top: 60px;
-    height: 92%;
-    width: 0px;
-    position: initial;
-    z-index: 1;
-    top: 0;
-    right: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
-    flex-direction: column;
-}
-
-@media screen and (max-height: 450px) {
-    .sidenav2 {
-        padding-top: 15px;
-    }
-
-}
 

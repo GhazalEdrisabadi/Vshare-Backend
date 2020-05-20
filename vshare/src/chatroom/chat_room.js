@@ -87,20 +87,27 @@ class chat_room extends Component {
     }
 
     componentDidMount() {
+
+
         $('.openonlinemember').click(function () {
-            if(document.getElementById("mySidenav").style.width == '0px') {
+            if (document.getElementById("mySidenav").style.width == '0px') {
                 document.getElementById("mySidenav").style.width = "250px";
-                //    document.getElementById("openonlinemember").style.display = "none";
                 $(".openonlinemember").css("transform", "scaleX(1)");
-                //   $('.openonlinemember').fadeOut('fast');
-            }
-            else {
+            } else {
                 document.getElementById("mySidenav").style.width = "0px";
                 $(".openonlinemember").css("transform", "scaleX(-1)");
             }
-            });
-        $('.closebtn').click(function () {
-            document.getElementById("mySidenav").style.width = "0px";
+        });
+
+        $('.openchat').click(function () {
+
+            if ($(".back_coulom").width() == 0) {
+                $(".back_coulom").css("width", "400px");
+                $(".openchat").css("transform", "scaleX(-1)");
+            } else {
+                $(".back_coulom").css("width", "0px");
+                $(".openchat").css("transform", "scaleX(1)");
+            }
         });
 
         console.log(url)
@@ -1563,26 +1570,25 @@ class chat_room extends Component {
                     </div>
 
                     <div id="mySidenav" className="sidenav">
-                       <div className="name"/>
-                            <p className="khat">_______________________</p>
-                            <p className='titleofonlines'>Online members :</p>
-                            <div className="onlinemembers"></div>
+                        <div className="name"/>
+                        <p className="khat">_______________________</p>
+                        <p className='titleofonlines'>Online members :</p>
+                        <div className="onlinemembers"></div>
                     </div>
 
-                    
 
-                      <abbr title="Online Members">
-                           <IconButton style={{
-                        transform: 'scaleX(-1)',
-                        color: 'white'
-                    }}
+                    <abbr title="Online Members">
+                        <IconButton style={{
+                            transform: 'scaleX(-1)',
+                            color: 'white'
+                        }}
 
-                                className="openonlinemember">
+                                    className="openonlinemember">
 
-                        <FirstPageIcon fontSize="large"/>
+                            <FirstPageIcon fontSize="large"/>
 
-                    </IconButton>
-                      </abbr>
+                        </IconButton>
+                    </abbr>
 
                     <div id='formback_movie_id' className="formback_movie">
 
@@ -1772,25 +1778,26 @@ class chat_room extends Component {
                     </div>
 
 
-                    <div className="back_coulom">
+                    <abbr title="Chat messanger">
+                        <IconButton style={{
+                            transform: 'scaleX(1)',
+                            color: 'white'
+                        }}
+
+                                    className="openchat">
+
+                            <FirstPageIcon fontSize="large"/>
+
+                        </IconButton>
+                    </abbr>
+
+                    <div id='mysidenav2' className="back_coulom">
 
 
-                        <div className="formback_info" style={{width: '350px', height: '395px'}}>
+                        <div className="formback_text" >
 
-                            <div className="name"/>
-
-                            <p className="khat">_______________________</p>
-
-                            <p className='titleofonlines'>Online members :</p>
-
-                            <div className="onlinemembers"></div>
-
-                        </div>
-
-
-                        <div className="formback_text" style={{width: '350px', height: '395px',}}>
-
-
+                            <div> Chat </div>
+                            <p className="khat">______________________________</p>
                             <div id='pmid' className="pm">
 
 
