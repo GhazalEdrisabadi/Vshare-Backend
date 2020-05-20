@@ -87,12 +87,14 @@ class Homepage extends Component {
                 });
             });
             $(".addbtn").click(function () {console.log(per)
+                Able_controll=0;
+                Able_select=0;
                 for(var count_per=0 ;count_per<per.length;count_per++){
                     if(per[count_per].value==1){
-                        Able_select=true
+                        Able_select=1
                     }
                     if(per[count_per].value==2){
-                        Able_controll=false
+                        Able_controll=1
                     }
                 }
                 console.log(Able_select)
@@ -156,7 +158,7 @@ class Homepage extends Component {
                                     "member": member,
                                     "chat_permission":1,
                                     "playback_permission":Able_controll,
-                                    "Choose_video_permission":Able_select
+                                    "choose_video_permission":Able_select
                                 }
                             ),
                         };
