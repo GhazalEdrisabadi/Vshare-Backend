@@ -9,7 +9,7 @@ import Websocket from 'react-websocket';
 import Home from './home.png'
 
 import Button from '@material-ui/core/Button';
-
+import Avatar from '@material-ui/core/Avatar';
 import RedoIcon from '@material-ui/icons/Redo';
 
 import './video-react.css';
@@ -300,6 +300,18 @@ console.log(url1)
         const {id} = this.props.match.params
 
         $(document).ready(function () {
+                window.onclick = function (event) {
+
+                if (event.target == document.getElementById("myModal")) {
+
+                    $('.modal-').fadeOut("slow");
+
+
+                }
+
+        
+
+            }
             // setTimeout(function () {
             //     const message_reselect = {"command": "reset"}
             //     ws.send(JSON.stringify(message_reselect));
@@ -590,13 +602,69 @@ console.log(url1)
 
                 //  $(".textarea_bio").append(response.describtion + "\n")
 
+ $(".photogp").html(response.title.toUpperCase()[0]);
                 $(".name").append(response.title);
+                $(".namegp").append(response.title);
+                 $(".idgp").append('@ '+response.groupid);
+   $(".desbody").append(response.describtion);
+    
 
+                for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
+var htmlcode = '';
+
+               
+
+              
+
+                    var r = "window.open('/profile/" + response.members[counter1] + "')";
+
+                    var a = "window.localStorage.setItem('user','" + response.members[counter1] + "')"; //id of the group
+
+
+                    var hoverout = 'onMouseOut="this.style.color=';
+
+                    var hoverrout = hoverout + "'white'";
+
+
+                    var hover = 'onMouseOver="this.style.color=';
+
+                    var hoverr = hover + "'red'";
+
+
+                   var hoverout1 = 'onMouseOut="this.style.backgroundColor=';
+
+                    var hoverrout1 = hoverout1 + "'rgb(35, 35, 35)'";
+
+
+                    var hover1 = 'onMouseOver="this.style.backgroundColor=';
+
+                    var hoverr1 = hover1 + "'rgb(365, 365,365,0.1)'";
+
+
+                  htmlcode+='<div class="divMem"' + hoverr1 + '"' + hoverrout1 + '"' + '>'
+                 
+                    htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a +  "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" + response.members[counter1]  + '</p>';
+ htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >admin</p>';
+
+            
+
+                    htmlcode += '</div>';
+                    
+$(".infobody").append(htmlcode);
+
+                }
+
+     
+   
             });
 
 
             //Log the messages that are returned from the server
+$(".name").click(function(){
+        document.getElementById('myModal').style.display = 'block'
 
+                    
+});
 
             $(".send_btn").click(function () {
                 var massage = $(".formback_text_input").val();
@@ -1482,7 +1550,25 @@ console.log(url1)
                         </div>
 
                     </header>
+             <div id="myModal" class="modal-">
 
+                    <div class="modal-content-">
+                        <div className='headModal'>
+                            <Avatar style={{backgroundColor:'rgba(0,0,0,0.5)' , width:'100px' , height:'100px' , fontSize:'50px'}} className='photogp'>&nbsp;</Avatar>
+
+<div className='infogp'>
+<div className='namegp'/>
+<div className='idgp'/>
+</div>
+</div>
+<div className='destitle'>Description:</div>
+<div className='desbody'/>
+<hr/>
+<div className='infobody'/>
+                    </div>
+
+
+                </div>
                     <div id='formback_movie_id' className="formback_movie">
 
                         <div id="movie" className="div_player_movie">

@@ -26,6 +26,44 @@
         margin-top:315px;
         margin-right: -5%;
     }
+    .modal- {
+    display: none;
+
+    position: fixed;
+
+    z-index: 1;
+
+    padding-top: 100px;
+
+    left: 0;
+    top: 0;
+    width: 100%;
+
+    height: 100%;
+
+    overflow-x: scroll;
+
+    background-color: rgb(0, 0, 0);
+
+    background-color: rgba(0, 0, 0, 0.7);
+min-width: 50%;
+}
+.modal-content- {
+    border-radius: 27px;
+    text-align: center;
+    background-color: rgb(35, 35, 35);
+    color: whitesmoke;
+    margin: auto;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 40px;
+    border: 1px solid #888;
+    width: 30%;
+    height:  73%;
+    min-height: 700px;
+    overflow: hidden;
+    min-width: 400px;
+}
     .send_btn{
         margin-left: 30%;
     }
@@ -277,7 +315,8 @@ margin-top: 10px;
 
 }
 
-.name {    font-family: 'Raleway', sans-serif;    margin-top: -30px;text-align: center;    font-size: 30px;}
+.name {    font-family: 'Raleway', sans-serif;    margin-top: -30px;text-align: center;    font-size: 30px;
+ cursor: pointer;}
 .logout_text2 {
     font-family: Arial;
     font-size: 20px;
@@ -306,5 +345,81 @@ margin-top: 10px;
 
 .video {
     display: none;
+}
+.photogp{
+    background-color: white;
+    width: 400px;
+    height: 400px;
+    border-radius: 400px;
+}
+.headModal{
+  display: flex;
+  flex-direction: row;
+ margin-top: 10px;
+ padding-top: 20px;
+
+}
+.namegp{
+    text-align: left;
+font-size: 33px;
+ margin-top: 10px;
+ 
+    height: 40px;
+    width: 300px;
+    margin-left: 30px;
+
+}
+.idgp{
+    text-align: left;
+    
+   font-size: 20px;
+   
+      height: 40px;
+      width: 300px;
+      margin-left: 30px;
+}
+.info{
+    display: flex;
+    flex-direction: column;
+}
+.destitle{
+    padding-top: 16px;
+text-align: left;
+font-size: 20px;
+color: gray;
+}
+.desbody{
+    padding-top: 6px;
+    text-align: left;
+    font-size: 20px;
+    width: 100%;
+    height: 30px;
+white-space: nowrap;
+  
+     overflow-x:hidden;
+     text-overflow: ellipsis;
+        
+}
+.desbody:hover{
+      white-space: initial;
+     
+      height: fit-content;
+}
+.permissiontitle{
+    float: right;
+    padding-right: 10px;
+    color: rgb(365, 365, 365 , 0.5);
+}
+.divMem{
+   
+    height: 35px;
+    width: 100%;
+  
+    border-radius: 5px;
+}
+.infobody{
+    width: 100%;
+   max-height: 70% ;
+    overflow: scroll;
 }
 
