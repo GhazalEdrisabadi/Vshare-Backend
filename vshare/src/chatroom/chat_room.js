@@ -87,15 +87,29 @@ class chat_room extends Component {
     }
 
     componentDidMount() {
+        var chatsize = 400;
+        var sizeeeeee = $(".formback_movie").width();
+        $(window).resize(function () {
+            sizeeeeee = $(".formback_movie").width();
+            $(".video-react-video").css("width", sizeeeeee.toString());
+        });
 
 
         $('.openonlinemember').click(function () {
-            if (document.getElementById("mySidenav").style.width == '0px') {
-                document.getElementById("mySidenav").style.width = "250px";
+            if ($(".sidenav").width() < 20) {
+                document.getElementById("mySidenav").style.width = "300px";
                 $(".openonlinemember").css("transform", "scaleX(1)");
+                sizeeeeee -= 300;
+                $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                $(".video-react-video").css("margin-left", '300px');
+
+
             } else {
                 document.getElementById("mySidenav").style.width = "0px";
                 $(".openonlinemember").css("transform", "scaleX(-1)");
+                sizeeeeee += 300;
+                $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                $(".video-react-video").css("margin-left", '4%');
             }
         });
 
@@ -104,9 +118,16 @@ class chat_room extends Component {
             if ($(".back_coulom").width() == 0) {
                 $(".back_coulom").css("width", "400px");
                 $(".openchat").css("transform", "scaleX(-1)");
+                sizeeeeee -= chatsize;
+                $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                $(".video-react-video").css("margin-right", '400px');
             } else {
+                chatsize = $(".back_coulom").width();
                 $(".back_coulom").css("width", "0px");
                 $(".openchat").css("transform", "scaleX(1)");
+                sizeeeeee += chatsize;
+                $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                $(".video-react-video").css("margin-right", '0px');
             }
         });
 
@@ -141,14 +162,21 @@ class chat_room extends Component {
 
             if (messagee1.command == "chat_client") {
 
+                var randomColor1 = '#' + Math.floor(Math.random() * 16777215).toString(16);
+
+
+                var aval1 = 'style=';
+                var dovom1 = aval1 + '"color:';
+                var sevom1 = dovom1 + randomColor1;
+                var charom1 = sevom1 + '"';
+
                 if (messagee1.user == window.localStorage.getItem('username')) {
-                    $(".pm").append("<div id='pmeman'>" + "me: " + messagee1.message + "</div>");
+
+                    $(".pm").append("<div id='pmeman'" + charom1 + ">" + "me: " + messagee1.message + "</div>");
 
                 } else {
-                    $(".pm").append("<div id='pmeoon'>" + messagee1.user + ": " + messagee1.message + "</div>");
+                    $(".pm").append("<div id='pmeoon'" + charom1 + ">" + messagee1.user + ": " + messagee1.message + "</div>");
                 }
-
-                $(".pm").append("<br>")
 
 
                 var element = document.getElementById("pmid");
@@ -371,10 +399,12 @@ class chat_room extends Component {
                 if (e.which == 13) {
 
                     var massage = $(".formback_text_input").val();
+                  if (massage != '') {
                     const message_send_chat = {"command": "chat_client", "message_client": massage}
-                    ws1.send(JSON.stringify(message_send_chat))
-                    $('.formback_text_input').val('');
 
+                    ws1.send(JSON.stringify(message_send_chat));
+                    $('.formback_text_input').val('');
+                }
 
                     e.preventDefault();
                 }
@@ -671,13 +701,14 @@ class chat_room extends Component {
 
             $(".send_btn").click(function () {
                 var massage = $(".formback_text_input").val();
+                if (massage != '') {
+                    const message_send_chat = {"command": "chat_client", "message_client": massage}
 
-                const message_send_chat = {"command": "chat_client", "message_client": massage}
-                ws1.send(JSON.stringify(message_send_chat))
-                $('.formback_text_input').val('');
+                    ws1.send(JSON.stringify(message_send_chat));
+                    $('.formback_text_input').val('');
+                }
 
 
-                console.log(JSON.stringify(message_send_chat))
 
 
             });
@@ -701,13 +732,25 @@ class chat_room extends Component {
             $.ajax(settings).done(function (response) {
                 console.log(response);
                 for (var counterchathistory = response.results.length - 1; counterchathistory >= 0; counterchathistory--) {
+                    var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+                     var aval = 'style=';
+                        var dovom = aval + '"color:';
+                        var sevom = dovom + randomColor;
+                        var charom = sevom + '"';
                     if (response.results[counterchathistory].message_sender == window.localStorage.getItem('username')) {
-                        $(".pm").append("<div id='pmeman'>" + "me: " + response.results[counterchathistory].message_text + "</div>");
+
+
+
+
+
+
+
+                        $(".pm").append("<div  id='pmeman'" + charom + "> me: " + response.results[counterchathistory].message_text + "</div>");
 
                     } else {
-                        $(".pm").append("<div id='pmeoon'>" + response.results[counterchathistory].message_sender + ": " + response.results[counterchathistory].message_text + "</div>");
+                        $(".pm").append("<div id='pmeoon'" + charom + ">" + response.results[counterchathistory].message_sender + ": " + response.results[counterchathistory].message_text + "</div>");
                     }
-                    $(".pm").append("<br>");
+
                 }
                 var element = document.getElementById("pmid");
                 element.scrollTop = element.scrollHeight;
@@ -1493,159 +1536,222 @@ class chat_room extends Component {
         return (
 
 
-            <div>
+            <form className="back">
 
 
-                <form className="back">
+                <header class="header_s">
+
+                    <div className='leftheader'>
+
+                        <div className='userprofile'>
+
+                            <IconButton style={{
+
+                                color: 'white'
 
 
-                    <header class="header_s">
+                            }}
 
-                        <div className='leftheader'>
+                                        className="profilepic">
 
-                            <div className='userprofile'>
+                                <AccountCircleOutlinedIcon fontSize="large"/>
 
-                                <IconButton style={{
-
-                                    color: 'white'
+                            </IconButton>
 
 
-                                }}
-
-                                            className="profilepic">
-
-                                    <AccountCircleOutlinedIcon fontSize="large"/>
-
-                                </IconButton>
-
-
-                                <p className='username'>Username</p>
-
-                            </div>
-
+                            <p className='username'>Username</p>
 
                         </div>
 
-                        <div className='logout'>
 
-                            <p className='logout_text2'>Exit group</p>
+                    </div>
+
+                    <div className='logout'>
+
+                        <p className='logout_text2'>Exit group</p>
+
+                        <IconButton style={{
+                            color: 'white'
+
+                        }}
+
+                                    className="div_leave">
+
+                            <ExitToAppIcon fontSize="large"/>
+
+                        </IconButton>
+
+                    </div>
+
+                </header>
+                <div id="myModal" class="modal-">
+
+                    <div class="modal-content-">
+                        <div className='headModal'>
+                            <Avatar style={{
+                                backgroundColor: 'rgba(0,0,0,0.5)',
+                                width: '100px',
+                                height: '100px',
+                                fontSize: '50px'
+                            }} className='photogp'>&nbsp;</Avatar>
+
+                            <div className='infogp'>
+                                <div className='namegp'/>
+                                <div className='idgp'/>
+                            </div>
+                        </div>
+                        <div className='destitle'>Description:</div>
+                        <div className='desbody'/>
+                        <hr/>
+                        <div className='infobody'/>
+                    </div>
+
+
+                </div>
+
+                <div id="mySidenav" className="sidenav">
+                    <div className="name"/>
+                    <p className="khat">_______________________</p>
+                    <p className='titleofonlines'>Online members :</p>
+                    <div className="onlinemembers"></div>
+                </div>
+
+
+                <abbr title="Online Members">
+                    <IconButton style={{
+                        transform: 'scaleX(-1)',
+                        color: 'white',
+                        zIndex: '1'
+                    }}
+
+                                className="openonlinemember">
+
+                        <FirstPageIcon fontSize="large"/>
+
+                    </IconButton>
+                </abbr>
+
+                <div id='formback_movie_id' className="formback_movie">
+
+                    <div id="movie" className="div_player_movie">
+
+                        <Player
+
+                            ref={player => {
+
+                                this.player = player;
+
+                            }}
+
+                            autoPlay
+
+                            src={this.state.file_show_when_click}
+                            id='players'
+
+                        >
+
+                            <Shortcut clickable={false} shortcuts={this.newShortcuts}/>
+
+
+                        </Player>
+
+
+                    </div>
+
+                    <div id='firstprogress'>
+
+                        <CircularProgress disableShrink color="secondary"/>
+
+                    </div>
+                    <div id='movietxtdiv'>
+
+                        <p id='movietxt'>Wait for admin to select the video</p>
+
+                    </div>
+                    <div id='controllbuttons2'></div>
+                    <div id='controllbuttons'>
+
+                        <div className="upload-btn-wrapper">
 
                             <IconButton style={{
                                 color: 'white'
 
-                            }}
 
-                                        className="div_leave">
+                            }} size='large' id='videopickbtn' className="btn" variant="contained" color="secondary">
 
-                                <ExitToAppIcon fontSize="large"/>
+                                <EjectIcon/>
+                            </IconButton>
+
+
+                            <input type="file" id='videopicks' className='videopicsk' name="file"
+
+                                   onChange={(e) => this.onChange(e)}/>
+
+
+                            <IconButton onClick={this.changeCurrentTime(-10)} style={{
+
+                                transform: 'scaleX(-1)',
+                                color: 'white'
+
+
+                            }} size='large' className="mr-3">
+
+
+                                <Forward10Icon/>
 
                             </IconButton>
 
-                        </div>
 
-                    </header>
-                    <div id="myModal" class="modal-">
+                            <IconButton onClick={this.play} style={{
+                                color: 'white'
 
-                        <div class="modal-content-">
-                            <div className='headModal'>
-                                <Avatar style={{
-                                    backgroundColor: 'rgba(0,0,0,0.5)',
-                                    width: '100px',
-                                    height: '100px',
-                                    fontSize: '50px'
-                                }} className='photogp'>&nbsp;</Avatar>
-
-                                <div className='infogp'>
-                                    <div className='namegp'/>
-                                    <div className='idgp'/>
-                                </div>
-                            </div>
-                            <div className='destitle'>Description:</div>
-                            <div className='desbody'/>
-                            <hr/>
-                            <div className='infobody'/>
-                        </div>
+                            }}
+                                        id='play_btnid'
+                                        className="play_btn">
+                                <PlayArrowIcon fontSize="large"/>
+                            </IconButton>
 
 
-                    </div>
-
-                    <div id="mySidenav" className="sidenav">
-                        <div className="name"/>
-                        <p className="khat">_______________________</p>
-                        <p className='titleofonlines'>Online members :</p>
-                        <div className="onlinemembers"></div>
-                    </div>
-
-
-                    <abbr title="Online Members">
-                        <IconButton style={{
-                            transform: 'scaleX(-1)',
-                            color: 'white'
-                        }}
-
-                                    className="openonlinemember">
-
-                            <FirstPageIcon fontSize="large"/>
-
-                        </IconButton>
-                    </abbr>
-
-                    <div id='formback_movie_id' className="formback_movie">
-
-                        <div id="movie" className="div_player_movie">
-
-                            <Player
-
-                                ref={player => {
-
-                                    this.player = player;
-
-                                }}
-
-                                autoPlay
-
-                                src={this.state.file_show_when_click}
-                                id='players'
-
-                            >
-
-                                <Shortcut clickable={false} shortcuts={this.newShortcuts}/>
+                            <IconButton onClick={this.pause} style={{
+                                color: 'white',
+                                marginTop: '2px',
+                                display: 'none'
+                            }} size='large'
+                                        id="pause_btnid"
+                                        className="pause_btn">
 
 
-                            </Player>
+                                <PauseIcon/>
+
+                            </IconButton>
+
+                            <IconButton onClick={this.changeCurrentTime(10)} style={{
+                                color: 'white'
+
+
+                            }} size='large' className="mr-3">
+
+
+                                <Forward10Icon/>
+                            </IconButton>
+
+                            <IconButton id='reselect' style={{
+                                color: 'white'
+
+
+                            }} size='large' className="mr-3">
+
+
+                                <StopIcon/>
+                            </IconButton>
 
 
                         </div>
 
-                        <div id='firstprogress'>
-
-                            <CircularProgress disableShrink color="secondary"/>
-
-                        </div>
-                        <div id='movietxtdiv'>
-
-                            <p id='movietxt'>Wait for admin to select the video</p>
-
-                        </div>
-                        <div id='controllbuttons2'></div>
-                        <div id='controllbuttons'>
-
-                            <div className="upload-btn-wrapper">
-
-                                <IconButton style={{
-                                    color: 'white'
+                        <div id='blaybtndiv'>
 
 
-                                }} size='large' id='videopickbtn' className="btn" variant="contained" color="secondary">
-
-                                    <EjectIcon/>
-                                </IconButton>
-
-
-                                <input type="file" id='videopicks' className='videopicsk' name="file"
-
-                                       onChange={(e) => this.onChange(e)}/>
-
+                            <div className="control" id='controll_div'>
 
                                 <IconButton onClick={this.changeCurrentTime(-10)} style={{
 
@@ -1665,18 +1771,12 @@ class chat_room extends Component {
                                     color: 'white'
 
                                 }}
-                                            id='play_btnid'
                                             className="play_btn">
                                     <PlayArrowIcon fontSize="large"/>
                                 </IconButton>
 
 
-                                <IconButton onClick={this.pause} style={{
-                                    color: 'white',
-                                    marginTop: '2px',
-                                    display: 'none'
-                                }} size='large'
-                                            id="pause_btnid"
+                                <IconButton onClick={this.pause} style={{color: 'white'}} size='large'
                                             className="pause_btn">
 
 
@@ -1694,81 +1794,19 @@ class chat_room extends Component {
                                     <Forward10Icon/>
                                 </IconButton>
 
-                                <IconButton id='reselect' style={{
-                                    color: 'white'
-
-
-                                }} size='large' className="mr-3">
-
-
-                                    <StopIcon/>
-                                </IconButton>
-
 
                             </div>
-
-                            <div id='blaybtndiv'>
-
-
-                                <div className="control" id='controll_div'>
-
-                                    <IconButton onClick={this.changeCurrentTime(-10)} style={{
-
-                                        transform: 'scaleX(-1)',
-                                        color: 'white'
+                        </div>
 
 
-                                    }} size='large' className="mr-3">
+                        <div id='moviebtnd' className='moviebtns'>
 
 
-                                        <Forward10Icon/>
-
-                                    </IconButton>
+                            <br/><br/><br/><br/>
 
 
-                                    <IconButton onClick={this.play} style={{
-                                        color: 'white'
-
-                                    }}
-                                                className="play_btn">
-                                        <PlayArrowIcon fontSize="large"/>
-                                    </IconButton>
-
-
-                                    <IconButton onClick={this.pause} style={{color: 'white'}} size='large'
-                                                className="pause_btn">
-
-
-                                        <PauseIcon/>
-
-                                    </IconButton>
-
-                                    <IconButton onClick={this.changeCurrentTime(10)} style={{
-                                        color: 'white'
-
-
-                                    }} size='large' className="mr-3">
-
-
-                                        <Forward10Icon/>
-                                    </IconButton>
-
-
-                                </div>
-                            </div>
-
-
-                            <div id='moviebtnd' className='moviebtns'>
-
-
-                                <br/><br/><br/><br/>
-
-
-                                <div id='progress'>
-                                    <CircularProgress disableShrink color="secondary"/>
-                                </div>
-
-
+                            <div id='progress'>
+                                <CircularProgress disableShrink color="secondary"/>
                             </div>
 
 
@@ -1778,49 +1816,49 @@ class chat_room extends Component {
                     </div>
 
 
-                    <abbr title="Chat messanger">
-                        <IconButton style={{
-                            transform: 'scaleX(1)',
-                            color: 'white'
-                        }}
-
-                                    className="openchat">
-
-                            <FirstPageIcon fontSize="large"/>
-
-                        </IconButton>
-                    </abbr>
-
-                    <div id='mysidenav2' className="back_coulom">
+                </div>
 
 
-                        <div className="formback_text" >
+                <abbr title="Chat messanger">
+                    <IconButton style={{
+                        transform: 'scaleX(1)',
+                        color: 'white'
+                    }}
 
-                            <div> Chat </div>
-                            <p className="khat">______________________________</p>
-                            <div id='pmid' className="pm">
+                                className="openchat">
+
+                        <FirstPageIcon fontSize="large"/>
+
+                    </IconButton>
+                </abbr>
+
+                <div id='mysidenav2' className="back_coulom">
 
 
-                            </div>
+                    <div className="formback_text">
+
+                        <div> Chat</div>
+                        <p className="khat">______________________________</p>
+                        <div id='pmid' className="pm">
 
 
-                            <div className="input_send">
+                        </div>
 
 
-                                <input className="formback_text_input" id="formback_text_input" autocomplete="off">
+                        <div className="input_send">
 
-                                </input>
 
-                                <IconButton style={{
-                                    color: 'white',
-                                    fontSize: '80px'
-                                }}
-                                            className="send_btn">
-                                    <SendIcon/>
-                                </IconButton>
+                            <input className="formback_text_input" id="formback_text_input" autocomplete="off">
 
-                            </div>
+                            </input>
 
+                            <IconButton style={{
+                                color: 'white',
+                                fontSize: '80px'
+                            }}
+                                        className="send_btn">
+                                <SendIcon/>
+                            </IconButton>
 
                         </div>
 
@@ -1828,9 +1866,11 @@ class chat_room extends Component {
                     </div>
 
 
-                </form>
+                </div>
 
-            </div>
+
+            </form>
+
 
         )
 

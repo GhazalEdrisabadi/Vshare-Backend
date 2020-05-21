@@ -239,12 +239,12 @@
 .video-react .video-react-video {
 
     position: fixed;
-    margin-top: 6.5%;
+    margin-top: 5%;
     top: 0;
     left: 0;
    margin-left: 4%;
-    width: 68%;
-    height: 80%;
+    width: 90%;
+    height: 85%;
 }
 
 .video-react.video-react-fullscreen {

@@ -6,8 +6,8 @@
     border-radius: 10px;
     color: whitesmoke;
     background-color: rgba(36, 32, 32, 0.77);
-text-align: left;
-margin-left: 5px;
+    text-align: left;
+    margin-left: 5px;
 }
 
 .input_send {
@@ -15,7 +15,7 @@ margin-left: 5px;
     display: flex;
     /* background-color: blue;   */
     width: 100%;
-float: left;
+    float: left;
     flex-direction: row;
 
 
@@ -77,12 +77,13 @@ float: left;
 }
 
 .pm {
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif ;
     margin-top: 15px;
-  margin-left: 30px;
+    margin-left: 30px;
     height: 100%;
     width: 100%;
     color: whitesmoke;
-    font-size: 14px;
+    font-size: 18px;
     white-space: initial;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -100,11 +101,13 @@ float: left;
     text-align: left;
     /* background-color: blue; */
     color: #bdbdbd;
+    margin-top: 5px;
 
 
 }
 
 #pmeman {
+    margin-top: 5px;
     width: 70%;
     white-space: initial;
     text-align: left;
@@ -114,7 +117,7 @@ float: left;
 
 
 .titleofonlines {
-
+    padding-bottom: 10px;
     margin-top: 10px;
     font-size: 19px;
 }
@@ -166,7 +169,7 @@ float: left;
 }
 
 .formback_movie {
-    border: red solid thin;
+
     margin-top: 40px;
     background-color: black;
     border-radius: 10px;
@@ -228,7 +231,7 @@ float: left;
 }
 
 .back_coulom {
-
+    border-radius: 5px;
     margin-top: 60px;
     height: 93%;
     width: 0px;
@@ -305,20 +308,26 @@ float: left;
 }
 
 #controllbuttons {
+    bottom: 10px;
+
     width: 700px;
     background-color: #000000;
     border-radius: 5px;
-    margin-top: 700px;
+
     position: fixed;
     height: 55px;
 
 }
 
 #controllbuttons2 {
+
+
+    bottom: 10px;
+
     width: 700px;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: #000000;
     border-radius: 5px;
-    margin-top: 700px;
+
     position: fixed;
     height: 55px;
     cursor: not-allowed;
@@ -350,13 +359,14 @@ float: left;
 }
 
 .header_s {
-    position: fixed;
 
-    width: 100%;
     background: #18181B;
-
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    width: 100%;
     height: 63px;
-    margin-top: -455px;
 
 }
 
@@ -486,6 +496,7 @@ float: left;
 }
 
 .sidenav {
+    border-radius: 5px;
     margin-top: 60px;
     height: 92%;
     width: 0px;
@@ -496,7 +507,7 @@ float: left;
     background-color: #141414;
     overflow-x: hidden;
     transition: 0.5s;
-    padding-top: 60px;
+    padding-top: 40px;
 }
 
 @media screen and (max-height: 450px) {
@@ -505,4 +516,9 @@ float: left;
     }
 }
 
+@media screen and (min-width: 400px)  and (max-width: 600px) {
+    .titleofonlines {
+        font-size: 14px;
+    }
+}
 

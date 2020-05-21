@@ -138,7 +138,7 @@ DATABASES = {
         'NAME': 'vshare',
 
         'USER' : 'postgres',
-        'PASSWORD' : 'Kamyab78',
+        'PASSWORD' : '123qwe',
 
 
         'HOST' : 'localhost',
