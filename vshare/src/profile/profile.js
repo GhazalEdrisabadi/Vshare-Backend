@@ -762,7 +762,7 @@ var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')"; 
                 <div className="following_count">0</div>
                 <div className="following">following</div>
 
-<div className="search-result" id='res'></div>
+
 
 
 
@@ -787,6 +787,7 @@ var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')"; 
                      
 
             </div>
+            <div className="search-result" id='res'></div>
             </div>
 
         )

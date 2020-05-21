@@ -325,13 +325,13 @@ position: absolute;
 }
 .search-result{
     display: none;
-       background-color: rgb(35, 35, 35);
+    background-color: rgb(35, 35, 35);
     border-radius: 10px;
     width: 300px;
     position: absolute;
     height: 400px;
-    margin-top: 50px;
-    margin-left: 38%;
+    margin-top: -800px;
+    margin-left: 810px;
     color: black;
         white-space: initial;
      overflow-x:hidden; 
