@@ -96,7 +96,7 @@
 }
 
 #pmeoon {
-    width: 70%;
+    width: 100%;
     white-space: initial;
     text-align: left;
     /* background-color: blue; */
@@ -108,7 +108,7 @@
 
 #pmeman {
     margin-top: 5px;
-    width: 70%;
+    width: 100%;
     white-space: initial;
     text-align: left;
 
@@ -336,7 +336,12 @@ margin-top: 5px;;
     position: fixed;
     font-size: 18px;
 }
-
+#nameofthefilm{
+    z-index: 999;
+margin-top: 5px;
+color: #fffda0;
+    font-size: 20px;
+}
 .HoverClass1:hover {
     display: none;
 }
@@ -507,7 +512,9 @@ border: red solid thin;
     background-color: #141414;
     overflow-x: hidden;
     transition: 0.5s;
-padding: 10px;
+padding-top: 10px;
+    padding-bottom: 10px;
+
 }
 
 @media screen and (max-height: 450px) {

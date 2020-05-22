@@ -1387,6 +1387,11 @@ class chat_room extends Component {
 
 
             if (percant == 100) {
+                //   const {player} = this.player.getState();
+                //     console.log("curent " + player.currentTime)
+                $('#nameofthefilm').text(file.name.split('.')[0]);
+
+console.log(file.name.split('.')[0]);
                 if (isadmin == 1) {
 
 
@@ -1632,7 +1637,7 @@ class chat_room extends Component {
                     <div className="name"/>
 
                     <p className='titleofonlines'>Onlines</p>
-                      <p className="khat">_______________________</p>
+                    <p className="khat">_______________________</p>
                     <div className="onlinemembers"></div>
                 </div>
 
@@ -1682,6 +1687,9 @@ class chat_room extends Component {
 
                         <CircularProgress disableShrink color="secondary"/>
 
+                    </div>
+                    <div id='nameofthefilm'>
+                       No movie has been selected yet
                     </div>
                     <div id='movietxtdiv'>
 
