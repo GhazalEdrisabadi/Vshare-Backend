@@ -700,13 +700,14 @@ min-width: 50%;
         color:black ;
    padding-top: 15px;
    font-size: 16px;
+   background-color: 'black';
    
 }
 .select-{
         color:black ;
    padding-top: 15px;
    font-size: 16px;
-   
+      background-color: 'black';
 }
 .btnadd{
   float: initial;

@@ -2237,7 +2237,7 @@ handleChanges_Add = selectedOption_Add => {
     ⋮
   </Dropdown.Toggle>
 
-  <Dropdown.Menu style={{ backgroundColor:'rgba(0,0,0,0.9)', color:'black' , marginLeft:'-55px'}}>
+  <Dropdown.Menu style={{ backgroundColor:'rgba(0,0,0,0.9)', color:'black' , marginLeft:'-65px'}}>
     <div  style={{color:'white',textAlign:'left', marginLeft:'15px'}} className="edit_group" onClick={this.click_edit}>Edit group</div>
     <div style={{color:'white',textAlign:'left', marginLeft:'15px'}}className="edit_group" onClick={this.click_edit_permission}>Edit permission</div>
     <div style={{color:'white',textAlign:'left', marginLeft:'15px'}}className="edit_group" onClick={this.click_edit_Add}>Add member</div>
