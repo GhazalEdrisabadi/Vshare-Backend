@@ -92,6 +92,7 @@ class chat_room extends Component {
         $(window).resize(function () {
             sizeeeeee = $(".formback_movie").width();
             $(".video-react-video").css("width", sizeeeeee.toString());
+          //  $(".video-react-video").css("margin-left", '20px');
         });
 
 
