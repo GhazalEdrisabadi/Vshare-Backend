@@ -39,7 +39,7 @@ import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined"
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import {TextField} from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
-
+import CloseIcon from '@material-ui/icons/Close';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import Forward10Icon from '@material-ui/icons/Forward10';
@@ -393,7 +393,111 @@ console.log(url1)
               
 
             });
+         $('.submitedit_popup').click(function () {
 
+            
+
+
+                var title = $('#edittitle_popup').val();
+                var des = $('#editdes_popup').val();
+                
+                var form = new FormData();
+
+                if (title != "")
+                    form.append("title", title);
+                if (des != '')
+                    form.append("describtion", des);
+
+
+                var settings = {
+                    "url": "http://127.0.0.1:8000/groups/" + id_gp + "/",
+                    "method": "PUT",
+                    "timeout": 0,
+                    "headers": {
+                        "Authorization": "Token " + localStorage.getItem('token')
+                    },
+                    success: function () {
+
+                         var x = document.getElementById("snackbar-succes-edit");
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+     var settings = {
+
+                "url": "http://127.0.0.1:8000/groups/" + id + '/',
+
+                "method": "GET",
+
+                "timeout": 0,
+
+                "headers": {
+
+                    //'X-CSRFToken': csrftoken,
+
+                    //  "Authorization": "token " + token,
+
+                    "accept": "application/json",
+
+                    "Access-Control-Allow-Origin": "*",
+
+                    "Access-Control-Allow-Headers": "*",
+
+                    "Content-Type": "application/json"
+
+                }
+
+            };
+
+
+            $.ajax(settings).done(function (response) {
+
+                localresponse = response;
+
+                console.log("111111");
+
+                console.log(response);
+
+                /*  for (var i = 0; i < response.members.length; i++) {
+                      var hoverout = 'onMouseOut="this.style.color=';
+                      var hoverrout = hoverout + "'white'";
+                      var htmlcode = '';
+                      var hover = 'onMouseOver="this.style.color=';
+                      var hoverr = hover + "'red'";
+                      htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
+                      $(".textarea_member").append(htmlcode);
+                      console.log("2")
+                      //$(".textarea_member").append(response.members[i] + "\n")
+                  }*/
+
+                //  $(".textarea_bio").append(response.describtion + "\n")
+
+         $(".photogp").html(response.title.toUpperCase()[0]);
+
+                $(".name").html(response.title);
+
+                $(".namegp").html(response.title);
+
+                 $(".idgp").html('@ '+response.groupid);
+                  $(".desbody").html(response.describtion);
+                   document.getElementById('myModal_popup').style.display = 'none'
+                })
+                    },
+                    error: function (event) {
+                        if (event.status == 400)
+                            alert("group with this groupid already exists.");
+                        else
+                            alert("something went wrong");
+                    },
+                    "processData": false,
+                    "mimeType": "multipart/form-data",
+                    "contentType": false,
+                    "data": form
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                });
+
+            })
     $('.edit_group').click(function () {
         alert('hdhhfhfhf')
         console.log("sdnskdbclskdbcn")
@@ -725,6 +829,9 @@ $(".name").click(function(){
 //Log the messages that are returned from the server
 $(".btnno").click(function(){document.getElementById('myModalPer').style.display = 'none';})
 $(".btncancel").click(function(){document.getElementById('myModalAdd').style.display = 'none';})
+$(".cancelicon").click(function(){document.getElementById('myModal_popup').style.display = 'none';})
+
+ 
 $(".btnyes").click(function(){
            Able_controll=0;
                 Able_select=0;
@@ -1106,6 +1213,7 @@ console.log(htmlcode)
       
                    }
                 })
+             
   document.getElementById('myModalAdd').style.display = 'none';
                  ;
                             },
@@ -1980,6 +2088,9 @@ console.log(htmlcode)
 click_edit_permission(){
         document.getElementById('myModalPer').style.display = 'block';
 }
+click_edit(){
+        document.getElementById('myModal_popup').style.display = 'block';
+}
 click_edit_Add(){
         document.getElementById('myModalAdd').style.display = 'block';
 }
@@ -2101,7 +2212,7 @@ handleChanges_Add = selectedOption_Add => {
   </Dropdown.Toggle>
 
   <Dropdown.Menu style={{ backgroundColor:'rgba(0,0,0,0.9)', color:'black'}}>
-    <div  style={{color:'white'}} className="edit_group">edit group</div>
+    <div  style={{color:'white'}} className="edit_group" onClick={this.click_edit}>edit group</div>
     <div style={{color:'white'}}className="edit_group" onClick={this.click_edit_permission}>edit permission</div>
     <div style={{color:'white'}}className="edit_group" onClick={this.click_edit_Add}>add member</div>
   </Dropdown.Menu>
@@ -2191,7 +2302,33 @@ handleChanges_Add = selectedOption_Add => {
                  <div id="snackbar-succes">Successfully add to group</div>
                   <div id="snackbar-not">User not found</div>
                    <div id="snackbar-already">User is already a member of this group</div>
-                  
+                    <div id="myModal_popup" class="modal_popup">
+                    <div class="modal-content">
+                               <IconButton style={{color: 'white', marginRight: '130%', marginTop: '4%'}}
+                                        className="cancelicon">
+                                <CloseIcon fontSize="large"/>
+                            </IconButton>
+                        <h3 class="texx">Edit your groups deatails</h3>
+
+                        <hr></hr>
+
+                        <input class="inputedit" id='edittitle_popup' placeholder="Title"></input>
+
+
+                        <input class="inputedit" id='editdes_popup' placeholder="Description"></input>
+                        <br></br>
+
+                        <Button style={{
+                            backgroundColor: "Red",
+                            marginTop: "20px"
+                        }} size='large' className="submitedit_popup" variant="contained" color="secondary">
+                            <p>Edit</p>
+                        </Button>
+
+                    </div>
+  <div id="snackbar-succes-edit">Successfully edit</div>
+                </div>
+
      
                     <div id='formback_movie_id' className="formback_movie">
 
