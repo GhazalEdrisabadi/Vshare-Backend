@@ -480,6 +480,8 @@ console.log(url1)
 
                  $(".idgp").html('@ '+response.groupid);
                   $(".desbody").html(response.describtion);
+                  $(".inputedit-title").val(response.title)
+                  $(".inputedit-des").val(response.describtion)
                    document.getElementById('myModal_popup').style.display = 'none'
                 })
                     },
@@ -723,6 +725,8 @@ console.log(url1)
                  $(".idgp").append('@ '+response.groupid);
 
    $(".desbody").append(response.describtion);
+    $(".inputedit-title").val(response.title)
+                  $(".inputedit-des").val(response.describtion)
 create_by=response.created_by
   
 
@@ -1140,7 +1144,12 @@ create_by=response.created_by
 
 
                 for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
-
+                    op=[]
+   var obj={}
+                   
+                    obj["value"]=response.members[counter1]
+                    obj["label"]=response.members[counter1]
+op.push(obj)
 var htmlcode = '';
 var controller=null
 var selector=null
@@ -2229,9 +2238,9 @@ handleChanges_Add = selectedOption_Add => {
   </Dropdown.Toggle>
 
   <Dropdown.Menu style={{ backgroundColor:'rgba(0,0,0,0.9)', color:'black' , marginLeft:'-55px'}}>
-    <div  style={{color:'white'}} className="edit_group" onClick={this.click_edit}>Edit group</div>
-    <div style={{color:'white'}}className="edit_group" onClick={this.click_edit_permission}>Edit permission</div>
-    <div style={{color:'white'}}className="edit_group" onClick={this.click_edit_Add}>Add member</div>
+    <div  style={{color:'white',textAlign:'left', marginLeft:'15px'}} className="edit_group" onClick={this.click_edit}>Edit group</div>
+    <div style={{color:'white',textAlign:'left', marginLeft:'15px'}}className="edit_group" onClick={this.click_edit_permission}>Edit permission</div>
+    <div style={{color:'white',textAlign:'left', marginLeft:'15px'}}className="edit_group" onClick={this.click_edit_Add}>Add member</div>
   </Dropdown.Menu>
 </Dropdown>
 </div>
@@ -2281,7 +2290,7 @@ handleChanges_Add = selectedOption_Add => {
                                 marginRight: "4px"
 
                             }} size='large' className="btnyes" variant="contained" color="secondary">
-                                <p>Edit</p>
+                                <p>Apply</p>
                             </Button>
 
                         </div>
@@ -2333,17 +2342,17 @@ handleChanges_Add = selectedOption_Add => {
 
                         <hr></hr>
 
-                        <input class="inputedit" id='edittitle_popup' placeholder="Title"></input>
+                        <input class="inputedit-title" id='edittitle_popup' placeholder="Title"></input>
 
 
-                        <input class="inputedit" id='editdes_popup' placeholder="Description"></input>
+                        <input class="inputedit-des" id='editdes_popup' placeholder="Description"></input>
                         <br></br>
 
                         <Button style={{
                             backgroundColor: "Red",
                             marginTop: "20px"
                         }} size='large' className="submitedit_popup" variant="contained" color="secondary">
-                            <p>Edit</p>
+                            <p>Apply</p>
                         </Button>
 
                     </div>
