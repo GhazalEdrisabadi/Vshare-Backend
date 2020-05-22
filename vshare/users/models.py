@@ -40,7 +40,7 @@ class MyAccountManager(BaseUserManager):
 
 class Account(AbstractBaseUser):
 	# notice the absence of a "Password field", that's built in.
-	photo = models.ImageField(upload_to='userimage', blank=True)
+	photo = models.CharField(max_length=100, blank=True)
 	firstname = models.CharField(max_length=50)
 	lastname = models.CharField(max_length=50)
 
