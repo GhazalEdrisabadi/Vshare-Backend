@@ -577,6 +577,7 @@ class chat_room extends Component {
             };
 
             $.ajax(settings).done(function (response) {
+                $('.onlinemembers').html('');
                 console.log('aaaa');
                 console.log(response);
                 for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
