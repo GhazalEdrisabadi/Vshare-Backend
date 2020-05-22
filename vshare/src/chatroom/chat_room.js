@@ -77,7 +77,7 @@ var isadmin = window.localStorage.getItem('isadmin');
 var filmplayed = 0;
 var comeinstate1 = 0;
 var Play_pause_space = 0;
-
+var usercolors = {};
 
 class chat_room extends Component {
 
@@ -162,20 +162,20 @@ class chat_room extends Component {
 
             if (messagee1.command == "chat_client") {
 
-                var randomColor1 = '#' + Math.floor(Math.random() * 16777215).toString(16);
+                var aval = 'style=';
+                var dovom = aval + '"color:';
+                var sevom = dovom + usercolors[messagee1.user];
+                //   var sevom = dovom + "red";
+                var charom = sevom + '"';
 
-
-                var aval1 = 'style=';
-                var dovom1 = aval1 + '"color:';
-                var sevom1 = dovom1 + randomColor1;
-                var charom1 = sevom1 + '"';
 
                 if (messagee1.user == window.localStorage.getItem('username')) {
 
-                    $(".pm").append("<div id='pmeman'" + charom1 + ">" + "me: " + messagee1.message + "</div>");
+
+                    $(".pm").append("<div id='pmeman'" + charom + ">" + "me: " + messagee1.message + "</div>");
 
                 } else {
-                    $(".pm").append("<div id='pmeoon'" + charom1 + ">" + messagee1.user + ": " + messagee1.message + "</div>");
+                    $(".pm").append("<div id='pmeoon'" + charom + ">" + messagee1.user + ": " + messagee1.message + "</div>");
                 }
 
 
@@ -193,6 +193,10 @@ class chat_room extends Component {
                         "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
                         "method": "GET",
                         "timeout": 0,
+                        success: function () {
+
+
+                        },
                         "headers": {
                             //'X-CSRFToken': csrftoken,
                             //  "Authorization": "token " + token,
@@ -206,9 +210,28 @@ class chat_room extends Component {
                     $.ajax(settings).done(function (response) {
                         console.log('aaaa12');
                         console.log(response);
-                        for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
+                        for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++) {
                             //  setTimeout(function () {
-                            $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
+                            var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+
+
+                            var letters = 'BCDEF'.split('');
+                            var color = '#';
+                            for (var i = 0; i < 6; i++) {
+                                color += letters[Math.floor(Math.random() * letters.length)];
+                            }
+
+
+                            var color2 = "hsl(" + Math.random() * 360 + ", 100%, 75%)";
+                            if (usercolors[response[onlinememberscounter].online_user] == null)
+                                usercolors[response[onlinememberscounter].online_user] = color2;
+                            var aval = 'style=';
+                            var dovom = aval + '"color:';
+                            var sevom = dovom + usercolors[response[onlinememberscounter].online_user];
+                            //   var sevom = dovom + "red";
+                            var charom = sevom + '"';
+                            $('.onlinemembers').append('<p id="members"' + charom + '>' + response[onlinememberscounter].online_user + '</p>');
+                        }
                         //  },500);
                     });
 
@@ -399,12 +422,12 @@ class chat_room extends Component {
                 if (e.which == 13) {
 
                     var massage = $(".formback_text_input").val();
-                  if (massage != '') {
-                    const message_send_chat = {"command": "chat_client", "message_client": massage}
+                    if (massage != '') {
+                        const message_send_chat = {"command": "chat_client", "message_client": massage}
 
-                    ws1.send(JSON.stringify(message_send_chat));
-                    $('.formback_text_input').val('');
-                }
+                        ws1.send(JSON.stringify(message_send_chat));
+                        $('.formback_text_input').val('');
+                    }
 
                     e.preventDefault();
                 }
@@ -709,8 +732,6 @@ class chat_room extends Component {
                 }
 
 
-
-
             });
 
 
@@ -731,29 +752,27 @@ class chat_room extends Component {
 
             $.ajax(settings).done(function (response) {
                 console.log(response);
-                for (var counterchathistory = response.results.length - 1; counterchathistory >= 0; counterchathistory--) {
-                    var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
-                     var aval = 'style=';
+                setTimeout(function () {
+                    for (var counterchathistory = response.results.length - 1; counterchathistory >= 0; counterchathistory--) {
+
+                        var aval = 'style=';
                         var dovom = aval + '"color:';
-                        var sevom = dovom + randomColor;
+                        var sevom = dovom + usercolors[response.results[counterchathistory].message_sender];
                         var charom = sevom + '"';
-                    if (response.results[counterchathistory].message_sender == window.localStorage.getItem('username')) {
+                        if (response.results[counterchathistory].message_sender == window.localStorage.getItem('username')) {
 
 
+                            $(".pm").append("<div  id='pmeman'" + charom + "> me: " + response.results[counterchathistory].message_text + "</div>");
 
+                        } else {
+                            $(".pm").append("<div id='pmeoon'" + charom + ">" + response.results[counterchathistory].message_sender + ": " + response.results[counterchathistory].message_text + "</div>");
+                        }
 
-
-
-
-                        $(".pm").append("<div  id='pmeman'" + charom + "> me: " + response.results[counterchathistory].message_text + "</div>");
-
-                    } else {
-                        $(".pm").append("<div id='pmeoon'" + charom + ">" + response.results[counterchathistory].message_sender + ": " + response.results[counterchathistory].message_text + "</div>");
                     }
+                    var element = document.getElementById("pmid");
+                    element.scrollTop = element.scrollHeight;
+                }, 500);
 
-                }
-                var element = document.getElementById("pmid");
-                element.scrollTop = element.scrollHeight;
 
             });
 
@@ -1611,15 +1630,16 @@ class chat_room extends Component {
 
                 <div id="mySidenav" className="sidenav">
                     <div className="name"/>
-                    <p className="khat">_______________________</p>
-                    <p className='titleofonlines'>Online members :</p>
+
+                    <p className='titleofonlines'>Onlines</p>
+                      <p className="khat">_______________________</p>
                     <div className="onlinemembers"></div>
                 </div>
 
 
                 <abbr title="Online Members">
                     <IconButton style={{
-                        transform: 'scaleX(-1)',
+                        transform: 'scaleX(1)',
                         color: 'white',
                         zIndex: '1'
                     }}
@@ -1821,7 +1841,7 @@ class chat_room extends Component {
 
                 <abbr title="Chat messanger">
                     <IconButton style={{
-                        transform: 'scaleX(1)',
+                        transform: 'scaleX(-1)',
                         color: 'white'
                     }}
 
