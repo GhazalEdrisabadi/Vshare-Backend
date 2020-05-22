@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 
 import RedoIcon from '@material-ui/icons/Redo';
 
-import Avatar from '@material-ui/core/Avatar';
+import Avatar from '@material-ui/core/Avatar'
 import './video-react.css';
 
 import {Player, ControlBar, PlayToggle, Shortcut} from 'video-react';
@@ -32,7 +32,7 @@ import PlayCircleFilledWhiteIcon from '@material-ui/icons/PlayCircleFilledWhite'
 
 import HomeIcon from '@material-ui/icons/Home';
 import { Dropdown } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import IconButton from "@material-ui/core/IconButton";
 
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
@@ -90,8 +90,10 @@ const options = [
   { value: '1', label: 'Able to select video' },
   { value: '2', label: 'Able to controll the playback' },
 ]
+var op=[]
 var per=[]
 var per_add=[]
+var member_edit
 class chat_room extends Component {
 
 
@@ -727,7 +729,11 @@ create_by=response.created_by
 
 
                 for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
-
+                    var obj={}
+                   
+                    obj["value"]=response.members[counter1]
+                    obj["label"]=response.members[counter1]
+op.push(obj)
 var htmlcode = '';
 var controller=null
 var selector=null
@@ -807,6 +813,7 @@ htmlcode += '</div>';
             })
       
                    }
+                   console.log(op)
             });
 
 
@@ -843,7 +850,8 @@ $(".btnyes").click(function(){
                         Able_controll=1
                     }
                 }
-                var member_per=$(".inp-").val()
+                var member_per=member_edit.value
+                console.log(member_per)
                               var settings = {
                     "url": "http://127.0.0.1:8000/group/"+id_gp+"/permissions/?member="+member_per+"",
                     "method": "PUT",
@@ -1353,6 +1361,7 @@ console.log(htmlcode)
             hash_: "",
              selectedOption: null,
              selectedOption_Add:null,
+             selectedOption_id:null,
 
         }
 
@@ -2129,6 +2138,14 @@ handleChanges_Add = selectedOption_Add => {
     console.log(per_add)
 
   }
+  handleChanges_id = selectedOption_id => {
+    this.setState(
+      { selectedOption_id },
+      () => member_edit= this.state.selectedOption_id
+    );
+    console.log(per_add)
+
+  }
     render() {
 
 
@@ -2211,10 +2228,10 @@ handleChanges_Add = selectedOption_Add => {
     ⋮
   </Dropdown.Toggle>
 
-  <Dropdown.Menu style={{ backgroundColor:'rgba(0,0,0,0.9)', color:'black'}}>
-    <div  style={{color:'white'}} className="edit_group" onClick={this.click_edit}>edit group</div>
-    <div style={{color:'white'}}className="edit_group" onClick={this.click_edit_permission}>edit permission</div>
-    <div style={{color:'white'}}className="edit_group" onClick={this.click_edit_Add}>add member</div>
+  <Dropdown.Menu style={{ backgroundColor:'rgba(0,0,0,0.9)', color:'black' , marginLeft:'-55px'}}>
+    <div  style={{color:'white'}} className="edit_group" onClick={this.click_edit}>Edit group</div>
+    <div style={{color:'white'}}className="edit_group" onClick={this.click_edit_permission}>Edit permission</div>
+    <div style={{color:'white'}}className="edit_group" onClick={this.click_edit_Add}>Add member</div>
   </Dropdown.Menu>
 </Dropdown>
 </div>
@@ -2239,7 +2256,11 @@ handleChanges_Add = selectedOption_Add => {
                     <div class="modal-content-Per">
                         <p className='delPer'>Edit permission of user</p>
                         
-                        <input class='inp-' placeholder=" enter your user's id"></input>
+                                           <Select className='select'  placeholder="select your id"
+        value={this.state.selectedOption_id}
+        onChange={this.handleChanges_id}
+        options={op}
+      />
                          <Select className='select' isMulti placeholder="select your permission"
         value={this.state.selectedOption}
         onChange={this.handleChanges}
