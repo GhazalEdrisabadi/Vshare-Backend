@@ -1,4 +1,4 @@
-import React, { useState , Component } from "react";
+import React, {useState, Component} from "react";
 import MultiSelect from "react-multi-select-component"
 import './Homepage.css'
 import AddIcon from '@material-ui/icons/Add';
@@ -10,15 +10,16 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import Select from 'react-select';
-var Able_chat=0;
-var Able_controll=0;
-var Able_select=0;
+
+var Able_chat = 0;
+var Able_controll = 0;
+var Able_select = 0;
 const options = [
- 
-  { value: '1', label: 'Able to select video' },
-  { value: '2', label: 'Able to controll the playback' },
+
+    {value: '1', label: 'Able to select video'},
+    {value: '2', label: 'Able to controll the playback'},
 ]
-var per=[]
+var per = []
 const name = window.$name;
 
 class Homepage extends Component {
@@ -26,7 +27,6 @@ class Homepage extends Component {
     componentDidMount() {
         const {id} = this.props.match.params;
         $(document).ready(function () {
-           
 
 
             $('.nextbtn').click(function () {
@@ -86,15 +86,16 @@ class Homepage extends Component {
                     console.log(response);
                 });
             });
-            $(".addbtn").click(function () {console.log(per)
-                Able_controll=0;
-                Able_select=0;
-                for(var count_per=0 ;count_per<per.length;count_per++){
-                    if(per[count_per].value==1){
-                        Able_select=1
+            $(".addbtn").click(function () {
+                console.log(per)
+                Able_controll = 0;
+                Able_select = 0;
+                for (var count_per = 0; count_per < per.length; count_per++) {
+                    if (per[count_per].value == 1) {
+                        Able_select = 1
                     }
-                    if(per[count_per].value==2){
-                        Able_controll=1
+                    if (per[count_per].value == 2) {
+                        Able_controll = 1
                     }
                 }
                 console.log(Able_select)
@@ -119,7 +120,7 @@ class Homepage extends Component {
 
                     },
                     success: function () {
-     var settings = {
+                        var settings = {
                             "url": "http://127.0.0.1:8000/group/add_member/",
                             "method": "POST",
                             error: function () {
@@ -132,41 +133,42 @@ class Homepage extends Component {
                             },
                             success: function () {
 
-                                       var settings = {
-                            "url": "http://127.0.0.1:8000/group/permissions/",
-                            "method": "POST",
-                            error: function () {
+                                var settings = {
+                                    "url": "http://127.0.0.1:8000/group/permissions/",
+                                    "method": "POST",
+                                    error: function () {
 
-                           alert("nooooooo")
+                                        alert("nooooooo")
 
 
-                            },
-                            success: function () {
+                                    },
+                                    success: function () {
 
-                                $(".textarea-addmember").append(member + '-');
-                            },
-                            "timeout": 0,
-                            "headers": {
+                                        $(".textarea-addmember").append(member + '-');
+                                    },
+                                    "timeout": 0,
+                                    "headers": {
 
-                                "accept": "application/json",
-                                "Access-Control-Allow-Origin": "*",
-                                "Access-Control-Allow-Headers": "*",
-                                "Content-Type": "application/json"
-                            },
-                            "data": JSON.stringify({
-                                    "group": id_gp,
-                                    "member": member,
-                                    "chat_permission":1,
-                                    "playback_permission":Able_controll,
-                                    "choose_video_permission":Able_select
-                                }
-                            ),
-                        };
+                                        "accept": "application/json",
+                                        "Access-Control-Allow-Origin": "*",
+                                        "Access-Control-Allow-Headers": "*",
+                                        "Content-Type": "application/json"
+                                    },
+                                    "data": JSON.stringify({
+                                            "group": id_gp,
+                                            "member": member,
+                                            "chat_permission": 1,
+                                            "playback_permission": Able_controll,
+                                            "choose_video_permission": Able_select
+                                        }
+                                    ),
+                                };
 
-                        $.ajax(settings).done(function (response) {
+                                $.ajax(settings).done(function (response) {
 
-                            console.log(response);
-                        });;
+                                    console.log(response);
+                                });
+                                ;
                             },
                             "timeout": 0,
                             "headers": {
@@ -188,7 +190,7 @@ class Homepage extends Component {
                             console.log(response);
                         });
 
-                
+
                     },
                     "headers": {
 
@@ -379,9 +381,9 @@ class Homepage extends Component {
                     htmlcode += '</br>';
 
 
-                   // setTimeout(function () {
-                        $('.groupsShow').append(htmlcode);
-                   // }, 100);
+                    // setTimeout(function () {
+                    $('.groupsShow').append(htmlcode);
+                    // }, 100);
 
 
                 }
@@ -639,298 +641,300 @@ class Homepage extends Component {
             });
 
 
-        });
+
+            });
 
 
-        $(document).ready(function () {
-
-            console.log(window.localStorage.getItem('token'));
-
-        })
-    };
+        };
 
 
-    constructor(props) {
+        constructor(props)
+        {
 
-        super(props);
+            super(props);
 
 
-        this.states = {
+            this.states = {
 
-            // anchorPosition:null ,
-            value: '',
-          selectedOption: null,
+                // anchorPosition:null ,
+                value: '',
+                selectedOption: null,
+
+
+            }
+
+            this.handleChange = this.handleChange.bind(this);
+
+            this.handleSubmit = this.handleSubmit.bind(this);
+
+        }
+        handleChanges = selectedOption => {
+            this.setState(
+                {selectedOption},
+                () => per = this.state.selectedOption
+            );
+
+        };
+        handleChange(event)
+        {
+
+
+            this.setState({value: event.target.value});
 
 
         }
 
-        this.handleChange = this.handleChange.bind(this);
-
-        this.handleSubmit = this.handleSubmit.bind(this);
-
-    }
-  handleChanges = selectedOption => {
-    this.setState(
-      { selectedOption },
-      () => per= this.state.selectedOption
-    );
-    
-  };
-    handleChange(event) {
+        handleSubmit(event)
+        {
 
 
-        this.setState({value: event.target.value});
+            alert('A name was submitted: ' + this.state.value);
 
 
-    }
+            event.preventDefault();
 
-    handleSubmit(event) {
+        }
 
+        state = {
 
-        alert('A name was submitted: ' + this.state.value);
+            sidedraweropen: false
 
-
-        event.preventDefault();
-
-    }
-
-    state = {
-
-        sidedraweropen: false
-
-    };
+        };
 
 
-    drawertoggleclickhandler = () => {
+        drawertoggleclickhandler = () => {
 
-        this.setState((prevState) => {
-
-
-            return {sidedraweropen: !prevState.sidedraweropen}
+            this.setState((prevState) => {
 
 
-        });
-
-    };
+                return {sidedraweropen: !prevState.sidedraweropen}
 
 
-    backdropclickhandeler = () => {
+            });
 
-        this.setState({sidedraweropen: false})
-
-    };
-    // renderEfect = () => {
-    //     if(this.state.showEffect === true){
-    //         return(
-    //             <div style={{position:"absolute", width:"100% " , height : "100%" , border:"solid red" , zIndex :100 , backgroundColor:"rgba(0, 0, 0, 0.76)" }}></div>
-    //     )
-    //     }
-
-    //     else{
-    //         return(null)
-    //     }
-    // };
-
-onSelect(selectedList, selectedItem) {
-    console.log(selectedItem)
-    console.log(selectedList)
-}
- 
-onRemove(selectedList, removedItem) {
-    console.log(selectedList)
-    console.log(removedItem)
-}
-
-    render() {
-
-const { selectedOption } = this.state;
-        return (
+        };
 
 
-            <div class="Homepage">
-                {/* {this.renderEfect()} */}
+        backdropclickhandeler = () => {
+
+            this.setState({sidedraweropen: false})
+
+        };
+        // renderEfect = () => {
+        //     if(this.state.showEffect === true){
+        //         return(
+        //             <div style={{position:"absolute", width:"100% " , height : "100%" , border:"solid red" , zIndex :100 , backgroundColor:"rgba(0, 0, 0, 0.76)" }}></div>
+        //     )
+        //     }
+
+        //     else{
+        //         return(null)
+        //     }
+        // };
+
+        onSelect(selectedList, selectedItem)
+        {
+            console.log(selectedItem)
+            console.log(selectedList)
+        }
+
+        onRemove(selectedList, removedItem)
+        {
+            console.log(selectedList)
+            console.log(removedItem)
+        }
+
+        render()
+        {
+
+            const {selectedOption} = this.state;
+            return (
 
 
-                <div id="myModal" class="modal">
-                    <div class="modal-content">
-                        <h3 class="texx">Edit your groups deatails</h3>
-
-                        <hr></hr>
-
-                        <input class="inputedit" id='edittitle' placeholder="Title"></input>
+                <div class="Homepage">
+                    {/* {this.renderEfect()} */}
 
 
-                        <input class="inputedit" id='editdes' placeholder="Description"></input>
-                        <br></br>
+                    <div id="myModal" class="modal">
+                        <div class="modal-content">
+                            <h3 class="texx">Edit your groups deatails</h3>
 
-                        <Button style={{
-                            backgroundColor: "Red",
-                            marginTop: "20px"
-                        }} size='large' className="submitedit" variant="contained" color="secondary">
-                            <p>Edit</p>
-                        </Button>
-
-                    </div>
-
-                </div>
-
-                <div id="myModal2" className="modal2">
-                    <div className="modal-content2">
-                        <h3 className='deleteTEXT'>Are you sure you want to leave this group ? </h3>
-                        <p className='admintext'></p>
-                        <div className='dltbtns'>
-
-                            <Button style={{backgroundColor: "Red"}} size='large'
-                                    className="dltno" variant="contained" color="secondary">
-                                <p>No&nbsp;</p>
-                            </Button>
-
-                            <Button style={{
-                                backgroundColor: 'gray',
-                                marginRight: "4px"
-
-                            }} size='large' className="dltyes" variant="contained" color="secondary">
-                                <p>Yes</p>
-                            </Button>
-
-                        </div>
-                        {/* <div className='dltno'>no</div> */}
-                    </div>
-                </div>
-
-
-                <header className="head">
-
-                    <div className='leftheader'>
-                        <div className='userprofile'>
-                            <IconButton style={{
-                                color: 'white'
-
-                            }}
-                                        className="profilepic">
-                                <AccountCircleOutlinedIcon fontSize="large"/>
-                            </IconButton>
-
-                            <p className='username'>Username</p>
-                        </div>
-
-                        <div className='searchgp'>
-
-
-                            <input placeholder='Enter id of the group' className='input'/>
-
-                            <Button style={{
-                                marginTop: "10px",
-                                backgroundColor: "Red"
-                            }} startIcon={<GroupAddIcon/>} className="zare" variant="contained" color="secondary">
-                                join
-                            </Button>
-                            <div id='joinstatus' className='statusofjoin'>
-                                Group not found !
-                            </div>
-                        </div>
-
-
-                    </div>
-                    <div className='logout'>
-                        <p className='logout_text'>Logout</p>
-                        <IconButton style={{
-                            color: 'white'
-                        }}
-                                    className="div_leave">
-                            <ExitToAppIcon fontSize="large"/>
-                        </IconButton>
-                    </div>
-                </header>
-
-
-                <div className="formback">
-                    <div className="formback-content">
-                        <div className="TTitle">
-                            <IconButton style={{color: 'white', marginRight: '130%', marginTop: '4%'}}
-                                        className="KeyboardBackspaceIcon">
-                                <CloseIcon fontSize="large"/>
-                            </IconButton>
-
-                            <h4 className="textForm">create new group</h4>
                             <hr></hr>
 
-                        </div>
-                        <input onChange={this.change_name} type="text"
-
-                               className="input1" placeholder="id" style={{
-                            height: '40px',
-                            width: '65%',
-                        }}/>
-
-                        <br></br>
-
-                        <br></br>
-                        <input onChange={this.change_id} type="text"
-                               className="input2" placeholder="name" style={{
-                            height: '40px',
-                            width: '65%'
-                        }}/>
-
-                        <div className="Status-Id" id="Status-Id"></div>
+                            <input class="inputedit" id='edittitle' placeholder="Title"></input>
 
 
-                        <br></br>
-
-                        <textarea onChange={this.change_bio} type="text"
-                                  className="textarea" placeholder=" bio" style={{
-                            height: '60px',
-                            width: '65%',
-                            marginTop: '8%'
-
-
-                        }}/>
-
-                        <Button style={{
-                            backgroundColor: "Red",
-                            marginRight: "45%",
-                            marginTop: "30%",
-                            marginLeft: "42%"
-                        }} className='nextbtn' variant="contained" color="secondary">
-                            next
-                        </Button>
-                    </div>
-
-                    <div className="addmember-content">
-                        <p classname='tit' style={{fontSize: "100%", marginBottom: "8%", marginTop: "8%",}}>Add your
-                            member</p>
-                        <hr></hr>
-
-                        <input class='inp' placeholder=" enter your user's id"></input>
-                         <Select className='selector' isMulti placeholder="select your permission"
-        value={selectedOption}
-        onChange={this.handleChanges}
-        options={options}
-      />
-                        <div className="textarea-addmember"
-                             style={{borderRadius: "10px", marginTop: "10%", marginBottom: "5%",}}></div>
- 
-                        <div className="Status-Addmember" id="Addmember-Status"></div>
-                        <div class="center">
-
-                            <Button style={{marginTop: "14%", backgroundColor: "Red"}} size='large'
-                                    className="addbtn" variant="contained" color="secondary">
-                                <p>Add&nbsp;</p>
-                            </Button>
+                            <input class="inputedit" id='editdes' placeholder="Description"></input>
+                            <br></br>
 
                             <Button style={{
-                                marginTop: "14%",
-                                backgroundColor: 'gray',
-                                marginLeft: "3%"
-
-                            }} size='large' className="skipbtn" variant="contained" color="secondary">
-                                <p>Done</p>
+                                backgroundColor: "Red",
+                                marginTop: "20px"
+                            }} size='large' className="submitedit" variant="contained" color="secondary">
+                                <p>Edit</p>
                             </Button>
+
+                        </div>
+
+                    </div>
+
+                    <div id="myModal2" className="modal2">
+                        <div className="modal-content2">
+                            <h3 className='deleteTEXT'>Are you sure you want to leave this group ? </h3>
+                            <p className='admintext'></p>
+                            <div className='dltbtns'>
+
+                                <Button style={{backgroundColor: "Red"}} size='large'
+                                        className="dltno" variant="contained" color="secondary">
+                                    <p>No&nbsp;</p>
+                                </Button>
+
+                                <Button style={{
+                                    backgroundColor: 'gray',
+                                    marginRight: "4px"
+
+                                }} size='large' className="dltyes" variant="contained" color="secondary">
+                                    <p>Yes</p>
+                                </Button>
+
+                            </div>
+                            {/* <div className='dltno'>no</div> */}
+                        </div>
+                    </div>
+
+
+                    <header className="head">
+
+                        <div className='leftheader'>
+                            <div className='userprofile'>
+                                <IconButton style={{
+                                    color: 'white'
+
+                                }}
+                                            className="profilepic">
+                                    <AccountCircleOutlinedIcon fontSize="large"/>
+                                </IconButton>
+
+                                <p className='username'>Username</p>
+                            </div>
+
+                            <div className='searchgp'>
+
+
+                                <input placeholder='Enter id of the group' className='input'/>
+
+                                <Button style={{
+                                    marginTop: "10px",
+                                    backgroundColor: "Red"
+                                }} startIcon={<GroupAddIcon/>} className="zare" variant="contained" color="secondary">
+                                    join
+                                </Button>
+                                <div id='joinstatus' className='statusofjoin'>
+                                    Group not found !
+                                </div>
+                            </div>
 
 
                         </div>
-                    </div>
-                    {/* <div id="myModel" className="modal2">
+                        <div className='logout'>
+                            <p className='logout_text'>Logout</p>
+                            <IconButton style={{
+                                color: 'white'
+                            }}
+                                        className="div_leave">
+                                <ExitToAppIcon fontSize="large"/>
+                            </IconButton>
+                        </div>
+                    </header>
+
+
+                    <div className="formback">
+                        <div className="formback-content">
+                            <div className="TTitle">
+                                <IconButton style={{color: 'white', marginRight: '130%', marginTop: '4%'}}
+                                            className="KeyboardBackspaceIcon">
+                                    <CloseIcon fontSize="large"/>
+                                </IconButton>
+
+                                <h4 className="textForm">create new group</h4>
+                                <hr></hr>
+
+                            </div>
+                            <input onChange={this.change_name} type="text"
+
+                                   className="input1" placeholder="id" style={{
+                                height: '40px',
+                                width: '65%',
+                            }}/>
+
+                            <br></br>
+
+                            <br></br>
+                            <input onChange={this.change_id} type="text"
+                                   className="input2" placeholder="name" style={{
+                                height: '40px',
+                                width: '65%'
+                            }}/>
+
+                            <div className="Status-Id" id="Status-Id"></div>
+
+
+                            <br></br>
+
+                            <textarea onChange={this.change_bio} type="text"
+                                      className="textarea" placeholder=" bio" style={{
+                                height: '60px',
+                                width: '65%',
+                                marginTop: '8%'
+
+
+                            }}/>
+
+                            <Button style={{
+                                backgroundColor: "Red",
+                                marginRight: "45%",
+                                marginTop: "30%",
+                                marginLeft: "42%"
+                            }} className='nextbtn' variant="contained" color="secondary">
+                                next
+                            </Button>
+                        </div>
+
+                        <div className="addmember-content">
+                            <p classname='tit' style={{fontSize: "100%", marginBottom: "8%", marginTop: "8%",}}>Add your
+                                member</p>
+                            <hr></hr>
+
+                            <input class='inp' placeholder=" enter your user's id"></input>
+                            <Select className='selector' isMulti placeholder="select your permission"
+                                    value={selectedOption}
+                                    onChange={this.handleChanges}
+                                    options={options}
+                            />
+                            <div className="textarea-addmember"
+                                 style={{borderRadius: "10px", marginTop: "10%", marginBottom: "5%",}}></div>
+
+                            <div className="Status-Addmember" id="Addmember-Status"></div>
+                            <div class="center">
+
+                                <Button style={{marginTop: "14%", backgroundColor: "Red"}} size='large'
+                                        className="addbtn" variant="contained" color="secondary">
+                                    <p>Add&nbsp;</p>
+                                </Button>
+
+                                <Button style={{
+                                    marginTop: "14%",
+                                    backgroundColor: 'gray',
+                                    marginLeft: "3%"
+
+                                }} size='large' className="skipbtn" variant="contained" color="secondary">
+                                    <p>Done</p>
+                                </Button>
+
+
+                            </div>
+                        </div>
+                        {/* <div id="myModel" className="modal2">
                         <div id="mymodal2" class="modal-content2">
                             <p class='tit'>Add your member</p>
                             <input class='inp' placeholder=" enter your user's id"></input>
@@ -943,32 +947,34 @@ const { selectedOption } = this.state;
                     </div> */}
 
 
+                    </div>
+
+
+                    <div className="groupsShow">
+
+
+                        <Button style={{
+                            backgroundColor: "Red",
+                            marginRight: "10px",
+                            marginTop: "20px"
+                        }} className='createnewgp' startIcon={<AddIcon/>} variant="contained" color="secondary">
+
+                            Create new group
+                        </Button>
+
+                    </div>
+
+
                 </div>
 
 
-                <div className="groupsShow">
+            )
 
+        }
 
-                    <Button style={{
-                        backgroundColor: "Red",
-                        marginRight: "10px",
-                        marginTop: "20px"
-                    }} className='createnewgp' startIcon={<AddIcon/>} variant="contained" color="secondary">
-
-                        Create new group
-                    </Button>
-
-                </div>
-
-
-            </div>
-
-
-        )
 
     }
 
-
-}
-
-export default Homepage
+    export
+    default
+    Homepage

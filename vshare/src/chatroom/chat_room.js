@@ -31,7 +31,7 @@ import PublishIcon from '@material-ui/icons/Publish';
 import PlayCircleFilledWhiteIcon from '@material-ui/icons/PlayCircleFilledWhite';
 
 import HomeIcon from '@material-ui/icons/Home';
-import { Dropdown } from 'react-bootstrap';
+import {Dropdown} from 'react-bootstrap';
 
 import IconButton from "@material-ui/core/IconButton";
 
@@ -46,9 +46,10 @@ import Forward10Icon from '@material-ui/icons/Forward10';
 import EjectIcon from '@material-ui/icons/Eject';
 import StopIcon from '@material-ui/icons/Stop';
 import Select from 'react-select';
-var Able_chat=0;
-var Able_controll=0;
-var Able_select=0;
+
+var Able_chat = 0;
+var Able_controll = 0;
+var Able_select = 0;
 var adminisinstatezero = 1;
 var logoutclicked = 0;
 var azavalbude = 0;
@@ -65,7 +66,6 @@ var played = 0;
 var messagee1;
 
 
-
 var ws = new WebSocket(url);
 
 var adminhash;
@@ -76,24 +76,26 @@ var play_or_no;
 
 var clienthashok = 0;
 
-
+var iscontroller = 0;
+var isselector = 0;
 var isadmin = window.localStorage.getItem('isadmin');
 var filmplayed = 0;
 var comeinstate1 = 0;
 var Play_pause_space = 0;
 
 
-var create_by=null
+var create_by = null
 
 const options = [
- 
-  { value: '1', label: 'Able to select video' },
-  { value: '2', label: 'Able to controll the playback' },
+
+    {value: '1', label: 'Able to select video'},
+    {value: '2', label: 'Able to controll the playback'},
 ]
-var op=[]
-var per=[]
-var per_add=[]
+var op = []
+var per = []
+var per_add = []
 var member_edit
+
 class chat_room extends Component {
 
 
@@ -102,8 +104,8 @@ class chat_room extends Component {
     }
 
     componentDidMount() {
-console.log(url)
-console.log(url1)
+        console.log(url)
+        console.log(url1)
         console.log("is admin : " + isadmin);
         document.addEventListener("keyup", this.handlereq_forward_backward, false);
 
@@ -143,43 +145,42 @@ console.log(url1)
                 $(".pm").append("<br>")
 
 
-
                 var element = document.getElementById("pmid");
                 element.scrollTop = element.scrollHeight;
 
 
             }
-                        if(messagee1.message=='isoffline' || messagee1.message=='isonline'){
-                 console.log("onlineeeeeee")
+            if (messagee1.message == 'isoffline' || messagee1.message == 'isonline') {
+                console.log("onlineeeeeee")
 
-                    setTimeout(function () {
-                        $('.onlinemembers').html('');
-                            var settings = {
-                    "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
-                    "method": "GET",
-                    "timeout": 0,
-                    "headers": {
-                        //'X-CSRFToken': csrftoken,
-                        //  "Authorization": "token " + token,
-                        "accept": "application/json",
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Headers": "*",
-                        "Content-Type": "application/json"
-                    }
-                };
+                setTimeout(function () {
+                    $('.onlinemembers').html('');
+                    var settings = {
+                        "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                        "method": "GET",
+                        "timeout": 0,
+                        "headers": {
+                            //'X-CSRFToken': csrftoken,
+                            //  "Authorization": "token " + token,
+                            "accept": "application/json",
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Headers": "*",
+                            "Content-Type": "application/json"
+                        }
+                    };
 
-                $.ajax(settings).done(function (response) {
-                    console.log('aaaa12');
-                    console.log(response);
-                    for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
-                      //  setTimeout(function () {
+                    $.ajax(settings).done(function (response) {
+                        console.log('aaaa12');
+                        console.log(response);
+                        for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
+                            //  setTimeout(function () {
                             $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
-                      //  },500);
-                });
+                        //  },500);
+                    });
 
-                    }, 250);
+                }, 250);
 
-            
+
             }
 
 
@@ -212,7 +213,8 @@ console.log(url1)
                 //  $('#reselect').fadeOut('fast');
                 document.getElementById('reselect').style.pointerEvents = 'none';
                 $('#moviebtnd').fadeIn('slow');
-                document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                if (iscontroller == 0)
+                    document.getElementById('controllbuttons').style.pointerEvents = 'none';
                 document.getElementById('videopickbtn').style.pointerEvents = 'auto';
                 document.getElementById('videopicks').style.pointerEvents = 'auto';
                 $('#movietxt').text('Click ▲ to select your video ');
@@ -264,9 +266,14 @@ console.log(url1)
                 document.getElementById('movie').style.display = 'block';
                 filmplayed = 1;
                 document.getElementById('movietxt').style.display = 'none';
+                if(iscontroller==1){
+                    console.log("ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
+                      document.getElementById("controllbuttons2").style.zIndex = "-1";
+                    document.getElementById('controllbuttons').style.pointerEvents = 'auto';
+                }
 
-
-                if (isadmin == 0) {
+                if (!(isadmin == 1 || iscontroller == 1)) {
+                    console.log("ppppppppppppppppppppppppppppppppppppppppppp");
                     // document.getElementById('controllbuttons').style.display = 'none';
                     document.getElementById("controllbuttons2").style.zIndex = "1";
                     document.getElementById('controllbuttons').style.pointerEvents = 'none';
@@ -319,10 +326,11 @@ console.log(url1)
             // }, 300);
 
 
-            if (isadmin == 1) {
+            if (isadmin == 1 || isselector == 1) {
                 $('#videopicks').fadeIn('fast');
             } else {
-                document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                if (iscontroller == 0)
+                    document.getElementById('controllbuttons').style.pointerEvents = 'none';
 
             }
             $("#playbtnid").click(function () {
@@ -346,7 +354,6 @@ console.log(url1)
             //        console.log(JSON.stringify(message_send_play))
             //    }
             //});
-
 
 
             $(document).on("keypress", "input", function (e) {
@@ -374,35 +381,32 @@ console.log(url1)
 
 
             }
-    window.onclick = function (event) {
+            window.onclick = function (event) {
 
                 if (event.target == document.getElementById("myModal")) {
                     $('.modal-').fadeOut("slow");
-     }
+                }
             }
             $('.logout').click(function () {
-                window.localStorage.setItem('id_gp','');
+                window.localStorage.setItem('id_gp', '');
                 // ws1.close();
                 logoutclicked = 1;
-                
-                
-                   setTimeout(function () {
+
+
+                setTimeout(function () {
                     const message_reselect = {"command": "reset"}
                     ws.send(JSON.stringify(message_reselect));
                     window.location.replace('/homepage/');
-                     }, 300);
- 
-              
+                }, 300);
+
 
             });
-         $('.submitedit_popup').click(function () {
-
-            
+            $('.submitedit_popup').click(function () {
 
 
                 var title = $('#edittitle_popup').val();
                 var des = $('#editdes_popup').val();
-                
+
                 var form = new FormData();
 
                 if (title != "")
@@ -420,70 +424,72 @@ console.log(url1)
                     },
                     success: function () {
 
-                         var x = document.getElementById("snackbar-succes-edit");
-  x.className = "show";
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-     var settings = {
+                        var x = document.getElementById("snackbar-succes-edit");
+                        x.className = "show";
+                        setTimeout(function () {
+                            x.className = x.className.replace("show", "");
+                        }, 3000);
+                        var settings = {
 
-                "url": "http://127.0.0.1:8000/groups/" + id + '/',
+                            "url": "http://127.0.0.1:8000/groups/" + id + '/',
 
-                "method": "GET",
+                            "method": "GET",
 
-                "timeout": 0,
+                            "timeout": 0,
 
-                "headers": {
+                            "headers": {
 
-                    //'X-CSRFToken': csrftoken,
+                                //'X-CSRFToken': csrftoken,
 
-                    //  "Authorization": "token " + token,
+                                //  "Authorization": "token " + token,
 
-                    "accept": "application/json",
+                                "accept": "application/json",
 
-                    "Access-Control-Allow-Origin": "*",
+                                "Access-Control-Allow-Origin": "*",
 
-                    "Access-Control-Allow-Headers": "*",
+                                "Access-Control-Allow-Headers": "*",
 
-                    "Content-Type": "application/json"
+                                "Content-Type": "application/json"
 
-                }
+                            }
 
-            };
+                        };
 
 
-            $.ajax(settings).done(function (response) {
+                        $.ajax(settings).done(function (response) {
 
-                localresponse = response;
+                            localresponse = response;
 
-                console.log("111111");
+                            console.log("111111");
 
-                console.log(response);
+                            console.log(response);
 
-                /*  for (var i = 0; i < response.members.length; i++) {
-                      var hoverout = 'onMouseOut="this.style.color=';
-                      var hoverrout = hoverout + "'white'";
-                      var htmlcode = '';
-                      var hover = 'onMouseOver="this.style.color=';
-                      var hoverr = hover + "'red'";
-                      htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
-                      $(".textarea_member").append(htmlcode);
-                      console.log("2")
-                      //$(".textarea_member").append(response.members[i] + "\n")
-                  }*/
+                            /*  for (var i = 0; i < response.members.length; i++) {
+                                  var hoverout = 'onMouseOut="this.style.color=';
+                                  var hoverrout = hoverout + "'white'";
+                                  var htmlcode = '';
+                                  var hover = 'onMouseOver="this.style.color=';
+                                  var hoverr = hover + "'red'";
+                                  htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
+                                  $(".textarea_member").append(htmlcode);
+                                  console.log("2")
+                                  //$(".textarea_member").append(response.members[i] + "\n")
+                              }*/
 
-                //  $(".textarea_bio").append(response.describtion + "\n")
+                            //  $(".textarea_bio").append(response.describtion + "\n")
 
-         $(".photogp").html(response.title.toUpperCase()[0]);
+                            $(".photogp").html(response.title.toUpperCase()[0]);
 
-                $(".name").html(response.title);
+                            $(".name").html(response.title);
 
-                $(".namegp").html(response.title);
+                            $(".namegp").html(response.title);
 
-                 $(".idgp").html('@ '+response.groupid);
-                  $(".desbody").html(response.describtion);
-                  $(".inputedit-title").val(response.title)
-                  $(".inputedit-des").val(response.describtion)
-                   document.getElementById('myModal_popup').style.display = 'none'
-                })
+                            $(".idgp").html('@ ' + response.groupid);
+                            $(".desbody").html(response.describtion);
+                            $(".inputedit-title").val(response.title)
+                            $(".inputedit-des").val(response.describtion)
+                            document.getElementById('myModal_popup').style.display = 'none'
+                        })
                     },
                     error: function (event) {
                         if (event.status == 400)
@@ -502,9 +508,9 @@ console.log(url1)
                 });
 
             })
-    $('.edit_group').click(function () {
-        alert('hdhhfhfhf')
-        console.log("sdnskdbclskdbcn")
+            $('.edit_group').click(function () {
+                alert('hdhhfhfhf')
+                console.log("sdnskdbclskdbcn")
             });
             $('#reselect').click(function () {
                 const message_reselect = {"command": "reset"}
@@ -548,40 +554,43 @@ console.log(url1)
 
             document.getElementById('movietxt').style.display = 'none';
 
+            setTimeout(function () {
+                if (isadmin == 1 || isselector == 1) {
 
-            if (isadmin == 1) {
-
-                document.getElementById('moviebtnd').style.display = 'block';
-
-
-                document.getElementById('movietxt').style.display = 'block';
-                $('#movietxt').text('Click ▲ to select your video ');
-                document.getElementById('controllbuttons').style.pointerEvents = 'none';
-                document.getElementById('reselect').style.pointerEvents = 'auto';
-                document.getElementById('videopickbtn').style.pointerEvents = 'auto';
-                document.getElementById('videopicks').style.pointerEvents = 'auto';
+                    document.getElementById('moviebtnd').style.display = 'block';
 
 
-                //$('#videopickbtn').fadeIn('fast');
+                    document.getElementById('movietxt').style.display = 'block';
+                    $('#movietxt').text('Click ▲ to select your video ');
+                    if (iscontroller == 0)
+                        document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                    document.getElementById('reselect').style.pointerEvents = 'auto';
+                    document.getElementById('videopickbtn').style.pointerEvents = 'auto';
+                    document.getElementById('videopicks').style.pointerEvents = 'auto';
 
-                //    $('#movietxt').fadeOut('fast');
+
+                    //$('#videopickbtn').fadeIn('fast');
+
+                    //    $('#movietxt').fadeOut('fast');
 
 
-            } else {
+                } else {
 
-                // document.getElementById('reselect').style.display = 'none';
-                document.getElementById('reselect').style.pointerEvents = 'none';
+                    // document.getElementById('reselect').style.display = 'none';
+                    document.getElementById('reselect').style.pointerEvents = 'none';
 
-                if (rejoined == 0)
-                    document.getElementById('moviebtnd').style.display = 'none';
+                    if (rejoined == 0)
+                        document.getElementById('moviebtnd').style.display = 'none';
 
-                document.getElementById('movietxt').style.display = 'block';
+                    document.getElementById('movietxt').style.display = 'block';
 
-                //   $('#videopickbtn').fadeOut('fast');
+                    //   $('#videopickbtn').fadeOut('fast');
 
-                // $('#movietxt').fadeIn('fast');
+                    // $('#movietxt').fadeIn('fast');
 
-            }
+                }
+
+            }, 500);
 
             $("#formback_movie_id").mouseover(function () {
 
@@ -595,52 +604,46 @@ console.log(url1)
             });
 
 
-                        //$('#videopickbtn').fadeIn('fast');
-                        //    $('#movietxt').fadeOut('fast');
+            //$('#videopickbtn').fadeIn('fast');
+            //    $('#movietxt').fadeOut('fast');
 
 
-                    
+            // if (localStorage.getItem('token') == null) {
+            //     alert("Login please !");
+            //     window.location.replace("/login/");
+            // }
 
 
-                
+            var id = window.localStorage.getItem('id_gp');
 
 
-                // if (localStorage.getItem('token') == null) {
-                //     alert("Login please !");
-                //     window.location.replace("/login/");
-                // }
+            var settings = {
+                "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+                    //'X-CSRFToken': csrftoken,
+                    //  "Authorization": "token " + token,
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                }
+            };
 
-
-                var id = window.localStorage.getItem('id_gp');
-
-
-                var settings = {
-                    "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
-                    "method": "GET",
-                    "timeout": 0,
-                    "headers": {
-                        //'X-CSRFToken': csrftoken,
-                        //  "Authorization": "token " + token,
-                        "accept": "application/json",
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Headers": "*",
-                        "Content-Type": "application/json"
-                    }
-                };
-
-                $.ajax(settings).done(function (response) {
-                    console.log('aaaa');
-                    console.log(response);
-                    for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
-                      //  setTimeout(function () {
-                            $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
-                      //  },500);
-                });
+            $.ajax(settings).done(function (response) {
+                console.log('aaaa');
+                console.log(response);
+                for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
+                    //  setTimeout(function () {
+                    $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
+                //  },500);
+            });
 
 
             $('#videopicks').change(function () {
 
-                if (isadmin == 1) {
+                if (isadmin == 1 || isselector == 1) {
 
                     //   $('#videopickbtn').fadeOut('fast');
                     document.getElementById('videopickbtn').style.pointerEvents = 'none';
@@ -664,7 +667,6 @@ console.log(url1)
             //     window.location.replace("/login/");
 
             // }
-
 
 
             var settings = {
@@ -716,301 +718,305 @@ console.log(url1)
 
                 //  $(".textarea_bio").append(response.describtion + "\n")
 
-         $(".photogp").html(response.title.toUpperCase()[0]);
+                $(".photogp").html(response.title.toUpperCase()[0]);
 
                 $(".name").append(response.title);
 
                 $(".namegp").append(response.title);
 
-                 $(".idgp").append('@ '+response.groupid);
+                $(".idgp").append('@ ' + response.groupid);
 
-   $(".desbody").append(response.describtion);
-    $(".inputedit-title").val(response.title)
-                  $(".inputedit-des").val(response.describtion)
-create_by=response.created_by
-  
-
+                $(".desbody").append(response.describtion);
+                $(".inputedit-title").val(response.title)
+                $(".inputedit-des").val(response.describtion)
+                create_by = response.created_by
 
 
                 for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
-                    var obj={}
-                   
-                    obj["value"]=response.members[counter1]
-                    obj["label"]=response.members[counter1]
-op.push(obj)
-var htmlcode = '';
-var controller=null
-var selector=null
-     
-  var settings = {
+                    var obj = {}
 
-                "url": "http://127.0.0.1:8000/group/"+id_gp+"/permissions/?member="+response.members[counter1]+"",
+                    obj["value"] = response.members[counter1]
+                    obj["label"] = response.members[counter1]
+                    op.push(obj)
+                    var htmlcode = '';
+                    var controller = null
+                    var selector = null
 
-                "method": "GET",
+                    var settings = {
 
-                "timeout": 0,
+                        "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + response.members[counter1] + "",
 
-                "headers": {
+                        "method": "GET",
 
-                    //'X-CSRFToken': csrftoken,
+                        "timeout": 0,
 
-                    //  "Authorization": "token " + token,
+                        "headers": {
 
-                    "accept": "application/json",
+                            //'X-CSRFToken': csrftoken,
 
-                    "Access-Control-Allow-Origin": "*",
+                            //  "Authorization": "token " + token,
 
-                    "Access-Control-Allow-Headers": "*",
+                            "accept": "application/json",
 
-                    "Content-Type": "application/json"
+                            "Access-Control-Allow-Origin": "*",
+
+                            "Access-Control-Allow-Headers": "*",
+
+                            "Content-Type": "application/json"
+
+                        }
+
+                    };
+
+
+                    $.ajax(settings).done(function (response_) {
+
+
+                        console.log(response_);
+                        if (response_.member == window.localStorage.getItem('username')) {
+                            iscontroller = response_.playback_permission;
+                            isselector = response_.choose_video_permission;
+                        }
+                        controller = response_.playback_permission
+                        selector = response_.choose_video_permission
+
+                        console.log("117778878")
+                        var r = "window.open('/profile/" + response_.member + "')";
+                        var a = "window.localStorage.setItem('user','" + response_.member + "')"; //id of the group
+                        var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'white'";
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
+                        var hoverout1 = 'onMouseOut="this.style.backgroundColor=';
+                        var hoverrout1 = hoverout1 + "'rgb(35, 35, 35)'";
+                        var hover1 = 'onMouseOver="this.style.backgroundColor=';
+                        var hoverr1 = hover1 + "'rgb(365, 365,365,0.1)'";
+                        htmlcode = ''
+                        htmlcode += '<div class="divMem"' + hoverr1 + '"' + hoverrout1 + '"' + '>'
+                        htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + r + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" + response_.member + '</p>';
+                        ;
+
+                        if (response_.member == create_by && controller && selector) {
+                            htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >admin</p>';
+                        } else {
+
+                            if (controller && selector) {
+                                htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
+                            }
+                            if (controller && !selector) {
+                                htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
+                            }
+                            if (!controller && selector) {
+                                htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
+                            }
+
+                        }
+
+                        htmlcode += '</div>';
+
+                        $(".infobody").append(htmlcode);
+
+                    })
 
                 }
-
-            };
-
-
-            $.ajax(settings).done(function (response_) {
-
-              
-
-                console.log(response_);
-                 controller=response_.playback_permission
-                 selector=response_.choose_video_permission
-                
-                 console.log("117778878")
-                 var r = "window.open('/profile/" + response_.member + "')";
-                    var a = "window.localStorage.setItem('user','" + response_.member + "')"; //id of the group
-                    var hoverout = 'onMouseOut="this.style.color=';
-                    var hoverrout = hoverout + "'white'";
-                    var hover = 'onMouseOver="this.style.color=';
-                    var hoverr = hover + "'red'";
-                   var hoverout1 = 'onMouseOut="this.style.backgroundColor=';
-                   var hoverrout1 = hoverout1 + "'rgb(35, 35, 35)'";
-                    var hover1 = 'onMouseOver="this.style.backgroundColor=';
-                   var hoverr1 = hover1 + "'rgb(365, 365,365,0.1)'";
-                   htmlcode=''
-htmlcode+='<div class="divMem"' + hoverr1 + '"' + hoverrout1 + '"' + '>'
-                      htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + r + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" +response_.member + '</p>';
-                     ;
-
-                    if(response_.member == create_by && controller && selector){
- htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >admin</p>';
-}
-else{
-  
-    if(controller && selector){
-htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
-    }
-    if(controller && !selector){
-htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
-    }
-    if(!controller && selector){
-htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
-    }
-             
-}
-
-htmlcode += '</div>';
-
- $(".infobody").append(htmlcode);
- 
-            })
-      
-                   }
-                   console.log(op)
+                console.log(op)
             });
-
-
-
 
 
             //Log the messages that are returned from the server
 
-$(".name").click(function(){
+            $(".name").click(function () {
 
-        document.getElementById('myModal').style.display = 'block'
+                document.getElementById('myModal').style.display = 'block'
 
 
-
-                    
-
-});
+            });
 
 
 //Log the messages that are returned from the server
-$(".btnno").click(function(){document.getElementById('myModalPer').style.display = 'none';})
-$(".btncancel").click(function(){document.getElementById('myModalAdd').style.display = 'none';})
-$(".cancelicon").click(function(){document.getElementById('myModal_popup').style.display = 'none';})
+            $(".btnno").click(function () {
+                document.getElementById('myModalPer').style.display = 'none';
+            })
+            $(".btncancel").click(function () {
+                document.getElementById('myModalAdd').style.display = 'none';
+            })
+            $(".cancelicon").click(function () {
+                document.getElementById('myModal_popup').style.display = 'none';
+            })
 
- 
-$(".btnyes").click(function(){
-           Able_controll=0;
-                Able_select=0;
-                for(var count_per=0 ;count_per<per.length;count_per++){
-                    if(per[count_per].value==1){
-                        Able_select=1
+
+            $(".btnyes").click(function () {
+                Able_controll = 0;
+                Able_select = 0;
+                for (var count_per = 0; count_per < per.length; count_per++) {
+                    if (per[count_per].value == 1) {
+                        Able_select = 1
                     }
-                    if(per[count_per].value==2){
-                        Able_controll=1
+                    if (per[count_per].value == 2) {
+                        Able_controll = 1
                     }
                 }
-                var member_per=member_edit.value
+                var member_per = member_edit.value
                 console.log(member_per)
-                              var settings = {
-                    "url": "http://127.0.0.1:8000/group/"+id_gp+"/permissions/?member="+member_per+"",
+                var settings = {
+                    "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + member_per + "",
                     "method": "PUT",
                     "timeout": 0,
                     error: function (event) {
-                             var x = document.getElementById("snackbar-");
-  x.className = "show";
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-                 
+                        var x = document.getElementById("snackbar-");
+                        x.className = "show";
+                        setTimeout(function () {
+                            x.className = x.className.replace("show", "");
+                        }, 3000);
+
                     },
                     success: function () {
                         var x = document.getElementById("snackbar");
-  x.className = "show";
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-    var settings = {
+                        x.className = "show";
+                        setTimeout(function () {
+                            x.className = x.className.replace("show", "");
+                        }, 3000);
+                        var settings = {
 
-                "url": "http://127.0.0.1:8000/groups/" + id + '/',
+                            "url": "http://127.0.0.1:8000/groups/" + id + '/',
 
-                "method": "GET",
+                            "method": "GET",
 
-                "timeout": 0,
+                            "timeout": 0,
 
-                "headers": {
+                            "headers": {
 
-                    //'X-CSRFToken': csrftoken,
+                                //'X-CSRFToken': csrftoken,
 
-                    //  "Authorization": "token " + token,
+                                //  "Authorization": "token " + token,
 
-                    "accept": "application/json",
+                                "accept": "application/json",
 
-                    "Access-Control-Allow-Origin": "*",
+                                "Access-Control-Allow-Origin": "*",
 
-                    "Access-Control-Allow-Headers": "*",
+                                "Access-Control-Allow-Headers": "*",
 
-                    "Content-Type": "application/json"
+                                "Content-Type": "application/json"
 
-                }
+                            }
 
-            };
-
-
-            $.ajax(settings).done(function (response) {
-
-                localresponse = response;
-
-                console.log("111111");
-
-                console.log(response);
- $(".infobody").html('');
-                /*  for (var i = 0; i < response.members.length; i++) {
-                      var hoverout = 'onMouseOut="this.style.color=';
-                      var hoverrout = hoverout + "'white'";
-                      var htmlcode = '';
-                      var hover = 'onMouseOver="this.style.color=';
-                      var hoverr = hover + "'red'";
-                      htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
-                      $(".textarea_member").append(htmlcode);
-                      console.log("2")
-                      //$(".textarea_member").append(response.members[i] + "\n")
-                  }*/
-
-                //  $(".textarea_bio").append(response.describtion + "\n")
-
-create_by=response.created_by
-  
+                        };
 
 
+                        $.ajax(settings).done(function (response) {
 
-                for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
+                            localresponse = response;
 
-var htmlcode = '';
-var controller=null
-var selector=null
-     
-  var settings = {
+                            console.log("111111");
 
-                "url": "http://127.0.0.1:8000/group/"+id_gp+"/permissions/?member="+response.members[counter1]+"",
+                            console.log(response);
+                            $(".infobody").html('');
+                            /*  for (var i = 0; i < response.members.length; i++) {
+                                  var hoverout = 'onMouseOut="this.style.color=';
+                                  var hoverrout = hoverout + "'white'";
+                                  var htmlcode = '';
+                                  var hover = 'onMouseOver="this.style.color=';
+                                  var hoverr = hover + "'red'";
+                                  htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
+                                  $(".textarea_member").append(htmlcode);
+                                  console.log("2")
+                                  //$(".textarea_member").append(response.members[i] + "\n")
+                              }*/
 
-                "method": "GET",
+                            //  $(".textarea_bio").append(response.describtion + "\n")
 
-                "timeout": 0,
-
-                "headers": {
-
-                    //'X-CSRFToken': csrftoken,
-
-                    //  "Authorization": "token " + token,
-
-                    "accept": "application/json",
-
-                    "Access-Control-Allow-Origin": "*",
-
-                    "Access-Control-Allow-Headers": "*",
-
-                    "Content-Type": "application/json"
-
-                }
-
-            };
+                            create_by = response.created_by
 
 
-            $.ajax(settings).done(function (response_) {
+                            for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
 
-              
+                                var htmlcode = '';
+                                var controller = null
+                                var selector = null
 
-                console.log(response_);
-                 controller=response_.playback_permission
-                 selector=response_.choose_video_permission
-                
-                 console.log("117778878")
-                 var r = "window.open('/profile/" + response_.member + "')";
-                    var a = "window.localStorage.setItem('user','" + response_.member + "')"; //id of the group
-                    var hoverout = 'onMouseOut="this.style.color=';
-                    var hoverrout = hoverout + "'white'";
-                    var hover = 'onMouseOver="this.style.color=';
-                    var hoverr = hover + "'red'";
-                   var hoverout1 = 'onMouseOut="this.style.backgroundColor=';
-                   var hoverrout1 = hoverout1 + "'rgb(35, 35, 35)'";
-                    var hover1 = 'onMouseOver="this.style.backgroundColor=';
-                   var hoverr1 = hover1 + "'rgb(365, 365,365,0.1)'";
-                   htmlcode=''
-htmlcode+='<div class="divMem"' + hoverr1 + '"' + hoverrout1 + '"' + '>'
-                      htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + r + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" +response_.member + '</p>';
-                     ;
+                                var settings = {
 
-                    if(response_.member == create_by && controller && selector){
- htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >admin</p>';
-}
-else{
-  
-    if(controller && selector){
-htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
-    }
-    if(controller && !selector){
-htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
-    }
-    if(!controller && selector){
-htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
-    }
-             
-}
+                                    "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + response.members[counter1] + "",
 
-htmlcode += '</div>';
-console.log(htmlcode)
- $(".infobody").append(htmlcode);
- 
-            })
-      
-                   }
-                })
-  document.getElementById('myModalPer').style.display = 'none';
-                 
+                                    "method": "GET",
+
+                                    "timeout": 0,
+
+                                    "headers": {
+
+                                        //'X-CSRFToken': csrftoken,
+
+                                        //  "Authorization": "token " + token,
+
+                                        "accept": "application/json",
+
+                                        "Access-Control-Allow-Origin": "*",
+
+                                        "Access-Control-Allow-Headers": "*",
+
+                                        "Content-Type": "application/json"
+
+                                    }
+
+                                };
+
+
+                                $.ajax(settings).done(function (response_) {
+
+
+                                    console.log(response_);
+                                    if (response_.member == window.localStorage.getItem('username')) {
+                                        iscontroller = response_.playback_permission;
+                                        isselector = response_.choose_video_permission;
+                                    }
+                                    controller = response_.playback_permission;
+                                    selector = response_.choose_video_permission;
+
+                                    console.log("117778878");
+                                    var r = "window.open('/profile/" + response_.member + "')";
+                                    var a = "window.localStorage.setItem('user','" + response_.member + "')"; //id of the group
+                                    var hoverout = 'onMouseOut="this.style.color=';
+                                    var hoverrout = hoverout + "'white'";
+                                    var hover = 'onMouseOver="this.style.color=';
+                                    var hoverr = hover + "'red'";
+                                    var hoverout1 = 'onMouseOut="this.style.backgroundColor=';
+                                    var hoverrout1 = hoverout1 + "'rgb(35, 35, 35)'";
+                                    var hover1 = 'onMouseOver="this.style.backgroundColor=';
+                                    var hoverr1 = hover1 + "'rgb(365, 365,365,0.1)'";
+                                    htmlcode = ''
+                                    htmlcode += '<div class="divMem"' + hoverr1 + '"' + hoverrout1 + '"' + '>'
+                                    htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + r + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" + response_.member + '</p>';
+                                    ;
+
+                                    if (response_.member == create_by && controller && selector) {
+                                        htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >admin</p>';
+                                    } else {
+
+                                        if (controller && selector) {
+                                            htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
+                                        }
+                                        if (controller && !selector) {
+                                            htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
+                                        }
+                                        if (!controller && selector) {
+                                            htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
+                                        }
+
+                                    }
+
+                                    htmlcode += '</div>';
+                                    console.log(htmlcode)
+                                    $(".infobody").append(htmlcode);
+
+                                })
+
+                            }
+                        })
+                        document.getElementById('myModalPer').style.display = 'none';
+
                     },
                     "headers": {
-                   
+
                         "accept": "application/json",
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Allow-Headers": "*",
@@ -1019,36 +1025,37 @@ console.log(htmlcode)
                     "data": JSON.stringify({
                             "chat_permission": 1,
                             "choose_video_permission": Able_select,
-                            "playback_permission":Able_controll,
-                            "group":id_gp,
-                            "member":member_per,
+                            "playback_permission": Able_controll,
+                            "group": id_gp,
+                            "member": member_per,
                         }
                     ),
                 };
-         
+
                 $.ajax(settings).done(function (response) {
                     console.log("done")
                     console.log(response);
-                   
+
                 });
 
-})
- $(".btnadd").click(function () {console.log(per_add)
-                Able_controll=0;
-                Able_select=0;
-                for(var count_per_add=0 ;count_per_add<per_add.length;count_per_add++){
-                    if(per_add[count_per_add].value==1){
-                        Able_select=1
+            })
+            $(".btnadd").click(function () {
+                console.log(per_add)
+                Able_controll = 0;
+                Able_select = 0;
+                for (var count_per_add = 0; count_per_add < per_add.length; count_per_add++) {
+                    if (per_add[count_per_add].value == 1) {
+                        Able_select = 1
                     }
-                    if(per_add[count_per_add].value==2){
-                        Able_controll=1
+                    if (per_add[count_per_add].value == 2) {
+                        Able_controll = 1
                     }
                 }
                 console.log(Able_select)
                 console.log(Able_controll)
                 var member_add = $(".inp-add").val();
 
-console.log(id_gp)
+                console.log(id_gp)
 
                 var settings = {
                     "url": "http://127.0.0.1:8000/user/" + member_add + "",
@@ -1057,205 +1064,213 @@ console.log(id_gp)
                     error: function (event) {
 
 
-                             var x = document.getElementById("snackbar-not");
-  x.className = "show";
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                        var x = document.getElementById("snackbar-not");
+                        x.className = "show";
+                        setTimeout(function () {
+                            x.className = x.className.replace("show", "");
+                        }, 3000);
 
                     },
                     success: function () {
-     var settings = {
+                        var settings = {
                             "url": "http://127.0.0.1:8000/group/add_member/",
                             "method": "POST",
                             error: function () {
 
-                                     var x = document.getElementById("snackbar-already");
-  x.className = "show";
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);;
+                                var x = document.getElementById("snackbar-already");
+                                x.className = "show";
+                                setTimeout(function () {
+                                    x.className = x.className.replace("show", "");
+                                }, 3000);
+                                ;
 
 
                             },
                             success: function () {
 
-                                       var settings = {
-                            "url": "http://127.0.0.1:8000/group/permissions/",
-                            "method": "POST",
-                            error: function () {
+                                var settings = {
+                                    "url": "http://127.0.0.1:8000/group/permissions/",
+                                    "method": "POST",
+                                    error: function () {
 
-                           alert("nooooooo")
-
-
-                            },
-                            success: function () {
-                     var x = document.getElementById("snackbar-succes");
-  x.className = "show";
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-    var settings = {
-
-                "url": "http://127.0.0.1:8000/groups/" + id + '/',
-
-                "method": "GET",
-
-                "timeout": 0,
-
-                "headers": {
-
-                    //'X-CSRFToken': csrftoken,
-
-                    //  "Authorization": "token " + token,
-
-                    "accept": "application/json",
-
-                    "Access-Control-Allow-Origin": "*",
-
-                    "Access-Control-Allow-Headers": "*",
-
-                    "Content-Type": "application/json"
-
-                }
-
-            };
+                                        alert("nooooooo")
 
 
-            $.ajax(settings).done(function (response) {
+                                    },
+                                    success: function () {
+                                        var x = document.getElementById("snackbar-succes");
+                                        x.className = "show";
+                                        setTimeout(function () {
+                                            x.className = x.className.replace("show", "");
+                                        }, 3000);
+                                        var settings = {
 
-                localresponse = response;
+                                            "url": "http://127.0.0.1:8000/groups/" + id + '/',
 
-                console.log("111111");
+                                            "method": "GET",
 
-                console.log(response);
- $(".infobody").html('');
-                /*  for (var i = 0; i < response.members.length; i++) {
-                      var hoverout = 'onMouseOut="this.style.color=';
-                      var hoverrout = hoverout + "'white'";
-                      var htmlcode = '';
-                      var hover = 'onMouseOver="this.style.color=';
-                      var hoverr = hover + "'red'";
-                      htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
-                      $(".textarea_member").append(htmlcode);
-                      console.log("2")
-                      //$(".textarea_member").append(response.members[i] + "\n")
-                  }*/
+                                            "timeout": 0,
 
-                //  $(".textarea_bio").append(response.describtion + "\n")
+                                            "headers": {
 
-create_by=response.created_by
-  
+                                                //'X-CSRFToken': csrftoken,
 
+                                                //  "Authorization": "token " + token,
 
+                                                "accept": "application/json",
 
-                for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
-                    op=[]
-   var obj={}
-                   
-                    obj["value"]=response.members[counter1]
-                    obj["label"]=response.members[counter1]
-op.push(obj)
-var htmlcode = '';
-var controller=null
-var selector=null
-     
-  var settings = {
+                                                "Access-Control-Allow-Origin": "*",
 
-                "url": "http://127.0.0.1:8000/group/"+id_gp+"/permissions/?member="+response.members[counter1]+"",
+                                                "Access-Control-Allow-Headers": "*",
 
-                "method": "GET",
+                                                "Content-Type": "application/json"
 
-                "timeout": 0,
+                                            }
 
-                "headers": {
-
-                    //'X-CSRFToken': csrftoken,
-
-                    //  "Authorization": "token " + token,
-
-                    "accept": "application/json",
-
-                    "Access-Control-Allow-Origin": "*",
-
-                    "Access-Control-Allow-Headers": "*",
-
-                    "Content-Type": "application/json"
-
-                }
-
-            };
+                                        };
 
 
-            $.ajax(settings).done(function (response_) {
+                                        $.ajax(settings).done(function (response) {
 
-              
+                                            localresponse = response;
 
-                console.log(response_);
-                 controller=response_.playback_permission
-                 selector=response_.choose_video_permission
-                
-                 console.log("117778878")
-                 var r = "window.open('/profile/" + response_.member + "')";
-                    var a = "window.localStorage.setItem('user','" + response_.member + "')"; //id of the group
-                    var hoverout = 'onMouseOut="this.style.color=';
-                    var hoverrout = hoverout + "'white'";
-                    var hover = 'onMouseOver="this.style.color=';
-                    var hoverr = hover + "'red'";
-                   var hoverout1 = 'onMouseOut="this.style.backgroundColor=';
-                   var hoverrout1 = hoverout1 + "'rgb(35, 35, 35)'";
-                    var hover1 = 'onMouseOver="this.style.backgroundColor=';
-                   var hoverr1 = hover1 + "'rgb(365, 365,365,0.1)'";
-                   htmlcode=''
-htmlcode+='<div class="divMem"' + hoverr1 + '"' + hoverrout1 + '"' + '>'
-                      htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + r + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" +response_.member + '</p>';
-                     ;
+                                            console.log("111111");
 
-                    if(response_.member == create_by && controller && selector){
- htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >admin</p>';
-}
-else{
-  
-    if(controller && selector){
-htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
-    }
-    if(controller && !selector){
-htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
-    }
-    if(!controller && selector){
-htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
-    }
-             
-}
+                                            console.log(response);
+                                            $(".infobody").html('');
+                                            /*  for (var i = 0; i < response.members.length; i++) {
+                                                  var hoverout = 'onMouseOut="this.style.color=';
+                                                  var hoverrout = hoverout + "'white'";
+                                                  var htmlcode = '';
+                                                  var hover = 'onMouseOver="this.style.color=';
+                                                  var hoverr = hover + "'red'";
+                                                  htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
+                                                  $(".textarea_member").append(htmlcode);
+                                                  console.log("2")
+                                                  //$(".textarea_member").append(response.members[i] + "\n")
+                                              }*/
 
-htmlcode += '</div>';
-console.log(htmlcode)
- $(".infobody").append(htmlcode);
- 
-            })
-      
-                   }
-                })
-             
-  document.getElementById('myModalAdd').style.display = 'none';
-                 ;
-                            },
-                            "timeout": 0,
-                            "headers": {
+                                            //  $(".textarea_bio").append(response.describtion + "\n")
 
-                                "accept": "application/json",
-                                "Access-Control-Allow-Origin": "*",
-                                "Access-Control-Allow-Headers": "*",
-                                "Content-Type": "application/json"
-                            },
-                            "data": JSON.stringify({
-                                    "group": id_gp,
-                                    "member": member_add,
-                                    "chat_permission":1,
-                                    "playback_permission":Able_controll,
-                                    "choose_video_permission":Able_select
-                                }
-                            ),
-                        };
+                                            create_by = response.created_by
 
-                        $.ajax(settings).done(function (response) {
 
-                            console.log(response);
-                        });;
+                                            for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
+                                                op = []
+                                                var obj = {}
+
+                                                obj["value"] = response.members[counter1]
+                                                obj["label"] = response.members[counter1]
+                                                op.push(obj)
+                                                var htmlcode = '';
+                                                var controller = null
+                                                var selector = null
+
+                                                var settings = {
+
+                                                    "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + response.members[counter1] + "",
+
+                                                    "method": "GET",
+
+                                                    "timeout": 0,
+
+                                                    "headers": {
+
+                                                        //'X-CSRFToken': csrftoken,
+
+                                                        //  "Authorization": "token " + token,
+
+                                                        "accept": "application/json",
+
+                                                        "Access-Control-Allow-Origin": "*",
+
+                                                        "Access-Control-Allow-Headers": "*",
+
+                                                        "Content-Type": "application/json"
+
+                                                    }
+
+                                                };
+
+
+                                                $.ajax(settings).done(function (response_) {
+
+
+                                                    console.log(response_);
+                                                    if (response_.member == window.localStorage.getItem('username')) {
+                                                        iscontroller = response_.playback_permission;
+                                                        isselector = response.choose_video_permission;
+                                                    }
+                                                    controller = response_.playback_permission
+                                                    selector = response_.choose_video_permission
+
+                                                    console.log("117778878")
+                                                    var r = "window.open('/profile/" + response_.member + "')";
+                                                    var a = "window.localStorage.setItem('user','" + response_.member + "')"; //id of the group
+                                                    var hoverout = 'onMouseOut="this.style.color=';
+                                                    var hoverrout = hoverout + "'white'";
+                                                    var hover = 'onMouseOver="this.style.color=';
+                                                    var hoverr = hover + "'red'";
+                                                    var hoverout1 = 'onMouseOut="this.style.backgroundColor=';
+                                                    var hoverrout1 = hoverout1 + "'rgb(35, 35, 35)'";
+                                                    var hover1 = 'onMouseOver="this.style.backgroundColor=';
+                                                    var hoverr1 = hover1 + "'rgb(365, 365,365,0.1)'";
+                                                    htmlcode = ''
+                                                    htmlcode += '<div class="divMem"' + hoverr1 + '"' + hoverrout1 + '"' + '>'
+                                                    htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + r + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" + response_.member + '</p>';
+                                                    ;
+
+                                                    if (response_.member == create_by && controller && selector) {
+                                                        htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >admin</p>';
+                                                    } else {
+
+                                                        if (controller && selector) {
+                                                            htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
+                                                        }
+                                                        if (controller && !selector) {
+                                                            htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
+                                                        }
+                                                        if (!controller && selector) {
+                                                            htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
+                                                        }
+
+                                                    }
+
+                                                    htmlcode += '</div>';
+                                                    console.log(htmlcode)
+                                                    $(".infobody").append(htmlcode);
+
+                                                })
+
+                                            }
+                                        })
+
+                                        document.getElementById('myModalAdd').style.display = 'none';
+                                        ;
+                                    },
+                                    "timeout": 0,
+                                    "headers": {
+
+                                        "accept": "application/json",
+                                        "Access-Control-Allow-Origin": "*",
+                                        "Access-Control-Allow-Headers": "*",
+                                        "Content-Type": "application/json"
+                                    },
+                                    "data": JSON.stringify({
+                                            "group": id_gp,
+                                            "member": member_add,
+                                            "chat_permission": 1,
+                                            "playback_permission": Able_controll,
+                                            "choose_video_permission": Able_select
+                                        }
+                                    ),
+                                };
+
+                                $.ajax(settings).done(function (response) {
+
+                                    console.log(response);
+                                });
+                                ;
                             },
                             "timeout": 0,
                             "headers": {
@@ -1277,7 +1292,7 @@ console.log(htmlcode)
                             console.log(response);
                         });
 
-                
+
                     },
                     "headers": {
 
@@ -1304,9 +1319,7 @@ console.log(htmlcode)
                 $('.formback_text_input').val('');
 
 
-
                 console.log(JSON.stringify(message_send_chat))
-
 
 
             });
@@ -1343,14 +1356,15 @@ console.log(htmlcode)
 
             });
 
+            setTimeout(function () {
+                console.log("is admin : " + isadmin);
+                console.log("is controller: " + iscontroller);
+                console.log("is selector : " + isselector);
+
+            }, 1000);
+
         });
     }
-
-    
-
-
-    
-
 
 
     constructor(props) {
@@ -1368,9 +1382,9 @@ console.log(htmlcode)
             server_pm: "",
 
             hash_: "",
-             selectedOption: null,
-             selectedOption_Add:null,
-             selectedOption_id:null,
+            selectedOption: null,
+            selectedOption_Add: null,
+            selectedOption_id: null,
 
         }
 
@@ -1383,7 +1397,7 @@ console.log(htmlcode)
 
         this.pause = this.pause.bind(this);
         this.handlereq_forward_backward = this.handlereq_forward_backward.bind(this);
-       
+
         this.changeCurrentTime = this.changeCurrentTime.bind(this);
 
         this.newShortcuts = [
@@ -1767,7 +1781,7 @@ console.log(htmlcode)
 
     }
 
-  handleSubmit(e) {
+    handleSubmit(e) {
 
 
         const message_send_play = {"command": "play_video", "currentTime": "0"}
@@ -1783,7 +1797,6 @@ console.log(htmlcode)
 
 
     }
-
 
 
     onChange(e) {
@@ -1964,7 +1977,7 @@ console.log(htmlcode)
 
 
             if (percant == 100) {
-                if (isadmin == 1) {
+                if (isadmin == 1 || isselector == 1) {
 
 
                     Send_data();
@@ -1990,7 +2003,8 @@ console.log(htmlcode)
 
 
                         $('#movietxt').fadeIn();
-                        document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                        if (iscontroller == 0)
+                            document.getElementById('controllbuttons').style.pointerEvents = 'none';
                         document.getElementById('videopicks').style.pointerEvents = 'none';
                         //  play_or_no = true
                         Send_data2();
@@ -2012,7 +2026,8 @@ console.log(htmlcode)
                 document.getElementById('firstprogress').style.display = 'none';
                 $('#movietxt').text('Something went wrong in selecting movie , Please reselect the video ');
                 $('#movietxt').fadeIn();
-                document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                if (iscontroller == 0)
+                    document.getElementById('controllbuttons').style.pointerEvents = 'none';
                 document.getElementById('videopickbtn').style.pointerEvents = 'auto';
                 document.getElementById('videopicks').style.pointerEvents = 'auto';
 
@@ -2046,7 +2061,7 @@ console.log(htmlcode)
         ws.send(JSON.stringify(message_send_play))
 
         console.log(JSON.stringify(message_send_play))
-        play_or_no = true
+        play_or_no = true;
         played = 1;
         $('#play_btnid').fadeOut('fast');
         $('#pause_btnid').fadeIn('fast');
@@ -2103,15 +2118,19 @@ console.log(htmlcode)
         };
 
     }
-click_edit_permission(){
+
+    click_edit_permission() {
         document.getElementById('myModalPer').style.display = 'block';
-}
-click_edit(){
+    }
+
+    click_edit() {
         document.getElementById('myModal_popup').style.display = 'block';
-}
-click_edit_Add(){
+    }
+
+    click_edit_Add() {
         document.getElementById('myModalAdd').style.display = 'block';
-}
+    }
+
     handlereq_forward_backward(event) {
         console.log("hoooooooold")
         if (event.keyCode == 39 || event.keyCode == 37) {
@@ -2132,29 +2151,31 @@ click_edit_Add(){
             //console.log("11111111111111111111111111111111")
         }
     }
- handleChanges = selectedOption => {
-    this.setState(
-      { selectedOption },
-      () => per= this.state.selectedOption
-    );
-    
-  };
-handleChanges_Add = selectedOption_Add => {
-    this.setState(
-      { selectedOption_Add },
-      () => per_add= this.state.selectedOption_Add
-    );
-    console.log(per_add)
 
-  }
-  handleChanges_id = selectedOption_id => {
-    this.setState(
-      { selectedOption_id },
-      () => member_edit= this.state.selectedOption_id
-    );
-    console.log(per_add)
+    handleChanges = selectedOption => {
+        this.setState(
+            {selectedOption},
+            () => per = this.state.selectedOption
+        );
 
-  }
+    };
+    handleChanges_Add = selectedOption_Add => {
+        this.setState(
+            {selectedOption_Add},
+            () => per_add = this.state.selectedOption_Add
+        );
+        console.log(per_add)
+
+    }
+    handleChanges_id = selectedOption_id => {
+        this.setState(
+            {selectedOption_id},
+            () => member_edit = this.state.selectedOption_id
+        );
+        console.log(per_add)
+
+    }
+
     render() {
 
 
@@ -2212,154 +2233,170 @@ handleChanges_Add = selectedOption_Add => {
                         </div>
 
                     </header>
-          <div id="myModal" class="modal-">
+                    <div id="myModal" class="modal-">
 
 
+                        <div class="modal-content-">
 
-                    <div class="modal-content-">
+                            <div className='headModal'>
 
-                        <div className='headModal'>
+                                <Avatar style={{
+                                    backgroundColor: 'rgba(0,0,0,0.5)',
+                                    width: '100px',
+                                    height: '100px',
+                                    fontSize: '50px'
+                                }} className='photogp'>&nbsp;</Avatar>
 
-                            <Avatar style={{backgroundColor:'rgba(0,0,0,0.5)' , width:'100px' , height:'100px' , fontSize:'50px'}} className='photogp'>&nbsp;</Avatar>
 
+                                <div className='infogp'>
 
+                                    <div className='namegp'/>
 
-<div className='infogp'>
+                                    <div className='idgp'/>
 
-<div className='namegp'/>
+                                </div>
+                                <div class="drop">
+                                    <Dropdown>
+                                        <Dropdown.Toggle variant="success" id="dropdown-basic" style={{
+                                            backgroundColor: 'transparent',
+                                            borderColor: 'transparent',
+                                            fontSize: '30px',
+                                            cursor: 'pointer'
+                                        }}>
+                                            ⋮
+                                        </Dropdown.Toggle>
 
-<div className='idgp'/>
+                                        <Dropdown.Menu style={{
+                                            backgroundColor: 'rgba(0,0,0,0.9)',
+                                            color: 'black',
+                                            marginLeft: '-65px'
+                                        }}>
+                                            <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
+                                                 className="edit_group" onClick={this.click_edit}>Edit group
+                                            </div>
+                                            <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
+                                                 className="edit_group" onClick={this.click_edit_permission}>Edit
+                                                permission
+                                            </div>
+                                            <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
+                                                 className="edit_group" onClick={this.click_edit_Add}>Add member
+                                            </div>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </div>
+                            </div>
 
-</div>
-<div class="drop">
-<Dropdown>
-  <Dropdown.Toggle variant="success" id="dropdown-basic" style={{backgroundColor:'transparent' , borderColor:'transparent' , fontSize:'30px' , cursor:'pointer' }}>
-    ⋮
-  </Dropdown.Toggle>
+                            <div className='destitle'>Description:</div>
 
-  <Dropdown.Menu style={{ backgroundColor:'rgba(0,0,0,0.9)', color:'black' , marginLeft:'-65px'}}>
-    <div  style={{color:'white',textAlign:'left', marginLeft:'15px'}} className="edit_group" onClick={this.click_edit}>Edit group</div>
-    <div style={{color:'white',textAlign:'left', marginLeft:'15px'}}className="edit_group" onClick={this.click_edit_permission}>Edit permission</div>
-    <div style={{color:'white',textAlign:'left', marginLeft:'15px'}}className="edit_group" onClick={this.click_edit_Add}>Add member</div>
-  </Dropdown.Menu>
-</Dropdown>
-</div>
-</div>
+                            <div className='desbody'/>
 
-<div className='destitle'>Description:</div>
+                            <hr/>
 
-<div className='desbody'/>
+                            <div className='infobody'/>
 
-<hr/>
+                        </div>
 
-<div className='infobody'/>
 
                     </div>
+                    <div id="myModalPer" class="modalPer">
+                        <div class="modal-content-Per">
+                            <p className='delPer'>Edit permission of user</p>
+
+                            <Select className='select' placeholder="select your id"
+                                    value={this.state.selectedOption_id}
+                                    onChange={this.handleChanges_id}
+                                    options={op}
+                            />
+                            <Select className='select' isMulti placeholder="select your permission"
+                                    value={this.state.selectedOption}
+                                    onChange={this.handleChanges}
+                                    options={options}
+                            />
 
 
+                            <br/>
+                            <div className='btndl'>
+
+                                <Button style={{backgroundColor: "Red"}} size='large'
+                                        className="btnno" variant="contained" color="secondary">
+                                    <p>Cancel&nbsp;</p>
+                                </Button>
+
+                                <Button style={{
+                                    backgroundColor: 'gray',
+                                    marginRight: "4px"
+
+                                }} size='large' className="btnyes" variant="contained" color="secondary">
+                                    <p>Apply</p>
+                                </Button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="snackbar">Successfully permission edit</div>
+                    <div id="snackbar-">Enter id field</div>
+                    <div id="myModalAdd" class="modaladd">
+                        <div class="modal-content-add">
+                            <p className='delPer'>Add your member</p>
+
+                            <input class='inp-add' placeholder=" enter your user's id"></input>
+                            <Select className='select-' isMulti placeholder="select your permission"
+                                    value={this.state.selectedOption_Add}
+                                    onChange={this.handleChanges_Add}
+                                    options={options}
+                            />
 
 
+                            <br/>
+                            <div className='btndl'>
 
-                </div>
-                     <div id="myModalPer" class="modalPer">
-                    <div class="modal-content-Per">
-                        <p className='delPer'>Edit permission of user</p>
-                        
-                                           <Select className='select'  placeholder="select your id"
-        value={this.state.selectedOption_id}
-        onChange={this.handleChanges_id}
-        options={op}
-      />
-                         <Select className='select' isMulti placeholder="select your permission"
-        value={this.state.selectedOption}
-        onChange={this.handleChanges}
-        options={options}
-      />
-                    
-                   
-                        <br/>
-                         <div className='btndl'>
+                                <Button style={{backgroundColor: "Red"}} size='large'
+                                        className="btncancel" variant="contained" color="secondary">
+                                    <p>Cancel&nbsp;</p>
+                                </Button>
 
-                            <Button style={{backgroundColor: "Red"}} size='large'
-                                    className="btnno" variant="contained" color="secondary">
-                                <p>Cancel&nbsp;</p>
-                            </Button>
+                                <Button style={{
+                                    backgroundColor: 'gray',
+                                    marginRight: "4px"
+
+                                }} size='large' className="btnadd" variant="contained" color="secondary">
+                                    <p>Add</p>
+                                </Button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="snackbar-succes">Successfully add to group</div>
+                    <div id="snackbar-not">User not found</div>
+                    <div id="snackbar-already">User is already a member of this group</div>
+                    <div id="myModal_popup" class="modal_popup">
+                        <div class="modal-content">
+                            <IconButton style={{color: 'white', marginRight: '130%', marginTop: '4%'}}
+                                        className="cancelicon">
+                                <CloseIcon fontSize="large"/>
+                            </IconButton>
+                            <h3 class="texx">Edit your groups deatails</h3>
+
+                            <hr></hr>
+
+                            <input class="inputedit-title" id='edittitle_popup' placeholder="Title"></input>
+
+
+                            <input class="inputedit-des" id='editdes_popup' placeholder="Description"></input>
+                            <br></br>
 
                             <Button style={{
-                                backgroundColor: 'gray',
-                                marginRight: "4px"
-
-                            }} size='large' className="btnyes" variant="contained" color="secondary">
+                                backgroundColor: "Red",
+                                marginTop: "20px"
+                            }} size='large' className="submitedit_popup" variant="contained" color="secondary">
                                 <p>Apply</p>
                             </Button>
 
                         </div>
+                        <div id="snackbar-succes-edit">Successfully edit</div>
                     </div>
-                </div>
-                <div id="snackbar">Successfully permission edit</div>
-                  <div id="snackbar-">Enter id field</div>
-                            <div id="myModalAdd" class="modaladd">
-                    <div class="modal-content-add">
-                        <p className='delPer'>Add your member</p>
-                        
-                        <input class='inp-add' placeholder=" enter your user's id"></input>
-                         <Select className='select-' isMulti placeholder="select your permission"
-        value={this.state.selectedOption_Add}
-        onChange={this.handleChanges_Add}
-        options={options}
-      />
-                    
-                   
-                        <br/>
-                         <div className='btndl'>
-
-                            <Button style={{backgroundColor: "Red"}} size='large'
-                                    className="btncancel" variant="contained" color="secondary">
-                                <p>Cancel&nbsp;</p>
-                            </Button>
-
-                            <Button style={{
-                                backgroundColor: 'gray',
-                                marginRight: "4px"
-
-                            }} size='large' className="btnadd" variant="contained" color="secondary">
-                                <p>Add</p>
-                            </Button>
-
-                        </div>
-                    </div>
-                </div>
-                 <div id="snackbar-succes">Successfully add to group</div>
-                  <div id="snackbar-not">User not found</div>
-                   <div id="snackbar-already">User is already a member of this group</div>
-                    <div id="myModal_popup" class="modal_popup">
-                    <div class="modal-content">
-                               <IconButton style={{color: 'white', marginRight: '130%', marginTop: '4%'}}
-                                        className="cancelicon">
-                                <CloseIcon fontSize="large"/>
-                            </IconButton>
-                        <h3 class="texx">Edit your groups deatails</h3>
-
-                        <hr></hr>
-
-                        <input class="inputedit-title" id='edittitle_popup' placeholder="Title"></input>
 
 
-                        <input class="inputedit-des" id='editdes_popup' placeholder="Description"></input>
-                        <br></br>
-
-                        <Button style={{
-                            backgroundColor: "Red",
-                            marginTop: "20px"
-                        }} size='large' className="submitedit_popup" variant="contained" color="secondary">
-                            <p>Apply</p>
-                        </Button>
-
-                    </div>
-  <div id="snackbar-succes-edit">Successfully edit</div>
-                </div>
-
-     
                     <div id='formback_movie_id' className="formback_movie">
 
                         <div id="movie" className="div_player_movie">
@@ -2542,7 +2579,7 @@ handleChanges_Add = selectedOption_Add => {
                             </div>
 
 
-                        </div> 
+                        </div>
 
 
                     </div>
@@ -2560,7 +2597,7 @@ handleChanges_Add = selectedOption_Add => {
                             <p className='titleofonlines'>Online members :</p>
 
                             <div className="onlinemembers"></div>
- 
+
                         </div>
 
 
@@ -2577,7 +2614,7 @@ handleChanges_Add = selectedOption_Add => {
 
 
                                 <input className="formback_text_input" id="formback_text_input" autocomplete="off">
-                                    
+
                                 </input>
 
                                 <IconButton style={{
