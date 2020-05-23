@@ -4,6 +4,19 @@ from channels.db import database_sync_to_async
 from .exceptions import ClientError
 from groups.models import *
 
+#Check if user has the permission of select and reselect in the group or not
+@database_sync_to_async
+def select_permission(user,roomid):
+	try:
+		group_obj = Group.objects.get(groupid=roomid)
+		permission_obj = Permission.objects.get(group=roomid, member=user)
+		if permission_obj.choose_video_permission:
+			return True
+		else:
+			return False
+	except Group.DoesNotExist:
+			raise ClientError("ROOM_INVALID")
+
 # Check if user has the permission of pause,play,backward 
 # and forward the video in the group or not
 @database_sync_to_async
