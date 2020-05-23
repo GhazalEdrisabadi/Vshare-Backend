@@ -4,6 +4,20 @@ from channels.db import database_sync_to_async
 from .exceptions import ClientError
 from groups.models import *
 
+# Check if user has the permission of pause,play,backward 
+# and forward the video in the group or not
+@database_sync_to_async
+def playback_permission(user,roomid):
+	try:
+		group_obj = Group.objects.get(groupid=roomid)
+		permission_obj = Permission.objects.get(group=roomid, member=user)
+		if permission_obj.playback_permission:
+			return True
+		else:
+			return False
+	except Group.DoesNotExist:
+			raise ClientError("ROOM_INVALID")
+
 #check if user has the permission of chating in the group or not
 @database_sync_to_async
 def chat_permission(the_user,the_room):
