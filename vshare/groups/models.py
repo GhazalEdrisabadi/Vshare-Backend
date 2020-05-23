@@ -33,6 +33,8 @@ class Group(models.Model):
 			created_group = Group.objects.get(groupid=self.groupid)
 			owner_to_members=Membership(the_group=created_group , the_member=created_group.created_by)
 			owner_to_members.save()
+			default_permit=Permission(group=created_group , member=created_group.created_by , chat_permission=True , playback_permission=True , choose_video_permission=True)
+			default_permit.save()
 
 	state0 = 0
 	state1 = 1
@@ -101,3 +103,13 @@ class OnlineUser(models.Model):
 		ordering = ['data_joined']
 		unique_together = ("joined_group", "online_user")
 
+class Permission(models.Model):
+	member = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE)
+	group = models.ForeignKey(Group, to_field="groupid" , on_delete=models.CASCADE)
+	chat_permission = models.BooleanField(default=True,)
+	choose_video_permission = models.BooleanField(default=False,)
+	playback_permission = models.BooleanField(default=False,)
+	date_set = models.DateTimeField(auto_now_add=True)
+	class Meta:
+		ordering = ['date_set']
+		unique_together = ("member", "group")

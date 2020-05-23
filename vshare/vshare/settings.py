@@ -226,4 +226,15 @@ STATIC_URL = '/static/'
 #     'CacheControl': 'max-age=86400',
 # }
 
-#permission
+
+#permission-backend
+
+#sudo -u postgres psql postgres
+
+#DROP DATABASE vshare;
+#CREATE DATABASE vshare;
+#ALTER ROLE admin SET client_encoding TO 'utf8';
+
+#ALTER ROLE admin SET default_transaction_isolation TO 'read committed';
+
+#ALTER ROLE admin SET timezone TO 'UTC';

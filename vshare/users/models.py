@@ -43,9 +43,7 @@ class Account(AbstractBaseUser):
 	photo = models.BooleanField(default=False)
 	firstname = models.CharField(max_length=50)
 	lastname = models.CharField(max_length=50)
-
 	username = models.CharField(max_length=20, primary_key=True)
-
 	email = models.EmailField(max_length=100)
 	is_admin = models.BooleanField(default=False)	# a superuser
 	is_active = models.BooleanField(default=True)
@@ -73,3 +71,12 @@ class Account(AbstractBaseUser):
 def create_auth_token(sender, instance=None, created=False, **kwargs):
 	if created:
 		Token.objects.create(user=instance)
+
+class Friendship(models.Model):
+	who_follows = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name="top")
+	who_is_followed = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name="bot")
+	the_date = models.DateTimeField(auto_now_add=True)
+	class Meta:
+		ordering = ['the_date']
+		unique_together = ("who_follows", "who_is_followed")
+
