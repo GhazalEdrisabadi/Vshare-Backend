@@ -4,6 +4,17 @@ from channels.db import database_sync_to_async
 from .exceptions import ClientError
 from groups.models import *
 
+
+@database_sync_to_async	
+def set_sender(roomid,sender):
+	try:
+		obj = Group.objects.get(groupid=roomid)
+		obj.hash_sender = sender
+		obj.save()
+		return obj.sender
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
+
 #Check if user has the permission of select and reselect in the group or not
 @database_sync_to_async
 def select_permission(user,roomid):
