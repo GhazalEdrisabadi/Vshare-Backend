@@ -94,14 +94,14 @@ class AccountSerializer(serializers.ModelSerializer):
 
 class UploadPhoto():
 
-	def create_bucket(self, bucket_name):
-		try:
-			s3_client = boto3.client('s3')
-			s3_client.create_bucket(Bucket=bucket_name)
-			return True
-		except ClientError as e:
-			logging.error(e)
-			return False
+	# def create_bucket(self, bucket_name):
+	# 	try:
+	# 		s3_client = boto3.client('s3')
+	# 		s3_client.create_bucket(Bucket=bucket_name)
+	# 		return True
+	# 	except ClientError as e:
+	# 		logging.error(e)
+	# 		return False
 
 	def create_presigned_url(self, bucket_name, object_name, expiration=3600):
 
