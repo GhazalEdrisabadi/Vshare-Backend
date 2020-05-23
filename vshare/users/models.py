@@ -40,7 +40,7 @@ class MyAccountManager(BaseUserManager):
 
 class Account(AbstractBaseUser):
 	# notice the absence of a "Password field", that's built in.
-	photo = models.CharField(max_length=100, blank=True)
+	photo = models.BooleanField(default=False)
 	firstname = models.CharField(max_length=50)
 	lastname = models.CharField(max_length=50)
 
@@ -68,7 +68,7 @@ class Account(AbstractBaseUser):
 	#Does this user have permission to view this app?(ALWAYS YES FOR SIMPLICITY)
 	def has_module_perms(self, app_label):
 		return True
-	
+
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
 	if created:
