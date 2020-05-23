@@ -232,25 +232,35 @@ class chat_room extends Component {
             }
 
             if (messagee.status == 2 && isadmin == 0 && filmplayed == 0) {
-                rejoined = 1;
-                $('#movietxt').text('Admin has played the video , select your video too by clicking on ▲ ');
-                $('#moviebtnd').fadeIn('slow');
-                document.getElementById('videopickbtn').style.pointerEvents = 'auto';
-                document.getElementById('videopicks').style.pointerEvents = 'auto';
-                if (comeinstate1 == 0 && azavalbude == 0)
-                    adminhash = messagee.hash;
-                //console.log("admin hash in state 2 : " + adminhash);
+
+                setTimeout(function () {
+                    rejoined = 1;
+                    $('#movietxt').text('Admin has played the video , select your video too by clicking on ▲ ');
+                    $('#moviebtnd').fadeIn('slow');
+                    document.getElementById('videopickbtn').style.pointerEvents = 'auto';
+                    document.getElementById('videopicks').style.pointerEvents = 'auto';
+                    if (comeinstate1 == 0 && azavalbude == 0)
+                        adminhash = messagee.hash;
+                    //console.log("admin hash in state 2 : " + adminhash);
+
+                }, 600);
+
+
             }
 
 
             if (messagee.status == 1 && isadmin == 0 && azavalbude == 0 && clienthashok == 0) {
-                adminhash = messagee.hash;
-                console.log("admin hash in state 2 : " + adminhash);
-                rejoined = 1;
-                $('#movietxt').text('Admin has selected the video , select it too by clicking on ▲ ');
-                $('#moviebtnd').fadeIn('slow');
-                adminhash = messagee.hash;
-                comeinstate1 = 1;
+
+                setTimeout(function () {
+                    adminhash = messagee.hash;
+                    console.log("admin hash in state 2 : " + adminhash);
+                    rejoined = 1;
+                    $('#movietxt').text('Admin has selected the video , select it too by clicking on ▲ ');
+                    $('#moviebtnd').fadeIn('slow');
+                    adminhash = messagee.hash;
+                    comeinstate1 = 1;
+                }, 600);
+
 
             }
 
@@ -1305,7 +1315,7 @@ class chat_room extends Component {
                 };
 
                 $.ajax(settings).done(function (response) {
-                    // 
+                    //
                     console.log(response);
 
                 });
