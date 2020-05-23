@@ -199,10 +199,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-# STATIC_ROOT = 'static'
+STATIC_ROOT = 'static'
 # MEDIA_ROOT = 'media'
 
-# STATIC_URL = f"https://{AWS_S3_ENDPOINT_URL}/{STATIC_ROOT}/"
+STATIC_URL = '/static/'
 # MEDIA_URL = f"https://{AWS_S3_ENDPOINT_URL}/{MEDIA_ROOT}/"
 
 # ########### django-storage ##############
@@ -217,7 +217,7 @@ USE_TZ = True
 # AWS_ACCESS_KEY_ID = os.environ.get('S3_ACCESS_KEY_ID')
 # AWS_SECRET_ACCESS_KEY = os.environ.get('S3_SECRET_ACCESS_KEY')
 
-# # Configure which endpoint to send files to, and retrieve files from.
+# Configure which endpoint to send files to, and retrieve files from.
 # AWS_STORAGE_BUCKET_NAME = 'VshareBucket'
 # AWS_S3_REGION_NAME = 'sfo2'
 # AWS_S3_ENDPOINT_URL = f"https://{AWS_S3_REGION_NAME}.vshare.ir"
