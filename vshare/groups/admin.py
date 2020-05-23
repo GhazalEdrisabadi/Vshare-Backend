@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import Group , Membership
+from .models import *
 from users.models import Account
 
 admin.site.register(Group)
+admin.site.register(Membership)
+admin.site.register(AcceptedClient)
+admin.site.register(Message)
+admin.site.register(OnlineUser)
