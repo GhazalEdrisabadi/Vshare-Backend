@@ -202,9 +202,10 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
 		iscreator = await is_creator(user,roomid)
+		haspermission = await playback_permission(user,roomid)
 		status = await get_status(roomid)
 
-		if iscreator:
+		if iscreator or haspermission:
 			if status == 2:
 
 				await self.channel_layer.group_send(
@@ -239,9 +240,10 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
 		iscreator = await is_creator(user,roomid)
+		haspermission = await playback_permission(user,roomid)
 		status = await get_status(roomid)
 
-		if iscreator:
+		if iscreator or haspermission:
 			if status == 1:
 				# Change state to 2
 				groupstatus = await set_status(roomid,state=2)
@@ -252,7 +254,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 						"type":"send_time",
 						"status":groupstatus,
 						"currentTime":currentTime,
-						"message":"video played by owner",
+						"message":"video played by admin or controller",
 					}
 				)
 
@@ -263,7 +265,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 						"type":"send_time",
 						"status":status,
 						"currentTime":currentTime,
-						"message":"video played by owner again",
+						"message":"video played by admin or controller again",
 					}
 				)
 
@@ -289,9 +291,10 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
 		iscreator = await is_creator(user,roomid)
+		haspermission = await playback_permission(user,roomid)
 		status = await get_status(roomid)
 
-		if iscreator:
+		if iscreator or haspermission:
 			if status == 1:
 				await self.send_json(
 					{
@@ -308,7 +311,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 						"type":"send_time",
 						"status":status,
 						"currentTime":currentTime,
-						"message":"video paused by owner",
+						"message":"video paused by admin or controller",
 					}
 				)
 
