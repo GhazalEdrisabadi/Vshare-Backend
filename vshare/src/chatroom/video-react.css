@@ -398,6 +398,7 @@ body.video-react-full-window .video-react-fullscreen {
     width: 3em;
     display: block;
     position: absolute;
+    margin-top: 100000px;
     top: 1000px;
     left: 10px;
     padding: 0;
@@ -664,8 +665,8 @@ body.video-react-full-window .video-react-fullscreen {
     left: 0;
     right: 0;
     height: 3em;
-    background-color: #2B333F;
-    background-color: rgba(43, 51, 63, 0.7);
+    background-color: rgba(43, 51, 63, 0);
+    background-color: rgba(43, 51, 63, 0);
 }
 
 .video-react-has-started .video-react-control-bar {

@@ -45,6 +45,7 @@ import Forward10Icon from '@material-ui/icons/Forward10';
 import EjectIcon from '@material-ui/icons/Eject';
 import StopIcon from '@material-ui/icons/Stop';
 import FirstPageIcon from '@material-ui/icons/FirstPage';
+import FullscreenIcon from '@material-ui/icons/Fullscreen';
 
 var adminisinstatezero = 1;
 var logoutclicked = 0;
@@ -469,13 +470,31 @@ class chat_room extends Component {
 
             });
 
+          /*  $('.fullscreenbtn').click(function () {
+                this.player.toggleFullscreen();
+                $(".formback_movie").css("width", '100%');
+                document.getElementById("mySidenav").style.width = "0px";
+                $(".back_coulom").css("width", "0px");
+                $(".openonlinemember").css("transform", "scaleX(-1)");
+                $(".openchat").css("transform", "scaleX(1)");
+                setTimeout(function () {
+                    $('.video-react-video').css({
+                        "width": "100%",
+                        "height": "100%",
+                        "top": "0",
+                        "left": "0",
+                        "margin": "0px"
+                    });
+
+                }, 1000);
+
+            });
+
+*/
+
             $("#movie").dblclick(function (e) {
-                e.preventDefault();
 
-                /*  Prevents event bubbling  */
-                e.stopPropagation();
 
-                return;
             });
 
             /*  $("#formback_movie_id").mouseover(function () {
@@ -811,6 +830,7 @@ class chat_room extends Component {
         this.play = this.play.bind(this);
 
         this.pause = this.pause.bind(this);
+        this.fullscreen=this.fullscreen.bind(this);
         this.handlereq_forward_backward = this.handlereq_forward_backward.bind(this);
 
         this.changeCurrentTime = this.changeCurrentTime.bind(this);
@@ -1491,6 +1511,30 @@ class chat_room extends Component {
     }
 
 
+        fullscreen() {
+
+       this.player.toggleFullscreen();
+                $(".formback_movie").css("width", '100%');
+                document.getElementById("mySidenav").style.width = "0px";
+                $(".back_coulom").css("width", "0px");
+                $(".openonlinemember").css("transform", "scaleX(-1)");
+                $(".openchat").css("transform", "scaleX(1)");
+                setTimeout(function () {
+                    $('.video-react-video').css({
+                        "width": "100%",
+                        "height": "100%",
+                        "top": "0",
+                        "left": "0",
+                        "margin": "0px"
+                    });
+
+                }, 1000);
+
+
+    }
+
+
+
     pause() {
 
         const {player} = this.player.getState();
@@ -1777,6 +1821,17 @@ class chat_room extends Component {
 
 
                                 <StopIcon/>
+                            </IconButton>
+
+                            <IconButton onClick={this.fullscreen} style={{
+                                color: 'white',
+                                cursor: "pointer",
+                                pointerEvents: "auto",
+                                marginBottom:"5px"
+                            }} size='large' className="fullscreenbtn">
+
+
+                                <FullscreenIcon/>
                             </IconButton>
 
 
