@@ -54,6 +54,7 @@ var adminisinstatezero = 1;
 var logoutclicked = 0;
 var azavalbude = 0;
 var percant = 0;
+var uploaded = 0;
 
 var id_gp = window.localStorage.getItem('id_gp')
 const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
@@ -202,12 +203,13 @@ class chat_room extends Component {
             if (logoutclicked == 0 && adminisinstatezero == 0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
                 window.location.reload();
             }
-            if ("this is current time for new users" == messagee.message) {
+            if ("this is current time for new users" == messagee.message && clienthashok==1) {
                 this.changeCurrentTime(messagee.time);
                 this.play();
                 $('#moviebtnd').fadeOut();
             }
-            if (clienthashok == 0 && messagee.status == 1 && isadmin == 0) {
+            if (clienthashok == 0 && messagee.status == 1 && uploaded == 0) {
+
                 adminhash = messagee.hash;
                 $('#movietxt').fadeOut('slow');
                 //  $('#reselect').fadeOut('fast');
@@ -217,7 +219,8 @@ class chat_room extends Component {
                     document.getElementById('controllbuttons').style.pointerEvents = 'none';
                 document.getElementById('videopickbtn').style.pointerEvents = 'auto';
                 document.getElementById('videopicks').style.pointerEvents = 'auto';
-                $('#movietxt').text('Click ▲ to select your video ');
+                console.log("dovomin selectttt ");
+                $('#movietxt').text('Admin or selector has selected the video , select it too by clicking on ▲ ');
                 $('#movietxt').fadeIn();
                 console.log('admin hash : ' + adminhash);
 
@@ -249,13 +252,13 @@ class chat_room extends Component {
             }
 
 
-            if (messagee.status == 1 && isadmin == 0 && azavalbude == 0 && clienthashok == 0) {
+            if (messagee.status == 1 && isadmin == 0 && azavalbude == 0 && clienthashok == 0 && uploaded == 0) {
 
                 setTimeout(function () {
                     adminhash = messagee.hash;
                     console.log("admin hash in state 2 : " + adminhash);
                     rejoined = 1;
-                    $('#movietxt').text('Admin has selected the video , select it too by clicking on ▲ ');
+                    $('#movietxt').text('Admin or selector has selected the video , select it too by clicking on ▲ ');
                     $('#moviebtnd').fadeIn('slow');
                     adminhash = messagee.hash;
                     comeinstate1 = 1;
@@ -266,7 +269,9 @@ class chat_room extends Component {
 
 
             if (messagee.status == 2 && play_or_no == true) {
-
+                if(isselector==0 && iscontroller==0){
+                    document.getElementById("controllbuttons2").style.zIndex = "1";
+                }
                 this.setState({
 
                     file_show_when_click: this.state.file_select
@@ -280,9 +285,7 @@ class chat_room extends Component {
                     console.log("ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
                     document.getElementById("controllbuttons2").style.zIndex = "-1";
                     document.getElementById('controllbuttons').style.pointerEvents = 'auto';
-                }
-
-                if (!(isadmin == 1 || iscontroller == 1)) {
+                } else if (isadmin == 0) {
                     console.log("ppppppppppppppppppppppppppppppppppppppppppp");
                     // document.getElementById('controllbuttons').style.display = 'none';
                     document.getElementById("controllbuttons2").style.zIndex = "1";
@@ -291,13 +294,15 @@ class chat_room extends Component {
                     document.getElementById('movie').style.pointerEvents = 'none';
 
                 }
+
+
                 // document.getElementById('controll_div').style.display = 'block'
 
 
             }
 
 
-            if (messagee.status == 2 && messagee.message == "new user's hash is ok." && isadmin == 1) {
+            if (filmplayed==1 && messagee.status == 2 && messagee.message == "new user's hash is ok." && isadmin == 1) {
 
 
                 this.player.pause();
@@ -308,19 +313,19 @@ class chat_room extends Component {
                 ws.send(JSON.stringify(message_send_play));
 
             }
-            if (messagee.status == 2 && messagee.message == "video paused by owner") {
+
+
+            if ( filmplayed==1 && messagee.status == 2 && messagee.message == "video paused by admin or controller") {
                 var time = messagee.time
                 this.player.seek(time)
                 this.player.pause();
 
 
             }
-            if (messagee.status == 2 && messagee.message == "video played by owner again") {
+            if (filmplayed==1 && messagee.status == 2 && (messagee.message == "video played by admin or controller" || messagee.message == "video played by admin or controller again")) {
                 var time = messagee.time
                 this.player.seek(time)
                 this.player.play();
-
-
             }
 
 
@@ -571,7 +576,9 @@ class chat_room extends Component {
 
 
                     document.getElementById('movietxt').style.display = 'block';
-                    $('#movietxt').text('Click ▲ to select your video ');
+                    console.log("avalin selecttttt");
+                    if (adminhash == null)
+                        $('#movietxt').text('Click ▲ to select your video ');
                     if (iscontroller == 0)
                         document.getElementById('controllbuttons').style.pointerEvents = 'none';
                     document.getElementById('reselect').style.pointerEvents = 'auto';
@@ -1898,9 +1905,16 @@ class chat_room extends Component {
         console.log(file)
 
         function Send_data() {
+            var message_send
+            if (adminhash == null) {
+                message_send = {"command": "set_video_hash", "vhash": encrypted};
+                clienthashok=1;
+            }
+            else
+                message_send = {"command": "send_client_hash", "vhash": encrypted};
 
-            const message_send = {"command": "set_video_hash", "vhash": encrypted}
-
+            if (isselector == 1)
+                play_or_no = true;
 
             // ws.send(JSON.stringify(message_send))
 
@@ -1987,27 +2001,36 @@ class chat_room extends Component {
 
 
             if (percant == 100) {
+
+                uploaded = 1;
                 if (isadmin == 1 || isselector == 1) {
 
 
                     Send_data();
 
                     document.getElementById('blaybtndiv').style.display = 'block';
-                    $('#movietxt').text('Click ► to play your video');
+                    if (iscontroller == 1 || isadmin == 1)
+                        $('#movietxt').text('Click ► to play your video');
+                    else {
+                        $('#movietxt').text('wait for admin or controller to play video');
+                        document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                    }
                     $('#movietxt').fadeIn();
-                    document.getElementById('controllbuttons').style.pointerEvents = 'auto';
+                    if (isadmin == 1 || iscontroller == 1)
+                        document.getElementById('controllbuttons').style.pointerEvents = 'auto';
 
 
                     document.getElementById('firstprogress').style.display = 'none';
 
-                } else {
+                }
+                if (adminhash!=null) {
 
                     if (encrypted == adminhash) {
                         clienthashok = 1;
                         filmplayed = 1;
                         document.getElementById('firstprogress').style.display = 'none';
                         if (iscontroller == 0)
-                            $('#movietxt').text('Wait for admin to play the video');
+                            $('#movietxt').text('wait for admin or controller to play video');
                         else {
                             $('#movietxt').text('Wait for admin to play the video or Click ► to play your video');
                             document.getElementById("controllbuttons2").style.zIndex = "-1";
@@ -2021,7 +2044,8 @@ class chat_room extends Component {
                             document.getElementById('controllbuttons').style.pointerEvents = 'none';
                         document.getElementById('videopicks').style.pointerEvents = 'none';
                         //  play_or_no = true
-                        Send_data2();
+                        if (isselector == 0)
+                            Send_data2();
 
 
                     } else {
@@ -2031,7 +2055,8 @@ class chat_room extends Component {
                         $('#movietxt').text('Your video is not same with admin\'s video , please chose another one');
 
                         $('#movietxt').fadeIn();
-
+                        document.getElementById('videopickbtn').style.pointerEvents = 'auto';
+                        document.getElementById('videopicks').style.pointerEvents = 'auto';
                     }
 
                 }
