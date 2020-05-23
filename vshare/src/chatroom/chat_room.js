@@ -247,7 +247,7 @@ class chat_room extends Component {
                 adminhash = messagee.hash;
                 console.log("admin hash in state 2 : " + adminhash);
                 rejoined = 1;
-                $('#movietxt').text('Admin has selected the video , select it too');
+                $('#movietxt').text('Admin has selected the video , select it too by clicking on ▲ ');
                 $('#moviebtnd').fadeIn('slow');
                 adminhash = messagee.hash;
                 comeinstate1 = 1;
@@ -266,9 +266,9 @@ class chat_room extends Component {
                 document.getElementById('movie').style.display = 'block';
                 filmplayed = 1;
                 document.getElementById('movietxt').style.display = 'none';
-                if(iscontroller==1){
+                if (iscontroller == 1) {
                     console.log("ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
-                      document.getElementById("controllbuttons2").style.zIndex = "-1";
+                    document.getElementById("controllbuttons2").style.zIndex = "-1";
                     document.getElementById('controllbuttons').style.pointerEvents = 'auto';
                 }
 
@@ -1996,9 +1996,13 @@ class chat_room extends Component {
                         clienthashok = 1;
                         filmplayed = 1;
                         document.getElementById('firstprogress').style.display = 'none';
-
-                        $('#movietxt').text('Wait for admin to play the video');
-
+                        if (iscontroller == 0)
+                            $('#movietxt').text('Wait for admin to play the video');
+                        else {
+                            $('#movietxt').text('Wait for admin to play the video or Click ► to play your video');
+                            document.getElementById("controllbuttons2").style.zIndex = "-1";
+                            document.getElementById('controllbuttons').style.pointerEvents = 'auto';
+                        }
                         $('#moviebtnd').fadeOut();
 
 
