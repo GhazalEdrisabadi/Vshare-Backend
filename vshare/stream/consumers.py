@@ -86,6 +86,9 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 			elif command == "reset":
 				await self.reset_state()
 
+			elif command == "user_permission":
+				await self.get_permission(content["user"],content["per1"],content["per2"])
+
 		except ClientError as e:
 			await self.send_json({"error": e.code})
 
@@ -378,6 +381,17 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				}
 			)
 
+	async def get_permission(self,user,per1,per2):
+
+		await self.channel_layer.group_send(
+					"stream",
+					{
+						"type":"send_permission",
+						"username":user,
+						"permission1": per1,
+						"permission2": per2,
+					}
+				)
 
 	""" 
 		Handlers for messages sent over the channel layer
@@ -422,6 +436,16 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				"status":event["status"],
 				"hash":event["hash"],
 				"message":event["message"],
+			}
+		)
+
+	async def send_permission(self, event):
+		await self.send_json(
+			{
+				"msg_type":"send permission",
+				"username":event["username"],
+				"permission1":event["permission1"],
+				"permission2":event["permission2"],
 			}
 		)
 
