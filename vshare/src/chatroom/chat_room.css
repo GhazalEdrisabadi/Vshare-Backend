@@ -96,26 +96,30 @@
 }
 
 #pmeoon {
-    width: 100%;
+    width: fit-content;
     white-space: initial;
     text-align: left;
     /* background-color: blue; */
     color: #bdbdbd;
     margin-top: 5px;
-
+float: left;
 
 }
 
 #pmeman {
     margin-top: 5px;
-    width: 100%;
+    width: fit-content;
     white-space: initial;
     text-align: left;
-
+float: left;
 
 }
 
-
+#pmemantxt{
+    color: white;
+    margin-top: 5px;
+    text-align: left;
+}
 .titleofonlines {
 font-family: Arial;
     margin-top: 20px;
@@ -239,7 +243,7 @@ margin-top: 5px;;
     background-color: #141414;
     overflow-x: hidden;
     transition: 0.5s;
-
+margin-right: -10px;
     flex-direction: column;
     display: block;
 
@@ -337,6 +341,7 @@ margin-top: 5px;;
     font-size: 18px;
 }
 #nameofthefilm{
+    display: none;
     z-index: 999;
 margin-top: 5px;
 color: #fffda0;
@@ -514,6 +519,7 @@ border: red solid thin;
     transition: 0.5s;
 padding-top: 10px;
     padding-bottom: 10px;
+    margin-left: -10px;
 
 }
 

@@ -92,7 +92,7 @@ class chat_room extends Component {
         $(window).resize(function () {
             sizeeeeee = $(".formback_movie").width();
             $(".video-react-video").css("width", sizeeeeee.toString());
-          //  $(".video-react-video").css("margin-left", '20px');
+            //  $(".video-react-video").css("margin-left", '20px');
         });
 
 
@@ -173,10 +173,10 @@ class chat_room extends Component {
                 if (messagee1.user == window.localStorage.getItem('username')) {
 
 
-                    $(".pm").append("<div id='pmeman'" + charom + ">" + "me: " + messagee1.message + "</div>");
+                    $(".pm").append("<div id='pmeman'" + charom + ">" + "me: &nbsp;</div><div  id='pmemantxt'>" + messagee1.message + "</div>");
 
                 } else {
-                    $(".pm").append("<div id='pmeoon'" + charom + ">" + messagee1.user + ": " + messagee1.message + "</div>");
+                    $(".pm").append("<div id='pmeoon'" + charom + ">" + messagee1.user + ": &nbsp; </div><div  id='pmemantxt'>" + messagee1.message + "</div>");
                 }
 
 
@@ -540,13 +540,16 @@ class chat_room extends Component {
 
             $("#formback_movie_id").mouseover(function () {
 
-                if (filmplayed == 1)
+                if (filmplayed == 1) {
                     $('#controllbuttons').fadeIn();
-
+                    $('#nameofthefilm').fadeIn();
+                }
             });
             $("#formback_movie_id").mouseleave(function () {
-                if (filmplayed == 1)
+                if (filmplayed == 1) {
                     $('#controllbuttons').fadeOut();
+                    $('#nameofthefilm').fadeOut();
+                }
             });
 
 
@@ -764,10 +767,10 @@ class chat_room extends Component {
                         if (response.results[counterchathistory].message_sender == window.localStorage.getItem('username')) {
 
 
-                            $(".pm").append("<div  id='pmeman'" + charom + "> me: " + response.results[counterchathistory].message_text + "</div>");
+                            $(".pm").append("<div  style='float:left' id='pmeman'" + charom + "> me: &nbsp;</div><div  id='pmemantxt'>" + response.results[counterchathistory].message_text + "</div>");
 
                         } else {
-                            $(".pm").append("<div id='pmeoon'" + charom + ">" + response.results[counterchathistory].message_sender + ": " + response.results[counterchathistory].message_text + "</div>");
+                            $(".pm").append("<div id='pmeoon'" + charom + ">" + response.results[counterchathistory].message_sender + ": &nbsp;</div><div  id='pmemantxt'> " + response.results[counterchathistory].message_text + "</div>");
                         }
 
                     }
@@ -1392,8 +1395,9 @@ class chat_room extends Component {
                 //   const {player} = this.player.getState();
                 //     console.log("curent " + player.currentTime)
                 $('#nameofthefilm').text(file.name.split('.')[0]);
+                $('#nameofthefilm').fadeIn();
 
-console.log(file.name.split('.')[0]);
+                console.log(file.name.split('.')[0]);
                 if (isadmin == 1) {
 
 
@@ -1638,7 +1642,7 @@ console.log(file.name.split('.')[0]);
                 <div id="mySidenav" className="sidenav">
                     <div className="name"/>
 
-                    <p className='titleofonlines'>Onlines</p>
+                    <p className='titleofonlines'>Online</p>
                     <p className="khat">_______________________</p>
                     <div className="onlinemembers"></div>
                 </div>
@@ -1691,7 +1695,7 @@ console.log(file.name.split('.')[0]);
 
                     </div>
                     <div id='nameofthefilm'>
-                       No movie has been selected yet
+                        No movie has been selected yet
                     </div>
                     <div id='movietxtdiv'>
 
