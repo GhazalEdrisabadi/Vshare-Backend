@@ -95,35 +95,43 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
 		iscreator = await is_creator(user,roomid)
+		haspermission = await select_permission(user,roomid)
 		ismember = await is_member(user,roomid)
 		status = await get_status(roomid)
 
-		# In state 1 only owner can send video
-		if status == 0 and iscreator:
+		# In state 1 only admin and users that have permission, can send video
+		if iscreator or haspermission:
+			if status == 0:
 
-	    	# Save hash to database
-			videohash = await set_group_hash(roomid,vhash)
+		    	# Save hash to database
+				videohash = await set_group_hash(roomid,vhash)
 
-			# Change state to 1
-			groupstatus = await set_status(roomid,state=1)
-			
-			# Notify to clients that state is 1 and send hash to them
-			await self.channel_layer.group_send(
-				"stream",
-				{
-					"type":"send_hash",
-					"status":groupstatus,
-					"hash":videohash,
-					"message":"video sent by owner.",
-				}
-			)
-
+				# Change state to 1
+				groupstatus = await set_status(roomid,state=1)
+				
+				# Notify to clients that state is 1 and send hash to them
+				await self.channel_layer.group_send(
+					"stream",
+					{
+						"type":"send_hash",
+						"status":groupstatus,
+						"hash":videohash,
+						"message":"video sent by admin or selector.",
+					}
+				)
+			else:
+				await self.send_json(
+					{
+						"username":user.username,
+						"status":status,
+						"message":"you can't send video in this state!",
+					}
+				)
 		else:
 			await self.send_json(
 				{
 					"username":user.username,
-					"status":status,
-					"message":"you can't send video!",
+					"message":"Permission denied!",
 				}
 			)
 
@@ -132,6 +140,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
 		iscreator = await is_creator(user,roomid)
+		haspermission = await select_permission(user,roomid)
 		ismember = await is_member(user,roomid)
 		status = await get_status(roomid)
 
@@ -336,9 +345,10 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
 		iscreator = await is_creator(user,roomid)
+		haspermission = await select_permission(user,roomid)
 		status = await get_status(roomid)
 
-		if iscreator:
+		if iscreator or haspermission:
 			if status == 1 or status == 2:
 				groupstatus = await set_status(roomid,state=0)
 				await self.channel_layer.group_send(
