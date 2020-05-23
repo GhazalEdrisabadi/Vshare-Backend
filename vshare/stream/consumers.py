@@ -101,6 +101,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 		# In state 1 only admin and users that have permission, can send video
 		if iscreator or haspermission:
+			hashsender = await set_sender(user,roomid)
 			if status == 0:
 
 		    	# Save hash to database
@@ -139,18 +140,17 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 		user = self.scope["user"]
 		roomid = self.scope['url_route']['kwargs']['groupid']
-		iscreator = await is_creator(user,roomid)
-		haspermission = await select_permission(user,roomid)
+		issender = await is_sender(user,roomid)
 		ismember = await is_member(user,roomid)
 		status = await get_status(roomid)
 
-		if ismember and not iscreator:
+		if ismember and not issender:
 			if status == 1:
 
-				ownerhash = await get_group_hash(roomid)
+				grouphash = await get_group_hash(roomid)
 				
 				# Check client hash with owner hash
-				if ownerhash == vhash:
+				if grouphash == vhash:
 
 					await self.send_json(
 						{
@@ -167,12 +167,13 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 							"message":"your hash is not match. you should send it again!",
 						}
 					)
+
 			elif status == 2:
 
-				ownerhash = await get_group_hash(roomid)
+				grouphash = await get_group_hash(roomid)
 				
 				# Check client hash with owner hash
-				if ownerhash == vhash:
+				if grouphash == vhash:
 
 					await self.channel_layer.group_send(
 						"stream",

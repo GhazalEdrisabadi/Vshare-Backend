@@ -4,14 +4,22 @@ from channels.db import database_sync_to_async
 from .exceptions import ClientError
 from groups.models import *
 
-
+# Set sender of video hash
 @database_sync_to_async	
-def set_sender(roomid,sender):
+def set_sender(sender,roomid):
 	try:
 		obj = Group.objects.get(groupid=roomid)
 		obj.hash_sender = sender
 		obj.save()
-		return obj.sender
+		return obj.hash_sender
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
+
+# Check a user is the sender of video hash
+@database_sync_to_async	
+def is_sender(user,roomid):
+	try:
+		return Group.objects.filter(groupid=roomid, hash_sender=user).exists()
 	except Group.DoesNotExist:
 		raise ClientError("ROOM_INVALID")
 
