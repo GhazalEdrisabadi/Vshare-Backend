@@ -328,10 +328,15 @@ class chat_room extends Component {
 
                 if (isadmin == 0) {
                     // document.getElementById('controllbuttons').style.display = 'none';
-                    document.getElementById("controllbuttons2").style.zIndex = "1";
+                  //  document.getElementById("controllbuttons2").style.zIndex = "1";
                     document.getElementById('controllbuttons').style.pointerEvents = 'none';
                     document.getElementById('videopicks').style.pointerEvents = 'none';
-                    document.getElementById('movie').style.pointerEvents = 'none';
+                    document.getElementById('fullscreenid').style.pointerEvents = 'auto';
+                    document.getElementById('fullscreenid').style.cursor = 'pointer';
+                    document.getElementById("fullscreenid").style.zIndex = "999";
+
+
+                    //   document.getElementById('movie').style.pointerEvents = 'none';
 
                 }
                 // document.getElementById('controll_div').style.display = 'block'
@@ -470,8 +475,9 @@ class chat_room extends Component {
 
             });
 
-          /*  $('.fullscreenbtn').click(function () {
-                this.player.toggleFullscreen();
+
+            $("#movie").dblclick(function (e) {
+
                 $(".formback_movie").css("width", '100%');
                 document.getElementById("mySidenav").style.width = "0px";
                 $(".back_coulom").css("width", "0px");
@@ -487,13 +493,6 @@ class chat_room extends Component {
                     });
 
                 }, 1000);
-
-            });
-
-*/
-
-            $("#movie").dblclick(function (e) {
-
 
             });
 
@@ -830,7 +829,7 @@ class chat_room extends Component {
         this.play = this.play.bind(this);
 
         this.pause = this.pause.bind(this);
-        this.fullscreen=this.fullscreen.bind(this);
+        this.fullscreen = this.fullscreen.bind(this);
         this.handlereq_forward_backward = this.handlereq_forward_backward.bind(this);
 
         this.changeCurrentTime = this.changeCurrentTime.bind(this);
@@ -1511,28 +1510,27 @@ class chat_room extends Component {
     }
 
 
-        fullscreen() {
+    fullscreen() {
 
-       this.player.toggleFullscreen();
-                $(".formback_movie").css("width", '100%');
-                document.getElementById("mySidenav").style.width = "0px";
-                $(".back_coulom").css("width", "0px");
-                $(".openonlinemember").css("transform", "scaleX(-1)");
-                $(".openchat").css("transform", "scaleX(1)");
-                setTimeout(function () {
-                    $('.video-react-video').css({
-                        "width": "100%",
-                        "height": "100%",
-                        "top": "0",
-                        "left": "0",
-                        "margin": "0px"
-                    });
+        this.player.toggleFullscreen();
+        $(".formback_movie").css("width", '100%');
+        document.getElementById("mySidenav").style.width = "0px";
+        $(".back_coulom").css("width", "0px");
+        $(".openonlinemember").css("transform", "scaleX(-1)");
+        $(".openchat").css("transform", "scaleX(1)");
+        setTimeout(function () {
+            $('.video-react-video').css({
+                "width": "100%",
+                "height": "100%",
+                "top": "0",
+                "left": "0",
+                "margin": "0px"
+            });
 
-                }, 1000);
+        }, 1000);
 
 
     }
-
 
 
     pause() {
@@ -1823,16 +1821,16 @@ class chat_room extends Component {
                                 <StopIcon/>
                             </IconButton>
 
-                            <IconButton onClick={this.fullscreen} style={{
-                                color: 'white',
-                                cursor: "pointer",
-                                pointerEvents: "auto",
-                                marginBottom:"5px"
-                            }} size='large' className="fullscreenbtn">
+                                <IconButton id="fullscreenid" onClick={this.fullscreen} style={{
+                                    color: 'white',
+                                    cursor: "pointer",
+                                    pointerEvents: "auto",
+                                    marginBottom: "5px"
+                                }} size='large' className="fullscreenbtn">
 
 
-                                <FullscreenIcon/>
-                            </IconButton>
+                                    <FullscreenIcon/>
+                                </IconButton>
 
 
                         </div>

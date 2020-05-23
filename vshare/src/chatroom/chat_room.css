@@ -523,7 +523,9 @@ padding-top: 10px;
     margin-left: -10px;
 
 }
-
+.fullscreendiv{
+    background-color: #FFFFFF;
+}
 @media screen and (max-height: 450px) {
     .sidenav {
         padding-top: 15px;
