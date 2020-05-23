@@ -25,7 +25,7 @@ class Group(models.Model):
 	created_by = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name='owner',)
 	members = models.ManyToManyField(settings.AUTH_USER_MODEL,blank=True,related_name='joined_groups',through='Membership',)
 	video_hash = models.CharField(max_length=100, blank=True ,default='No hash yet!')
-	hash_sender = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name='video hash sender',)
+	hash_sender = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name='sender',)
 	
 	def save(self,*args,**kwargs):
 		created = self.pk is None
