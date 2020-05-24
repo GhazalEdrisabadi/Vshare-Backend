@@ -199,7 +199,6 @@ class chat_room extends Component {
 
             console.log(messagee.message);
 
-
             if (logoutclicked == 0 && adminisinstatezero == 0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
                 window.location.reload();
             }
@@ -335,6 +334,39 @@ class chat_room extends Component {
             }
 
 
+            if (messagee.msg_type == "send permission") {
+                if (messagee.username == window.localStorage.getItem('username')) {
+                    if (messagee.permission1 == "controller" || messagee.permission2 == "controller") {
+                        iscontroller = 1;
+                        document.getElementById("controllbuttons2").style.zIndex = "-1";
+                        document.getElementById('controllbuttons').style.pointerEvents = 'auto';
+                         document.getElementById('movie').style.pointerEvents = 'auto';
+                    }
+                    if (messagee.permission1 == "selector" || messagee.permission2 == "selector") {
+                        isselector = 1;
+                        document.getElementById('reselect').style.pointerEvents = 'auto';
+                        document.getElementById("controllbuttons2").style.zIndex = "100";
+                        if (filmplayed == 0)
+                            window.location.reload();
+                    }
+                    if (messagee.permission1 != "controller" && messagee.permission2 != "controller") {
+                        iscontroller = 0;
+                        document.getElementById("controllbuttons2").style.zIndex = "1";
+                        document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                        document.getElementById('movie').style.pointerEvents = 'none';
+                    }
+                    if (messagee.permission1 != "selector" && messagee.permission2 != "selector") {
+                        isselector = 0;
+                                document.getElementById('reselect').style.pointerEvents = 'none';
+                        document.getElementById("controllbuttons2").style.zIndex = "-1";
+                        if (filmplayed == 0)
+                            window.location.reload();
+                    }
+                }
+                console.log("controller : " + iscontroller);
+                console.log("selector : " + isselector);
+            }
+
         };
 
 
@@ -376,6 +408,39 @@ class chat_room extends Component {
             //    }
             //});
 
+            var settings = {
+
+                "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('username') + "",
+
+                "method": "GET",
+
+                "timeout": 0,
+
+                "headers": {
+
+                    //'X-CSRFToken': csrftoken,
+
+                    //  "Authorization": "token " + token,
+
+                    "accept": "application/json",
+
+                    "Access-Control-Allow-Origin": "*",
+
+                    "Access-Control-Allow-Headers": "*",
+
+                    "Content-Type": "application/json"
+
+                }
+
+            };
+
+
+            $.ajax(settings).done(function (response_) {
+                if (response_.choose_video_permission == true)
+                    isselector = 1;
+                if (response_.playback_permission == true)
+                    iscontroller = 1;
+            });
 
             $(document).on("keypress", "input", function (e) {
 
@@ -929,9 +994,11 @@ class chat_room extends Component {
 
                 for (var count_per = 0; count_per < per.length; count_per++) {
                     if (per[count_per].value == 1) {
+
                         Able_select = 1
                     }
                     if (per[count_per].value == 2) {
+
                         Able_controll = 1
                     }
                 }
@@ -1188,7 +1255,6 @@ class chat_room extends Component {
                                             //  $(".textarea_bio").append(response.describtion + "\n")
 
                                             create_by = response.created_by
-
 
 
                                             document.getElementById('myModal').style.display = 'none';
