@@ -105,6 +105,10 @@ class chat_room extends Component {
     }
 
     componentDidMount() {
+
+              this.setState({ opt: op});
+
+
         console.log(url)
         console.log(url1)
         console.log("is admin : " + isadmin);
@@ -813,9 +817,19 @@ class chat_room extends Component {
                     $(".inputedit-des").val(response.describtion)
                     create_by = response.created_by
 
-
+  $(".dropdown-content-").html("");
                     for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
                         var obj = {}
+                       
+                            var a = "window.localStorage.setItem('user_for_edite_permission','" + response.members[counter1] + "')"; //id of the group
+                        var xz=response.members[counter1]
+                            var xx= '$(".dropbtn-").html('+xz+')'
+                         
+                         $(".dropbtn-").html(xz)
+                          console.log(xx)
+                            var htmlcode_drop=''
+                                htmlcode_drop += '<p  style="font-size: 21px" class="txt_drop"  onclick="' + a + ","+xx+'">' + "&nbsp" + response.members[counter1] + '</p>';
+$(".dropdown-content-").append(htmlcode_drop);
 
                         obj["value"] = response.members[counter1]
                         obj["label"] = response.members[counter1]
@@ -902,13 +916,12 @@ class chat_room extends Component {
                         })
 
                     }
+
                     console.log("opppppppppppp");
-                    console.log(op)
+
+
                 });
-
-
-            });
-
+            })
 
 //Log the messages that are returned from the server
             $(".btnno").click(function () {
@@ -935,10 +948,10 @@ class chat_room extends Component {
                         Able_controll = 1
                     }
                 }
-                var member_per = member_edit.value
-                console.log(member_per)
+             
+            
                 var settings = {
-                    "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + member_per + "",
+                    "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + localStorage.getItem('user_for_edite_permission') + "",
                     "method": "PUT",
                     "timeout": 0,
                     error: function (event) {
@@ -953,28 +966,28 @@ class chat_room extends Component {
                         if (Able_controll == 1 && Able_select == 1)
                             message_send_permission = {
                                 "command": "user_permission",
-                                "user": member_per,
+                                "user": localStorage.getItem('user_for_edite_permission'),
                                 "per1": "controller",
                                 "per2": "selector"
                             };
                         if (Able_controll == 1 && Able_select == 0)
                             message_send_permission = {
                                 "command": "user_permission",
-                                "user": member_per,
+                                "user": localStorage.getItem('user_for_edite_permission'),
                                 "per1": "controller",
                                 "per2": ""
                             }
                         if (Able_controll == 0 && Able_select == 1)
                             message_send_permission = {
                                 "command": "user_permission",
-                                "user": member_per,
+                                "user": localStorage.getItem('user_for_edite_permission'),
                                 "per1": "",
                                 "per2": "selector"
                             }
                         if (Able_controll == 0 && Able_select == 0)
                             message_send_permission = {
                                 "command": "user_permission",
-                                "user": member_per,
+                                "user": localStorage.getItem('user_for_edite_permission'),
                                 "per1": "",
                                 "per2": ""
                             }
@@ -1062,7 +1075,7 @@ class chat_room extends Component {
                             "choose_video_permission": Able_select,
                             "playback_permission": Able_controll,
                             "group": id_gp,
-                            "member": member_per,
+                            "member": localStorage.getItem('user_for_edite_permission'),
                         }
                     ),
                 };
@@ -1334,6 +1347,7 @@ class chat_room extends Component {
             selectedOption: null,
             selectedOption_Add: null,
             selectedOption_id: null,
+            opt:[],
 
         }
 
@@ -2272,12 +2286,13 @@ class chat_room extends Component {
                     <div id="myModalPer" class="modalPer">
                         <div class="modal-content-Per">
                             <p className='delPer'>Edit permission of user</p>
-
-                            <Select className='select' placeholder="select your id"
-                                    value={this.state.selectedOption_id}
-                                    onChange={this.handleChanges_id}
-                                    options={op}
-                            />
+<div class="dropdown-">
+  <div class="dropbtn-" id='btn-drop'>select your id</div>
+  <div class="dropdown-content-" id='content-drop'>
+ 
+  </div>
+</div>
+                     
                             <Select className='select' isMulti placeholder="select your permission"
                                     value={this.state.selectedOption}
                                     onChange={this.handleChanges}
