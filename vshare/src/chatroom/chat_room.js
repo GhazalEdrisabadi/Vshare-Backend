@@ -203,9 +203,47 @@ class chat_room extends Component {
             if (logoutclicked == 0 && adminisinstatezero == 0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
                 window.location.reload();
             }
-            if ("this is current time for new users" == messagee.message && clienthashok==1) {
+
+            if (messagee.status == 2 && play_or_no == true) {
+                if (isselector == 0 && iscontroller == 0) {
+                    document.getElementById("controllbuttons2").style.zIndex = "1";
+                }
+                this.setState({
+
+                    file_show_when_click: this.state.file_select
+
+                })
+                document.getElementById("formback_movie_id").style.background = "black";
+                document.getElementById('movie').style.display = 'block';
+                filmplayed = 1;
+                document.getElementById('movietxt').style.display = 'none';
+                if (iscontroller == 1) {
+                    console.log("ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
+                    document.getElementById("controllbuttons2").style.zIndex = "-1";
+                    document.getElementById('controllbuttons').style.pointerEvents = 'auto';
+                } else if (isadmin == 0) {
+                    console.log("ppppppppppppppppppppppppppppppppppppppppppp");
+                    // document.getElementById('controllbuttons').style.display = 'none';
+                    document.getElementById("controllbuttons2").style.zIndex = "1";
+                    document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                    document.getElementById('videopicks').style.pointerEvents = 'none';
+                    document.getElementById('movie').style.pointerEvents = 'none';
+
+                }
+
+
+                // document.getElementById('controll_div').style.display = 'block'
+
+
+            }
+
+            if ("this is current time for new users" == messagee.message && clienthashok == 1) {
+
                 this.changeCurrentTime(messagee.time);
-                this.play();
+                const {player} = this.player.getState();
+                   console.log("curent " + player.currentTime)
+                if (player.currentTime > 1)
+                    this.play();
                 $('#moviebtnd').fadeOut();
             }
             if (clienthashok == 0 && messagee.status == 1 && uploaded == 0) {
@@ -268,42 +306,7 @@ class chat_room extends Component {
             }
 
 
-            if (messagee.status == 2 && play_or_no == true) {
-                if(isselector==0 && iscontroller==0){
-                    document.getElementById("controllbuttons2").style.zIndex = "1";
-                }
-                this.setState({
-
-                    file_show_when_click: this.state.file_select
-
-                })
-                document.getElementById("formback_movie_id").style.background = "black";
-                document.getElementById('movie').style.display = 'block';
-                filmplayed = 1;
-                document.getElementById('movietxt').style.display = 'none';
-                if (iscontroller == 1) {
-                    console.log("ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
-                    document.getElementById("controllbuttons2").style.zIndex = "-1";
-                    document.getElementById('controllbuttons').style.pointerEvents = 'auto';
-                } else if (isadmin == 0) {
-                    console.log("ppppppppppppppppppppppppppppppppppppppppppp");
-                    // document.getElementById('controllbuttons').style.display = 'none';
-                    document.getElementById("controllbuttons2").style.zIndex = "1";
-                    document.getElementById('controllbuttons').style.pointerEvents = 'none';
-                    document.getElementById('videopicks').style.pointerEvents = 'none';
-                    document.getElementById('movie').style.pointerEvents = 'none';
-
-                }
-
-
-                // document.getElementById('controll_div').style.display = 'block'
-
-
-            }
-
-
-            if (filmplayed==1 && messagee.status == 2 && messagee.message == "new user's hash is ok." && isadmin == 1) {
-
+            if (filmplayed == 1 && messagee.status == 2 && messagee.message == "new user's hash is ok." && isadmin == 1) {
 
                 this.player.pause();
                 const {player} = this.player.getState();
@@ -315,17 +318,20 @@ class chat_room extends Component {
             }
 
 
-            if ( filmplayed==1 && messagee.status == 2 && messagee.message == "video paused by admin or controller") {
+            if (filmplayed == 1 && messagee.status == 2 && messagee.message == "video paused by admin or controller") {
                 var time = messagee.time
                 this.player.seek(time)
                 this.player.pause();
-
+                $('#play_btnid').fadeIn('fast');
+                $('#pause_btnid').fadeOut('fast');
 
             }
-            if (filmplayed==1 && messagee.status == 2 && (messagee.message == "video played by admin or controller" || messagee.message == "video played by admin or controller again")) {
+            if (filmplayed == 1 && messagee.status == 2 && (messagee.message == "video played by admin or controller" || messagee.message == "video played by admin or controller again")) {
                 var time = messagee.time
                 this.player.seek(time)
                 this.player.play();
+                $('#play_btnid').fadeOut('fast');
+                $('#pause_btnid').fadeIn('fast');
             }
 
 
@@ -1908,9 +1914,8 @@ class chat_room extends Component {
             var message_send
             if (adminhash == null) {
                 message_send = {"command": "set_video_hash", "vhash": encrypted};
-                clienthashok=1;
-            }
-            else
+                clienthashok = 1;
+            } else
                 message_send = {"command": "send_client_hash", "vhash": encrypted};
 
             if (isselector == 1)
@@ -2023,9 +2028,10 @@ class chat_room extends Component {
                     document.getElementById('firstprogress').style.display = 'none';
 
                 }
-                if (adminhash!=null) {
+                if (adminhash != null) {
 
                     if (encrypted == adminhash) {
+
                         clienthashok = 1;
                         filmplayed = 1;
                         document.getElementById('firstprogress').style.display = 'none';
