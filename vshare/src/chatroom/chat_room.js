@@ -129,9 +129,9 @@ class chat_room extends Component {
 
 
         ws1.onmessage = evt => {
-            messagee1 = JSON.parse(evt.data)
-            console.log(messagee1)
-            console.log(messagee1.message)
+            messagee1 = JSON.parse(evt.data);
+            console.log(messagee1);
+            console.log(messagee1.message);
 
 
             if (messagee1.command == "chat_client") {
@@ -189,15 +189,15 @@ class chat_room extends Component {
 
         ws.onmessage = evt => {
 
-            console.log("messsssssage")
+            console.log("messsssssage");
 
-            const messagee = JSON.parse(evt.data)
+            const messagee = JSON.parse(evt.data);
 
-            this.setState({server_pm: messagee})
+            this.setState({server_pm: messagee});
 
-            console.log(messagee)
+            console.log(messagee);
 
-            console.log(messagee.message)
+            console.log(messagee.message);
 
 
             if (logoutclicked == 0 && adminisinstatezero == 0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
@@ -241,7 +241,7 @@ class chat_room extends Component {
 
                 this.changeCurrentTime(messagee.time);
                 const {player} = this.player.getState();
-                   console.log("curent " + player.currentTime)
+                console.log("curent " + player.currentTime)
                 if (player.currentTime > 1)
                     this.play();
                 $('#moviebtnd').fadeOut();
@@ -740,108 +740,8 @@ class chat_room extends Component {
                   }*/
 
                 //  $(".textarea_bio").append(response.describtion + "\n")
-
-                $(".photogp").html(response.title.toUpperCase()[0]);
-
                 $(".name").append(response.title);
 
-                $(".namegp").append(response.title);
-
-                $(".idgp").append('@ ' + response.groupid);
-
-                $(".desbody").append(response.describtion);
-                $(".inputedit-title").val(response.title)
-                $(".inputedit-des").val(response.describtion)
-                create_by = response.created_by
-
-
-                for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
-                    var obj = {}
-
-                    obj["value"] = response.members[counter1]
-                    obj["label"] = response.members[counter1]
-                    op.push(obj)
-                    var htmlcode = '';
-                    var controller = null
-                    var selector = null
-
-                    var settings = {
-
-                        "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + response.members[counter1] + "",
-
-                        "method": "GET",
-
-                        "timeout": 0,
-
-                        "headers": {
-
-                            //'X-CSRFToken': csrftoken,
-
-                            //  "Authorization": "token " + token,
-
-                            "accept": "application/json",
-
-                            "Access-Control-Allow-Origin": "*",
-
-                            "Access-Control-Allow-Headers": "*",
-
-                            "Content-Type": "application/json"
-
-                        }
-
-                    };
-
-
-                    $.ajax(settings).done(function (response_) {
-
-
-                        console.log(response_);
-                        if (response_.member == window.localStorage.getItem('username')) {
-                            iscontroller = response_.playback_permission;
-                            isselector = response_.choose_video_permission;
-                        }
-                        controller = response_.playback_permission
-                        selector = response_.choose_video_permission
-
-                        console.log("117778878")
-                        var r = "window.open('/profile/" + response_.member + "')";
-                        var a = "window.localStorage.setItem('user','" + response_.member + "')"; //id of the group
-                        var hoverout = 'onMouseOut="this.style.color=';
-                        var hoverrout = hoverout + "'white'";
-                        var hover = 'onMouseOver="this.style.color=';
-                        var hoverr = hover + "'red'";
-                        var hoverout1 = 'onMouseOut="this.style.backgroundColor=';
-                        var hoverrout1 = hoverout1 + "'rgb(35, 35, 35)'";
-                        var hover1 = 'onMouseOver="this.style.backgroundColor=';
-                        var hoverr1 = hover1 + "'rgb(365, 365,365,0.1)'";
-                        htmlcode = ''
-                        htmlcode += '<div class="divMem"' + hoverr1 + '"' + hoverrout1 + '"' + '>'
-                        htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + r + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" + response_.member + '</p>';
-                        ;
-
-                        if (response_.member == create_by && controller && selector) {
-                            htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >admin</p>';
-                        } else {
-
-                            if (controller && selector) {
-                                htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
-                            }
-                            if (controller && !selector) {
-                                htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
-                            }
-                            if (!controller && selector) {
-                                htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
-                            }
-
-                        }
-
-                        htmlcode += '</div>';
-
-                        $(".infobody").append(htmlcode);
-
-                    })
-
-                }
                 console.log(op)
             });
 
@@ -850,7 +750,161 @@ class chat_room extends Component {
 
             $(".name").click(function () {
 
-                document.getElementById('myModal').style.display = 'block'
+                $(".infobody").html('');
+                document.getElementById('myModal').style.display = 'block';
+                var settings = {
+
+                    "url": "http://127.0.0.1:8000/groups/" + id + '/',
+
+                    "method": "GET",
+
+                    "timeout": 0,
+
+                    "headers": {
+
+                        //'X-CSRFToken': csrftoken,
+
+                        //  "Authorization": "token " + token,
+
+                        "accept": "application/json",
+
+                        "Access-Control-Allow-Origin": "*",
+
+                        "Access-Control-Allow-Headers": "*",
+
+                        "Content-Type": "application/json"
+
+                    }
+
+                };
+
+
+                $.ajax(settings).done(function (response) {
+
+                    localresponse = response;
+
+                    console.log("111111");
+
+                    console.log(response);
+
+                    /*  for (var i = 0; i < response.members.length; i++) {
+                          var hoverout = 'onMouseOut="this.style.color=';
+                          var hoverrout = hoverout + "'white'";
+                          var htmlcode = '';
+                          var hover = 'onMouseOver="this.style.color=';
+                          var hoverr = hover + "'red'";
+                          htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
+                          $(".textarea_member").append(htmlcode);
+                          console.log("2")
+                          //$(".textarea_member").append(response.members[i] + "\n")
+                      }*/
+
+                    //  $(".textarea_bio").append(response.describtion + "\n")
+
+                    $(".photogp").html(response.title.toUpperCase()[0]);
+
+
+                    $(".namegp").html(response.title);
+
+                    $(".idgp").html('@ ' + response.groupid);
+
+                    $(".desbody").html(response.describtion);
+                    $(".inputedit-title").val(response.title)
+                    $(".inputedit-des").val(response.describtion)
+                    create_by = response.created_by
+
+
+                    for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
+                        var obj = {}
+
+                        obj["value"] = response.members[counter1]
+                        obj["label"] = response.members[counter1]
+
+                        op.push(obj)
+                        var htmlcode = '';
+                        var controller = null
+                        var selector = null
+
+                        var settings = {
+
+                            "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + response.members[counter1] + "",
+
+                            "method": "GET",
+
+                            "timeout": 0,
+
+                            "headers": {
+
+                                //'X-CSRFToken': csrftoken,
+
+                                //  "Authorization": "token " + token,
+
+                                "accept": "application/json",
+
+                                "Access-Control-Allow-Origin": "*",
+
+                                "Access-Control-Allow-Headers": "*",
+
+                                "Content-Type": "application/json"
+
+                            }
+
+                        };
+
+
+                        $.ajax(settings).done(function (response_) {
+
+
+                            console.log(response_);
+                            if (response_.member == window.localStorage.getItem('username')) {
+                                iscontroller = response_.playback_permission;
+                                isselector = response_.choose_video_permission;
+                            }
+                            controller = response_.playback_permission
+                            selector = response_.choose_video_permission
+
+                            console.log("117778878")
+                            var r = "window.open('/profile/" + response_.member + "')";
+                            var a = "window.localStorage.setItem('user','" + response_.member + "')"; //id of the group
+                            var hoverout = 'onMouseOut="this.style.color=';
+                            var hoverrout = hoverout + "'white'";
+                            var hover = 'onMouseOver="this.style.color=';
+                            var hoverr = hover + "'red'";
+                            var hoverout1 = 'onMouseOut="this.style.backgroundColor=';
+                            var hoverrout1 = hoverout1 + "'rgb(35, 35, 35)'";
+                            var hover1 = 'onMouseOver="this.style.backgroundColor=';
+                            var hoverr1 = hover1 + "'rgb(365, 365,365,0.1)'";
+                            htmlcode = ''
+                            htmlcode += '<div class="divMem"' + hoverr1 + '"' + hoverrout1 + '"' + '>'
+                            htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + r + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" + response_.member + '</p>';
+                            ;
+
+                            if (response_.member == create_by && controller && selector) {
+                                htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >admin</p>';
+                            } else {
+
+                                if (controller && selector) {
+                                    htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
+                                }
+                                if (controller && !selector) {
+                                    htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
+                                }
+                                if (!controller && selector) {
+                                    htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
+                                }
+
+                            }
+
+                            htmlcode += '</div>';
+
+                            $(".infobody").append(htmlcode);
+
+                        })
+
+                    }
+                    console.log("opppppppppppp");
+                    console.log(op)
+                });
 
 
             });
@@ -871,6 +925,8 @@ class chat_room extends Component {
             $(".btnyes").click(function () {
                 Able_controll = 0;
                 Able_select = 0;
+                var message_send_permission = {};
+
                 for (var count_per = 0; count_per < per.length; count_per++) {
                     if (per[count_per].value == 1) {
                         Able_select = 1
@@ -894,6 +950,37 @@ class chat_room extends Component {
 
                     },
                     success: function () {
+                        if (Able_controll == 1 && Able_select == 1)
+                            message_send_permission = {
+                                "command": "user_permission",
+                                "user": member_per,
+                                "per1": "controller",
+                                "per2": "selector"
+                            };
+                        if (Able_controll == 1 && Able_select == 0)
+                            message_send_permission = {
+                                "command": "user_permission",
+                                "user": member_per,
+                                "per1": "controller",
+                                "per2": ""
+                            }
+                        if (Able_controll == 0 && Able_select == 1)
+                            message_send_permission = {
+                                "command": "user_permission",
+                                "user": member_per,
+                                "per1": "",
+                                "per2": "selector"
+                            }
+                        if (Able_controll == 0 && Able_select == 0)
+                            message_send_permission = {
+                                "command": "user_permission",
+                                "user": member_per,
+                                "per1": "",
+                                "per2": ""
+                            }
+
+                        ws.send(JSON.stringify(message_send_permission));
+
                         var x = document.getElementById("snackbar");
                         x.className = "show";
                         setTimeout(function () {
@@ -957,83 +1044,8 @@ class chat_room extends Component {
                                 var controller = null
                                 var selector = null
 
-                                var settings = {
-
-                                    "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + response.members[counter1] + "",
-
-                                    "method": "GET",
-
-                                    "timeout": 0,
-
-                                    "headers": {
-
-                                        //'X-CSRFToken': csrftoken,
-
-                                        //  "Authorization": "token " + token,
-
-                                        "accept": "application/json",
-
-                                        "Access-Control-Allow-Origin": "*",
-
-                                        "Access-Control-Allow-Headers": "*",
-
-                                        "Content-Type": "application/json"
-
-                                    }
-
-                                };
-
-
-                                $.ajax(settings).done(function (response_) {
-
-
-                                    console.log(response_);
-                                    if (response_.member == window.localStorage.getItem('username')) {
-                                        iscontroller = response_.playback_permission;
-                                        isselector = response_.choose_video_permission;
-                                    }
-                                    controller = response_.playback_permission;
-                                    selector = response_.choose_video_permission;
-
-                                    console.log("117778878");
-                                    var r = "window.open('/profile/" + response_.member + "')";
-                                    var a = "window.localStorage.setItem('user','" + response_.member + "')"; //id of the group
-                                    var hoverout = 'onMouseOut="this.style.color=';
-                                    var hoverrout = hoverout + "'white'";
-                                    var hover = 'onMouseOver="this.style.color=';
-                                    var hoverr = hover + "'red'";
-                                    var hoverout1 = 'onMouseOut="this.style.backgroundColor=';
-                                    var hoverrout1 = hoverout1 + "'rgb(35, 35, 35)'";
-                                    var hover1 = 'onMouseOver="this.style.backgroundColor=';
-                                    var hoverr1 = hover1 + "'rgb(365, 365,365,0.1)'";
-                                    htmlcode = ''
-                                    htmlcode += '<div class="divMem"' + hoverr1 + '"' + hoverrout1 + '"' + '>'
-                                    htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + r + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" + response_.member + '</p>';
-                                    ;
-
-                                    if (response_.member == create_by && controller && selector) {
-                                        htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >admin</p>';
-                                    } else {
-
-                                        if (controller && selector) {
-                                            htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
-                                        }
-                                        if (controller && !selector) {
-                                            htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
-                                        }
-                                        if (!controller && selector) {
-                                            htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
-                                        }
-
-                                    }
-
-                                    htmlcode += '</div>';
-                                    console.log(htmlcode)
-                                    $(".infobody").append(htmlcode);
-
-                                })
-
                             }
+                            document.getElementById('myModal').style.display = 'none';
                         })
                         document.getElementById('myModalPer').style.display = 'none';
 
@@ -1178,94 +1190,8 @@ class chat_room extends Component {
                                             create_by = response.created_by
 
 
-                                            for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
-                                                op = []
-                                                var obj = {}
 
-                                                obj["value"] = response.members[counter1]
-                                                obj["label"] = response.members[counter1]
-                                                op.push(obj)
-                                                var htmlcode = '';
-                                                var controller = null
-                                                var selector = null
-
-                                                var settings = {
-
-                                                    "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + response.members[counter1] + "",
-
-                                                    "method": "GET",
-
-                                                    "timeout": 0,
-
-                                                    "headers": {
-
-                                                        //'X-CSRFToken': csrftoken,
-
-                                                        //  "Authorization": "token " + token,
-
-                                                        "accept": "application/json",
-
-                                                        "Access-Control-Allow-Origin": "*",
-
-                                                        "Access-Control-Allow-Headers": "*",
-
-                                                        "Content-Type": "application/json"
-
-                                                    }
-
-                                                };
-
-
-                                                $.ajax(settings).done(function (response_) {
-
-
-                                                    console.log(response_);
-                                                    if (response_.member == window.localStorage.getItem('username')) {
-                                                        iscontroller = response_.playback_permission;
-                                                        isselector = response.choose_video_permission;
-                                                    }
-                                                    controller = response_.playback_permission
-                                                    selector = response_.choose_video_permission
-
-                                                    console.log("117778878")
-                                                    var r = "window.open('/profile/" + response_.member + "')";
-                                                    var a = "window.localStorage.setItem('user','" + response_.member + "')"; //id of the group
-                                                    var hoverout = 'onMouseOut="this.style.color=';
-                                                    var hoverrout = hoverout + "'white'";
-                                                    var hover = 'onMouseOver="this.style.color=';
-                                                    var hoverr = hover + "'red'";
-                                                    var hoverout1 = 'onMouseOut="this.style.backgroundColor=';
-                                                    var hoverrout1 = hoverout1 + "'rgb(35, 35, 35)'";
-                                                    var hover1 = 'onMouseOver="this.style.backgroundColor=';
-                                                    var hoverr1 = hover1 + "'rgb(365, 365,365,0.1)'";
-                                                    htmlcode = ''
-                                                    htmlcode += '<div class="divMem"' + hoverr1 + '"' + hoverrout1 + '"' + '>'
-                                                    htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + r + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" + response_.member + '</p>';
-                                                    ;
-
-                                                    if (response_.member == create_by && controller && selector) {
-                                                        htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >admin</p>';
-                                                    } else {
-
-                                                        if (controller && selector) {
-                                                            htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
-                                                        }
-                                                        if (controller && !selector) {
-                                                            htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
-                                                        }
-                                                        if (!controller && selector) {
-                                                            htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
-                                                        }
-
-                                                    }
-
-                                                    htmlcode += '</div>';
-                                                    console.log(htmlcode)
-                                                    $(".infobody").append(htmlcode);
-
-                                                })
-
-                                            }
+                                            document.getElementById('myModal').style.display = 'none';
                                         })
 
                                         document.getElementById('myModalAdd').style.display = 'none';
