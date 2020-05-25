@@ -345,6 +345,9 @@ class chat_room extends Component {
         const { id } = this.props.match.params
 
         $(document).ready(function () {
+            if(isadmin==0){
+                document.getElementById('dropdown-basic').style.display = 'none'
+            }
             // setTimeout(function () {
             //     const message_reselect = {"command": "reset"}
             //     ws.send(JSON.stringify(message_reselect));
