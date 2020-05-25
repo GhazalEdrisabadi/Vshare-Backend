@@ -1184,14 +1184,15 @@ min-width: 50%;
   background-color:white;
   color: rgba(0,0,0,0.6);
   text-align: left;
-  padding: 16px;
+ 
   font-size: 16px;
-  border: none;
+padding-left: 20px;
   cursor: pointer;
-  width:450px ;
+ width: 100%;
   border-radius: 5px;
-  height: 45px;
+  height: 40px;
  margin-top: 20px;
+ position: relative;
 }
 
 .dropdown-{
@@ -1201,7 +1202,7 @@ min-width: 50%;
 
 .dropdown-content- {
   display: none;
-  width:450px ;
+  width:422px ;
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
@@ -1226,4 +1227,11 @@ min-width: 50%;
 .txt_drop{
     color: black;
     cursor: pointer;
+}
+.custom-select{
+    position: relative;
+    font-family: Arial;
+}
+.option-{
+    font-size: 20px;
 }
