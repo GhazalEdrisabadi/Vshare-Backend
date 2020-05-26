@@ -18,6 +18,9 @@ class profile extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
         $(document).ready(function () {
+
+        console.log(username);
+
 //            if(username==window.localStorage.getItem('username')){
 //               document.getElementById("content").style.display = 'none'
 //                document.getElementById("right-button").style.display = 'none'
@@ -107,6 +110,7 @@ else{
 
             });
          document.getElementById("edite-btn").style.display = 'none'
+         console.log(username);
        document.getElementById("f-btn").style.display = 'block'
        document.getElementById("uf-btn").style.display = 'none'
 }
@@ -175,14 +179,14 @@ else{
                 htmlcode = '';
                $(".search-result").append(htmlcode)
                 for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
-var a2 = "window.localStorage.setItem('user'," + response[counter1].username + ")";
+var a2 = "window.localStorage.setItem('user', ' " + response[counter1].username + " ')";
  var r = "window.location.replace('/profile/" + response[counter1].username + "')";
- console.log(a2)
+
  console.log(r)
                     htmlcode += '<div>'
                     // htmlcode+='<br/>'
                     htmlcode += '<div class="user-search">';
-                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].username + '</p>';
+                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 +  "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].username + '</p>';
                 
                  htmlcode+='<br/>'
                   
@@ -692,8 +696,8 @@ var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')"; 
                         <EditIcon fontSize="medium"/>
                         Edit profile
                     </IconButton>
-                 <div className="follow-btn" id='f-btn'>   follow !</div>
-                  <div className="unfollow-btn" id='uf-btn'>   unfollow</div>
+                 <div className="follow-btn" id='f-btn'>   Follow </div>
+                  <div className="unfollow-btn" id='uf-btn'>   UnFollow</div>
                 <div id="myModal" class="modal_edite_profile">
                     <div class="modal-content_edite_profile" >
                         <h3 class="texx_edite">Edit your profile deatails</h3>

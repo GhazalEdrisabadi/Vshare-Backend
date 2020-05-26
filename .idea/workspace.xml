@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="261f5428-644e-4ccf-b1d6-0289c4e945f1" name="Default Changelist" comment="Merge branch 'features/chatroom-frontend' into features/chatroom-frontend-playVideo&#10;&#10;# Conflicts:&#10;#&#9;vshare/package-lock.json&#10;#&#9;vshare/package.json&#10;#&#9;vshare/src/chatroom/chat_room.css&#10;#&#9;vshare/src/chatroom/chat_room.js">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vshare/src/profile/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/vshare/src/profile/profile.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vshare/src/profile/profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/vshare/src/profile/profile.js" afterDir="false" />
     </list>
