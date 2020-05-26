@@ -3,23 +3,29 @@ import './profile.css'
 import $ from 'jquery';
 import Left from './left.png'
 import Right from './right.png'
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 import HomeIcon from '@material-ui/icons/Home';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import Button from '@material-ui/core/Button';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import EditIcon from '@material-ui/icons/Edit';
 var username = window.localStorage.getItem('user');
 var respone_get
 class profile extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
         $(document).ready(function () {
-            if(username==window.localStorage.getItem('username')){
-               document.getElementById("content").style.display = 'none'
-                document.getElementById("right-button").style.display = 'none'
-                 document.getElementById("left-button").style.display = 'none'
-            }
+
+        console.log(username);
+
+//            if(username==window.localStorage.getItem('username')){
+//               document.getElementById("content").style.display = 'none'
+//                document.getElementById("right-button").style.display = 'none'
+//                 document.getElementById("left-button").style.display = 'none'
+//            }
             var settings = {
                 "url": "http://127.0.0.1:8000/user/relations/followers/?user="+username+"",
                 "method": "GET",
@@ -104,6 +110,7 @@ else{
 
             });
          document.getElementById("edite-btn").style.display = 'none'
+         console.log(username);
        document.getElementById("f-btn").style.display = 'block'
        document.getElementById("uf-btn").style.display = 'none'
 }
@@ -121,6 +128,7 @@ else{
                 },
 
             };
+
 
             $.ajax(settings).done(function (response) {
                 // 
@@ -171,12 +179,14 @@ else{
                 htmlcode = '';
                $(".search-result").append(htmlcode)
                 for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
-var a2 = "window.localStorage.setItem('user'," + response[counter1].username + ")";
+var a2 = "window.localStorage.setItem('user', ' " + response[counter1].username + " ')";
  var r = "window.location.replace('/profile/" + response[counter1].username + "')";
+
+ console.log(r)
                     htmlcode += '<div>'
                     // htmlcode+='<br/>'
                     htmlcode += '<div class="user-search">';
-                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].username + '</p>';
+                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 +  "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].username + '</p>';
                 
                  htmlcode+='<br/>'
                   
@@ -636,6 +646,8 @@ var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')"; 
             <div className="back_profile" >
      <header className="head">
 
+
+
                     <div className='leftheader'>
                         <div className='userprofile'>
                             <IconButton style={{
@@ -671,11 +683,21 @@ var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')"; 
                         </IconButton>
                     </div>
                 </header>
+
+
+                <div className="back_prof">
                 <div className="photo" />
                 <div className="username_prof" >USERNAME</div>
-                <div className="edite_profile" id='edite-btn'>   Edite Profile</div>
-                 <div className="follow-btn" id='f-btn'>   follow !</div>
-                  <div className="unfollow-btn" id='uf-btn'>   unfollow</div>
+
+
+                   <IconButton style={{color: 'white' , fontSize:"70px" }}
+                        className="edite_profile" id="edite-btn" >
+
+                        <EditIcon fontSize="medium"/>
+                        Edit profile
+                    </IconButton>
+                 <div className="follow-btn" id='f-btn'>   Follow </div>
+                  <div className="unfollow-btn" id='uf-btn'>   UnFollow</div>
                 <div id="myModal" class="modal_edite_profile">
                     <div class="modal-content_edite_profile" >
                         <h3 class="texx_edite">Edit your profile deatails</h3>
@@ -696,6 +718,8 @@ var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')"; 
                     </div>
 
                 </div>
+
+
                         <div id="Modal-join" class="modal-join">
                     <div class="modal-content_join" >
                                 <h3 className='join-txt'>Are you sure you want to join this group ? </h3>
@@ -742,9 +766,15 @@ var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')"; 
                 <div className="following_count">0</div>
                 <div className="following">following</div>
 
-<div className="search-result" id='res'></div>
 
-                <img id="left-button" className="left_div" src={Left} />
+
+
+
+
+                <IconButton style={{color: 'white'}}
+                   className="left-button" id="left-button">
+                   <ArrowBackIosIcon fontSize="large"/>
+                </IconButton>
                        
   
                 
@@ -752,12 +782,21 @@ var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')"; 
 
                 </div>
 
-                <img id="right-button" class="right_div" src={Right} />
+
+
+                <IconButton style={{color: 'white'}}
+                   className="right-button" id="right-button">
+                   <ArrowForwardIosIcon fontSize="large"/>
+                </IconButton>
                      
-                    
 
             </div>
+            <div className="search-result" id='res'></div>
+            </div>
+
         )
     }
 }
 export default profile;
+
+
