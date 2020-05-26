@@ -953,7 +953,7 @@ class chat_room extends Component {
                             }
                             controller = response_.playback_permission
                             selector = response_.choose_video_permission
-
+var chat = response_.chat_permission
                             console.log("117778878")
                             var r = "window.open('/profile/" + response_.member + "')";
                             var a = "window.localStorage.setItem('user','" + response_.member + "')"; //id of the group
@@ -975,13 +975,34 @@ class chat_room extends Component {
                             } else {
 
                                 if (controller && selector) {
+                                    if(chat)
                                     htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
+                                    else{
+                                        htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
+                                        htmlcode += '<p  style="font-size: 15px" class="mutetitle"  >mute</p>';
+                                    }
                                 }
                                 if (controller && !selector) {
+                                    if(chat)
                                     htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
+                                    else{
+                                        htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
+                                        htmlcode += '<p  style="font-size: 15px" class="mutetitle"  >mute</p>';
+                                    }
+                                    
                                 }
                                 if (!controller && selector) {
+                                    if(chat)
                                     htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
+                                    else{
+                                        htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
+                                        htmlcode += '<p  style="font-size: 15px" class="mutetitle"  >mute</p>';
+                                    }
+                                   
+                                }
+                                if(!controller && !selector){
+                                    if(!chat)
+                                    htmlcode += '<p  style="font-size: 15px" class="mutetitle"  >mute</p>';
                                 }
 
                             }
@@ -1150,7 +1171,7 @@ var username_edite=$('#exams').val();
                         "Content-Type": "application/json"
                     },
                     "data": JSON.stringify({
-                        "chat_permission": 1,
+                       
                         "choose_video_permission": Able_select,
                         "playback_permission": Able_controll,
                         "group": id_gp,
@@ -1554,7 +1575,7 @@ var username_edite=$('#exams').val();
                             "Content-Type": "application/json"
                         },
                         "data": JSON.stringify({
-                                "chat_permission": 1,
+                            "chat_permission": 1,
                                 "choose_video_permission": selectpermission,
                                 "playback_permission": controllpermission,
                                 "group": id_gp,
