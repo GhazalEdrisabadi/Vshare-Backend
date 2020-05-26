@@ -55,6 +55,7 @@ var logoutclicked = 0;
 var azavalbude = 0;
 var percant = 0;
 var uploaded = 0;
+var muted = 0;
 
 var id_gp = window.localStorage.getItem('id_gp')
 const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
@@ -83,7 +84,6 @@ var isadmin = window.localStorage.getItem('isadmin');
 var filmplayed = 0;
 var comeinstate1 = 0;
 var Play_pause_space = 0;
-
 
 var create_by = null
 
@@ -140,11 +140,17 @@ class chat_room extends Component {
 
             if (messagee1.command == "chat_client") {
 
+                var d = 'document.getElementById("mymutemodal")';
+
+                var dd = d + '.style.display="block"';
+
+                var a = 'window.localStorage.setItem("muteuser","' + messagee1.user + '")';
+
                 if (messagee1.user == window.localStorage.getItem('username')) {
-                    $(".pm").append("<div id='pmeman'>" + "me: " + messagee1.message + "</div>");
+                    $(".pm").append("<div id='pmeman'>" + "me: &nbsp;</div><div  id='pmemantxt'>" + messagee1.message + "</div>");
 
                 } else {
-                    $(".pm").append("<div id='pmeoon'>" + messagee1.user + ": " + messagee1.message + "</div>");
+                    $(".pm").append("<div onclick='" + dd + "," + a + "'id='pmeoon'>" + messagee1.user + ": &nbsp; </div><div  id='pmemantxt'>" + messagee1.message + "</div>");
                 }
 
                 $(".pm").append("<br>")
@@ -188,6 +194,15 @@ class chat_room extends Component {
 
             }
 
+            if (messagee1.message == 'you must be in the group and have permission to send messages!') {
+                var x = document.getElementById("snackbar-mute-warning");
+                x.className = "show";
+                setTimeout(function () {
+                    x.className = x.className.replace("show", "");
+                }, 3000);
+
+            }
+
 
         }
 
@@ -202,7 +217,6 @@ class chat_room extends Component {
             console.log(messagee);
 
             console.log(messagee.message);
-
 
             if (logoutclicked == 0 && adminisinstatezero == 0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
                 window.location.reload();
@@ -339,12 +353,46 @@ class chat_room extends Component {
             }
 
 
+            if (messagee.msg_type == "send permission") {
+                if (messagee.username == window.localStorage.getItem('username')) {
+                    if (messagee.permission1 == "controller" || messagee.permission2 == "controller") {
+                        iscontroller = 1;
+                        document.getElementById("controllbuttons2").style.zIndex = "-1";
+                        document.getElementById('controllbuttons').style.pointerEvents = 'auto';
+                        document.getElementById('movie').style.pointerEvents = 'auto';
+                    }
+                    if (messagee.permission1 == "selector" || messagee.permission2 == "selector") {
+                        isselector = 1;
+                        document.getElementById('reselect').style.pointerEvents = 'auto';
+                        document.getElementById("controllbuttons2").style.zIndex = "100";
+                        if (filmplayed == 0)
+                            window.location.reload();
+                    }
+                    if (messagee.permission1 != "controller" && messagee.permission2 != "controller") {
+                        iscontroller = 0;
+                        document.getElementById("controllbuttons2").style.zIndex = "1";
+                        document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                        document.getElementById('movie').style.pointerEvents = 'none';
+                    }
+                    if (messagee.permission1 != "selector" && messagee.permission2 != "selector") {
+                        isselector = 0;
+                        document.getElementById('reselect').style.pointerEvents = 'none';
+                        document.getElementById("controllbuttons2").style.zIndex = "-1";
+                        if (filmplayed == 0)
+                            window.location.reload();
+                    }
+                }
+                console.log("controller : " + iscontroller);
+                console.log("selector : " + isselector);
+            }
+
         };
 
 
         const { id } = this.props.match.params
 
         $(document).ready(function () {
+
             if(isadmin==0){
                 document.getElementById('dropdown-basic').style.display = 'none'
             }
@@ -352,6 +400,7 @@ class chat_room extends Component {
             //     const message_reselect = {"command": "reset"}
             //     ws.send(JSON.stringify(message_reselect));
             // }, 300);
+
 
 
             if (isadmin == 1 || isselector == 1) {
@@ -383,6 +432,39 @@ class chat_room extends Component {
             //    }
             //});
 
+            var settings = {
+
+                "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('username') + "",
+
+                "method": "GET",
+
+                "timeout": 0,
+
+                "headers": {
+
+                    //'X-CSRFToken': csrftoken,
+
+                    //  "Authorization": "token " + token,
+
+                    "accept": "application/json",
+
+                    "Access-Control-Allow-Origin": "*",
+
+                    "Access-Control-Allow-Headers": "*",
+
+                    "Content-Type": "application/json"
+
+                }
+
+            };
+
+
+            $.ajax(settings).done(function (response_) {
+                if (response_.choose_video_permission == true)
+                    isselector = 1;
+                if (response_.playback_permission == true)
+                    iscontroller = 1;
+            });
 
             $(document).on("keypress", "input", function (e) {
 
@@ -410,6 +492,10 @@ class chat_room extends Component {
 
             }
             window.onclick = function (event) {
+
+                if (event.target == document.getElementById("mymutemodal")) {
+                    $('.mutemodal').fadeOut("slow");
+                }
 
                 if (event.target == document.getElementById("myModal")) {
                     $('.modal-').fadeOut("slow");
@@ -496,7 +582,7 @@ class chat_room extends Component {
                                   var hoverout = 'onMouseOut="this.style.color=';
                                   var hoverrout = hoverout + "'white'";
                                   var htmlcode = '';
-                                  var hover = 'onMouseOver="this.style.color=';
+                                  var hover = 'onmouseenter="this.style.color=';
                                   var hoverr = hover + "'red'";
                                   htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
                                   $(".textarea_member").append(htmlcode);
@@ -557,13 +643,9 @@ class chat_room extends Component {
                 return;
             });
 
-            /*  $("#formback_movie_id").mouseover(function () {
-<<<<<<< HEAD
->>>>>>> features/stream-frontend
-=======
+            /*  $("#formback_movie_id").mouseenter(function () {
 
 
->>>>>>> dev
                   if (filmplayed == 1)
                       $('#controll_div').fadeIn();
               });
@@ -622,7 +704,7 @@ class chat_room extends Component {
 
             }, 500);
 
-            $("#formback_movie_id").mouseover(function () {
+            $("#formback_movie_id").mouseenter(function () {
 
                 if (filmplayed == 1)
                     $('#controllbuttons').fadeIn();
@@ -738,7 +820,7 @@ class chat_room extends Component {
                       var hoverout = 'onMouseOut="this.style.color=';
                       var hoverrout = hoverout + "'white'";
                       var htmlcode = '';
-                      var hover = 'onMouseOver="this.style.color=';
+                      var hover = 'onmouseenter="this.style.color=';
                       var hoverr = hover + "'red'";
                       htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
                       $(".textarea_member").append(htmlcode);
@@ -798,7 +880,7 @@ class chat_room extends Component {
                           var hoverout = 'onMouseOut="this.style.color=';
                           var hoverrout = hoverout + "'white'";
                           var htmlcode = '';
-                          var hover = 'onMouseOver="this.style.color=';
+                          var hover = 'onmouseenter="this.style.color=';
                           var hoverr = hover + "'red'";
                           htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
                           $(".textarea_member").append(htmlcode);
@@ -877,11 +959,11 @@ class chat_room extends Component {
                             var a = "window.localStorage.setItem('user','" + response_.member + "')"; //id of the group
                             var hoverout = 'onMouseOut="this.style.color=';
                             var hoverrout = hoverout + "'white'";
-                            var hover = 'onMouseOver="this.style.color=';
+                            var hover = 'onmouseenter="this.style.color=';
                             var hoverr = hover + "'red'";
                             var hoverout1 = 'onMouseOut="this.style.backgroundColor=';
                             var hoverrout1 = hoverout1 + "'rgb(35, 35, 35)'";
-                            var hover1 = 'onMouseOver="this.style.backgroundColor=';
+                            var hover1 = 'onmouseenter="this.style.backgroundColor=';
                             var hoverr1 = hover1 + "'rgb(365, 365,365,0.1)'";
                             htmlcode = ''
                             htmlcode += '<div class="divMem"' + hoverr1 + '"' + hoverrout1 + '"' + '>'
@@ -937,9 +1019,11 @@ class chat_room extends Component {
 
                 for (var count_per = 0; count_per < per.length; count_per++) {
                     if (per[count_per].value == 1) {
+
                         Able_select = 1
                     }
                     if (per[count_per].value == 2) {
+
                         Able_controll = 1
                     }
                 }
@@ -1033,7 +1117,7 @@ var username_edite=$('#exams').val();
                                   var hoverout = 'onMouseOut="this.style.color=';
                                   var hoverrout = hoverout + "'white'";
                                   var htmlcode = '';
-                                  var hover = 'onMouseOver="this.style.color=';
+                                  var hover = 'onmouseenter="this.style.color=';
                                   var hoverr = hover + "'red'";
                                   htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
                                   $(".textarea_member").append(htmlcode);
@@ -1185,7 +1269,7 @@ var username_edite=$('#exams').val();
                                                   var hoverout = 'onMouseOut="this.style.color=';
                                                   var hoverrout = hoverout + "'white'";
                                                   var htmlcode = '';
-                                                  var hover = 'onMouseOver="this.style.color=';
+                                                  var hover = 'onmouseenter="this.style.color=';
                                                   var hoverr = hover + "'red'";
                                                   htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
                                                   $(".textarea_member").append(htmlcode);
@@ -1196,7 +1280,6 @@ var username_edite=$('#exams').val();
                                             //  $(".textarea_bio").append(response.describtion + "\n")
 
                                             create_by = response.created_by
-
 
 
                                             document.getElementById('myModal').style.display = 'none';
@@ -1298,15 +1381,24 @@ var username_edite=$('#exams').val();
             };
 
             $.ajax(settings).done(function (response) {
+                //  document.getElementById("myElement").style.cssText = "display: block; position: absolute";
                 console.log(response);
+
+                var d = 'document.getElementById("mymutemodal")';
+
+                var dd = d + '.style.display="block"';
+
+
                 for (var counterchathistory = response.results.length - 1; counterchathistory >= 0; counterchathistory--) {
+                    var a = 'window.localStorage.setItem("muteuser","' + response.results[counterchathistory].message_sender + '")';
+
                     if (response.results[counterchathistory].message_sender == window.localStorage.getItem('username')) {
-                        $(".pm").append("<div id='pmeman'>" + "me: " + response.results[counterchathistory].message_text + "</div>");
+                        $(".pm").append("<div  style='float:left' id='pmeman'> me: &nbsp;</div><div  id='pmemantxt'>" + response.results[counterchathistory].message_text + "</div>");
 
                     } else {
-                        $(".pm").append("<div id='pmeoon'>" + response.results[counterchathistory].message_sender + ": " + response.results[counterchathistory].message_text + "</div>");
+                        $(".pm").append("<div onclick='" + dd + "," + a + "' id='pmeoon'>" + response.results[counterchathistory].message_sender + ": &nbsp;</div><div  id='pmemantxt'> " + response.results[counterchathistory].message_text + "</div>");
                     }
-                    $(".pm").append("<br>");
+
                 }
                 var element = document.getElementById("pmid");
                 element.scrollTop = element.scrollHeight;
@@ -1319,6 +1411,171 @@ var username_edite=$('#exams').val();
                 console.log("is selector : " + isselector);
 
             }, 1000);
+
+
+            $('.mutemodal').mouseenter(function () {
+                if (isadmin == 1) {
+                    var settings = {
+
+                        "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
+
+                        "method": "GET",
+
+                        "timeout": 0,
+
+                        "headers": {
+
+                            //'X-CSRFToken': csrftoken,
+
+                            //  "Authorization": "token " + token,
+
+                            "accept": "application/json",
+
+                            "Access-Control-Allow-Origin": "*",
+
+                            "Access-Control-Allow-Headers": "*",
+
+                            "Content-Type": "application/json"
+
+                        }
+
+                    };
+
+                    $.ajax(settings).done(function (response0) {
+                        console.log(response0);
+                        if (response0.chat_permission == true) {
+                            muted = 0;
+                            var obj = $('.deleteTEXT').text("Are you sure  you want to mute \n   " + window.localStorage.getItem('muteuser') + "  ? ");
+                            obj.html(obj.html().replace(/\n/g, '<br/>'));
+                        } else {
+                            muted = 1;
+                            var obj = $('.deleteTEXT').text("Are you sure  you want to unmute \n   " + window.localStorage.getItem('muteuser') + "  ? ");
+                            obj.html(obj.html().replace(/\n/g, '<br/>'));
+                        }
+                    });
+                    //(window.localStorage.getItem('muteuser'));
+
+                } else
+                    $('.mutemodal').fadeOut('fast');
+            });
+
+            $('.dltyes2').click(function () {
+                var chatpermission;
+                var selectpermission;
+                var controllpermission;
+                var settings = {
+
+                    "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
+
+                    "method": "GET",
+
+                    "timeout": 0,
+
+                    "headers": {
+
+                        //'X-CSRFToken': csrftoken,
+
+                        //  "Authorization": "token " + token,
+
+                        "accept": "application/json",
+
+                        "Access-Control-Allow-Origin": "*",
+
+                        "Access-Control-Allow-Headers": "*",
+
+                        "Content-Type": "application/json"
+
+                    }
+
+                };
+
+                $.ajax(settings).done(function (response1) {
+                    chatpermission= response1.chat_permission;
+                    selectpermission= response1.choose_video_permission;
+                    controllpermission= response1.playback_permission;
+                });
+
+
+                if (muted==0) {
+                    var settings = {
+                        "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
+                        "method": "PUT",
+                        "timeout": 0,
+                        success: function () {
+                            $('.mutemodal').fadeOut("slow");
+                            var x = document.getElementById("snackbar-mute");
+                            x.innerHTML="Successfully mute";
+                            x.className = "show";
+                            setTimeout(function () {
+                                x.className = x.className.replace("show", "");
+                            }, 3000);
+                        },
+                        "headers": {
+                            "accept": "application/json",
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Headers": "*",
+                            "Content-Type": "application/json"
+                        },
+                        "data": JSON.stringify({
+                                "chat_permission": 0,
+                                "choose_video_permission": selectpermission,
+                                "playback_permission": controllpermission,
+                                "group": id_gp,
+                                "member": window.localStorage.getItem('muteuser'),
+                            }
+                        ),
+                    };
+
+                    $.ajax(settings).done(function (response2) {
+                        console.log("done")
+                        console.log(response2);
+
+                    });
+
+                } else {
+                    var settings = {
+                        "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
+                        "method": "PUT",
+                        "timeout": 0,
+                        success: function () {
+                            $('.mutemodal').fadeOut("slow");
+                            var x = document.getElementById("snackbar-mute");
+                            x.innerHTML="Successfully unmute";
+                            x.className = "show";
+                            setTimeout(function () {
+                                x.className = x.className.replace("show", "");
+                            }, 3000);
+                        },
+
+                        "headers": {
+                            "accept": "application/json",
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Headers": "*",
+                            "Content-Type": "application/json"
+                        },
+                        "data": JSON.stringify({
+                                "chat_permission": 1,
+                                "choose_video_permission": selectpermission,
+                                "playback_permission": controllpermission,
+                                "group": id_gp,
+                                "member": window.localStorage.getItem('muteuser'),
+                            }
+                        ),
+                    };
+
+                    $.ajax(settings).done(function (response3) {
+                        console.log("done")
+                        console.log(response3);
+
+                    });
+                }
+
+            });
+
+
+            $('.dltno2').click(function () {
+                $('.mutemodal').fadeOut("slow");
+            });
 
         });
     }
@@ -2213,6 +2470,49 @@ var username_edite=$('#exams').val();
                         </div>
 
                     </header>
+
+                    <div id="mymutemodal" className="mutemodal">
+
+                        <div className="mute-modal-content">
+
+                            <h3 className='deleteTEXT'>Are you sure you want to mute this user ? </h3>
+
+
+                            <div className='dltbtns'>
+
+
+                                <Button style={{backgroundColor: "Red"}} size='large'
+
+                                        className="dltno2" variant="contained" color="secondary">
+
+                                    <p>No&nbsp;</p>
+
+                                </Button>
+
+
+                                <Button style={{
+
+                                    backgroundColor: 'gray',
+
+                                    marginRight: "4px"
+
+
+                                }} size='large' className="dltyes2" variant="contained" color="secondary">
+
+                                    <p>Yes</p>
+
+                                </Button>
+
+
+                            </div>
+
+                            {/* <div className='dltno'>no</div> */}
+
+                        </div>
+
+                    </div>
+
+
                     <div id="myModal" class="modal-">
 
 
@@ -2313,6 +2613,7 @@ var username_edite=$('#exams').val();
                         </div>
                     </div>
                     <div id="snackbar">Successfully permission edit</div>
+                    <div id="snackbar-mute-warning">You don't have permission to send message</div>
                     <div id="snackbar-">Enter id field</div>
                     <div id="myModalAdd" class="modaladd">
                         <div class="modal-content-add">
@@ -2348,6 +2649,7 @@ var username_edite=$('#exams').val();
                     <div id="snackbar-succes">Successfully add to group</div>
                     <div id="snackbar-not">User not found</div>
                     <div id="snackbar-already">User is already a member of this group</div>
+                    <div id="snackbar-mute">Successfully mute</div>
                     <div id="myModal_popup" class="modal_popup">
                         <div class="modal-content">
                             <IconButton style={{ color: 'white', marginRight: '130%', marginTop: '4%' }}
@@ -2580,7 +2882,8 @@ var username_edite=$('#exams').val();
                         </div>
 
 
-                        <div className="formback_text" style={{ width: '350px', height: '395px', }}>
+                        <div id='formback_text_id' className="formback_text" style={{width: '350px', height: '395px',}}>
+
 
 
                             <div id='pmid' className="pm">
@@ -2592,9 +2895,10 @@ var username_edite=$('#exams').val();
                             <div className="input_send">
 
 
-                                <input className="formback_text_input" id="formback_text_input" autocomplete="off">
+                                <input className="formback_text_input" id="formback_text_input" autoComplete="off">
 
                                 </input>
+
 
                                 <IconButton style={{
                                     color: 'white',
