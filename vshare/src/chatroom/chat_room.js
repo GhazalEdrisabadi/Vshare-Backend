@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 
 import './chat_room.css'
 
@@ -15,7 +15,7 @@ import RedoIcon from '@material-ui/icons/Redo';
 import Avatar from '@material-ui/core/Avatar'
 import './video-react.css';
 
-import {Player, ControlBar, PlayToggle, Shortcut} from 'video-react';
+import { Player, ControlBar, PlayToggle, Shortcut } from 'video-react';
 
 import sha256 from 'crypto-js/sha256';
 
@@ -31,13 +31,13 @@ import PublishIcon from '@material-ui/icons/Publish';
 import PlayCircleFilledWhiteIcon from '@material-ui/icons/PlayCircleFilledWhite';
 
 import HomeIcon from '@material-ui/icons/Home';
-import {Dropdown} from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap';
 
 import IconButton from "@material-ui/core/IconButton";
 
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import {TextField} from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import CloseIcon from '@material-ui/icons/Close';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
@@ -89,8 +89,8 @@ var create_by = null
 
 const options = [
 
-    {value: '1', label: 'Able to select video'},
-    {value: '2', label: 'Able to controll the playback'},
+    { value: '1', label: 'Able to select video' },
+    { value: '2', label: 'Able to controll the playback' },
 ]
 var op = []
 var per = []
@@ -105,6 +105,10 @@ class chat_room extends Component {
     }
 
     componentDidMount() {
+
+        this.setState({ opt: op });
+
+
         console.log(url)
         console.log(url1)
         console.log("is admin : " + isadmin);
@@ -193,7 +197,7 @@ class chat_room extends Component {
 
             const messagee = JSON.parse(evt.data);
 
-            this.setState({server_pm: messagee});
+            this.setState({ server_pm: messagee });
 
             console.log(messagee);
 
@@ -240,7 +244,7 @@ class chat_room extends Component {
             if ("this is current time for new users" == messagee.message && clienthashok == 1) {
 
                 this.changeCurrentTime(messagee.time);
-                const {player} = this.player.getState();
+                const { player } = this.player.getState();
                 console.log("curent " + player.currentTime)
                 if (player.currentTime > 1)
                     this.play();
@@ -309,10 +313,10 @@ class chat_room extends Component {
             if (filmplayed == 1 && messagee.status == 2 && messagee.message == "new user's hash is ok." && isadmin == 1) {
 
                 this.player.pause();
-                const {player} = this.player.getState();
+                const { player } = this.player.getState();
                 console.log("curent " + player.currentTime)
 
-                const message_send_play = {"command": "send_current_time", "currentTime": player.currentTime};
+                const message_send_play = { "command": "send_current_time", "currentTime": player.currentTime };
                 ws.send(JSON.stringify(message_send_play));
 
             }
@@ -338,9 +342,12 @@ class chat_room extends Component {
         };
 
 
-        const {id} = this.props.match.params
+        const { id } = this.props.match.params
 
         $(document).ready(function () {
+            if(isadmin==0){
+                document.getElementById('dropdown-basic').style.display = 'none'
+            }
             // setTimeout(function () {
             //     const message_reselect = {"command": "reset"}
             //     ws.send(JSON.stringify(message_reselect));
@@ -382,7 +389,7 @@ class chat_room extends Component {
                 if (e.which == 13) {
 
                     var massage = $(".formback_text_input").val();
-                    const message_send_chat = {"command": "chat_client", "message_client": massage}
+                    const message_send_chat = { "command": "chat_client", "message_client": massage }
                     ws1.send(JSON.stringify(message_send_chat))
                     $('.formback_text_input').val('');
 
@@ -415,7 +422,7 @@ class chat_room extends Component {
 
 
                 setTimeout(function () {
-                    const message_reselect = {"command": "reset"}
+                    const message_reselect = { "command": "reset" }
                     ws.send(JSON.stringify(message_reselect));
                     window.location.replace('/homepage/');
                 }, 300);
@@ -534,7 +541,7 @@ class chat_room extends Component {
                 console.log("sdnskdbclskdbcn")
             });
             $('#reselect').click(function () {
-                const message_reselect = {"command": "reset"}
+                const message_reselect = { "command": "reset" }
                 ws.send(JSON.stringify(message_reselect));
 
                 //
@@ -813,9 +820,11 @@ class chat_room extends Component {
                     $(".inputedit-des").val(response.describtion)
                     create_by = response.created_by
 
-
+                    var htmlcode22=''
                     for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
                         var obj = {}
+
+                        htmlcode22 += '<option class="option-" value="' + response.members[counter1] + '">' + response.members[counter1] + '</option>';
 
                         obj["value"] = response.members[counter1]
                         obj["label"] = response.members[counter1]
@@ -902,15 +911,14 @@ class chat_room extends Component {
                         })
 
                     }
+                    $('#exams').html(htmlcode22);
                     console.log("opppppppppppp");
-                    console.log(op)
+
+
                 });
+            })
 
-
-            });
-
-
-//Log the messages that are returned from the server
+            //Log the messages that are returned from the server
             $(".btnno").click(function () {
                 document.getElementById('myModalPer').style.display = 'none';
             })
@@ -935,10 +943,10 @@ class chat_room extends Component {
                         Able_controll = 1
                     }
                 }
-                var member_per = member_edit.value
-                console.log(member_per)
+var username_edite=$('#exams').val();
+
                 var settings = {
-                    "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + member_per + "",
+                    "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + username_edite + "",
                     "method": "PUT",
                     "timeout": 0,
                     error: function (event) {
@@ -953,28 +961,28 @@ class chat_room extends Component {
                         if (Able_controll == 1 && Able_select == 1)
                             message_send_permission = {
                                 "command": "user_permission",
-                                "user": member_per,
+                                "user": username_edite,
                                 "per1": "controller",
                                 "per2": "selector"
                             };
                         if (Able_controll == 1 && Able_select == 0)
                             message_send_permission = {
                                 "command": "user_permission",
-                                "user": member_per,
+                                "user": username_edite,
                                 "per1": "controller",
                                 "per2": ""
                             }
                         if (Able_controll == 0 && Able_select == 1)
                             message_send_permission = {
                                 "command": "user_permission",
-                                "user": member_per,
+                                "user": username_edite,
                                 "per1": "",
                                 "per2": "selector"
                             }
                         if (Able_controll == 0 && Able_select == 0)
                             message_send_permission = {
                                 "command": "user_permission",
-                                "user": member_per,
+                                "user": username_edite,
                                 "per1": "",
                                 "per2": ""
                             }
@@ -1058,12 +1066,12 @@ class chat_room extends Component {
                         "Content-Type": "application/json"
                     },
                     "data": JSON.stringify({
-                            "chat_permission": 1,
-                            "choose_video_permission": Able_select,
-                            "playback_permission": Able_controll,
-                            "group": id_gp,
-                            "member": member_per,
-                        }
+                        "chat_permission": 1,
+                        "choose_video_permission": Able_select,
+                        "playback_permission": Able_controll,
+                        "group": id_gp,
+                        "member": username_edite,
+                    }
                     ),
                 };
 
@@ -1206,12 +1214,12 @@ class chat_room extends Component {
                                         "Content-Type": "application/json"
                                     },
                                     "data": JSON.stringify({
-                                            "group": id_gp,
-                                            "member": member_add,
-                                            "chat_permission": 1,
-                                            "playback_permission": Able_controll,
-                                            "choose_video_permission": Able_select
-                                        }
+                                        "group": id_gp,
+                                        "member": member_add,
+                                        "chat_permission": 1,
+                                        "playback_permission": Able_controll,
+                                        "choose_video_permission": Able_select
+                                    }
                                     ),
                                 };
 
@@ -1230,9 +1238,9 @@ class chat_room extends Component {
                                 "Content-Type": "application/json"
                             },
                             "data": JSON.stringify({
-                                    "the_group": id_gp,
-                                    "the_member": member_add
-                                }
+                                "the_group": id_gp,
+                                "the_member": member_add
+                            }
                             ),
                         };
 
@@ -1263,7 +1271,7 @@ class chat_room extends Component {
             $(".send_btn").click(function () {
                 var massage = $(".formback_text_input").val();
 
-                const message_send_chat = {"command": "chat_client", "message_client": massage}
+                const message_send_chat = { "command": "chat_client", "message_client": massage }
                 ws1.send(JSON.stringify(message_send_chat))
                 $('.formback_text_input').val('');
 
@@ -1334,6 +1342,7 @@ class chat_room extends Component {
             selectedOption: null,
             selectedOption_Add: null,
             selectedOption_id: null,
+            opt: [],
 
         }
 
@@ -1384,7 +1393,7 @@ class chat_room extends Component {
 
                         console.log("curent " + current_time)
 
-                        const message_send_play = {"command": "pause_video", "currentTime": current_time}
+                        const message_send_play = { "command": "pause_video", "currentTime": current_time }
 
                         // ws.send(JSON.stringify(message_send))
 
@@ -1413,7 +1422,7 @@ class chat_room extends Component {
 
                         console.log("curent " + current_time)
 
-                        const message_send_play = {"command": "play_video", "currentTime": current_time}
+                        const message_send_play = { "command": "play_video", "currentTime": current_time }
 
                         // ws.send(JSON.stringify(message_send))
 
@@ -1529,7 +1538,7 @@ class chat_room extends Component {
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.1}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.1 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1552,7 +1561,7 @@ class chat_room extends Component {
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.9}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.9 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1575,7 +1584,7 @@ class chat_room extends Component {
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.2}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.2 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1598,7 +1607,7 @@ class chat_room extends Component {
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.3}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.3 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1621,7 +1630,7 @@ class chat_room extends Component {
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.4}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.4 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1645,7 +1654,7 @@ class chat_room extends Component {
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.5}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.5 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1668,7 +1677,7 @@ class chat_room extends Component {
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.6}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.6 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1691,7 +1700,7 @@ class chat_room extends Component {
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.7}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.7 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1714,7 +1723,7 @@ class chat_room extends Component {
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.8}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.8 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1733,7 +1742,7 @@ class chat_room extends Component {
     handleSubmit(e) {
 
 
-        const message_send_play = {"command": "play_video", "currentTime": "0"}
+        const message_send_play = { "command": "play_video", "currentTime": "0" }
 
 
         // ws.send(JSON.stringify(message_send))
@@ -1839,10 +1848,10 @@ class chat_room extends Component {
         function Send_data() {
             var message_send
             if (adminhash == null) {
-                message_send = {"command": "set_video_hash", "vhash": encrypted};
+                message_send = { "command": "set_video_hash", "vhash": encrypted };
                 clienthashok = 1;
             } else
-                message_send = {"command": "send_client_hash", "vhash": encrypted};
+                message_send = { "command": "send_client_hash", "vhash": encrypted };
 
             if (isselector == 1)
                 play_or_no = true;
@@ -1873,7 +1882,7 @@ class chat_room extends Component {
 
         function Send_data2() {
             $('#moviebtnd').fadeOut('slow');
-            const message_send = {"command": "send_client_hash", "vhash": encrypted}
+            const message_send = { "command": "send_client_hash", "vhash": encrypted }
 
             play_or_no = true
 
@@ -2021,11 +2030,11 @@ class chat_room extends Component {
 
     play() {
 
-        const {player} = this.player.getState();
+        const { player } = this.player.getState();
 
         console.log("curent " + player.currentTime)
 
-        const message_send_play = {"command": "play_video", "currentTime": player.currentTime}
+        const message_send_play = { "command": "play_video", "currentTime": player.currentTime }
 
         // ws.send(JSON.stringify(message_send))
 
@@ -2045,11 +2054,11 @@ class chat_room extends Component {
 
     pause() {
 
-        const {player} = this.player.getState();
+        const { player } = this.player.getState();
 
         console.log("curent " + player.currentTime)
 
-        const message_send_play = {"command": "pause_video", "currentTime": player.currentTime}
+        const message_send_play = { "command": "pause_video", "currentTime": player.currentTime }
 
         // ws.send(JSON.stringify(message_send))
 
@@ -2071,14 +2080,14 @@ class chat_room extends Component {
 
         return () => {
 
-            const {player} = this.player.getState();
+            const { player } = this.player.getState();
 
             console.log("curent " + player.currentTime)
             var message_send_play;
             if (played == 1)
-                message_send_play = {"command": "play_video", "currentTime": player.currentTime + seconds}
+                message_send_play = { "command": "play_video", "currentTime": player.currentTime + seconds }
             else
-                message_send_play = {"command": "pause_video", "currentTime": player.currentTime + seconds}
+                message_send_play = { "command": "pause_video", "currentTime": player.currentTime + seconds }
             ws.send(JSON.stringify(message_send_play))
 
             console.log(JSON.stringify(message_send_play))
@@ -2106,14 +2115,14 @@ class chat_room extends Component {
         console.log("hoooooooold")
         if (event.keyCode == 39 || event.keyCode == 37) {
             console.log('played : ' + played);
-            const {player} = this.player.getState();
+            const { player } = this.player.getState();
 
             console.log("curent " + player.currentTime)
             var message_send_play2;
             if (played == 1)
-                message_send_play2 = {"command": "play_video", "currentTime": player.currentTime}
+                message_send_play2 = { "command": "play_video", "currentTime": player.currentTime }
             else
-                message_send_play2 = {"command": "pause_video", "currentTime": player.currentTime}
+                message_send_play2 = { "command": "pause_video", "currentTime": player.currentTime }
             // ws.send(JSON.stringify(message_send))
 
             ws.send(JSON.stringify(message_send_play2))
@@ -2125,14 +2134,14 @@ class chat_room extends Component {
 
     handleChanges = selectedOption => {
         this.setState(
-            {selectedOption},
+            { selectedOption },
             () => per = this.state.selectedOption
         );
 
     };
     handleChanges_Add = selectedOption_Add => {
         this.setState(
-            {selectedOption_Add},
+            { selectedOption_Add },
             () => per_add = this.state.selectedOption_Add
         );
         console.log(per_add)
@@ -2140,7 +2149,7 @@ class chat_room extends Component {
     }
     handleChanges_id = selectedOption_id => {
         this.setState(
-            {selectedOption_id},
+            { selectedOption_id },
             () => member_edit = this.state.selectedOption_id
         );
         console.log(per_add)
@@ -2172,9 +2181,9 @@ class chat_room extends Component {
 
                                 }}
 
-                                            className="profilepic">
+                                    className="profilepic">
 
-                                    <AccountCircleOutlinedIcon fontSize="large"/>
+                                    <AccountCircleOutlinedIcon fontSize="large" />
 
                                 </IconButton>
 
@@ -2195,9 +2204,9 @@ class chat_room extends Component {
 
                             }}
 
-                                        className="div_leave">
+                                className="div_leave">
 
-                                <ExitToAppIcon fontSize="large"/>
+                                <ExitToAppIcon fontSize="large" />
 
                             </IconButton>
 
@@ -2221,9 +2230,9 @@ class chat_room extends Component {
 
                                 <div className='infogp'>
 
-                                    <div className='namegp'/>
+                                    <div className='namegp' />
 
-                                    <div className='idgp'/>
+                                    <div className='idgp' />
 
                                 </div>
                                 <div class="drop">
@@ -2242,15 +2251,15 @@ class chat_room extends Component {
                                             color: 'black',
                                             marginLeft: '-65px'
                                         }}>
-                                            <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
-                                                 className="edit_group" onClick={this.click_edit}>Edit group
+                                            <div style={{ color: 'white', textAlign: 'left', marginLeft: '15px' }}
+                                                className="edit_group" onClick={this.click_edit}>Edit group
                                             </div>
-                                            <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
-                                                 className="edit_group" onClick={this.click_edit_permission}>Edit
+                                            <div style={{ color: 'white', textAlign: 'left', marginLeft: '15px' }}
+                                                className="edit_group" onClick={this.click_edit_permission}>Edit
                                                 permission
                                             </div>
-                                            <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
-                                                 className="edit_group" onClick={this.click_edit_Add}>Add member
+                                            <div style={{ color: 'white', textAlign: 'left', marginLeft: '15px' }}
+                                                className="edit_group" onClick={this.click_edit_Add}>Add member
                                             </div>
                                         </Dropdown.Menu>
                                     </Dropdown>
@@ -2259,11 +2268,11 @@ class chat_room extends Component {
 
                             <div className='destitle'>Description:</div>
 
-                            <div className='desbody'/>
+                            <div className='desbody' />
 
-                            <hr/>
+                            <hr />
 
-                            <div className='infobody'/>
+                            <div className='infobody' />
 
                         </div>
 
@@ -2272,24 +2281,23 @@ class chat_room extends Component {
                     <div id="myModalPer" class="modalPer">
                         <div class="modal-content-Per">
                             <p className='delPer'>Edit permission of user</p>
+                        
+                            <select id="exams" name="exams" required className='dropbtn-'>
+                
+            </select>
 
-                            <Select className='select' placeholder="select your id"
-                                    value={this.state.selectedOption_id}
-                                    onChange={this.handleChanges_id}
-                                    options={op}
-                            />
                             <Select className='select' isMulti placeholder="select your permission"
-                                    value={this.state.selectedOption}
-                                    onChange={this.handleChanges}
-                                    options={options}
+                                value={this.state.selectedOption}
+                                onChange={this.handleChanges}
+                                options={options}
                             />
 
 
-                            <br/>
+                            <br />
                             <div className='btndl'>
 
-                                <Button style={{backgroundColor: "Red"}} size='large'
-                                        className="btnno" variant="contained" color="secondary">
+                                <Button style={{ backgroundColor: "Red" }} size='large'
+                                    className="btnno" variant="contained" color="secondary">
                                     <p>Cancel&nbsp;</p>
                                 </Button>
 
@@ -2312,17 +2320,17 @@ class chat_room extends Component {
 
                             <input class='inp-add' placeholder=" enter your user's id"></input>
                             <Select className='select-' isMulti placeholder="select your permission"
-                                    value={this.state.selectedOption_Add}
-                                    onChange={this.handleChanges_Add}
-                                    options={options}
+                                value={this.state.selectedOption_Add}
+                                onChange={this.handleChanges_Add}
+                                options={options}
                             />
 
 
-                            <br/>
+                            <br />
                             <div className='btndl'>
 
-                                <Button style={{backgroundColor: "Red"}} size='large'
-                                        className="btncancel" variant="contained" color="secondary">
+                                <Button style={{ backgroundColor: "Red" }} size='large'
+                                    className="btncancel" variant="contained" color="secondary">
                                     <p>Cancel&nbsp;</p>
                                 </Button>
 
@@ -2342,9 +2350,9 @@ class chat_room extends Component {
                     <div id="snackbar-already">User is already a member of this group</div>
                     <div id="myModal_popup" class="modal_popup">
                         <div class="modal-content">
-                            <IconButton style={{color: 'white', marginRight: '130%', marginTop: '4%'}}
-                                        className="cancelicon">
-                                <CloseIcon fontSize="large"/>
+                            <IconButton style={{ color: 'white', marginRight: '130%', marginTop: '4%' }}
+                                className="cancelicon">
+                                <CloseIcon fontSize="large" />
                             </IconButton>
                             <h3 class="texx">Edit your groups deatails</h3>
 
@@ -2387,7 +2395,7 @@ class chat_room extends Component {
 
                             >
 
-                                <Shortcut clickable={false} shortcuts={this.newShortcuts}/>
+                                <Shortcut clickable={false} shortcuts={this.newShortcuts} />
 
 
                             </Player>
@@ -2397,7 +2405,7 @@ class chat_room extends Component {
 
                         <div id='firstprogress'>
 
-                            <CircularProgress disableShrink color="secondary"/>
+                            <CircularProgress disableShrink color="secondary" />
 
                         </div>
                         <div id='movietxtdiv'>
@@ -2416,13 +2424,13 @@ class chat_room extends Component {
 
                                 }} size='large' id='videopickbtn' className="btn" variant="contained" color="secondary">
 
-                                    <EjectIcon/>
+                                    <EjectIcon />
                                 </IconButton>
 
 
                                 <input type="file" id='videopicks' className='videopicsk' name="file"
 
-                                       onChange={(e) => this.onChange(e)}/>
+                                    onChange={(e) => this.onChange(e)} />
 
 
                                 <IconButton onClick={this.changeCurrentTime(-10)} style={{
@@ -2434,7 +2442,7 @@ class chat_room extends Component {
                                 }} size='large' className="mr-3">
 
 
-                                    <Forward10Icon/>
+                                    <Forward10Icon />
 
                                 </IconButton>
 
@@ -2443,9 +2451,9 @@ class chat_room extends Component {
                                     color: 'white'
 
                                 }}
-                                            id='play_btnid'
-                                            className="play_btn">
-                                    <PlayArrowIcon fontSize="large"/>
+                                    id='play_btnid'
+                                    className="play_btn">
+                                    <PlayArrowIcon fontSize="large" />
                                 </IconButton>
 
 
@@ -2454,11 +2462,11 @@ class chat_room extends Component {
                                     marginTop: '2px',
                                     display: 'none'
                                 }} size='large'
-                                            id="pause_btnid"
-                                            className="pause_btn">
+                                    id="pause_btnid"
+                                    className="pause_btn">
 
 
-                                    <PauseIcon/>
+                                    <PauseIcon />
 
                                 </IconButton>
 
@@ -2469,7 +2477,7 @@ class chat_room extends Component {
                                 }} size='large' className="mr-3">
 
 
-                                    <Forward10Icon/>
+                                    <Forward10Icon />
                                 </IconButton>
 
                                 <IconButton id='reselect' style={{
@@ -2479,7 +2487,7 @@ class chat_room extends Component {
                                 }} size='large' className="mr-3">
 
 
-                                    <StopIcon/>
+                                    <StopIcon />
                                 </IconButton>
 
 
@@ -2499,7 +2507,7 @@ class chat_room extends Component {
                                     }} size='large' className="mr-3">
 
 
-                                        <Forward10Icon/>
+                                        <Forward10Icon />
 
                                     </IconButton>
 
@@ -2508,16 +2516,16 @@ class chat_room extends Component {
                                         color: 'white'
 
                                     }}
-                                                className="play_btn">
-                                        <PlayArrowIcon fontSize="large"/>
+                                        className="play_btn">
+                                        <PlayArrowIcon fontSize="large" />
                                     </IconButton>
 
 
-                                    <IconButton onClick={this.pause} style={{color: 'white'}} size='large'
-                                                className="pause_btn">
+                                    <IconButton onClick={this.pause} style={{ color: 'white' }} size='large'
+                                        className="pause_btn">
 
 
-                                        <PauseIcon/>
+                                        <PauseIcon />
 
                                     </IconButton>
 
@@ -2528,7 +2536,7 @@ class chat_room extends Component {
                                     }} size='large' className="mr-3">
 
 
-                                        <Forward10Icon/>
+                                        <Forward10Icon />
                                     </IconButton>
 
 
@@ -2539,11 +2547,11 @@ class chat_room extends Component {
                             <div id='moviebtnd' className='moviebtns'>
 
 
-                                <br/><br/><br/><br/>
+                                <br /><br /><br /><br />
 
 
                                 <div id='progress'>
-                                    <CircularProgress disableShrink color="secondary"/>
+                                    <CircularProgress disableShrink color="secondary" />
                                 </div>
 
 
@@ -2559,9 +2567,9 @@ class chat_room extends Component {
                     <div className="back_coulom">
 
 
-                        <div className="formback_info" style={{width: '350px', height: '395px'}}>
+                        <div className="formback_info" style={{ width: '350px', height: '395px' }}>
 
-                            <div className="name"/>
+                            <div className="name" />
 
                             <p className="khat">_______________________</p>
 
@@ -2572,7 +2580,7 @@ class chat_room extends Component {
                         </div>
 
 
-                        <div className="formback_text" style={{width: '350px', height: '395px',}}>
+                        <div className="formback_text" style={{ width: '350px', height: '395px', }}>
 
 
                             <div id='pmid' className="pm">
@@ -2592,8 +2600,8 @@ class chat_room extends Component {
                                     color: 'white',
                                     fontSize: '80px'
                                 }}
-                                            className="send_btn">
-                                    <SendIcon/>
+                                    className="send_btn">
+                                    <SendIcon />
                                 </IconButton>
 
                             </div>
