@@ -445,6 +445,12 @@ white-space: nowrap;
     color: rgb(365, 365, 365 , 0.5);
 
 }
+.mutetitle{
+    float: right;
+    padding-right: 10px;
+
+    color: red;
+}
 .test:after {
   content: '\2807';
   font-size: 37px;
