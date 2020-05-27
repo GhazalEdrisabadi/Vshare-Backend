@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 
 import './chat_room.css'
 
@@ -12,9 +12,10 @@ import Button from '@material-ui/core/Button';
 
 import RedoIcon from '@material-ui/icons/Redo';
 
+import Avatar from '@material-ui/core/Avatar'
 import './video-react.css';
 
-import {Player, ControlBar, PlayToggle, Shortcut} from 'video-react';
+import { Player, ControlBar, PlayToggle, Shortcut } from 'video-react';
 
 import sha256 from 'crypto-js/sha256';
 
@@ -25,30 +26,36 @@ import Base64 from 'crypto-js/enc-base64';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-
 import PublishIcon from '@material-ui/icons/Publish';
 
 import PlayCircleFilledWhiteIcon from '@material-ui/icons/PlayCircleFilledWhite';
 
 import HomeIcon from '@material-ui/icons/Home';
+import { Dropdown } from 'react-bootstrap';
 
 import IconButton from "@material-ui/core/IconButton";
 
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import {TextField} from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
-
+import CloseIcon from '@material-ui/icons/Close';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import Forward10Icon from '@material-ui/icons/Forward10';
 import EjectIcon from '@material-ui/icons/Eject';
 import StopIcon from '@material-ui/icons/Stop';
+import Select from 'react-select';
 
+var Able_chat = 0;
+var Able_controll = 0;
+var Able_select = 0;
 var adminisinstatezero = 1;
 var logoutclicked = 0;
 var azavalbude = 0;
 var percant = 0;
+var uploaded = 0;
+var muted = 0;
 
 var id_gp = window.localStorage.getItem('id_gp')
 const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
@@ -61,7 +68,6 @@ var played = 0;
 var messagee1;
 
 
-
 var ws = new WebSocket(url);
 
 var adminhash;
@@ -72,14 +78,24 @@ var play_or_no;
 
 var clienthashok = 0;
 
-
+var iscontroller = 0;
+var isselector = 0;
 var isadmin = window.localStorage.getItem('isadmin');
 var filmplayed = 0;
 var comeinstate1 = 0;
 var Play_pause_space = 0;
 
+var create_by = null
 
+const options = [
 
+    { value: '1', label: 'Able to select video' },
+    { value: '2', label: 'Able to controll the playback' },
+]
+var op = []
+var per = []
+var per_add = []
+var member_edit
 
 class chat_room extends Component {
 
@@ -89,8 +105,12 @@ class chat_room extends Component {
     }
 
     componentDidMount() {
-console.log(url)
-console.log(url1)
+
+        this.setState({ opt: op });
+
+
+        console.log(url)
+        console.log(url1)
         console.log("is admin : " + isadmin);
         document.addEventListener("keyup", this.handlereq_forward_backward, false);
 
@@ -113,22 +133,27 @@ console.log(url1)
 
 
         ws1.onmessage = evt => {
-            messagee1 = JSON.parse(evt.data)
-            console.log(messagee1)
-            console.log(messagee1.message)
+            messagee1 = JSON.parse(evt.data);
+            console.log(messagee1);
+            console.log(messagee1.message);
 
 
             if (messagee1.command == "chat_client") {
 
+                var d = 'document.getElementById("mymutemodal")';
+
+                var dd = d + '.style.display="block"';
+
+                var a = 'window.localStorage.setItem("muteuser","' + messagee1.user + '")';
+
                 if (messagee1.user == window.localStorage.getItem('username')) {
-                    $(".pm").append("<div id='pmeman'>" + "me: " + messagee1.message + "</div>");
+                    $(".pm").append("<div id='pmeman'>" + "me: &nbsp;</div><div  id='pmemantxt'>" + messagee1.message + "</div>");
 
                 } else {
-                    $(".pm").append("<div id='pmeoon'>" + messagee1.user + ": " + messagee1.message + "</div>");
+                    $(".pm").append("<div onclick='" + dd + "," + a + "'id='pmeoon'>" + messagee1.user + ": &nbsp; </div><div  id='pmemantxt'>" + messagee1.message + "</div>");
                 }
 
                 $(".pm").append("<br>")
-
 
 
                 var element = document.getElementById("pmid");
@@ -136,37 +161,46 @@ console.log(url1)
 
 
             }
-                        if(messagee1.message=='isoffline' || messagee1.message=='isonline'){
-                 console.log("onlineeeeeee")
+            if (messagee1.message == 'isoffline' || messagee1.message == 'isonline') {
+                console.log("onlineeeeeee")
 
-                    setTimeout(function () {
-                        $('.onlinemembers').html('');
-                            var settings = {
-                    "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
-                    "method": "GET",
-                    "timeout": 0,
-                    "headers": {
-                        //'X-CSRFToken': csrftoken,
-                        //  "Authorization": "token " + token,
-                        "accept": "application/json",
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Headers": "*",
-                        "Content-Type": "application/json"
-                    }
-                };
+                setTimeout(function () {
+                    $('.onlinemembers').html('');
+                    var settings = {
+                        "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                        "method": "GET",
+                        "timeout": 0,
+                        "headers": {
+                            //'X-CSRFToken': csrftoken,
+                            //  "Authorization": "token " + token,
+                            "accept": "application/json",
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Headers": "*",
+                            "Content-Type": "application/json"
+                        }
+                    };
 
-                $.ajax(settings).done(function (response) {
-                    console.log('aaaa12');
-                    console.log(response);
-                    for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
-                      //  setTimeout(function () {
+                    $.ajax(settings).done(function (response) {
+                        console.log('aaaa12');
+                        console.log(response);
+                        for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
+                            //  setTimeout(function () {
                             $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
-                      //  },500);
-                });
+                        //  },500);
+                    });
 
-                    }, 250);
+                }, 250);
 
-            
+
+            }
+
+            if (messagee1.message == 'you must be in the group and have permission to send messages!') {
+                var x = document.getElementById("snackbar-mute-warning");
+                x.className = "show";
+                setTimeout(function () {
+                    x.className = x.className.replace("show", "");
+                }, 3000);
+
             }
 
 
@@ -174,35 +208,75 @@ console.log(url1)
 
         ws.onmessage = evt => {
 
-            console.log("messsssssage")
+            console.log("messsssssage");
 
-            const messagee = JSON.parse(evt.data)
+            const messagee = JSON.parse(evt.data);
 
-            this.setState({server_pm: messagee})
+            this.setState({ server_pm: messagee });
 
-            console.log(messagee)
+            console.log(messagee);
 
-            console.log(messagee.message)
-
+            console.log(messagee.message);
 
             if (logoutclicked == 0 && adminisinstatezero == 0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
                 window.location.reload();
             }
-            if ("this is current time for new users" == messagee.message) {
+
+            if (messagee.status == 2 && play_or_no == true) {
+                if (isselector == 0 && iscontroller == 0) {
+                    document.getElementById("controllbuttons2").style.zIndex = "1";
+                }
+                this.setState({
+
+                    file_show_when_click: this.state.file_select
+
+                })
+                document.getElementById("formback_movie_id").style.background = "black";
+                document.getElementById('movie').style.display = 'block';
+                filmplayed = 1;
+                document.getElementById('movietxt').style.display = 'none';
+                if (iscontroller == 1) {
+                    console.log("ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
+                    document.getElementById("controllbuttons2").style.zIndex = "-1";
+                    document.getElementById('controllbuttons').style.pointerEvents = 'auto';
+                } else if (isadmin == 0) {
+                    console.log("ppppppppppppppppppppppppppppppppppppppppppp");
+                    // document.getElementById('controllbuttons').style.display = 'none';
+                    document.getElementById("controllbuttons2").style.zIndex = "1";
+                    document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                    document.getElementById('videopicks').style.pointerEvents = 'none';
+                    document.getElementById('movie').style.pointerEvents = 'none';
+
+                }
+
+
+                // document.getElementById('controll_div').style.display = 'block'
+
+
+            }
+
+            if ("this is current time for new users" == messagee.message && clienthashok == 1) {
+
                 this.changeCurrentTime(messagee.time);
-                this.play();
+                const { player } = this.player.getState();
+                console.log("curent " + player.currentTime)
+                if (player.currentTime > 1)
+                    this.play();
                 $('#moviebtnd').fadeOut();
             }
-            if (clienthashok == 0 && messagee.status == 1 && isadmin == 0) {
+            if (clienthashok == 0 && messagee.status == 1 && uploaded == 0) {
+
                 adminhash = messagee.hash;
                 $('#movietxt').fadeOut('slow');
                 //  $('#reselect').fadeOut('fast');
                 document.getElementById('reselect').style.pointerEvents = 'none';
                 $('#moviebtnd').fadeIn('slow');
-                document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                if (iscontroller == 0)
+                    document.getElementById('controllbuttons').style.pointerEvents = 'none';
                 document.getElementById('videopickbtn').style.pointerEvents = 'auto';
                 document.getElementById('videopicks').style.pointerEvents = 'auto';
-                $('#movietxt').text('Click ▲ to select your video ');
+                console.log("dovomin selectttt ");
+                $('#movietxt').text('Admin or selector has selected the video , select it too by clicking on ▲ ');
                 $('#movietxt').fadeIn();
                 console.log('admin hash : ' + adminhash);
 
@@ -217,99 +291,121 @@ console.log(url1)
             }
 
             if (messagee.status == 2 && isadmin == 0 && filmplayed == 0) {
-                rejoined = 1;
-                $('#movietxt').text('Admin has played the video , select your video too by clicking on ▲ ');
-                $('#moviebtnd').fadeIn('slow');
-                document.getElementById('videopickbtn').style.pointerEvents = 'auto';
-                document.getElementById('videopicks').style.pointerEvents = 'auto';
-                if (comeinstate1 == 0 && azavalbude == 0)
+
+                setTimeout(function () {
+                    rejoined = 1;
+                    $('#movietxt').text('Admin has played the video , select your video too by clicking on ▲ ');
+                    $('#moviebtnd').fadeIn('slow');
+                    document.getElementById('videopickbtn').style.pointerEvents = 'auto';
+                    document.getElementById('videopicks').style.pointerEvents = 'auto';
+                    if (comeinstate1 == 0 && azavalbude == 0)
+                        adminhash = messagee.hash;
+                    //console.log("admin hash in state 2 : " + adminhash);
+
+                }, 600);
+
+
+            }
+
+
+            if (messagee.status == 1 && isadmin == 0 && azavalbude == 0 && clienthashok == 0 && uploaded == 0) {
+
+                setTimeout(function () {
                     adminhash = messagee.hash;
-                //console.log("admin hash in state 2 : " + adminhash);
-            }
-
-
-            if (messagee.status == 1 && isadmin == 0 && azavalbude == 0 && clienthashok == 0) {
-                adminhash = messagee.hash;
-                console.log("admin hash in state 2 : " + adminhash);
-                rejoined = 1;
-                $('#movietxt').text('Admin has selected the video , select it too');
-                $('#moviebtnd').fadeIn('slow');
-                adminhash = messagee.hash;
-                comeinstate1 = 1;
-
-            }
-
-
-            if (messagee.status == 2 && play_or_no == true) {
-
-                this.setState({
-
-                    file_show_when_click: this.state.file_select
-
-                })
-                document.getElementById("formback_movie_id").style.background = "black";
-                document.getElementById('movie').style.display = 'block';
-                filmplayed = 1;
-                document.getElementById('movietxt').style.display = 'none';
-
-
-                if (isadmin == 0) {
-                    // document.getElementById('controllbuttons').style.display = 'none';
-                    document.getElementById("controllbuttons2").style.zIndex = "1";
-                    document.getElementById('controllbuttons').style.pointerEvents = 'none';
-                    document.getElementById('videopicks').style.pointerEvents = 'none';
-                    document.getElementById('movie').style.pointerEvents = 'none';
-
-                }
-                // document.getElementById('controll_div').style.display = 'block'
+                    console.log("admin hash in state 2 : " + adminhash);
+                    rejoined = 1;
+                    $('#movietxt').text('Admin or selector has selected the video , select it too by clicking on ▲ ');
+                    $('#moviebtnd').fadeIn('slow');
+                    adminhash = messagee.hash;
+                    comeinstate1 = 1;
+                }, 600);
 
 
             }
 
 
-            if (messagee.status == 2 && messagee.message == "new user's hash is ok." && isadmin == 1) {
-
+            if (filmplayed == 1 && messagee.status == 2 && messagee.message == "new user's hash is ok." && isadmin == 1) {
 
                 this.player.pause();
-                const {player} = this.player.getState();
+                const { player } = this.player.getState();
                 console.log("curent " + player.currentTime)
 
-                const message_send_play = {"command": "send_current_time", "currentTime": player.currentTime};
+                const message_send_play = { "command": "send_current_time", "currentTime": player.currentTime };
                 ws.send(JSON.stringify(message_send_play));
 
             }
-            if (messagee.status == 2 && messagee.message == "video paused by owner") {
+
+
+            if (filmplayed == 1 && messagee.status == 2 && messagee.message == "video paused by admin or controller") {
                 var time = messagee.time
                 this.player.seek(time)
                 this.player.pause();
-
+                $('#play_btnid').fadeIn('fast');
+                $('#pause_btnid').fadeOut('fast');
 
             }
-            if (messagee.status == 2 && messagee.message == "video played by owner again") {
+            if (filmplayed == 1 && messagee.status == 2 && (messagee.message == "video played by admin or controller" || messagee.message == "video played by admin or controller again")) {
                 var time = messagee.time
                 this.player.seek(time)
                 this.player.play();
-
-
+                $('#play_btnid').fadeOut('fast');
+                $('#pause_btnid').fadeIn('fast');
             }
 
+
+            if (messagee.msg_type == "send permission") {
+                if (messagee.username == window.localStorage.getItem('username')) {
+                    if (messagee.permission1 == "controller" || messagee.permission2 == "controller") {
+                        iscontroller = 1;
+                        document.getElementById("controllbuttons2").style.zIndex = "-1";
+                        document.getElementById('controllbuttons').style.pointerEvents = 'auto';
+                        document.getElementById('movie').style.pointerEvents = 'auto';
+                    }
+                    if (messagee.permission1 == "selector" || messagee.permission2 == "selector") {
+                        isselector = 1;
+                        document.getElementById('reselect').style.pointerEvents = 'auto';
+                        document.getElementById("controllbuttons2").style.zIndex = "100";
+                        if (filmplayed == 0)
+                            window.location.reload();
+                    }
+                    if (messagee.permission1 != "controller" && messagee.permission2 != "controller") {
+                        iscontroller = 0;
+                        document.getElementById("controllbuttons2").style.zIndex = "1";
+                        document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                        document.getElementById('movie').style.pointerEvents = 'none';
+                    }
+                    if (messagee.permission1 != "selector" && messagee.permission2 != "selector") {
+                        isselector = 0;
+                        document.getElementById('reselect').style.pointerEvents = 'none';
+                        document.getElementById("controllbuttons2").style.zIndex = "-1";
+                        if (filmplayed == 0)
+                            window.location.reload();
+                    }
+                }
+                console.log("controller : " + iscontroller);
+                console.log("selector : " + isselector);
+            }
 
         };
 
 
-        const {id} = this.props.match.params
+        const { id } = this.props.match.params
 
         $(document).ready(function () {
+
+        
             // setTimeout(function () {
             //     const message_reselect = {"command": "reset"}
             //     ws.send(JSON.stringify(message_reselect));
             // }, 300);
 
 
-            if (isadmin == 1) {
+
+            if (isadmin == 1 || isselector == 1) {
                 $('#videopicks').fadeIn('fast');
             } else {
-                document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                if (iscontroller == 0)
+                    document.getElementById('controllbuttons').style.pointerEvents = 'none';
 
             }
             $("#playbtnid").click(function () {
@@ -334,14 +430,46 @@ console.log(url1)
             //    }
             //});
 
+            var settings = {
 
+                "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('username') + "",
+
+                "method": "GET",
+
+                "timeout": 0,
+
+                "headers": {
+
+                    //'X-CSRFToken': csrftoken,
+
+                    //  "Authorization": "token " + token,
+
+                    "accept": "application/json",
+
+                    "Access-Control-Allow-Origin": "*",
+
+                    "Access-Control-Allow-Headers": "*",
+
+                    "Content-Type": "application/json"
+
+                }
+
+            };
+
+
+            $.ajax(settings).done(function (response_) {
+                if (response_.choose_video_permission == true)
+                    isselector = 1;
+                if (response_.playback_permission == true)
+                    iscontroller = 1;
+            });
 
             $(document).on("keypress", "input", function (e) {
 
                 if (e.which == 13) {
 
                     var massage = $(".formback_text_input").val();
-                    const message_send_chat = {"command": "chat_client", "message_client": massage}
+                    const message_send_chat = { "command": "chat_client", "message_client": massage }
                     ws1.send(JSON.stringify(message_send_chat))
                     $('.formback_text_input').val('');
 
@@ -354,8 +482,6 @@ console.log(url1)
             if (window.localStorage.getItem('token') == null) {
 
 
-       
-
                 alert("Login first !");
 
 
@@ -363,25 +489,112 @@ console.log(url1)
 
 
             }
+            window.onclick = function (event) {
 
+                if (event.target == document.getElementById("mymutemodal")) {
+                    $('.mutemodal').fadeOut("slow");
+                }
+
+                if (event.target == document.getElementById("myModal")) {
+                    $('.modal-').fadeOut("slow");
+                }
+            }
             $('.logout').click(function () {
-                window.localStorage.setItem('id_gp','');
+                window.localStorage.setItem('id_gp', '');
                 // ws1.close();
                 logoutclicked = 1;
-                
-                
-                   setTimeout(function () {
-                    const message_reselect = {"command": "reset"}
+
+
+                setTimeout(function () {
+                    const message_reselect = { "command": "reset" }
                     ws.send(JSON.stringify(message_reselect));
                     window.location.replace('/homepage/');
-                     }, 300);
- 
-              
+                }, 300);
+
 
             });
+            $('.submitedit_popup').click(function () {
 
+
+                var title = $('#edittitle_popup').val();
+                var des = $('#editdes_popup').val();
+                var new_admin=$('#admin-select').val();
+                var form = new FormData();
+
+                if (title != "")
+                    form.append("title", title);
+                if (des != '')
+                    form.append("describtion", des);
+                    if (new_admin != '')
+                    form.append("created_by" , new_admin)
+
+                var settings = {
+                    "url": "http://127.0.0.1:8000/groups/" + id_gp + "/",
+                    "method": "PUT",
+                    "timeout": 0,
+                    "headers": {
+                        "Authorization": "Token " + localStorage.getItem('token')
+                    },
+                    success: function () {
+                        var settings = {
+                            "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + new_admin + "",
+                            "method": "PUT",
+                            "timeout": 0,
+                            success: function () {
+                                var x = document.getElementById("snackbar-succes-edit");
+                                x.className = "show";
+                                setTimeout(function () {
+                                    x.className = x.className.replace("show", "");
+                                }, 3000);
+                                document.getElementById('myModal_popup').style.display = 'none'
+                                document.getElementById('myModal').style.display = 'none';
+                            },
+                            "headers": {
+                                "accept": "application/json",
+                                "Access-Control-Allow-Origin": "*",
+                                "Access-Control-Allow-Headers": "*",
+                                "Content-Type": "application/json"
+                            },
+                            "data": JSON.stringify({
+                                    "chat_permission": 1,
+                                    "choose_video_permission": 1,
+                                    "playback_permission": 1,
+                                    "group": id_gp,
+                                    "member": new_admin,
+                                }
+                            ),
+                        };
+    
+                        $.ajax(settings).done(function (response2) {
+                            console.log("done")
+                            console.log(response2);
+    
+                        });
+                      
+                    },
+                    error: function (event) {
+                        if (event.status == 400)
+                            alert("group with this groupid already exists.");
+                        else
+                            alert("something went wrong");
+                    },
+                    "processData": false,
+                    "mimeType": "multipart/form-data",
+                    "contentType": false,
+                    "data": form
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                });
+
+            })
+            $('.edit_group').click(function () {
+                alert('hdhhfhfhf')
+                console.log("sdnskdbclskdbcn")
+            });
             $('#reselect').click(function () {
-                const message_reselect = {"command": "reset"}
+                const message_reselect = { "command": "reset" }
                 ws.send(JSON.stringify(message_reselect));
 
                 //
@@ -397,13 +610,9 @@ console.log(url1)
                 return;
             });
 
-            /*  $("#formback_movie_id").mouseover(function () {
-<<<<<<< HEAD
->>>>>>> features/stream-frontend
-=======
+            /*  $("#formback_movie_id").mouseenter(function () {
 
 
->>>>>>> dev
                   if (filmplayed == 1)
                       $('#controll_div').fadeIn();
               });
@@ -422,42 +631,47 @@ console.log(url1)
 
             document.getElementById('movietxt').style.display = 'none';
 
+            setTimeout(function () {
+                if (isadmin == 1 || isselector == 1) {
 
-            if (isadmin == 1) {
-
-                document.getElementById('moviebtnd').style.display = 'block';
-
-
-                document.getElementById('movietxt').style.display = 'block';
-                $('#movietxt').text('Click ▲ to select your video ');
-                document.getElementById('controllbuttons').style.pointerEvents = 'none';
-                document.getElementById('reselect').style.pointerEvents = 'auto';
-                document.getElementById('videopickbtn').style.pointerEvents = 'auto';
-                document.getElementById('videopicks').style.pointerEvents = 'auto';
+                    document.getElementById('moviebtnd').style.display = 'block';
 
 
-                //$('#videopickbtn').fadeIn('fast');
+                    document.getElementById('movietxt').style.display = 'block';
+                    console.log("avalin selecttttt");
+                    if (adminhash == null)
+                        $('#movietxt').text('Click ▲ to select your video ');
+                    if (iscontroller == 0)
+                        document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                    document.getElementById('reselect').style.pointerEvents = 'auto';
+                    document.getElementById('videopickbtn').style.pointerEvents = 'auto';
+                    document.getElementById('videopicks').style.pointerEvents = 'auto';
 
-                //    $('#movietxt').fadeOut('fast');
+
+                    //$('#videopickbtn').fadeIn('fast');
+
+                    //    $('#movietxt').fadeOut('fast');
 
 
-            } else {
+                } else {
 
-                // document.getElementById('reselect').style.display = 'none';
-                document.getElementById('reselect').style.pointerEvents = 'none';
+                    // document.getElementById('reselect').style.display = 'none';
+                    document.getElementById('reselect').style.pointerEvents = 'none';
 
-                if (rejoined == 0)
-                    document.getElementById('moviebtnd').style.display = 'none';
+                    if (rejoined == 0)
+                        document.getElementById('moviebtnd').style.display = 'none';
 
-                document.getElementById('movietxt').style.display = 'block';
+                    document.getElementById('movietxt').style.display = 'block';
 
-                //   $('#videopickbtn').fadeOut('fast');
+                    //   $('#videopickbtn').fadeOut('fast');
 
-                // $('#movietxt').fadeIn('fast');
+                    // $('#movietxt').fadeIn('fast');
 
-            }
+                }
 
-            $("#formback_movie_id").mouseover(function () {
+            }, 500);
+
+            $("#formback_movie_id").mouseenter(function () {
 
                 if (filmplayed == 1)
                     $('#controllbuttons').fadeIn();
@@ -469,52 +683,46 @@ console.log(url1)
             });
 
 
-                        //$('#videopickbtn').fadeIn('fast');
-                        //    $('#movietxt').fadeOut('fast');
+            //$('#videopickbtn').fadeIn('fast');
+            //    $('#movietxt').fadeOut('fast');
 
 
-                    
+            // if (localStorage.getItem('token') == null) {
+            //     alert("Login please !");
+            //     window.location.replace("/login/");
+            // }
 
 
-                
+            var id = window.localStorage.getItem('id_gp');
 
 
-                // if (localStorage.getItem('token') == null) {
-                //     alert("Login please !");
-                //     window.location.replace("/login/");
-                // }
+            var settings = {
+                "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+                    //'X-CSRFToken': csrftoken,
+                    //  "Authorization": "token " + token,
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                }
+            };
 
-
-                var id = window.localStorage.getItem('id_gp');
-
-
-                var settings = {
-                    "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
-                    "method": "GET",
-                    "timeout": 0,
-                    "headers": {
-                        //'X-CSRFToken': csrftoken,
-                        //  "Authorization": "token " + token,
-                        "accept": "application/json",
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Headers": "*",
-                        "Content-Type": "application/json"
-                    }
-                };
-
-                $.ajax(settings).done(function (response) {
-                    console.log('aaaa');
-                    console.log(response);
-                    for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
-                      //  setTimeout(function () {
-                            $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
-                      //  },500);
-                });
+            $.ajax(settings).done(function (response) {
+                console.log('aaaa');
+                console.log(response);
+                for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
+                    //  setTimeout(function () {
+                    $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
+                //  },500);
+            });
 
 
             $('#videopicks').change(function () {
 
-                if (isadmin == 1) {
+                if (isadmin == 1 || isselector == 1) {
 
                     //   $('#videopickbtn').fadeOut('fast');
                     document.getElementById('videopickbtn').style.pointerEvents = 'none';
@@ -538,7 +746,6 @@ console.log(url1)
             //     window.location.replace("/login/");
 
             // }
-
 
 
             var settings = {
@@ -580,7 +787,7 @@ console.log(url1)
                       var hoverout = 'onMouseOut="this.style.color=';
                       var hoverrout = hoverout + "'white'";
                       var htmlcode = '';
-                      var hover = 'onMouseOver="this.style.color=';
+                      var hover = 'onmouseenter="this.style.color=';
                       var hoverr = hover + "'red'";
                       htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
                       $(".textarea_member").append(htmlcode);
@@ -589,26 +796,568 @@ console.log(url1)
                   }*/
 
                 //  $(".textarea_bio").append(response.describtion + "\n")
-
                 $(".name").append(response.title);
 
+                console.log(op)
             });
 
 
             //Log the messages that are returned from the server
 
+            $(".name").click(function () {
+             
+                $(".infobody").html('');
+                document.getElementById('myModal').style.display = 'block';
+                var settings = {
 
+                    "url": "http://127.0.0.1:8000/groups/" + id + '/',
+
+                    "method": "GET",
+
+                    "timeout": 0,
+
+                    "headers": {
+
+                        //'X-CSRFToken': csrftoken,
+
+                        //  "Authorization": "token " + token,
+
+                        "accept": "application/json",
+
+                        "Access-Control-Allow-Origin": "*",
+
+                        "Access-Control-Allow-Headers": "*",
+
+                        "Content-Type": "application/json"
+
+                    }
+
+                };
+
+
+                $.ajax(settings).done(function (response) {
+
+                    localresponse = response;
+
+                    console.log("111111");
+
+                    console.log(response);
+
+                    /*  for (var i = 0; i < response.members.length; i++) {
+                          var hoverout = 'onMouseOut="this.style.color=';
+                          var hoverrout = hoverout + "'white'";
+                          var htmlcode = '';
+                          var hover = 'onmouseenter="this.style.color=';
+                          var hoverr = hover + "'red'";
+                          htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
+                          $(".textarea_member").append(htmlcode);
+                          console.log("2")
+                          //$(".textarea_member").append(response.members[i] + "\n")
+                      }*/
+
+                    //  $(".textarea_bio").append(response.describtion + "\n")
+
+                    $(".photogp").html(response.title.toUpperCase()[0]);
+
+
+                    $(".namegp").html(response.title);
+
+                    $(".idgp").html('@ ' + response.groupid);
+
+                    $(".desbody").html(response.describtion);
+                    $(".inputedit-title").val(response.title)
+                    $(".inputedit-des").val(response.describtion)
+                    create_by = response.created_by
+                    console.log(create_by)
+                    console.log(window.localStorage.getItem('username'))
+                    if(window.localStorage.getItem('username')!=create_by){
+                        document.getElementById('dropdown-basic').style.display = 'none'
+                    }
+                    else{
+                        document.getElementById('dropdown-basic').style.display = 'block'
+                    }
+var htmlcode33='<option value="' + null + '">' + "Select new admin " + '</option>'
+                    var htmlcode22=''
+                    for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
+                        var obj = {}
+if(response.members[counter1]!=create_by)
+htmlcode33 += '<option class="option-" value="' + response.members[counter1] + '">' + response.members[counter1] + '</option>';
+                        htmlcode22 += '<option class="option-" value="' + response.members[counter1] + '">' + response.members[counter1] + '</option>';
+
+                        obj["value"] = response.members[counter1]
+                        obj["label"] = response.members[counter1]
+
+                        op.push(obj)
+                        var htmlcode = '';
+                        var controller = null
+                        var selector = null
+
+                        var settings = {
+
+                            "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + response.members[counter1] + "",
+
+                            "method": "GET",
+
+                            "timeout": 0,
+
+                            "headers": {
+
+                                //'X-CSRFToken': csrftoken,
+
+                                //  "Authorization": "token " + token,
+
+                                "accept": "application/json",
+
+                                "Access-Control-Allow-Origin": "*",
+
+                                "Access-Control-Allow-Headers": "*",
+
+                                "Content-Type": "application/json"
+
+                            }
+
+                        };
+
+
+                        $.ajax(settings).done(function (response_) {
+
+
+                            console.log(response_);
+                            if (response_.member == window.localStorage.getItem('username')) {
+                                iscontroller = response_.playback_permission;
+                                isselector = response_.choose_video_permission;
+                            }
+                            controller = response_.playback_permission
+                            selector = response_.choose_video_permission
+var chat = response_.chat_permission
+                            console.log("117778878")
+                            var r = "window.open('/profile/" + response_.member + "')";
+                            var a = "window.localStorage.setItem('user','" + response_.member + "')"; //id of the group
+                            var hoverout = 'onMouseOut="this.style.color=';
+                            var hoverrout = hoverout + "'white'";
+                            var hover = 'onmouseenter="this.style.color=';
+                            var hoverr = hover + "'red'";
+                            var hoverout1 = 'onMouseOut="this.style.backgroundColor=';
+                            var hoverrout1 = hoverout1 + "'rgb(35, 35, 35)'";
+                            var hover1 = 'onmouseenter="this.style.backgroundColor=';
+                            var hoverr1 = hover1 + "'rgb(365, 365,365,0.1)'";
+                            htmlcode = ''
+                            htmlcode += '<div class="divMem"' + hoverr1 + '"' + hoverrout1 + '"' + '>'
+                            htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + r + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" + response_.member + '</p>';
+                            ;
+
+                            if (response_.member == create_by && controller && selector) {
+                                htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >admin</p>';
+                            } else {
+
+                                if (controller && selector) {
+                                    if(chat)
+                                    htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
+                                    else{
+                                        htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
+                                        htmlcode += '<p  style="font-size: 15px" class="mutetitle"  >mute</p>';
+                                    }
+                                }
+                                if (controller && !selector) {
+                                    if(chat)
+                                    htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
+                                    else{
+                                        htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
+                                        htmlcode += '<p  style="font-size: 15px" class="mutetitle"  >mute</p>';
+                                    }
+                                    
+                                }
+                                if (!controller && selector) {
+                                    if(chat)
+                                    htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
+                                    else{
+                                        htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
+                                        htmlcode += '<p  style="font-size: 15px" class="mutetitle"  >mute</p>';
+                                    }
+                                   
+                                }
+                                if(!controller && !selector){
+                                    if(!chat)
+                                    htmlcode += '<p  style="font-size: 15px" class="mutetitle"  >mute</p>';
+                                }
+
+                            }
+
+                            htmlcode += '</div>';
+
+                            $(".infobody").append(htmlcode);
+
+                        })
+
+                    }
+                    $('#exams').html(htmlcode22);
+                    $('#admin-select').html(htmlcode33);
+                    console.log("opppppppppppp");
+
+
+                });
+            })
+
+            //Log the messages that are returned from the server
+            $(".btnno").click(function () {
+                document.getElementById('myModalPer').style.display = 'none';
+            })
+            $(".btncancel").click(function () {
+                document.getElementById('myModalAdd').style.display = 'none';
+            })
+            $(".cancelicon").click(function () {
+                document.getElementById('myModal_popup').style.display = 'none';
+            })
+
+
+            $(".btnyes").click(function () {
+                Able_controll = 0;
+                Able_select = 0;
+                var message_send_permission = {};
+
+                for (var count_per = 0; count_per < per.length; count_per++) {
+                    if (per[count_per].value == 1) {
+
+                        Able_select = 1
+                    }
+                    if (per[count_per].value == 2) {
+
+                        Able_controll = 1
+                    }
+                }
+var username_edite=$('#exams').val();
+
+                var settings = {
+                    "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + username_edite + "",
+                    "method": "PUT",
+                    "timeout": 0,
+                    error: function (event) {
+                        var x = document.getElementById("snackbar-");
+                        x.className = "show";
+                        setTimeout(function () {
+                            x.className = x.className.replace("show", "");
+                        }, 3000);
+
+                    },
+                    success: function () {
+                        if (Able_controll == 1 && Able_select == 1)
+                            message_send_permission = {
+                                "command": "user_permission",
+                                "user": username_edite,
+                                "per1": "controller",
+                                "per2": "selector"
+                            };
+                        if (Able_controll == 1 && Able_select == 0)
+                            message_send_permission = {
+                                "command": "user_permission",
+                                "user": username_edite,
+                                "per1": "controller",
+                                "per2": ""
+                            }
+                        if (Able_controll == 0 && Able_select == 1)
+                            message_send_permission = {
+                                "command": "user_permission",
+                                "user": username_edite,
+                                "per1": "",
+                                "per2": "selector"
+                            }
+                        if (Able_controll == 0 && Able_select == 0)
+                            message_send_permission = {
+                                "command": "user_permission",
+                                "user": username_edite,
+                                "per1": "",
+                                "per2": ""
+                            }
+
+                        ws.send(JSON.stringify(message_send_permission));
+
+                        var x = document.getElementById("snackbar");
+                        x.className = "show";
+                        setTimeout(function () {
+                            x.className = x.className.replace("show", "");
+                        }, 3000);
+                        var settings = {
+
+                            "url": "http://127.0.0.1:8000/groups/" + id + '/',
+
+                            "method": "GET",
+
+                            "timeout": 0,
+
+                            "headers": {
+
+                                //'X-CSRFToken': csrftoken,
+
+                                //  "Authorization": "token " + token,
+
+                                "accept": "application/json",
+
+                                "Access-Control-Allow-Origin": "*",
+
+                                "Access-Control-Allow-Headers": "*",
+
+                                "Content-Type": "application/json"
+
+                            }
+
+                        };
+
+
+                        $.ajax(settings).done(function (response) {
+
+                            localresponse = response;
+
+                            console.log("111111");
+
+                            console.log(response);
+                            $(".infobody").html('');
+                            /*  for (var i = 0; i < response.members.length; i++) {
+                                  var hoverout = 'onMouseOut="this.style.color=';
+                                  var hoverrout = hoverout + "'white'";
+                                  var htmlcode = '';
+                                  var hover = 'onmouseenter="this.style.color=';
+                                  var hoverr = hover + "'red'";
+                                  htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
+                                  $(".textarea_member").append(htmlcode);
+                                  console.log("2")
+                                  //$(".textarea_member").append(response.members[i] + "\n")
+                              }*/
+
+                            //  $(".textarea_bio").append(response.describtion + "\n")
+
+                            create_by = response.created_by
+
+
+                            for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
+
+                                var htmlcode = '';
+                                var controller = null
+                                var selector = null
+
+                            }
+                            document.getElementById('myModal').style.display = 'none';
+                        })
+                        document.getElementById('myModalPer').style.display = 'none';
+
+                    },
+                    "headers": {
+
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+                    "data": JSON.stringify({
+                       
+                        "choose_video_permission": Able_select,
+                        "playback_permission": Able_controll,
+                        "group": id_gp,
+                        "member": username_edite,
+                    }
+                    ),
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log("done")
+                    console.log(response);
+
+                });
+
+            })
+            $(".btnadd").click(function () {
+                console.log(per_add)
+                Able_controll = 0;
+                Able_select = 0;
+                for (var count_per_add = 0; count_per_add < per_add.length; count_per_add++) {
+                    if (per_add[count_per_add].value == 1) {
+                        Able_select = 1
+                    }
+                    if (per_add[count_per_add].value == 2) {
+                        Able_controll = 1
+                    }
+                }
+                console.log(Able_select)
+                console.log(Able_controll)
+                var member_add = $(".inp-add").val();
+
+                console.log(id_gp)
+
+                var settings = {
+                    "url": "http://127.0.0.1:8000/user/" + member_add + "",
+                    "method": "GET",
+                    "timeout": 0,
+                    error: function (event) {
+
+
+                        var x = document.getElementById("snackbar-not");
+                        x.className = "show";
+                        setTimeout(function () {
+                            x.className = x.className.replace("show", "");
+                        }, 3000);
+
+                    },
+                    success: function () {
+                        var settings = {
+                            "url": "http://127.0.0.1:8000/group/add_member/",
+                            "method": "POST",
+                            error: function () {
+
+                                var x = document.getElementById("snackbar-already");
+                                x.className = "show";
+                                setTimeout(function () {
+                                    x.className = x.className.replace("show", "");
+                                }, 3000);
+                                ;
+
+
+                            },
+                            success: function () {
+
+                                var settings = {
+                                    "url": "http://127.0.0.1:8000/group/permissions/",
+                                    "method": "POST",
+                                    error: function () {
+
+                                        alert("nooooooo")
+
+
+                                    },
+                                    success: function () {
+                                        var x = document.getElementById("snackbar-succes");
+                                        x.className = "show";
+                                        setTimeout(function () {
+                                            x.className = x.className.replace("show", "");
+                                        }, 3000);
+                                        var settings = {
+
+                                            "url": "http://127.0.0.1:8000/groups/" + id + '/',
+
+                                            "method": "GET",
+
+                                            "timeout": 0,
+
+                                            "headers": {
+
+                                                //'X-CSRFToken': csrftoken,
+
+                                                //  "Authorization": "token " + token,
+
+                                                "accept": "application/json",
+
+                                                "Access-Control-Allow-Origin": "*",
+
+                                                "Access-Control-Allow-Headers": "*",
+
+                                                "Content-Type": "application/json"
+
+                                            }
+
+                                        };
+
+
+                                        $.ajax(settings).done(function (response) {
+
+                                            localresponse = response;
+
+                                            console.log("111111");
+
+                                            console.log(response);
+                                            $(".infobody").html('');
+                                            /*  for (var i = 0; i < response.members.length; i++) {
+                                                  var hoverout = 'onMouseOut="this.style.color=';
+                                                  var hoverrout = hoverout + "'white'";
+                                                  var htmlcode = '';
+                                                  var hover = 'onmouseenter="this.style.color=';
+                                                  var hoverr = hover + "'red'";
+                                                  htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
+                                                  $(".textarea_member").append(htmlcode);
+                                                  console.log("2")
+                                                  //$(".textarea_member").append(response.members[i] + "\n")
+                                              }*/
+
+                                            //  $(".textarea_bio").append(response.describtion + "\n")
+
+                                            create_by = response.created_by
+
+
+                                            document.getElementById('myModal').style.display = 'none';
+                                        })
+
+                                        document.getElementById('myModalAdd').style.display = 'none';
+                                        ;
+                                    },
+                                    "timeout": 0,
+                                    "headers": {
+
+                                        "accept": "application/json",
+                                        "Access-Control-Allow-Origin": "*",
+                                        "Access-Control-Allow-Headers": "*",
+                                        "Content-Type": "application/json"
+                                    },
+                                    "data": JSON.stringify({
+                                        "group": id_gp,
+                                        "member": member_add,
+                                        "chat_permission": 1,
+                                        "playback_permission": Able_controll,
+                                        "choose_video_permission": Able_select
+                                    }
+                                    ),
+                                };
+
+                                $.ajax(settings).done(function (response) {
+
+                                    console.log(response);
+                                });
+                                ;
+                            },
+                            "timeout": 0,
+                            "headers": {
+
+                                "accept": "application/json",
+                                "Access-Control-Allow-Origin": "*",
+                                "Access-Control-Allow-Headers": "*",
+                                "Content-Type": "application/json"
+                            },
+                            "data": JSON.stringify({
+                                "the_group": id_gp,
+                                "the_member": member_add
+                            }
+                            ),
+                        };
+
+                        $.ajax(settings).done(function (response) {
+
+                            console.log(response);
+                        });
+
+
+                    },
+                    "headers": {
+
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+
+                };
+
+                $.ajax(settings).done(function (response) {
+                    //
+                    console.log(response);
+
+                });
+
+            });
             $(".send_btn").click(function () {
                 var massage = $(".formback_text_input").val();
 
-                const message_send_chat = {"command": "chat_client", "message_client": massage}
+                const message_send_chat = { "command": "chat_client", "message_client": massage }
                 ws1.send(JSON.stringify(message_send_chat))
                 $('.formback_text_input').val('');
 
 
-
                 console.log(JSON.stringify(message_send_chat))
-
 
 
             });
@@ -630,29 +1379,204 @@ console.log(url1)
             };
 
             $.ajax(settings).done(function (response) {
+                //  document.getElementById("myElement").style.cssText = "display: block; position: absolute";
                 console.log(response);
+
+                var d = 'document.getElementById("mymutemodal")';
+
+                var dd = d + '.style.display="block"';
+
+
                 for (var counterchathistory = response.results.length - 1; counterchathistory >= 0; counterchathistory--) {
+                    var a = 'window.localStorage.setItem("muteuser","' + response.results[counterchathistory].message_sender + '")';
+
                     if (response.results[counterchathistory].message_sender == window.localStorage.getItem('username')) {
-                        $(".pm").append("<div id='pmeman'>" + "me: " + response.results[counterchathistory].message_text + "</div>");
+                        $(".pm").append("<div  style='float:left' id='pmeman'> me: &nbsp;</div><div  id='pmemantxt'>" + response.results[counterchathistory].message_text + "</div>");
 
                     } else {
-                        $(".pm").append("<div id='pmeoon'>" + response.results[counterchathistory].message_sender + ": " + response.results[counterchathistory].message_text + "</div>");
+                        $(".pm").append("<div onclick='" + dd + "," + a + "' id='pmeoon'>" + response.results[counterchathistory].message_sender + ": &nbsp;</div><div  id='pmemantxt'> " + response.results[counterchathistory].message_text + "</div>");
                     }
-                    $(".pm").append("<br>");
+
                 }
                 var element = document.getElementById("pmid");
                 element.scrollTop = element.scrollHeight;
 
             });
 
+            setTimeout(function () {
+                console.log("is admin : " + isadmin);
+                console.log("is controller: " + iscontroller);
+                console.log("is selector : " + isselector);
+
+            }, 1000);
+
+
+            $('.mutemodal').mouseenter(function () {
+                if (isadmin == 1) {
+                    var settings = {
+
+                        "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
+
+                        "method": "GET",
+
+                        "timeout": 0,
+
+                        "headers": {
+
+                            //'X-CSRFToken': csrftoken,
+
+                            //  "Authorization": "token " + token,
+
+                            "accept": "application/json",
+
+                            "Access-Control-Allow-Origin": "*",
+
+                            "Access-Control-Allow-Headers": "*",
+
+                            "Content-Type": "application/json"
+
+                        }
+
+                    };
+
+                    $.ajax(settings).done(function (response0) {
+                        console.log(response0);
+                        if (response0.chat_permission == true) {
+                            muted = 0;
+                            var obj = $('.deleteTEXT').text("Are you sure  you want to mute \n   " + window.localStorage.getItem('muteuser') + "  ? ");
+                            obj.html(obj.html().replace(/\n/g, '<br/>'));
+                        } else {
+                            muted = 1;
+                            var obj = $('.deleteTEXT').text("Are you sure  you want to unmute \n   " + window.localStorage.getItem('muteuser') + "  ? ");
+                            obj.html(obj.html().replace(/\n/g, '<br/>'));
+                        }
+                    });
+                    //(window.localStorage.getItem('muteuser'));
+
+                } else
+                    $('.mutemodal').fadeOut('fast');
+            });
+
+            $('.dltyes2').click(function () {
+                var chatpermission;
+                var selectpermission;
+                var controllpermission;
+                var settings = {
+
+                    "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
+
+                    "method": "GET",
+
+                    "timeout": 0,
+
+                    "headers": {
+
+                        //'X-CSRFToken': csrftoken,
+
+                        //  "Authorization": "token " + token,
+
+                        "accept": "application/json",
+
+                        "Access-Control-Allow-Origin": "*",
+
+                        "Access-Control-Allow-Headers": "*",
+
+                        "Content-Type": "application/json"
+
+                    }
+
+                };
+
+                $.ajax(settings).done(function (response1) {
+                    chatpermission= response1.chat_permission;
+                    selectpermission= response1.choose_video_permission;
+                    controllpermission= response1.playback_permission;
+                });
+
+
+                if (muted==0) {
+                    var settings = {
+                        "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
+                        "method": "PUT",
+                        "timeout": 0,
+                        success: function () {
+                            $('.mutemodal').fadeOut("slow");
+                            var x = document.getElementById("snackbar-mute");
+                            x.innerHTML="Successfully mute";
+                            x.className = "show";
+                            setTimeout(function () {
+                                x.className = x.className.replace("show", "");
+                            }, 3000);
+                        },
+                        "headers": {
+                            "accept": "application/json",
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Headers": "*",
+                            "Content-Type": "application/json"
+                        },
+                        "data": JSON.stringify({
+                                "chat_permission": 0,
+                                "choose_video_permission": selectpermission,
+                                "playback_permission": controllpermission,
+                                "group": id_gp,
+                                "member": window.localStorage.getItem('muteuser'),
+                            }
+                        ),
+                    };
+
+                    $.ajax(settings).done(function (response2) {
+                        console.log("done")
+                        console.log(response2);
+
+                    });
+
+                } else {
+                    var settings = {
+                        "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
+                        "method": "PUT",
+                        "timeout": 0,
+                        success: function () {
+                            $('.mutemodal').fadeOut("slow");
+                            var x = document.getElementById("snackbar-mute");
+                            x.innerHTML="Successfully unmute";
+                            x.className = "show";
+                            setTimeout(function () {
+                                x.className = x.className.replace("show", "");
+                            }, 3000);
+                        },
+
+                        "headers": {
+                            "accept": "application/json",
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Headers": "*",
+                            "Content-Type": "application/json"
+                        },
+                        "data": JSON.stringify({
+                            "chat_permission": 1,
+                                "choose_video_permission": selectpermission,
+                                "playback_permission": controllpermission,
+                                "group": id_gp,
+                                "member": window.localStorage.getItem('muteuser'),
+                            }
+                        ),
+                    };
+
+                    $.ajax(settings).done(function (response3) {
+                        console.log("done")
+                        console.log(response3);
+
+                    });
+                }
+
+            });
+
+
+            $('.dltno2').click(function () {
+                $('.mutemodal').fadeOut("slow");
+            });
+
         });
     }
-
-    
-
-
-    
-
 
 
     constructor(props) {
@@ -669,7 +1593,11 @@ console.log(url1)
 
             server_pm: "",
 
-            hash_: ""
+            hash_: "",
+            selectedOption: null,
+            selectedOption_Add: null,
+            selectedOption_id: null,
+            opt: [],
 
         }
 
@@ -682,7 +1610,7 @@ console.log(url1)
 
         this.pause = this.pause.bind(this);
         this.handlereq_forward_backward = this.handlereq_forward_backward.bind(this);
-       
+
         this.changeCurrentTime = this.changeCurrentTime.bind(this);
 
         this.newShortcuts = [
@@ -720,7 +1648,7 @@ console.log(url1)
 
                         console.log("curent " + current_time)
 
-                        const message_send_play = {"command": "pause_video", "currentTime": current_time}
+                        const message_send_play = { "command": "pause_video", "currentTime": current_time }
 
                         // ws.send(JSON.stringify(message_send))
 
@@ -749,7 +1677,7 @@ console.log(url1)
 
                         console.log("curent " + current_time)
 
-                        const message_send_play = {"command": "play_video", "currentTime": current_time}
+                        const message_send_play = { "command": "play_video", "currentTime": current_time }
 
                         // ws.send(JSON.stringify(message_send))
 
@@ -865,7 +1793,7 @@ console.log(url1)
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.1}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.1 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -888,7 +1816,7 @@ console.log(url1)
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.9}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.9 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -911,7 +1839,7 @@ console.log(url1)
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.2}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.2 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -934,7 +1862,7 @@ console.log(url1)
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.3}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.3 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -957,7 +1885,7 @@ console.log(url1)
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.4}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.4 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -981,7 +1909,7 @@ console.log(url1)
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.5}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.5 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1004,7 +1932,7 @@ console.log(url1)
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.6}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.6 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1027,7 +1955,7 @@ console.log(url1)
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.7}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.7 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1050,7 +1978,7 @@ console.log(url1)
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.8}
+                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.8 }
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1066,10 +1994,10 @@ console.log(url1)
 
     }
 
-  handleSubmit(e) {
+    handleSubmit(e) {
 
 
-        const message_send_play = {"command": "play_video", "currentTime": "0"}
+        const message_send_play = { "command": "play_video", "currentTime": "0" }
 
 
         // ws.send(JSON.stringify(message_send))
@@ -1082,7 +2010,6 @@ console.log(url1)
 
 
     }
-
 
 
     onChange(e) {
@@ -1174,9 +2101,15 @@ console.log(url1)
         console.log(file)
 
         function Send_data() {
+            var message_send
+            if (adminhash == null) {
+                message_send = { "command": "set_video_hash", "vhash": encrypted };
+                clienthashok = 1;
+            } else
+                message_send = { "command": "send_client_hash", "vhash": encrypted };
 
-            const message_send = {"command": "set_video_hash", "vhash": encrypted}
-
+            if (isselector == 1)
+                play_or_no = true;
 
             // ws.send(JSON.stringify(message_send))
 
@@ -1204,7 +2137,7 @@ console.log(url1)
 
         function Send_data2() {
             $('#moviebtnd').fadeOut('slow');
-            const message_send = {"command": "send_client_hash", "vhash": encrypted}
+            const message_send = { "command": "send_client_hash", "vhash": encrypted }
 
             play_or_no = true
 
@@ -1263,36 +2196,52 @@ console.log(url1)
 
 
             if (percant == 100) {
-                if (isadmin == 1) {
+
+                uploaded = 1;
+                if (isadmin == 1 || isselector == 1) {
 
 
                     Send_data();
 
                     document.getElementById('blaybtndiv').style.display = 'block';
-                    $('#movietxt').text('Click ► to play your video');
+                    if (iscontroller == 1 || isadmin == 1)
+                        $('#movietxt').text('Click ► to play your video');
+                    else {
+                        $('#movietxt').text('wait for admin or controller to play video');
+                        document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                    }
                     $('#movietxt').fadeIn();
-                    document.getElementById('controllbuttons').style.pointerEvents = 'auto';
+                    if (isadmin == 1 || iscontroller == 1)
+                        document.getElementById('controllbuttons').style.pointerEvents = 'auto';
 
 
                     document.getElementById('firstprogress').style.display = 'none';
 
-                } else {
+                }
+                if (adminhash != null) {
 
                     if (encrypted == adminhash) {
+
                         clienthashok = 1;
                         filmplayed = 1;
                         document.getElementById('firstprogress').style.display = 'none';
-
-                        $('#movietxt').text('Wait for admin to play the video');
-
+                        if (iscontroller == 0)
+                            $('#movietxt').text('wait for admin or controller to play video');
+                        else {
+                            $('#movietxt').text('Wait for admin to play the video or Click ► to play your video');
+                            document.getElementById("controllbuttons2").style.zIndex = "-1";
+                            document.getElementById('controllbuttons').style.pointerEvents = 'auto';
+                        }
                         $('#moviebtnd').fadeOut();
 
 
                         $('#movietxt').fadeIn();
-                        document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                        if (iscontroller == 0)
+                            document.getElementById('controllbuttons').style.pointerEvents = 'none';
                         document.getElementById('videopicks').style.pointerEvents = 'none';
                         //  play_or_no = true
-                        Send_data2();
+                        if (isselector == 0)
+                            Send_data2();
 
 
                     } else {
@@ -1302,7 +2251,8 @@ console.log(url1)
                         $('#movietxt').text('Your video is not same with admin\'s video , please chose another one');
 
                         $('#movietxt').fadeIn();
-
+                        document.getElementById('videopickbtn').style.pointerEvents = 'auto';
+                        document.getElementById('videopicks').style.pointerEvents = 'auto';
                     }
 
                 }
@@ -1311,7 +2261,8 @@ console.log(url1)
                 document.getElementById('firstprogress').style.display = 'none';
                 $('#movietxt').text('Something went wrong in selecting movie , Please reselect the video ');
                 $('#movietxt').fadeIn();
-                document.getElementById('controllbuttons').style.pointerEvents = 'none';
+                if (iscontroller == 0)
+                    document.getElementById('controllbuttons').style.pointerEvents = 'none';
                 document.getElementById('videopickbtn').style.pointerEvents = 'auto';
                 document.getElementById('videopicks').style.pointerEvents = 'auto';
 
@@ -1334,18 +2285,18 @@ console.log(url1)
 
     play() {
 
-        const {player} = this.player.getState();
+        const { player } = this.player.getState();
 
         console.log("curent " + player.currentTime)
 
-        const message_send_play = {"command": "play_video", "currentTime": player.currentTime}
+        const message_send_play = { "command": "play_video", "currentTime": player.currentTime }
 
         // ws.send(JSON.stringify(message_send))
 
         ws.send(JSON.stringify(message_send_play))
 
         console.log(JSON.stringify(message_send_play))
-        play_or_no = true
+        play_or_no = true;
         played = 1;
         $('#play_btnid').fadeOut('fast');
         $('#pause_btnid').fadeIn('fast');
@@ -1358,11 +2309,11 @@ console.log(url1)
 
     pause() {
 
-        const {player} = this.player.getState();
+        const { player } = this.player.getState();
 
         console.log("curent " + player.currentTime)
 
-        const message_send_play = {"command": "pause_video", "currentTime": player.currentTime}
+        const message_send_play = { "command": "pause_video", "currentTime": player.currentTime }
 
         // ws.send(JSON.stringify(message_send))
 
@@ -1384,14 +2335,14 @@ console.log(url1)
 
         return () => {
 
-            const {player} = this.player.getState();
+            const { player } = this.player.getState();
 
             console.log("curent " + player.currentTime)
             var message_send_play;
             if (played == 1)
-                message_send_play = {"command": "play_video", "currentTime": player.currentTime + seconds}
+                message_send_play = { "command": "play_video", "currentTime": player.currentTime + seconds }
             else
-                message_send_play = {"command": "pause_video", "currentTime": player.currentTime + seconds}
+                message_send_play = { "command": "pause_video", "currentTime": player.currentTime + seconds }
             ws.send(JSON.stringify(message_send_play))
 
             console.log(JSON.stringify(message_send_play))
@@ -1403,18 +2354,30 @@ console.log(url1)
 
     }
 
+    click_edit_permission() {
+        document.getElementById('myModalPer').style.display = 'block';
+    }
+
+    click_edit() {
+        document.getElementById('myModal_popup').style.display = 'block';
+    }
+
+    click_edit_Add() {
+        document.getElementById('myModalAdd').style.display = 'block';
+    }
+
     handlereq_forward_backward(event) {
         console.log("hoooooooold")
         if (event.keyCode == 39 || event.keyCode == 37) {
             console.log('played : ' + played);
-            const {player} = this.player.getState();
+            const { player } = this.player.getState();
 
             console.log("curent " + player.currentTime)
             var message_send_play2;
             if (played == 1)
-                message_send_play2 = {"command": "play_video", "currentTime": player.currentTime}
+                message_send_play2 = { "command": "play_video", "currentTime": player.currentTime }
             else
-                message_send_play2 = {"command": "pause_video", "currentTime": player.currentTime}
+                message_send_play2 = { "command": "pause_video", "currentTime": player.currentTime }
             // ws.send(JSON.stringify(message_send))
 
             ws.send(JSON.stringify(message_send_play2))
@@ -1424,6 +2387,29 @@ console.log(url1)
         }
     }
 
+    handleChanges = selectedOption => {
+        this.setState(
+            { selectedOption },
+            () => per = this.state.selectedOption
+        );
+
+    };
+    handleChanges_Add = selectedOption_Add => {
+        this.setState(
+            { selectedOption_Add },
+            () => per_add = this.state.selectedOption_Add
+        );
+        console.log(per_add)
+
+    }
+    handleChanges_id = selectedOption_id => {
+        this.setState(
+            { selectedOption_id },
+            () => member_edit = this.state.selectedOption_id
+        );
+        console.log(per_add)
+
+    }
 
     render() {
 
@@ -1450,9 +2436,9 @@ console.log(url1)
 
                                 }}
 
-                                            className="profilepic">
+                                    className="profilepic">
 
-                                    <AccountCircleOutlinedIcon fontSize="large"/>
+                                    <AccountCircleOutlinedIcon fontSize="large" />
 
                                 </IconButton>
 
@@ -1473,15 +2459,225 @@ console.log(url1)
 
                             }}
 
-                                        className="div_leave">
+                                className="div_leave">
 
-                                <ExitToAppIcon fontSize="large"/>
+                                <ExitToAppIcon fontSize="large" />
 
                             </IconButton>
 
                         </div>
 
                     </header>
+
+                    <div id="mymutemodal" className="mutemodal">
+
+                        <div className="mute-modal-content">
+
+                            <h3 className='deleteTEXT'>Are you sure you want to mute this user ? </h3>
+
+
+                            <div className='dltbtns'>
+
+
+                                <Button style={{backgroundColor: "Red"}} size='large'
+
+                                        className="dltno2" variant="contained" color="secondary">
+
+                                    <p>No&nbsp;</p>
+
+                                </Button>
+
+
+                                <Button style={{
+
+                                    backgroundColor: 'gray',
+
+                                    marginRight: "4px"
+
+
+                                }} size='large' className="dltyes2" variant="contained" color="secondary">
+
+                                    <p>Yes</p>
+
+                                </Button>
+
+
+                            </div>
+
+                            {/* <div className='dltno'>no</div> */}
+
+                        </div>
+
+                    </div>
+
+
+                    <div id="myModal" class="modal-">
+
+
+                        <div class="modal-content-">
+
+                            <div className='headModal'>
+
+                                <Avatar style={{
+                                    backgroundColor: 'rgba(0,0,0,0.5)',
+                                    width: '100px',
+                                    height: '100px',
+                                    fontSize: '50px'
+                                }} className='photogp'>&nbsp;</Avatar>
+
+
+                                <div className='infogp'>
+
+                                    <div className='namegp' />
+
+                                    <div className='idgp' />
+
+                                </div>
+                                <div class="drop">
+                                    <Dropdown>
+                                        <Dropdown.Toggle variant="success" id="dropdown-basic" style={{
+                                            backgroundColor: 'transparent',
+                                            borderColor: 'transparent',
+                                            fontSize: '30px',
+                                            cursor: 'pointer'
+                                        }}>
+                                            ⋮
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu style={{
+                                            backgroundColor: 'rgba(0,0,0,0.9)',
+                                            color: 'black',
+                                            marginLeft: '-65px'
+                                        }}>
+                                            <div style={{ color: 'white', textAlign: 'left', marginLeft: '15px' }}
+                                                className="edit_group" onClick={this.click_edit}>Edit group
+                                            </div>
+                                            <div style={{ color: 'white', textAlign: 'left', marginLeft: '15px' }}
+                                                className="edit_group" onClick={this.click_edit_permission}>Edit
+                                                permission
+                                            </div>
+                                            <div style={{ color: 'white', textAlign: 'left', marginLeft: '15px' }}
+                                                className="edit_group" onClick={this.click_edit_Add}>Add member
+                                            </div>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </div>
+                            </div>
+
+                            <div className='destitle'>Description:</div>
+
+                            <div className='desbody' />
+
+                            <hr />
+
+                            <div className='infobody' />
+
+                        </div>
+
+
+                    </div>
+                    <div id="myModalPer" class="modalPer">
+                        <div class="modal-content-Per">
+                            <p className='delPer'>Edit permission of user</p>
+                        
+                            <select id="exams" name="exams" required className='dropbtn-'>
+                
+            </select>
+
+                            <Select className='select' isMulti placeholder="select your permission"
+                                value={this.state.selectedOption}
+                                onChange={this.handleChanges}
+                                options={options}
+                            />
+
+
+                            <br />
+                            <div className='btndl'>
+
+                                <Button style={{ backgroundColor: "Red" }} size='large'
+                                    className="btnno" variant="contained" color="secondary">
+                                    <p>Cancel&nbsp;</p>
+                                </Button>
+
+                                <Button style={{
+                                    backgroundColor: 'gray',
+                                    marginRight: "4px"
+
+                                }} size='large' className="btnyes" variant="contained" color="secondary">
+                                    <p>Apply</p>
+                                </Button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="snackbar">Successfully permission edit</div>
+                    <div id="snackbar-mute-warning">You don't have permission to send message</div>
+                    <div id="snackbar-">Enter id field</div>
+                    <div id="myModalAdd" class="modaladd">
+                        <div class="modal-content-add">
+                            <p className='delPer'>Add your member</p>
+
+                            <input class='inp-add' placeholder=" enter your user's id"></input>
+                            <Select className='select-' isMulti placeholder="select your permission"
+                                value={this.state.selectedOption_Add}
+                                onChange={this.handleChanges_Add}
+                                options={options}
+                            />
+
+
+                            <br />
+                            <div className='btndl'>
+
+                                <Button style={{ backgroundColor: "Red" }} size='large'
+                                    className="btncancel" variant="contained" color="secondary">
+                                    <p>Cancel&nbsp;</p>
+                                </Button>
+
+                                <Button style={{
+                                    backgroundColor: 'gray',
+                                    marginRight: "4px"
+
+                                }} size='large' className="btnadd" variant="contained" color="secondary">
+                                    <p>Add</p>
+                                </Button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="snackbar-succes">Successfully add to group</div>
+                    <div id="snackbar-not">User not found</div>
+                    <div id="snackbar-already">User is already a member of this group</div>
+                    <div id="snackbar-mute">Successfully mute</div>
+                    <div id="myModal_popup" class="modal_popup">
+                        <div class="modal-content">
+                            <IconButton style={{ color: 'white', marginRight: '130%', marginTop: '4%' }}
+                                className="cancelicon">
+                                <CloseIcon fontSize="large" />
+                            </IconButton>
+                            <h3 class="texx">Edit your groups deatails</h3>
+
+                            <hr></hr>
+
+                            <input class="inputedit-title" id='edittitle_popup' placeholder="Title"></input>
+
+
+                            <input class="inputedit-des" id='editdes_popup' placeholder="Description"></input>
+                          
+                            <select id="admin-select" name="admin-select" required className='admin-select'>
+                
+                </select>
+                <br></br>
+                            <Button style={{
+                                backgroundColor: "Red",
+                                marginTop: "20px"
+                            }} size='large' className="submitedit_popup" variant="contained" color="secondary">
+                                <p>Apply</p>
+                            </Button>
+
+                        </div>
+                        <div id="snackbar-succes-edit">Successfully edit</div>
+                    </div>
+
 
                     <div id='formback_movie_id' className="formback_movie">
 
@@ -1502,7 +2698,7 @@ console.log(url1)
 
                             >
 
-                                <Shortcut clickable={false} shortcuts={this.newShortcuts}/>
+                                <Shortcut clickable={false} shortcuts={this.newShortcuts} />
 
 
                             </Player>
@@ -1512,7 +2708,7 @@ console.log(url1)
 
                         <div id='firstprogress'>
 
-                            <CircularProgress disableShrink color="secondary"/>
+                            <CircularProgress disableShrink color="secondary" />
 
                         </div>
                         <div id='movietxtdiv'>
@@ -1531,13 +2727,13 @@ console.log(url1)
 
                                 }} size='large' id='videopickbtn' className="btn" variant="contained" color="secondary">
 
-                                    <EjectIcon/>
+                                    <EjectIcon />
                                 </IconButton>
 
 
                                 <input type="file" id='videopicks' className='videopicsk' name="file"
 
-                                       onChange={(e) => this.onChange(e)}/>
+                                    onChange={(e) => this.onChange(e)} />
 
 
                                 <IconButton onClick={this.changeCurrentTime(-10)} style={{
@@ -1549,7 +2745,7 @@ console.log(url1)
                                 }} size='large' className="mr-3">
 
 
-                                    <Forward10Icon/>
+                                    <Forward10Icon />
 
                                 </IconButton>
 
@@ -1558,9 +2754,9 @@ console.log(url1)
                                     color: 'white'
 
                                 }}
-                                            id='play_btnid'
-                                            className="play_btn">
-                                    <PlayArrowIcon fontSize="large"/>
+                                    id='play_btnid'
+                                    className="play_btn">
+                                    <PlayArrowIcon fontSize="large" />
                                 </IconButton>
 
 
@@ -1569,11 +2765,11 @@ console.log(url1)
                                     marginTop: '2px',
                                     display: 'none'
                                 }} size='large'
-                                            id="pause_btnid"
-                                            className="pause_btn">
+                                    id="pause_btnid"
+                                    className="pause_btn">
 
 
-                                    <PauseIcon/>
+                                    <PauseIcon />
 
                                 </IconButton>
 
@@ -1584,7 +2780,7 @@ console.log(url1)
                                 }} size='large' className="mr-3">
 
 
-                                    <Forward10Icon/>
+                                    <Forward10Icon />
                                 </IconButton>
 
                                 <IconButton id='reselect' style={{
@@ -1594,7 +2790,7 @@ console.log(url1)
                                 }} size='large' className="mr-3">
 
 
-                                    <StopIcon/>
+                                    <StopIcon />
                                 </IconButton>
 
 
@@ -1614,7 +2810,7 @@ console.log(url1)
                                     }} size='large' className="mr-3">
 
 
-                                        <Forward10Icon/>
+                                        <Forward10Icon />
 
                                     </IconButton>
 
@@ -1623,16 +2819,16 @@ console.log(url1)
                                         color: 'white'
 
                                     }}
-                                                className="play_btn">
-                                        <PlayArrowIcon fontSize="large"/>
+                                        className="play_btn">
+                                        <PlayArrowIcon fontSize="large" />
                                     </IconButton>
 
 
-                                    <IconButton onClick={this.pause} style={{color: 'white'}} size='large'
-                                                className="pause_btn">
+                                    <IconButton onClick={this.pause} style={{ color: 'white' }} size='large'
+                                        className="pause_btn">
 
 
-                                        <PauseIcon/>
+                                        <PauseIcon />
 
                                     </IconButton>
 
@@ -1643,7 +2839,7 @@ console.log(url1)
                                     }} size='large' className="mr-3">
 
 
-                                        <Forward10Icon/>
+                                        <Forward10Icon />
                                     </IconButton>
 
 
@@ -1654,18 +2850,18 @@ console.log(url1)
                             <div id='moviebtnd' className='moviebtns'>
 
 
-                                <br/><br/><br/><br/>
+                                <br /><br /><br /><br />
 
 
                                 <div id='progress'>
-                                    <CircularProgress disableShrink color="secondary"/>
+                                    <CircularProgress disableShrink color="secondary" />
                                 </div>
 
 
                             </div>
 
 
-                        </div> 
+                        </div>
 
 
                     </div>
@@ -1674,20 +2870,21 @@ console.log(url1)
                     <div className="back_coulom">
 
 
-                        <div className="formback_info" style={{width: '350px', height: '395px'}}>
+                        <div className="formback_info" style={{ width: '350px', height: '395px' }}>
 
-                            <div className="name"/>
+                            <div className="name" />
 
                             <p className="khat">_______________________</p>
 
                             <p className='titleofonlines'>Online members :</p>
 
                             <div className="onlinemembers"></div>
- 
+
                         </div>
 
 
-                        <div className="formback_text" style={{width: '350px', height: '395px',}}>
+                        <div id='formback_text_id' className="formback_text" style={{width: '350px', height: '395px',}}>
+
 
 
                             <div id='pmid' className="pm">
@@ -1699,16 +2896,17 @@ console.log(url1)
                             <div className="input_send">
 
 
-                                <input className="formback_text_input" id="formback_text_input" autocomplete="off">
-                                    
+                                <input className="formback_text_input" id="formback_text_input" autoComplete="off">
+
                                 </input>
+
 
                                 <IconButton style={{
                                     color: 'white',
                                     fontSize: '80px'
                                 }}
-                                            className="send_btn">
-                                    <SendIcon/>
+                                    className="send_btn">
+                                    <SendIcon />
                                 </IconButton>
 
                             </div>

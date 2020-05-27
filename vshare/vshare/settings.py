@@ -136,8 +136,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'vshare',
+
         'USER' : 'admin',
         'PASSWORD' : '123qwe',
+\
         'HOST' : 'localhost',
         'PORT' : '5432',
     }
@@ -237,4 +239,4 @@ STATIC_URL = '/static/'
 
 #ALTER ROLE admin SET default_transaction_isolation TO 'read committed';
 
-#ALTER ROLE admin SET timezone TO 'UTC';
+
