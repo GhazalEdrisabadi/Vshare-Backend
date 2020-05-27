@@ -138,8 +138,8 @@ DATABASES = {
         'NAME': 'vshare',
 
         'USER' : 'admin',
-        'PASSWORD' : 'Kamyab78',
-
+        'PASSWORD' : '123qwe',
+\
         'HOST' : 'localhost',
         'PORT' : '5432',
     }
@@ -197,12 +197,46 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+STATIC_ROOT = 'static'
+# MEDIA_ROOT = 'media'
+
 STATIC_URL = '/static/'
+# MEDIA_URL = f"https://{AWS_S3_ENDPOINT_URL}/{MEDIA_ROOT}/"
+
+# ########### django-storage ##############
+
+# # Media files (Profile images, Videos)
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# # Static files (CSS, JavaScript, Images)
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# # Used to authenticate with S3
+# AWS_ACCESS_KEY_ID = os.environ.get('S3_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = os.environ.get('S3_SECRET_ACCESS_KEY')
+
+# Configure which endpoint to send files to, and retrieve files from.
+# AWS_STORAGE_BUCKET_NAME = 'VshareBucket'
+# AWS_S3_REGION_NAME = 'sfo2'
+# AWS_S3_ENDPOINT_URL = f"https://{AWS_S3_REGION_NAME}.vshare.ir"
+# AWS_S3_CUSTOM_DOMAIN =f"{AWS_STORAGE_BUCKET_NAME.{AWS_S3_REGION_NAME}.vshare.ir"
+# AWS_LOCATION = 'files'
+
+# # General optimization for faster delivery
+# AWS_IS_GZIPPED = True
+# AWS_S3_OBJECT_PARAMETERS = {
+#     'CacheControl': 'max-age=86400',
+# }
 
 
+#permission-backend
 
-MEDIA_URL =  '/media/'
+#sudo -u postgres psql postgres
 
-MEDIA_ROOT = os.path.join(BASE_DIR , 'users/media')
+#DROP DATABASE vshare;
+#CREATE DATABASE vshare;
+#ALTER ROLE admin SET client_encoding TO 'utf8';
 
-#permission
+#ALTER ROLE admin SET default_transaction_isolation TO 'read committed';
+
+

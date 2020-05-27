@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Group , Membership , AcceptedClient , Message , OnlineUser
+from .models import *
 from django.apps import apps
 
 UserModel = apps.get_model('users', 'Account')
@@ -55,4 +55,9 @@ class MessageSerializer(serializers.ModelSerializer):
 class OnlineUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = OnlineUser
+        fields = '__all__'
+
+class PermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permission
         fields = '__all__'
