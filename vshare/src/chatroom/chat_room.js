@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 
 import './chat_room.css'
 
@@ -15,7 +15,7 @@ import RedoIcon from '@material-ui/icons/Redo';
 import Avatar from '@material-ui/core/Avatar'
 import './video-react.css';
 
-import { Player, ControlBar, PlayToggle, Shortcut } from 'video-react';
+import {Player, ControlBar, PlayToggle, Shortcut} from 'video-react';
 
 import sha256 from 'crypto-js/sha256';
 
@@ -31,13 +31,13 @@ import PublishIcon from '@material-ui/icons/Publish';
 import PlayCircleFilledWhiteIcon from '@material-ui/icons/PlayCircleFilledWhite';
 
 import HomeIcon from '@material-ui/icons/Home';
-import { Dropdown } from 'react-bootstrap';
+import {Dropdown} from 'react-bootstrap';
 
 import IconButton from "@material-ui/core/IconButton";
 
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { TextField } from '@material-ui/core';
+import {TextField} from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import CloseIcon from '@material-ui/icons/Close';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
@@ -89,8 +89,8 @@ var create_by = null
 
 const options = [
 
-    { value: '1', label: 'Able to select video' },
-    { value: '2', label: 'Able to controll the playback' },
+    {value: '1', label: 'Able to select video'},
+    {value: '2', label: 'Able to controll the playback'},
 ]
 var op = []
 var per = []
@@ -106,7 +106,7 @@ class chat_room extends Component {
 
     componentDidMount() {
 
-        this.setState({ opt: op });
+        this.setState({opt: op});
 
 
         console.log(url)
@@ -212,7 +212,7 @@ class chat_room extends Component {
 
             const messagee = JSON.parse(evt.data);
 
-            this.setState({ server_pm: messagee });
+            this.setState({server_pm: messagee});
 
             console.log(messagee);
 
@@ -258,7 +258,7 @@ class chat_room extends Component {
             if ("this is current time for new users" == messagee.message && clienthashok == 1) {
 
                 this.changeCurrentTime(messagee.time);
-                const { player } = this.player.getState();
+                const {player} = this.player.getState();
                 console.log("curent " + player.currentTime)
                 if (player.currentTime > 1)
                     this.play();
@@ -327,10 +327,10 @@ class chat_room extends Component {
             if (filmplayed == 1 && messagee.status == 2 && messagee.message == "new user's hash is ok." && isadmin == 1) {
 
                 this.player.pause();
-                const { player } = this.player.getState();
+                const {player} = this.player.getState();
                 console.log("curent " + player.currentTime)
 
-                const message_send_play = { "command": "send_current_time", "currentTime": player.currentTime };
+                const message_send_play = {"command": "send_current_time", "currentTime": player.currentTime};
                 ws.send(JSON.stringify(message_send_play));
 
             }
@@ -386,19 +386,29 @@ class chat_room extends Component {
                 console.log("selector : " + isselector);
             }
 
+
+            if (messagee.msg_type == "send admin info") {
+                 window.localStorage.setItem('isadmin', '');
+                if (messagee.username == window.localStorage.getItem('username'))
+                    isadmin = 1;
+                else
+                    isadmin = 0;
+                if (adminhash == null)
+                    window.location.reload();
+            }
+
         };
 
 
-        const { id } = this.props.match.params
+        const {id} = this.props.match.params
 
         $(document).ready(function () {
 
-        
+
             // setTimeout(function () {
             //     const message_reselect = {"command": "reset"}
             //     ws.send(JSON.stringify(message_reselect));
             // }, 300);
-
 
 
             if (isadmin == 1 || isselector == 1) {
@@ -469,7 +479,7 @@ class chat_room extends Component {
                 if (e.which == 13) {
 
                     var massage = $(".formback_text_input").val();
-                    const message_send_chat = { "command": "chat_client", "message_client": massage }
+                    const message_send_chat = {"command": "chat_client", "message_client": massage}
                     ws1.send(JSON.stringify(message_send_chat))
                     $('.formback_text_input').val('');
 
@@ -499,7 +509,7 @@ class chat_room extends Component {
                     $('.modal-').fadeOut("slow");
                 }
             }
-           $('.logout').click(function () {
+            $('.logout').click(function () {
                 window.localStorage.setItem('id_gp', '');
                 // ws1.close();
                 logoutclicked = 1;
@@ -508,9 +518,9 @@ class chat_room extends Component {
                     const message_reselect = {"command": "reset"}
                     ws.send(JSON.stringify(message_reselect));
                 }
-                 setTimeout(function () {
-                     window.location.replace('/homepage/');
-                 },300);
+                setTimeout(function () {
+                    window.location.replace('/homepage/');
+                }, 300);
 
             });
             $('.submitedit_popup').click(function () {
@@ -518,15 +528,15 @@ class chat_room extends Component {
 
                 var title = $('#edittitle_popup').val();
                 var des = $('#editdes_popup').val();
-                var new_admin=$('#admin-select').val();
+                var new_admin = $('#admin-select').val();
                 var form = new FormData();
 
                 if (title != "")
                     form.append("title", title);
                 if (des != '')
                     form.append("describtion", des);
-                    if (new_admin != '')
-                    form.append("created_by" , new_admin)
+                if (new_admin != '')
+                    form.append("created_by", new_admin)
 
                 var settings = {
                     "url": "http://127.0.0.1:8000/groups/" + id_gp + "/",
@@ -536,6 +546,10 @@ class chat_room extends Component {
                         "Authorization": "Token " + localStorage.getItem('token')
                     },
                     success: function () {
+                        if (new_admin != '') {
+                            const message_newadmin = {"command": "new_admin", "user": new_admin};
+                            ws.send(JSON.stringify(message_newadmin));
+                        }
                         var settings = {
                             "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + new_admin + "",
                             "method": "PUT",
@@ -564,13 +578,13 @@ class chat_room extends Component {
                                 }
                             ),
                         };
-    
+
                         $.ajax(settings).done(function (response2) {
                             console.log("done")
                             console.log(response2);
-    
+
                         });
-                      
+
                     },
                     error: function (event) {
                         if (event.status == 400)
@@ -594,7 +608,7 @@ class chat_room extends Component {
                 console.log("sdnskdbclskdbcn")
             });
             $('#reselect').click(function () {
-                const message_reselect = { "command": "reset" }
+                const message_reselect = {"command": "reset"}
                 ws.send(JSON.stringify(message_reselect));
 
                 //
@@ -778,7 +792,8 @@ class chat_room extends Component {
             $.ajax(settings).done(function (response) {
 
                 localresponse = response;
-
+                if(response.created_by==window.localStorage.getItem('username'))
+                    isadmin=1;
                 console.log("111111");
 
                 console.log(response);
@@ -805,7 +820,7 @@ class chat_room extends Component {
             //Log the messages that are returned from the server
 
             $(".name").click(function () {
-             
+
                 $(".infobody").html('');
                 document.getElementById('myModal').style.display = 'block';
                 var settings = {
@@ -870,18 +885,17 @@ class chat_room extends Component {
                     create_by = response.created_by
                     console.log(create_by)
                     console.log(window.localStorage.getItem('username'))
-                    if(window.localStorage.getItem('username')!=create_by){
+                    if (window.localStorage.getItem('username') != create_by) {
                         document.getElementById('dropdown-basic').style.display = 'none'
-                    }
-                    else{
+                    } else {
                         document.getElementById('dropdown-basic').style.display = 'block'
                     }
-var htmlcode33='<option value="' + null + '">' + "Select new admin " + '</option>'
-                    var htmlcode22=''
+                    var htmlcode33 = '<option value="' + null + '">' + "Select new admin " + '</option>'
+                    var htmlcode22 = ''
                     for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
                         var obj = {}
-if(response.members[counter1]!=create_by)
-htmlcode33 += '<option class="option-" value="' + response.members[counter1] + '">' + response.members[counter1] + '</option>';
+                        if (response.members[counter1] != create_by)
+                            htmlcode33 += '<option class="option-" value="' + response.members[counter1] + '">' + response.members[counter1] + '</option>';
                         htmlcode22 += '<option class="option-" value="' + response.members[counter1] + '">' + response.members[counter1] + '</option>';
 
                         obj["value"] = response.members[counter1]
@@ -929,7 +943,7 @@ htmlcode33 += '<option class="option-" value="' + response.members[counter1] + '
                             }
                             controller = response_.playback_permission
                             selector = response_.choose_video_permission
-var chat = response_.chat_permission
+                            var chat = response_.chat_permission
                             console.log("117778878")
                             var r = "window.open('/profile/" + response_.member + "')";
                             var a = "window.localStorage.setItem('user','" + response_.member + "')"; //id of the group
@@ -951,34 +965,34 @@ var chat = response_.chat_permission
                             } else {
 
                                 if (controller && selector) {
-                                    if(chat)
-                                    htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
-                                    else{
+                                    if (chat)
+                                        htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
+                                    else {
                                         htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector &nbsp controller</p>';
                                         htmlcode += '<p  style="font-size: 15px" class="mutetitle"  >mute</p>';
                                     }
                                 }
                                 if (controller && !selector) {
-                                    if(chat)
-                                    htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
-                                    else{
+                                    if (chat)
+                                        htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
+                                    else {
                                         htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  > controller</p>';
                                         htmlcode += '<p  style="font-size: 15px" class="mutetitle"  >mute</p>';
                                     }
-                                    
+
                                 }
                                 if (!controller && selector) {
-                                    if(chat)
-                                    htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
-                                    else{
+                                    if (chat)
+                                        htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
+                                    else {
                                         htmlcode += '<p  style="font-size: 15px" class="permissiontitle"  >selector </p>';
                                         htmlcode += '<p  style="font-size: 15px" class="mutetitle"  >mute</p>';
                                     }
-                                   
+
                                 }
-                                if(!controller && !selector){
-                                    if(!chat)
-                                    htmlcode += '<p  style="font-size: 15px" class="mutetitle"  >mute</p>';
+                                if (!controller && !selector) {
+                                    if (!chat)
+                                        htmlcode += '<p  style="font-size: 15px" class="mutetitle"  >mute</p>';
                                 }
 
                             }
@@ -1025,7 +1039,7 @@ var chat = response_.chat_permission
                         Able_controll = 1
                     }
                 }
-var username_edite=$('#exams').val();
+                var username_edite = $('#exams').val();
 
                 var settings = {
                     "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + username_edite + "",
@@ -1148,12 +1162,12 @@ var username_edite=$('#exams').val();
                         "Content-Type": "application/json"
                     },
                     "data": JSON.stringify({
-                       
-                        "choose_video_permission": Able_select,
-                        "playback_permission": Able_controll,
-                        "group": id_gp,
-                        "member": username_edite,
-                    }
+
+                            "choose_video_permission": Able_select,
+                            "playback_permission": Able_controll,
+                            "group": id_gp,
+                            "member": username_edite,
+                        }
                     ),
                 };
 
@@ -1295,12 +1309,12 @@ var username_edite=$('#exams').val();
                                         "Content-Type": "application/json"
                                     },
                                     "data": JSON.stringify({
-                                        "group": id_gp,
-                                        "member": member_add,
-                                        "chat_permission": 1,
-                                        "playback_permission": Able_controll,
-                                        "choose_video_permission": Able_select
-                                    }
+                                            "group": id_gp,
+                                            "member": member_add,
+                                            "chat_permission": 1,
+                                            "playback_permission": Able_controll,
+                                            "choose_video_permission": Able_select
+                                        }
                                     ),
                                 };
 
@@ -1319,9 +1333,9 @@ var username_edite=$('#exams').val();
                                 "Content-Type": "application/json"
                             },
                             "data": JSON.stringify({
-                                "the_group": id_gp,
-                                "the_member": member_add
-                            }
+                                    "the_group": id_gp,
+                                    "the_member": member_add
+                                }
                             ),
                         };
 
@@ -1352,7 +1366,7 @@ var username_edite=$('#exams').val();
             $(".send_btn").click(function () {
                 var massage = $(".formback_text_input").val();
 
-                const message_send_chat = { "command": "chat_client", "message_client": massage }
+                const message_send_chat = {"command": "chat_client", "message_client": massage}
                 ws1.send(JSON.stringify(message_send_chat))
                 $('.formback_text_input').val('');
 
@@ -1488,13 +1502,13 @@ var username_edite=$('#exams').val();
                 };
 
                 $.ajax(settings).done(function (response1) {
-                    chatpermission= response1.chat_permission;
-                    selectpermission= response1.choose_video_permission;
-                    controllpermission= response1.playback_permission;
+                    chatpermission = response1.chat_permission;
+                    selectpermission = response1.choose_video_permission;
+                    controllpermission = response1.playback_permission;
                 });
 
 
-                if (muted==0) {
+                if (muted == 0) {
                     var settings = {
                         "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
                         "method": "PUT",
@@ -1502,7 +1516,7 @@ var username_edite=$('#exams').val();
                         success: function () {
                             $('.mutemodal').fadeOut("slow");
                             var x = document.getElementById("snackbar-mute");
-                            x.innerHTML="Successfully mute";
+                            x.innerHTML = "Successfully mute";
                             x.className = "show";
                             setTimeout(function () {
                                 x.className = x.className.replace("show", "");
@@ -1538,7 +1552,7 @@ var username_edite=$('#exams').val();
                         success: function () {
                             $('.mutemodal').fadeOut("slow");
                             var x = document.getElementById("snackbar-mute");
-                            x.innerHTML="Successfully unmute";
+                            x.innerHTML = "Successfully unmute";
                             x.className = "show";
                             setTimeout(function () {
                                 x.className = x.className.replace("show", "");
@@ -1552,7 +1566,7 @@ var username_edite=$('#exams').val();
                             "Content-Type": "application/json"
                         },
                         "data": JSON.stringify({
-                            "chat_permission": 1,
+                                "chat_permission": 1,
                                 "choose_video_permission": selectpermission,
                                 "playback_permission": controllpermission,
                                 "group": id_gp,
@@ -1648,7 +1662,7 @@ var username_edite=$('#exams').val();
 
                         console.log("curent " + current_time)
 
-                        const message_send_play = { "command": "pause_video", "currentTime": current_time }
+                        const message_send_play = {"command": "pause_video", "currentTime": current_time}
 
                         // ws.send(JSON.stringify(message_send))
 
@@ -1677,7 +1691,7 @@ var username_edite=$('#exams').val();
 
                         console.log("curent " + current_time)
 
-                        const message_send_play = { "command": "play_video", "currentTime": current_time }
+                        const message_send_play = {"command": "play_video", "currentTime": current_time}
 
                         // ws.send(JSON.stringify(message_send))
 
@@ -1793,7 +1807,7 @@ var username_edite=$('#exams').val();
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.1 }
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.1}
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1816,7 +1830,7 @@ var username_edite=$('#exams').val();
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.9 }
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.9}
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1839,7 +1853,7 @@ var username_edite=$('#exams').val();
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.2 }
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.2}
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1862,7 +1876,7 @@ var username_edite=$('#exams').val();
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.3 }
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.3}
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1885,7 +1899,7 @@ var username_edite=$('#exams').val();
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.4 }
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.4}
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1909,7 +1923,7 @@ var username_edite=$('#exams').val();
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.5 }
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.5}
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1932,7 +1946,7 @@ var username_edite=$('#exams').val();
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.6 }
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.6}
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1955,7 +1969,7 @@ var username_edite=$('#exams').val();
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.7 }
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.7}
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1978,7 +1992,7 @@ var username_edite=$('#exams').val();
                     const duration = player.duration;
                     // jump to the postion of 10%
 
-                    const message_send_play = { "command": "play_video", "currentTime": duration * 0.8 }
+                    const message_send_play = {"command": "play_video", "currentTime": duration * 0.8}
 
                     // ws.send(JSON.stringify(message_send))
 
@@ -1997,7 +2011,7 @@ var username_edite=$('#exams').val();
     handleSubmit(e) {
 
 
-        const message_send_play = { "command": "play_video", "currentTime": "0" }
+        const message_send_play = {"command": "play_video", "currentTime": "0"}
 
 
         // ws.send(JSON.stringify(message_send))
@@ -2103,10 +2117,10 @@ var username_edite=$('#exams').val();
         function Send_data() {
             var message_send
             if (adminhash == null) {
-                message_send = { "command": "set_video_hash", "vhash": encrypted };
+                message_send = {"command": "set_video_hash", "vhash": encrypted};
                 clienthashok = 1;
             } else
-                message_send = { "command": "send_client_hash", "vhash": encrypted };
+                message_send = {"command": "send_client_hash", "vhash": encrypted};
 
             if (isselector == 1)
                 play_or_no = true;
@@ -2137,7 +2151,7 @@ var username_edite=$('#exams').val();
 
         function Send_data2() {
             $('#moviebtnd').fadeOut('slow');
-            const message_send = { "command": "send_client_hash", "vhash": encrypted }
+            const message_send = {"command": "send_client_hash", "vhash": encrypted}
 
             play_or_no = true
 
@@ -2285,11 +2299,11 @@ var username_edite=$('#exams').val();
 
     play() {
 
-        const { player } = this.player.getState();
+        const {player} = this.player.getState();
 
         console.log("curent " + player.currentTime)
 
-        const message_send_play = { "command": "play_video", "currentTime": player.currentTime }
+        const message_send_play = {"command": "play_video", "currentTime": player.currentTime}
 
         // ws.send(JSON.stringify(message_send))
 
@@ -2309,11 +2323,11 @@ var username_edite=$('#exams').val();
 
     pause() {
 
-        const { player } = this.player.getState();
+        const {player} = this.player.getState();
 
         console.log("curent " + player.currentTime)
 
-        const message_send_play = { "command": "pause_video", "currentTime": player.currentTime }
+        const message_send_play = {"command": "pause_video", "currentTime": player.currentTime}
 
         // ws.send(JSON.stringify(message_send))
 
@@ -2335,14 +2349,14 @@ var username_edite=$('#exams').val();
 
         return () => {
 
-            const { player } = this.player.getState();
+            const {player} = this.player.getState();
 
             console.log("curent " + player.currentTime)
             var message_send_play;
             if (played == 1)
-                message_send_play = { "command": "play_video", "currentTime": player.currentTime + seconds }
+                message_send_play = {"command": "play_video", "currentTime": player.currentTime + seconds}
             else
-                message_send_play = { "command": "pause_video", "currentTime": player.currentTime + seconds }
+                message_send_play = {"command": "pause_video", "currentTime": player.currentTime + seconds}
             ws.send(JSON.stringify(message_send_play))
 
             console.log(JSON.stringify(message_send_play))
@@ -2370,14 +2384,14 @@ var username_edite=$('#exams').val();
         console.log("hoooooooold")
         if (event.keyCode == 39 || event.keyCode == 37) {
             console.log('played : ' + played);
-            const { player } = this.player.getState();
+            const {player} = this.player.getState();
 
             console.log("curent " + player.currentTime)
             var message_send_play2;
             if (played == 1)
-                message_send_play2 = { "command": "play_video", "currentTime": player.currentTime }
+                message_send_play2 = {"command": "play_video", "currentTime": player.currentTime}
             else
-                message_send_play2 = { "command": "pause_video", "currentTime": player.currentTime }
+                message_send_play2 = {"command": "pause_video", "currentTime": player.currentTime}
             // ws.send(JSON.stringify(message_send))
 
             ws.send(JSON.stringify(message_send_play2))
@@ -2389,14 +2403,14 @@ var username_edite=$('#exams').val();
 
     handleChanges = selectedOption => {
         this.setState(
-            { selectedOption },
+            {selectedOption},
             () => per = this.state.selectedOption
         );
 
     };
     handleChanges_Add = selectedOption_Add => {
         this.setState(
-            { selectedOption_Add },
+            {selectedOption_Add},
             () => per_add = this.state.selectedOption_Add
         );
         console.log(per_add)
@@ -2404,7 +2418,7 @@ var username_edite=$('#exams').val();
     }
     handleChanges_id = selectedOption_id => {
         this.setState(
-            { selectedOption_id },
+            {selectedOption_id},
             () => member_edit = this.state.selectedOption_id
         );
         console.log(per_add)
@@ -2436,9 +2450,9 @@ var username_edite=$('#exams').val();
 
                                 }}
 
-                                    className="profilepic">
+                                            className="profilepic">
 
-                                    <AccountCircleOutlinedIcon fontSize="large" />
+                                    <AccountCircleOutlinedIcon fontSize="large"/>
 
                                 </IconButton>
 
@@ -2459,9 +2473,9 @@ var username_edite=$('#exams').val();
 
                             }}
 
-                                className="div_leave">
+                                        className="div_leave">
 
-                                <ExitToAppIcon fontSize="large" />
+                                <ExitToAppIcon fontSize="large"/>
 
                             </IconButton>
 
@@ -2528,9 +2542,9 @@ var username_edite=$('#exams').val();
 
                                 <div className='infogp'>
 
-                                    <div className='namegp' />
+                                    <div className='namegp'/>
 
-                                    <div className='idgp' />
+                                    <div className='idgp'/>
 
                                 </div>
                                 <div class="drop">
@@ -2549,15 +2563,15 @@ var username_edite=$('#exams').val();
                                             color: 'black',
                                             marginLeft: '-65px'
                                         }}>
-                                            <div style={{ color: 'white', textAlign: 'left', marginLeft: '15px' }}
-                                                className="edit_group" onClick={this.click_edit}>Edit group
+                                            <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
+                                                 className="edit_group" onClick={this.click_edit}>Edit group
                                             </div>
-                                            <div style={{ color: 'white', textAlign: 'left', marginLeft: '15px' }}
-                                                className="edit_group" onClick={this.click_edit_permission}>Edit
+                                            <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
+                                                 className="edit_group" onClick={this.click_edit_permission}>Edit
                                                 permission
                                             </div>
-                                            <div style={{ color: 'white', textAlign: 'left', marginLeft: '15px' }}
-                                                className="edit_group" onClick={this.click_edit_Add}>Add member
+                                            <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
+                                                 className="edit_group" onClick={this.click_edit_Add}>Add member
                                             </div>
                                         </Dropdown.Menu>
                                     </Dropdown>
@@ -2566,11 +2580,11 @@ var username_edite=$('#exams').val();
 
                             <div className='destitle'>Description:</div>
 
-                            <div className='desbody' />
+                            <div className='desbody'/>
 
-                            <hr />
+                            <hr/>
 
-                            <div className='infobody' />
+                            <div className='infobody'/>
 
                         </div>
 
@@ -2579,23 +2593,23 @@ var username_edite=$('#exams').val();
                     <div id="myModalPer" class="modalPer">
                         <div class="modal-content-Per">
                             <p className='delPer'>Edit permission of user</p>
-                        
+
                             <select id="exams" name="exams" required className='dropbtn-'>
-                
-            </select>
+
+                            </select>
 
                             <Select className='select' isMulti placeholder="select your permission"
-                                value={this.state.selectedOption}
-                                onChange={this.handleChanges}
-                                options={options}
+                                    value={this.state.selectedOption}
+                                    onChange={this.handleChanges}
+                                    options={options}
                             />
 
 
-                            <br />
+                            <br/>
                             <div className='btndl'>
 
-                                <Button style={{ backgroundColor: "Red" }} size='large'
-                                    className="btnno" variant="contained" color="secondary">
+                                <Button style={{backgroundColor: "Red"}} size='large'
+                                        className="btnno" variant="contained" color="secondary">
                                     <p>Cancel&nbsp;</p>
                                 </Button>
 
@@ -2619,17 +2633,17 @@ var username_edite=$('#exams').val();
 
                             <input class='inp-add' placeholder=" enter your user's id"></input>
                             <Select className='select-' isMulti placeholder="select your permission"
-                                value={this.state.selectedOption_Add}
-                                onChange={this.handleChanges_Add}
-                                options={options}
+                                    value={this.state.selectedOption_Add}
+                                    onChange={this.handleChanges_Add}
+                                    options={options}
                             />
 
 
-                            <br />
+                            <br/>
                             <div className='btndl'>
 
-                                <Button style={{ backgroundColor: "Red" }} size='large'
-                                    className="btncancel" variant="contained" color="secondary">
+                                <Button style={{backgroundColor: "Red"}} size='large'
+                                        className="btncancel" variant="contained" color="secondary">
                                     <p>Cancel&nbsp;</p>
                                 </Button>
 
@@ -2650,9 +2664,9 @@ var username_edite=$('#exams').val();
                     <div id="snackbar-mute">Successfully mute</div>
                     <div id="myModal_popup" class="modal_popup">
                         <div class="modal-content">
-                            <IconButton style={{ color: 'white', marginRight: '130%', marginTop: '4%' }}
-                                className="cancelicon">
-                                <CloseIcon fontSize="large" />
+                            <IconButton style={{color: 'white', marginRight: '130%', marginTop: '4%'}}
+                                        className="cancelicon">
+                                <CloseIcon fontSize="large"/>
                             </IconButton>
                             <h3 class="texx">Edit your groups deatails</h3>
 
@@ -2662,11 +2676,11 @@ var username_edite=$('#exams').val();
 
 
                             <input class="inputedit-des" id='editdes_popup' placeholder="Description"></input>
-                          
+
                             <select id="admin-select" name="admin-select" required className='admin-select'>
-                
-                </select>
-                <br></br>
+
+                            </select>
+                            <br></br>
                             <Button style={{
                                 backgroundColor: "Red",
                                 marginTop: "20px"
@@ -2698,7 +2712,7 @@ var username_edite=$('#exams').val();
 
                             >
 
-                                <Shortcut clickable={false} shortcuts={this.newShortcuts} />
+                                <Shortcut clickable={false} shortcuts={this.newShortcuts}/>
 
 
                             </Player>
@@ -2708,7 +2722,7 @@ var username_edite=$('#exams').val();
 
                         <div id='firstprogress'>
 
-                            <CircularProgress disableShrink color="secondary" />
+                            <CircularProgress disableShrink color="secondary"/>
 
                         </div>
                         <div id='movietxtdiv'>
@@ -2727,13 +2741,13 @@ var username_edite=$('#exams').val();
 
                                 }} size='large' id='videopickbtn' className="btn" variant="contained" color="secondary">
 
-                                    <EjectIcon />
+                                    <EjectIcon/>
                                 </IconButton>
 
 
                                 <input type="file" id='videopicks' className='videopicsk' name="file"
 
-                                    onChange={(e) => this.onChange(e)} />
+                                       onChange={(e) => this.onChange(e)}/>
 
 
                                 <IconButton onClick={this.changeCurrentTime(-10)} style={{
@@ -2745,7 +2759,7 @@ var username_edite=$('#exams').val();
                                 }} size='large' className="mr-3">
 
 
-                                    <Forward10Icon />
+                                    <Forward10Icon/>
 
                                 </IconButton>
 
@@ -2754,9 +2768,9 @@ var username_edite=$('#exams').val();
                                     color: 'white'
 
                                 }}
-                                    id='play_btnid'
-                                    className="play_btn">
-                                    <PlayArrowIcon fontSize="large" />
+                                            id='play_btnid'
+                                            className="play_btn">
+                                    <PlayArrowIcon fontSize="large"/>
                                 </IconButton>
 
 
@@ -2765,11 +2779,11 @@ var username_edite=$('#exams').val();
                                     marginTop: '2px',
                                     display: 'none'
                                 }} size='large'
-                                    id="pause_btnid"
-                                    className="pause_btn">
+                                            id="pause_btnid"
+                                            className="pause_btn">
 
 
-                                    <PauseIcon />
+                                    <PauseIcon/>
 
                                 </IconButton>
 
@@ -2780,7 +2794,7 @@ var username_edite=$('#exams').val();
                                 }} size='large' className="mr-3">
 
 
-                                    <Forward10Icon />
+                                    <Forward10Icon/>
                                 </IconButton>
 
                                 <IconButton id='reselect' style={{
@@ -2790,7 +2804,7 @@ var username_edite=$('#exams').val();
                                 }} size='large' className="mr-3">
 
 
-                                    <StopIcon />
+                                    <StopIcon/>
                                 </IconButton>
 
 
@@ -2810,7 +2824,7 @@ var username_edite=$('#exams').val();
                                     }} size='large' className="mr-3">
 
 
-                                        <Forward10Icon />
+                                        <Forward10Icon/>
 
                                     </IconButton>
 
@@ -2819,16 +2833,16 @@ var username_edite=$('#exams').val();
                                         color: 'white'
 
                                     }}
-                                        className="play_btn">
-                                        <PlayArrowIcon fontSize="large" />
+                                                className="play_btn">
+                                        <PlayArrowIcon fontSize="large"/>
                                     </IconButton>
 
 
-                                    <IconButton onClick={this.pause} style={{ color: 'white' }} size='large'
-                                        className="pause_btn">
+                                    <IconButton onClick={this.pause} style={{color: 'white'}} size='large'
+                                                className="pause_btn">
 
 
-                                        <PauseIcon />
+                                        <PauseIcon/>
 
                                     </IconButton>
 
@@ -2839,7 +2853,7 @@ var username_edite=$('#exams').val();
                                     }} size='large' className="mr-3">
 
 
-                                        <Forward10Icon />
+                                        <Forward10Icon/>
                                     </IconButton>
 
 
@@ -2850,11 +2864,11 @@ var username_edite=$('#exams').val();
                             <div id='moviebtnd' className='moviebtns'>
 
 
-                                <br /><br /><br /><br />
+                                <br/><br/><br/><br/>
 
 
                                 <div id='progress'>
-                                    <CircularProgress disableShrink color="secondary" />
+                                    <CircularProgress disableShrink color="secondary"/>
                                 </div>
 
 
@@ -2870,9 +2884,9 @@ var username_edite=$('#exams').val();
                     <div className="back_coulom">
 
 
-                        <div className="formback_info" style={{ width: '350px', height: '395px' }}>
+                        <div className="formback_info" style={{width: '350px', height: '395px'}}>
 
-                            <div className="name" />
+                            <div className="name"/>
 
                             <p className="khat">_______________________</p>
 
@@ -2884,7 +2898,6 @@ var username_edite=$('#exams').val();
 
 
                         <div id='formback_text_id' className="formback_text" style={{width: '350px', height: '395px',}}>
-
 
 
                             <div id='pmid' className="pm">
@@ -2905,8 +2918,8 @@ var username_edite=$('#exams').val();
                                     color: 'white',
                                     fontSize: '80px'
                                 }}
-                                    className="send_btn">
-                                    <SendIcon />
+                                            className="send_btn">
+                                    <SendIcon/>
                                 </IconButton>
 
                             </div>
