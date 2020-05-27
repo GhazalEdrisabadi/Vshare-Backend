@@ -393,9 +393,7 @@ class chat_room extends Component {
 
         $(document).ready(function () {
 
-            if(isadmin==0){
-                document.getElementById('dropdown-basic').style.display = 'none'
-            }
+        
             // setTimeout(function () {
             //     const message_reselect = {"command": "reset"}
             //     ws.send(JSON.stringify(message_reselect));
@@ -520,14 +518,15 @@ class chat_room extends Component {
 
                 var title = $('#edittitle_popup').val();
                 var des = $('#editdes_popup').val();
-
+                var new_admin=$('#admin-select').val();
                 var form = new FormData();
 
                 if (title != "")
                     form.append("title", title);
                 if (des != '')
                     form.append("describtion", des);
-
+                    if (new_admin != '')
+                    form.append("created_by" , new_admin)
 
                 var settings = {
                     "url": "http://127.0.0.1:8000/groups/" + id_gp + "/",
@@ -537,73 +536,41 @@ class chat_room extends Component {
                         "Authorization": "Token " + localStorage.getItem('token')
                     },
                     success: function () {
-
-                        var x = document.getElementById("snackbar-succes-edit");
-                        x.className = "show";
-                        setTimeout(function () {
-                            x.className = x.className.replace("show", "");
-                        }, 3000);
                         var settings = {
-
-                            "url": "http://127.0.0.1:8000/groups/" + id + '/',
-
-                            "method": "GET",
-
+                            "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + new_admin + "",
+                            "method": "PUT",
                             "timeout": 0,
-
+                            success: function () {
+                                var x = document.getElementById("snackbar-succes-edit");
+                                x.className = "show";
+                                setTimeout(function () {
+                                    x.className = x.className.replace("show", "");
+                                }, 3000);
+                                document.getElementById('myModal_popup').style.display = 'none'
+                                document.getElementById('myModal').style.display = 'none';
+                            },
                             "headers": {
-
-                                //'X-CSRFToken': csrftoken,
-
-                                //  "Authorization": "token " + token,
-
                                 "accept": "application/json",
-
                                 "Access-Control-Allow-Origin": "*",
-
                                 "Access-Control-Allow-Headers": "*",
-
                                 "Content-Type": "application/json"
-
-                            }
-
+                            },
+                            "data": JSON.stringify({
+                                    "chat_permission": 1,
+                                    "choose_video_permission": 1,
+                                    "playback_permission": 1,
+                                    "group": id_gp,
+                                    "member": new_admin,
+                                }
+                            ),
                         };
-
-
-                        $.ajax(settings).done(function (response) {
-
-                            localresponse = response;
-
-                            console.log("111111");
-
-                            console.log(response);
-
-                            /*  for (var i = 0; i < response.members.length; i++) {
-                                  var hoverout = 'onMouseOut="this.style.color=';
-                                  var hoverrout = hoverout + "'white'";
-                                  var htmlcode = '';
-                                  var hover = 'onmouseenter="this.style.color=';
-                                  var hoverr = hover + "'red'";
-                                  htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
-                                  $(".textarea_member").append(htmlcode);
-                                  console.log("2")
-                                  //$(".textarea_member").append(response.members[i] + "\n")
-                              }*/
-
-                            //  $(".textarea_bio").append(response.describtion + "\n")
-
-                            $(".photogp").html(response.title.toUpperCase()[0]);
-
-                            $(".name").html(response.title);
-
-                            $(".namegp").html(response.title);
-
-                            $(".idgp").html('@ ' + response.groupid);
-                            $(".desbody").html(response.describtion);
-                            $(".inputedit-title").val(response.title)
-                            $(".inputedit-des").val(response.describtion)
-                            document.getElementById('myModal_popup').style.display = 'none'
-                        })
+    
+                        $.ajax(settings).done(function (response2) {
+                            console.log("done")
+                            console.log(response2);
+    
+                        });
+                      
                     },
                     error: function (event) {
                         if (event.status == 400)
@@ -838,7 +805,7 @@ class chat_room extends Component {
             //Log the messages that are returned from the server
 
             $(".name").click(function () {
-
+             
                 $(".infobody").html('');
                 document.getElementById('myModal').style.display = 'block';
                 var settings = {
@@ -901,11 +868,20 @@ class chat_room extends Component {
                     $(".inputedit-title").val(response.title)
                     $(".inputedit-des").val(response.describtion)
                     create_by = response.created_by
-
+                    console.log(create_by)
+                    console.log(window.localStorage.getItem('username'))
+                    if(window.localStorage.getItem('username')!=create_by){
+                        document.getElementById('dropdown-basic').style.display = 'none'
+                    }
+                    else{
+                        document.getElementById('dropdown-basic').style.display = 'block'
+                    }
+var htmlcode33='<option value="' + null + '">' + "Select new admin " + '</option>'
                     var htmlcode22=''
                     for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
                         var obj = {}
-
+if(response.members[counter1]!=create_by)
+htmlcode33 += '<option class="option-" value="' + response.members[counter1] + '">' + response.members[counter1] + '</option>';
                         htmlcode22 += '<option class="option-" value="' + response.members[counter1] + '">' + response.members[counter1] + '</option>';
 
                         obj["value"] = response.members[counter1]
@@ -1015,6 +991,7 @@ var chat = response_.chat_permission
 
                     }
                     $('#exams').html(htmlcode22);
+                    $('#admin-select').html(htmlcode33);
                     console.log("opppppppppppp");
 
 
@@ -2685,8 +2662,11 @@ var username_edite=$('#exams').val();
 
 
                             <input class="inputedit-des" id='editdes_popup' placeholder="Description"></input>
-                            <br></br>
-
+                          
+                            <select id="admin-select" name="admin-select" required className='admin-select'>
+                
+                </select>
+                <br></br>
                             <Button style={{
                                 backgroundColor: "Red",
                                 marginTop: "20px"
