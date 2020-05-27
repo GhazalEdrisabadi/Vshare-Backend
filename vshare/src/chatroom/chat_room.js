@@ -501,18 +501,18 @@ class chat_room extends Component {
                     $('.modal-').fadeOut("slow");
                 }
             }
-            $('.logout').click(function () {
+           $('.logout').click(function () {
                 window.localStorage.setItem('id_gp', '');
                 // ws1.close();
                 logoutclicked = 1;
 
-
-                setTimeout(function () {
-                    const message_reselect = { "command": "reset" }
+                if (isadmin == 1) {
+                    const message_reselect = {"command": "reset"}
                     ws.send(JSON.stringify(message_reselect));
-                    window.location.replace('/homepage/');
-                }, 300);
-
+                }
+                 setTimeout(function () {
+                     window.location.replace('/homepage/');
+                 },300);
 
             });
             $('.submitedit_popup').click(function () {
