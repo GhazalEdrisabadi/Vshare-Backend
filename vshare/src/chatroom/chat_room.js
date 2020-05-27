@@ -300,9 +300,11 @@ class chat_room extends Component {
                     document.getElementById('videopicks').style.pointerEvents = 'auto';
                     if (comeinstate1 == 0 && azavalbude == 0)
                         adminhash = messagee.hash;
+                    console.log(adminhash);
                     //console.log("admin hash in state 2 : " + adminhash);
 
                 }, 600);
+                console.log('adminhash : '+ adminhash);
 
 
             }
@@ -389,12 +391,25 @@ class chat_room extends Component {
 
             if (messagee.msg_type == "send admin info") {
                  window.localStorage.setItem('isadmin', '');
-                if (messagee.username == window.localStorage.getItem('username'))
+                if (messagee.username == window.localStorage.getItem('username')) {
                     isadmin = 1;
+                    iscontroller=1;
+                    isselector=1;
+                     document.getElementById("controllbuttons2").style.zIndex = "-1";
+                        document.getElementById('controllbuttons').style.pointerEvents = 'auto';
+                        document.getElementById('movie').style.pointerEvents = 'auto';
+                        document.getElementById('reselect').style.pointerEvents = 'auto';
+                        document.getElementById("controllbuttons2").style.zIndex = "100";
+                        if (filmplayed == 0)
+                            window.location.reload();
+                        else
+                            this.play();
+                }
                 else
                     isadmin = 0;
-                if (adminhash == null)
+                if (adminhash == null && filmplayed==0)
                     window.location.reload();
+
             }
 
         };
@@ -683,7 +698,7 @@ class chat_room extends Component {
 
                 }
 
-            }, 500);
+            }, 1000);
 
             $("#formback_movie_id").mouseenter(function () {
 
@@ -2117,11 +2132,15 @@ class chat_room extends Component {
         function Send_data() {
             var message_send
             if (adminhash == null) {
+                console.log("a hash : "+ adminhash);
+                console.log("send as admin");
                 message_send = {"command": "set_video_hash", "vhash": encrypted};
                 clienthashok = 1;
-            } else
+            } else {
+                console.log("send as client");
                 message_send = {"command": "send_client_hash", "vhash": encrypted};
 
+            }
             if (isselector == 1)
                 play_or_no = true;
 
