@@ -445,6 +445,12 @@ white-space: nowrap;
     color: rgb(365, 365, 365 , 0.5);
 
 }
+.mutetitle{
+    float: right;
+    padding-right: 10px;
+
+    color: red;
+}
 .test:after {
   content: '\2807';
   font-size: 37px;
@@ -1315,3 +1321,21 @@ padding-left: 20px;
     font-size: 20px;
 
 }
+.admin-select {
+    color: black;
+    padding: 10px;
+
+    background-color: rgb(215, 215, 215);
+    border-radius: 10px;
+    font-size: 20px;
+    height: 45px;
+    width: 300px;
+    margin-top: 7px;
+    margin-right: 10px;
+    border-top: solid;
+    border-left: solid;
+    border-bottom: solid;
+    border-right: solid;
+    border-color: black;
+    flex-direction: row;
+  }

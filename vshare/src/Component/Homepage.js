@@ -258,8 +258,44 @@ class Homepage extends Component {
                         }
                     },
                     success: function () {
+                        var settings = {
+                            "url": "http://127.0.0.1:8000/group/permissions/",
+                            "method": "POST",
+                            error: function () {
+
+                                alert("nooooooo")
+
+
+                            },
+                            success: function () {
+
+                                window.location.replace("/homepage/");
+                            },
+                            "timeout": 0,
+                            "headers": {
+
+                                "accept": "application/json",
+                                "Access-Control-Allow-Origin": "*",
+                                "Access-Control-Allow-Headers": "*",
+                                "Content-Type": "application/json"
+                            },
+                            "data": JSON.stringify({
+                                    "group": id,
+                                    "member": username,
+                                    "chat_permission": 1,
+                                    "playback_permission": 0,
+                                    "choose_video_permission": 0
+                                }
+                            ),
+                        };
+
+                        $.ajax(settings).done(function (response) {
+
+                            console.log(response);
+                        });
                         //  window.localStorage.setItem('id_gp', id);
-                        window.location.replace("/homepage/");
+                      
+
                     },
                     "headers": {
                         //'X-CSRFToken': csrftoken,
