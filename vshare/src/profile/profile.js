@@ -165,7 +165,7 @@ else{
                     // 
                     console.log(response);
 if(response.length==0){
-    $(".search-result").append("not found")
+    $(".search-result").html("<p class='notfound'>not found</p>");
     $(".search-result").fadeIn()
 }
 else{
