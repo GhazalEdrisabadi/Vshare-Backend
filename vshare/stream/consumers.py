@@ -150,7 +150,7 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 		ismember = await is_member(user,roomid)
 		status = await get_status(roomid)
 
-		if ismember and not issender:
+		if ismember:
 			if status == 1:
 
 				grouphash = await get_group_hash(roomid)
@@ -397,7 +397,8 @@ class VideoConsumer(AsyncJsonWebsocketConsumer):
 				)
 
 	async def get_admin(self,user):
-
+		username = self.scope["user"]
+		hashsender = await set_sender(username, self.roomid)
 		await self.channel_layer.group_send(
 					"stream",
 					{
