@@ -3626,7 +3626,7 @@ cursor: pointer;
     position: absolute;
 
     font-size: 20px;
-    color:  rgba(365,365,365,0.5);
+ 
     background-color:gray;
 
     border-radius: 9px;
@@ -3642,7 +3642,7 @@ cursor:pointer;
     position: absolute;
 
     font-size: 20px;
-    color: rgba(365,365,365,0.5);
+    color: white;
     background-color:red;
 
     border-radius: 9px;
