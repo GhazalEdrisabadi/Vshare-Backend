@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import React, {useState, Component} from "react";
+import MultiSelect from "react-multi-select-component"
 import './Homepage.css'
 import AddIcon from '@material-ui/icons/Add';
 import $ from 'jquery';
@@ -8,8 +9,17 @@ import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
+import Select from 'react-select';
 
+var Able_chat = 0;
+var Able_controll = 0;
+var Able_select = 0;
+const options = [
 
+    {value: '1', label: 'Able to select video'},
+    {value: '2', label: 'Able to controll the playback'},
+]
+var per = []
 const name = window.$name;
 
 class Homepage extends Component {
@@ -17,6 +27,8 @@ class Homepage extends Component {
     componentDidMount() {
         const {id} = this.props.match.params;
         $(document).ready(function () {
+
+
             $('.nextbtn').click(function () {
                 var id = $(".input1").val();
 
@@ -75,6 +87,19 @@ class Homepage extends Component {
                 });
             });
             $(".addbtn").click(function () {
+                console.log(per)
+                Able_controll = 0;
+                Able_select = 0;
+                for (var count_per = 0; count_per < per.length; count_per++) {
+                    if (per[count_per].value == 1) {
+                        Able_select = 1
+                    }
+                    if (per[count_per].value == 2) {
+                        Able_controll = 1
+                    }
+                }
+                console.log(Able_select)
+                console.log(Able_controll)
                 var member = $(".inp").val();
 
                 var token = window.localStorage.getItem('token');
@@ -95,8 +120,6 @@ class Homepage extends Component {
 
                     },
                     success: function () {
-
-
                         var settings = {
                             "url": "http://127.0.0.1:8000/group/add_member/",
                             "method": "POST",
@@ -110,7 +133,42 @@ class Homepage extends Component {
                             },
                             success: function () {
 
-                                $(".textarea-addmember").append(member + '-');
+                                var settings = {
+                                    "url": "http://127.0.0.1:8000/group/permissions/",
+                                    "method": "POST",
+                                    error: function () {
+
+                                        alert("nooooooo")
+
+
+                                    },
+                                    success: function () {
+
+                                        $(".textarea-addmember").append(member + '-');
+                                    },
+                                    "timeout": 0,
+                                    "headers": {
+
+                                        "accept": "application/json",
+                                        "Access-Control-Allow-Origin": "*",
+                                        "Access-Control-Allow-Headers": "*",
+                                        "Content-Type": "application/json"
+                                    },
+                                    "data": JSON.stringify({
+                                            "group": id_gp,
+                                            "member": member,
+                                            "chat_permission": 1,
+                                            "playback_permission": Able_controll,
+                                            "choose_video_permission": Able_select
+                                        }
+                                    ),
+                                };
+
+                                $.ajax(settings).done(function (response) {
+
+                                    console.log(response);
+                                });
+                                ;
                             },
                             "timeout": 0,
                             "headers": {
@@ -131,6 +189,8 @@ class Homepage extends Component {
 
                             console.log(response);
                         });
+
+
                     },
                     "headers": {
 
@@ -164,146 +224,143 @@ class Homepage extends Component {
 
             });
 
-           $(".inp-search").change(function () {
+            $(".inp-search").change(function () {
                 $(".search-result").text("")
                 console.log("change")
-                var user_search=$('.inp-search').val()
+                var user_search = $('.inp-search').val()
                 console.log(user_search)
                 var settings = {
-                    "url": "http://127.0.0.1:8000/user/find/username/?search="+user_search+"",
+                    "url": "http://127.0.0.1:8000/user/find/username/?search=" + user_search + "",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
-    
+
                         "accept": "application/json",
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Allow-Headers": "*",
                         "Content-Type": "application/json"
                     },
-    
+
                 };
-    
+
                 $.ajax(settings).done(function (response) {
                     // 
                     console.log(response);
-if(response.length==0){
-    $(".search-result").append("user not found")
-    $(".search-result").fadeIn()
-}
-else{
-        var hoverout = 'onMouseOut="this.style.color=';
+                    if (response.length == 0) {
+                        $(".search-result").append("user not found")
+                        $(".search-result").fadeIn()
+                    } else {
+                        var hoverout = 'onMouseOut="this.style.color=';
                         var hoverrout = hoverout + "'white'";
 
                         var hover = 'onMouseOver="this.style.color=';
                         var hoverr = hover + "'red'";
-    var htmlcode='<br/>'
-  //   $(".search-result").append(htmlcode)
-                htmlcode = '';
-               $(".search-result").append(htmlcode)
-                for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
-var a2 = "window.localStorage.setItem('user'," + response[counter1].username + ")";
- var r = "window.location.replace('/profile/" + response[counter1].username + "')";
-                    htmlcode += '<div>'
-                    // htmlcode+='<br/>'
-                    htmlcode += '<div class="user-search">';
-                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].username + '</p>';
-                
-                 htmlcode+='<br/>'
-                  
-                       
-                    htmlcode+='</div>'
-                    
-                    htmlcode += '</div>'
-                      htmlcode+='<hr/>'
-                    $(".search-result").append(htmlcode)
-}
+                        var htmlcode = '<br/>'
+                        //   $(".search-result").append(htmlcode)
+                        htmlcode = '';
+                        $(".search-result").append(htmlcode)
+                        for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
+                            var a2 = "window.localStorage.setItem('user'," + response[counter1].username + ")";
+                            var r = "window.location.replace('/profile/" + response[counter1].username + "')";
+                            htmlcode += '<div>'
+                            // htmlcode+='<br/>'
+                            htmlcode += '<div class="user-search">';
+                            htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].username + '</p>';
 
-var settings = {
-    "url": "http://127.0.0.1:8000/groups/?search="+user_search+"",
-    "method": "GET",
-    "timeout": 0,
-    "headers": {
-"Authorization": "token " + window.localStorage.getItem('token'),
-        "accept": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "*",
-        "Content-Type": "application/json"
-    },      
-            
-    
-
-};
-
-$.ajax(settings).done(function (response) {
-   
-      var hoverout = 'onMouseOut="this.style.color=';
-                        var hoverrout = hoverout + "'white'";
-
-                        var hover = 'onMouseOver="this.style.color=';
-                        var hoverr = hover + "'red'";
-    var htmlcode='<br/>'
-  //   $(".search-result").append(htmlcode)
-                htmlcode = '';
-               $(".search-result").append(htmlcode)
-                for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
-var a2 = " document.getElementById('Modal-join').style.display = 'block'";
-var r = "window.localStorage.setItem('id-join','" + response[counter1].groupid + "')"; //id of the group
-                    htmlcode += '<div>'
-                    // htmlcode+='<br/>'
-                    htmlcode += '<div class="group-search">';
-                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="'  + a2 + "," + r +'" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].groupid + '</p>';
-                
-                 htmlcode+='<br/>'
-                  
-                       
-                    htmlcode+='</div>'
-                    
-                    htmlcode += '</div>'
-                      htmlcode+='<hr/>'
-                    $(".search-result").append(htmlcode)
-                }
-
-});
+                            htmlcode += '<br/>'
 
 
+                            htmlcode += '</div>'
 
-$(".search-result").fadeIn()                
-}
-          
-    
+                            htmlcode += '</div>'
+                            htmlcode += '<hr/>'
+                            $(".search-result").append(htmlcode)
+                        }
+
+                        var settings = {
+                            "url": "http://127.0.0.1:8000/groups/?search=" + user_search + "",
+                            "method": "GET",
+                            "timeout": 0,
+                            "headers": {
+                                "Authorization": "token " + window.localStorage.getItem('token'),
+                                "accept": "application/json",
+                                "Access-Control-Allow-Origin": "*",
+                                "Access-Control-Allow-Headers": "*",
+                                "Content-Type": "application/json"
+                            },
+
+
+                        };
+
+                        $.ajax(settings).done(function (response) {
+
+                            var hoverout = 'onMouseOut="this.style.color=';
+                            var hoverrout = hoverout + "'white'";
+
+                            var hover = 'onMouseOver="this.style.color=';
+                            var hoverr = hover + "'red'";
+                            var htmlcode = '<br/>'
+                            //   $(".search-result").append(htmlcode)
+                            htmlcode = '';
+                            $(".search-result").append(htmlcode)
+                            for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
+                                var a2 = " document.getElementById('Modal-join').style.display = 'block'";
+                                var r = "window.localStorage.setItem('id-join','" + response[counter1].groupid + "')"; //id of the group
+                                htmlcode += '<div>'
+                                // htmlcode+='<br/>'
+                                htmlcode += '<div class="group-search">';
+                                htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].groupid + '</p>';
+
+                                htmlcode += '<br/>'
+
+
+                                htmlcode += '</div>'
+
+                                htmlcode += '</div>'
+                                htmlcode += '<hr/>'
+                                $(".search-result").append(htmlcode)
+                            }
+
+                        });
+
+
+                        $(".search-result").fadeIn()
+                    }
+
+
                 });
-              
+
 
             })
             $(".KeyboardBackspaceIcon").click(function () {
 
                 $('.formback').fadeOut();
             });
-          $(".Homepage").click(function () {
-                    $(".search-result").text("")
-               $(".search-result").fadeOut();
+            $(".Homepage").click(function () {
+                $(".search-result").text("")
+                $(".search-result").fadeOut();
 
             })
-$(".join-no ").click(function () {
-               $(".modal-join").fadeOut()
- 
-             })
-                $(".join-yes ").click(function () {
-                        var settings = {
+            $(".join-no ").click(function () {
+                $(".modal-join").fadeOut()
+
+            })
+            $(".join-yes ").click(function () {
+                var settings = {
                     "url": "http://127.0.0.1:8000/group/join/",
                     "method": "POST",
                     "timeout": 0,
-                           error: function (event) {
+                    error: function (event) {
                         if (event.status == 500) {
-                           alert("You are already a member of this group !");
-                        } 
+                            alert("You are already a member of this group !");
+                        }
                     },
                     success: function () {
                         //  window.localStorage.setItem('id_gp', id);
-                         alert("join !");
-                         window.location.replace('/homepage')
+                        alert("join !");
+                        window.location.replace('/homepage')
                     },
-               
+
                     "headers": {
                         //'X-CSRFToken': csrftoken,
                         "Authorization": "token " + window.localStorage.getItem('token'),
@@ -323,7 +380,7 @@ $(".join-no ").click(function () {
                 $.ajax(settings).done(function (response) {
                     console.log("done")
                     console.log(response);
-               
+
                 });
             })
             if (localStorage.getItem('token') == null) {
@@ -353,8 +410,44 @@ $(".join-no ").click(function () {
                         }
                     },
                     success: function () {
+                        var settings = {
+                            "url": "http://127.0.0.1:8000/group/permissions/",
+                            "method": "POST",
+                            error: function () {
+
+                                alert("nooooooo")
+
+
+                            },
+                            success: function () {
+
+                                window.location.replace("/homepage/");
+                            },
+                            "timeout": 0,
+                            "headers": {
+
+                                "accept": "application/json",
+                                "Access-Control-Allow-Origin": "*",
+                                "Access-Control-Allow-Headers": "*",
+                                "Content-Type": "application/json"
+                            },
+                            "data": JSON.stringify({
+                                    "group": id,
+                                    "member": username,
+                                    "chat_permission": 1,
+                                    "playback_permission": 0,
+                                    "choose_video_permission": 0
+                                }
+                            ),
+                        };
+
+                        $.ajax(settings).done(function (response) {
+
+                            console.log(response);
+                        });
                         //  window.localStorage.setItem('id_gp', id);
-                        window.location.replace("/homepage/");
+
+
                     },
                     "headers": {
                         //'X-CSRFToken': csrftoken,
@@ -398,9 +491,9 @@ $(".join-no ").click(function () {
             });
 
             $(".userprofile").click(function () {
-                window.localStorage.setItem('myac' , 1)
+                window.localStorage.setItem('myac', 1)
                 window.location.replace("/profile/" + username + "");
-              //  alert("im just a MVP version :)");
+                //  alert("im just a MVP version :)");
             });
 
 
@@ -478,9 +571,9 @@ $(".join-no ").click(function () {
                     htmlcode += '</br>';
 
 
-                   // setTimeout(function () {
-                        $('.groupsShow').append(htmlcode);
-                   // }, 100);
+                    // setTimeout(function () {
+                    $('.groupsShow').append(htmlcode);
+                    // }, 100);
 
 
                 }
@@ -741,11 +834,6 @@ $(".join-no ").click(function () {
         });
 
 
-        $(document).ready(function () {
-
-            console.log(window.localStorage.getItem('token'));
-
-        })
     };
 
 
@@ -757,7 +845,8 @@ $(".join-no ").click(function () {
         this.states = {
 
             // anchorPosition:null ,
-            value: ''
+            value: '',
+            selectedOption: null,
 
 
         }
@@ -767,6 +856,14 @@ $(".join-no ").click(function () {
         this.handleSubmit = this.handleSubmit.bind(this);
 
     }
+
+    handleChanges = selectedOption => {
+        this.setState(
+            {selectedOption},
+            () => per = this.state.selectedOption
+        );
+
+    };
 
     handleChange(event) {
 
@@ -823,10 +920,19 @@ $(".join-no ").click(function () {
     //     }
     // };
 
+    onSelect(selectedList, selectedItem) {
+        console.log(selectedItem)
+        console.log(selectedList)
+    }
+
+    onRemove(selectedList, removedItem) {
+        console.log(selectedList)
+        console.log(removedItem)
+    }
 
     render() {
 
-
+        const {selectedOption} = this.state;
         return (
 
 
@@ -881,11 +987,12 @@ $(".join-no ").click(function () {
                     </div>
                 </div>
 
-               <div id="Modal-join" class="modal-join">
-                    <div class="modal-content_join" >
-                                <h3 className='join-txt'>Are you sure you want to join this group ? </h3>
-                        
+                <div id="Modal-join" class="modal-join">
+                    <div class="modal-content_join">
+                        <h3 className='join-txt'>Are you sure you want to join this group ? </h3>
+
                         <div className='join-btns'>
+
 
                             <Button style={{backgroundColor: "Red"}} size='large'
                                     className="join-no" variant="contained" color="secondary">
@@ -901,12 +1008,12 @@ $(".join-no ").click(function () {
                             </Button>
 
                         </div>
-                    
+
 
                     </div>
 
                 </div>
-        <header className="head">
+                <header className="head">
 
                     <div className='leftheader'>
                         <div className='userprofile'>
@@ -933,7 +1040,7 @@ $(".join-no ").click(function () {
 
 
                     </div>
-             <div className='logout'>
+                    <div className='logout'>
                         <p className='logout_text'>Logout</p>
                         <IconButton style={{
                             color: 'white'
@@ -942,9 +1049,7 @@ $(".join-no ").click(function () {
                             <ExitToAppIcon fontSize="large"/>
                         </IconButton>
                     </div>
-                </header> 
-                  
-                
+                </header>
 
 
                 <div className="formback">
@@ -1005,8 +1110,14 @@ $(".join-no ").click(function () {
                         <hr></hr>
 
                         <input class='inp' placeholder=" enter your user's id"></input>
+                        <Select className='selector' isMulti placeholder="select your permission"
+                                value={selectedOption}
+                                onChange={this.handleChanges}
+                                options={options}
+                        />
                         <div className="textarea-addmember"
                              style={{borderRadius: "10px", marginTop: "10%", marginBottom: "5%",}}></div>
+
                         <div className="Status-Addmember" id="Addmember-Status"></div>
                         <div class="center">
 
@@ -1042,22 +1153,20 @@ $(".join-no ").click(function () {
 
                 </div>
 
-<div className="search-result" id='res'></div>
+
                 <div className="groupsShow">
-
-
                     <Button style={{
                         backgroundColor: "Red",
                         marginRight: "10px",
                         marginTop: "20px"
                     }} className='createnewgp' startIcon={<AddIcon/>} variant="contained" color="secondary">
-
                         Create new group
                     </Button>
 
+
                 </div>
 
-
+                <div className="search-result" id='res'></div>
             </div>
 
 
