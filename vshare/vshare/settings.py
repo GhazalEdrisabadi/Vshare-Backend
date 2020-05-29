@@ -137,9 +137,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'vshare',
 
-        'USER' : 'postgres',
-        'PASSWORD' : 'Kamyab78',
-
+        'USER' : 'admin',
+        'PASSWORD' : '123qwe',
 
         'HOST' : 'localhost',
         'PORT' : '5432',
@@ -206,3 +205,12 @@ MEDIA_URL =  '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR , 'users/media')
 
+#sudo -u postgres psql postgres
+
+#DROP DATABASE vshare;
+#CREATE DATABASE vshare;
+#ALTER ROLE admin SET client_encoding TO 'utf8';
+
+#ALTER ROLE admin SET default_transaction_isolation TO 'read committed';
+
+#ALTER ROLE admin SET timezone TO 'UTC';

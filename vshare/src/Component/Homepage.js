@@ -269,15 +269,170 @@ class Homepage extends Component {
 
             });
 
+           $(".inp-search").change(function () {
+                $(".search-result").text("")
+                console.log("change")
+                var user_search=$('.inp-search').val()
+                console.log(user_search)
+                var settings = {
+                    "url": "http://127.0.0.1:8000/user/find/username/?search="+user_search+"",
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+    
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+    
+                };
+    
+                $.ajax(settings).done(function (response) {
+                    // 
+                    console.log(response);
+if(response.length==0){
+    $(".search-result").append("user not found")
+    $(".search-result").fadeIn()
+}
+else{
+        var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'white'";
 
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
+    var htmlcode='<br/>'
+  //   $(".search-result").append(htmlcode)
+                htmlcode = '';
+               $(".search-result").append(htmlcode)
+                for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
+var a2 = "window.localStorage.setItem('user'," + response[counter1].username + ")";
+ var r = "window.location.replace('/profile/" + response[counter1].username + "')";
+                    htmlcode += '<div>'
+                    // htmlcode+='<br/>'
+                    htmlcode += '<div class="user-search">';
+                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].username + '</p>';
+                
+                 htmlcode+='<br/>'
+                  
+                       
+                    htmlcode+='</div>'
+                    
+                    htmlcode += '</div>'
+                      htmlcode+='<hr/>'
+                    $(".search-result").append(htmlcode)
+}
+
+var settings = {
+    "url": "http://127.0.0.1:8000/groups/?search="+user_search+"",
+    "method": "GET",
+    "timeout": 0,
+    "headers": {
+"Authorization": "token " + window.localStorage.getItem('token'),
+        "accept": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+        "Content-Type": "application/json"
+    },      
+            
+    
+
+};
+
+$.ajax(settings).done(function (response) {
+   
+      var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'white'";
+
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
+    var htmlcode='<br/>'
+  //   $(".search-result").append(htmlcode)
+                htmlcode = '';
+               $(".search-result").append(htmlcode)
+                for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
+var a2 = " document.getElementById('Modal-join').style.display = 'block'";
+var r = "window.localStorage.setItem('id-join','" + response[counter1].groupid + "')"; //id of the group
+                    htmlcode += '<div>'
+                    // htmlcode+='<br/>'
+                    htmlcode += '<div class="group-search">';
+                   htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="'  + a2 + "," + r +'" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].groupid + '</p>';
+                
+                 htmlcode+='<br/>'
+                  
+                       
+                    htmlcode+='</div>'
+                    
+                    htmlcode += '</div>'
+                      htmlcode+='<hr/>'
+                    $(".search-result").append(htmlcode)
+                }
+
+});
+
+
+
+$(".search-result").fadeIn()                
+}
+          
+    
+                });
+              
+
+            })
             $(".KeyboardBackspaceIcon").click(function () {
 
 
                 $('.formback').fadeOut();
 
             });
+          $(".Homepage").click(function () {
+                    $(".search-result").text("")
+               $(".search-result").fadeOut();
 
-
+            })
+$(".join-no ").click(function () {
+               $(".modal-join").fadeOut()
+ 
+             })
+                $(".join-yes ").click(function () {
+                        var settings = {
+                    "url": "http://127.0.0.1:8000/group/join/",
+                    "method": "POST",
+                    "timeout": 0,
+                           error: function (event) {
+                        if (event.status == 500) {
+                           alert("You are already a member of this group !");
+                        } 
+                    },
+                    success: function () {
+                        //  window.localStorage.setItem('id_gp', id);
+                         alert("join !");
+                         window.location.replace('/homepage')
+                    },
+               
+                    "headers": {
+                        //'X-CSRFToken': csrftoken,
+                        "Authorization": "token " + window.localStorage.getItem('token'),
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+                    "data": JSON.stringify({
+                            "the_group": window.localStorage.getItem('id-join'),
+                            "the_member": "",
+                        }
+                    ),
+                };
+                console.log(settings.headers);
+                console.log(settings.method);
+                $.ajax(settings).done(function (response) {
+                    console.log("done")
+                    console.log(response);
+               
+                });
+            })
             if (localStorage.getItem('token') == null) {
 
                 alert("Login please !");
@@ -404,7 +559,9 @@ class Homepage extends Component {
 
             $(".userprofile").click(function () {
 
-                alert("im just a MVP version :)");
+                window.localStorage.setItem('myac' , 1)
+                window.location.replace("/profile/" + username + "");
+              //  alert("im just a MVP version :)");
 
             });
 
@@ -1176,8 +1333,32 @@ class Homepage extends Component {
 
                 </div>
 
+               <div id="Modal-join" class="modal-join">
+                    <div class="modal-content_join" >
+                                <h3 className='join-txt'>Are you sure you want to join this group ? </h3>
+                        
+                        <div className='join-btns'>
 
-                <header className="head">
+                            <Button style={{backgroundColor: "Red"}} size='large'
+                                    className="join-no" variant="contained" color="secondary">
+                                <p>No&nbsp;</p>
+                            </Button>
+
+                            <Button style={{
+                                backgroundColor: 'gray',
+                                marginRight: "4px"
+
+                            }} size='large' className="join-yes" variant="contained" color="secondary">
+                                <p>Yes</p>
+                            </Button>
+
+                        </div>
+                    
+
+                    </div>
+
+                </div>
+        <header className="head">
 
 
                     <div className='leftheader'>
@@ -1198,7 +1379,9 @@ class Homepage extends Component {
                             </IconButton>
 
 
+
                             <p className='username'>Username</p>
+
 
                         </div>
 
@@ -1206,20 +1389,9 @@ class Homepage extends Component {
                         <div className='searchgp'>
 
 
-                            <input placeholder='id' className='input'/>
+                            <input placeholder='search' className='inp-search'/>
 
 
-                            <Button style={{
-
-                                marginTop: "10px",
-
-                                backgroundColor: "Red"
-
-                            }} startIcon={<GroupAddIcon/>} className="zare" variant="contained" color="secondary">
-
-                                join
-
-                            </Button>
 
                             <div id='joinstatus' className='statusofjoin'>
 
@@ -1231,8 +1403,7 @@ class Homepage extends Component {
 
 
                     </div>
-
-                    <div className='logout'>
+             <div className='logout'>
 
                         <p className='logout_text'>Logout</p>
 
@@ -1250,7 +1421,9 @@ class Homepage extends Component {
 
                     </div>
 
+
                 </header>
+
 
 
                 <div className="formback">
@@ -1415,10 +1588,12 @@ class Homepage extends Component {
 
                     </div> */}
                 </div>
+                <div className="search-result" id='res'></div>
                 <div className="groupsShow">
                     <div className="headershow">
 
                         <h4 className='yourgroupstext'> Your Groups </h4>
+
 
 
                         <Button style={{
@@ -1427,6 +1602,7 @@ class Homepage extends Component {
                             width:'30%',
 
                             marginTop: '10px'
+
 
                         }} className='createnewgp' startIcon={<AddIcon/>} variant="contained" color="secondary">
 
