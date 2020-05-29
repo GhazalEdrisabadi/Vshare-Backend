@@ -224,13 +224,165 @@ class Homepage extends Component {
 
             });
 
+            $(".inp-search").change(function () {
+                $(".search-result").text("")
+                console.log("change")
+                var user_search = $('.inp-search').val()
+                console.log(user_search)
+                var settings = {
+                    "url": "http://127.0.0.1:8000/user/find/username/?search=" + user_search + "",
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
 
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+
+                };
+
+                $.ajax(settings).done(function (response) {
+                    // 
+                    console.log(response);
+                    if (response.length == 0) {
+                        $(".search-result").append("user not found")
+                        $(".search-result").fadeIn()
+                    } else {
+                        var hoverout = 'onMouseOut="this.style.color=';
+                        var hoverrout = hoverout + "'white'";
+
+                        var hover = 'onMouseOver="this.style.color=';
+                        var hoverr = hover + "'red'";
+                        var htmlcode = '<br/>'
+                        //   $(".search-result").append(htmlcode)
+                        htmlcode = '';
+                        $(".search-result").append(htmlcode)
+                        for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
+                            var a2 = "window.localStorage.setItem('user'," + response[counter1].username + ")";
+                            var r = "window.location.replace('/profile/" + response[counter1].username + "')";
+                            htmlcode += '<div>'
+                            // htmlcode+='<br/>'
+                            htmlcode += '<div class="user-search">';
+                            htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].username + '</p>';
+
+                            htmlcode += '<br/>'
+
+
+                            htmlcode += '</div>'
+
+                            htmlcode += '</div>'
+                            htmlcode += '<hr/>'
+                            $(".search-result").append(htmlcode)
+                        }
+
+                        var settings = {
+                            "url": "http://127.0.0.1:8000/groups/?search=" + user_search + "",
+                            "method": "GET",
+                            "timeout": 0,
+                            "headers": {
+                                "Authorization": "token " + window.localStorage.getItem('token'),
+                                "accept": "application/json",
+                                "Access-Control-Allow-Origin": "*",
+                                "Access-Control-Allow-Headers": "*",
+                                "Content-Type": "application/json"
+                            },
+
+
+                        };
+
+                        $.ajax(settings).done(function (response) {
+
+                            var hoverout = 'onMouseOut="this.style.color=';
+                            var hoverrout = hoverout + "'white'";
+
+                            var hover = 'onMouseOver="this.style.color=';
+                            var hoverr = hover + "'red'";
+                            var htmlcode = '<br/>'
+                            //   $(".search-result").append(htmlcode)
+                            htmlcode = '';
+                            $(".search-result").append(htmlcode)
+                            for (var counter1 = 0; counter1 < response.length; counter1++ , htmlcode = '') {
+                                var a2 = " document.getElementById('Modal-join').style.display = 'block'";
+                                var r = "window.localStorage.setItem('id-join','" + response[counter1].groupid + "')"; //id of the group
+                                htmlcode += '<div>'
+                                // htmlcode+='<br/>'
+                                htmlcode += '<div class="group-search">';
+                                htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].groupid + '</p>';
+
+                                htmlcode += '<br/>'
+
+
+                                htmlcode += '</div>'
+
+                                htmlcode += '</div>'
+                                htmlcode += '<hr/>'
+                                $(".search-result").append(htmlcode)
+                            }
+
+                        });
+
+
+                        $(".search-result").fadeIn()
+                    }
+
+
+                });
+
+
+            })
             $(".KeyboardBackspaceIcon").click(function () {
 
                 $('.formback').fadeOut();
             });
+            $(".Homepage").click(function () {
+                $(".search-result").text("")
+                $(".search-result").fadeOut();
 
+            })
+            $(".join-no ").click(function () {
+                $(".modal-join").fadeOut()
 
+            })
+            $(".join-yes ").click(function () {
+                var settings = {
+                    "url": "http://127.0.0.1:8000/group/join/",
+                    "method": "POST",
+                    "timeout": 0,
+                    error: function (event) {
+                        if (event.status == 500) {
+                            alert("You are already a member of this group !");
+                        }
+                    },
+                    success: function () {
+                        //  window.localStorage.setItem('id_gp', id);
+                        alert("join !");
+                        window.location.replace('/homepage')
+                    },
+
+                    "headers": {
+                        //'X-CSRFToken': csrftoken,
+                        "Authorization": "token " + window.localStorage.getItem('token'),
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+                    "data": JSON.stringify({
+                            "the_group": window.localStorage.getItem('id-join'),
+                            "the_member": "",
+                        }
+                    ),
+                };
+                console.log(settings.headers);
+                console.log(settings.method);
+                $.ajax(settings).done(function (response) {
+                    console.log("done")
+                    console.log(response);
+
+                });
+            })
             if (localStorage.getItem('token') == null) {
                 alert("Login please !");
                 window.location.replace("/startpage/");
@@ -294,7 +446,7 @@ class Homepage extends Component {
                             console.log(response);
                         });
                         //  window.localStorage.setItem('id_gp', id);
-                      
+
 
                     },
                     "headers": {
@@ -339,7 +491,9 @@ class Homepage extends Component {
             });
 
             $(".userprofile").click(function () {
-                alert("im just a MVP version :)");
+                window.localStorage.setItem('myac', 1)
+                window.location.replace("/profile/" + username + "");
+                //  alert("im just a MVP version :)");
             });
 
 
@@ -677,300 +831,314 @@ class Homepage extends Component {
             });
 
 
-
-            });
-
-
-        };
+        });
 
 
-        constructor(props)
-        {
-
-            super(props);
+    };
 
 
-            this.states = {
+    constructor(props) {
 
-                // anchorPosition:null ,
-                value: '',
-                selectedOption: null,
+        super(props);
 
 
-            }
+        this.states = {
 
-            this.handleChange = this.handleChange.bind(this);
-
-            this.handleSubmit = this.handleSubmit.bind(this);
-
-        }
-        handleChanges = selectedOption => {
-            this.setState(
-                {selectedOption},
-                () => per = this.state.selectedOption
-            );
-
-        };
-        handleChange(event)
-        {
-
-
-            this.setState({value: event.target.value});
+            // anchorPosition:null ,
+            value: '',
+            selectedOption: null,
 
 
         }
 
-        handleSubmit(event)
-        {
+        this.handleChange = this.handleChange.bind(this);
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+
+    }
+
+    handleChanges = selectedOption => {
+        this.setState(
+            {selectedOption},
+            () => per = this.state.selectedOption
+        );
+
+    };
+
+    handleChange(event) {
 
 
-            alert('A name was submitted: ' + this.state.value);
+        this.setState({value: event.target.value});
 
 
-            event.preventDefault();
+    }
 
-        }
-
-        state = {
-
-            sidedraweropen: false
-
-        };
+    handleSubmit(event) {
 
 
-        drawertoggleclickhandler = () => {
-
-            this.setState((prevState) => {
+        alert('A name was submitted: ' + this.state.value);
 
 
-                return {sidedraweropen: !prevState.sidedraweropen}
+        event.preventDefault();
+
+    }
+
+    state = {
+
+        sidedraweropen: false
+
+    };
 
 
-            });
+    drawertoggleclickhandler = () => {
 
-        };
-
-
-        backdropclickhandeler = () => {
-
-            this.setState({sidedraweropen: false})
-
-        };
-        // renderEfect = () => {
-        //     if(this.state.showEffect === true){
-        //         return(
-        //             <div style={{position:"absolute", width:"100% " , height : "100%" , border:"solid red" , zIndex :100 , backgroundColor:"rgba(0, 0, 0, 0.76)" }}></div>
-        //     )
-        //     }
-
-        //     else{
-        //         return(null)
-        //     }
-        // };
-
-        onSelect(selectedList, selectedItem)
-        {
-            console.log(selectedItem)
-            console.log(selectedList)
-        }
-
-        onRemove(selectedList, removedItem)
-        {
-            console.log(selectedList)
-            console.log(removedItem)
-        }
-
-        render()
-        {
-
-            const {selectedOption} = this.state;
-            return (
+        this.setState((prevState) => {
 
 
-                <div class="Homepage">
-                    {/* {this.renderEfect()} */}
+            return {sidedraweropen: !prevState.sidedraweropen}
 
 
-                    <div id="myModal" class="modal">
-                        <div class="modal-content">
-                            <h3 class="texx">Edit your groups deatails</h3>
+        });
 
-                            <hr></hr>
-
-                            <input class="inputedit" id='edittitle' placeholder="Title"></input>
+    };
 
 
-                            <input class="inputedit" id='editdes' placeholder="Description"></input>
-                            <br></br>
+    backdropclickhandeler = () => {
+
+        this.setState({sidedraweropen: false})
+
+    };
+    // renderEfect = () => {
+    //     if(this.state.showEffect === true){
+    //         return(
+    //             <div style={{position:"absolute", width:"100% " , height : "100%" , border:"solid red" , zIndex :100 , backgroundColor:"rgba(0, 0, 0, 0.76)" }}></div>
+    //     )
+    //     }
+
+    //     else{
+    //         return(null)
+    //     }
+    // };
+
+    onSelect(selectedList, selectedItem) {
+        console.log(selectedItem)
+        console.log(selectedList)
+    }
+
+    onRemove(selectedList, removedItem) {
+        console.log(selectedList)
+        console.log(removedItem)
+    }
+
+    render() {
+
+        const {selectedOption} = this.state;
+        return (
+
+
+            <div class="Homepage">
+                {/* {this.renderEfect()} */}
+
+
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <h3 class="texx">Edit your groups deatails</h3>
+
+                        <hr></hr>
+
+                        <input class="inputedit" id='edittitle' placeholder="Title"></input>
+
+
+                        <input class="inputedit" id='editdes' placeholder="Description"></input>
+                        <br></br>
+
+                        <Button style={{
+                            backgroundColor: "Red",
+                            marginTop: "20px"
+                        }} size='large' className="submitedit" variant="contained" color="secondary">
+                            <p>Edit</p>
+                        </Button>
+
+                    </div>
+
+                </div>
+
+                <div id="myModal2" className="modal2">
+                    <div className="modal-content2">
+                        <h3 className='deleteTEXT'>Are you sure you want to leave this group ? </h3>
+                        <p className='admintext'></p>
+                        <div className='dltbtns'>
+
+                            <Button style={{backgroundColor: "Red"}} size='large'
+                                    className="dltno" variant="contained" color="secondary">
+                                <p>No&nbsp;</p>
+                            </Button>
 
                             <Button style={{
-                                backgroundColor: "Red",
-                                marginTop: "20px"
-                            }} size='large' className="submitedit" variant="contained" color="secondary">
-                                <p>Edit</p>
+                                backgroundColor: 'gray',
+                                marginRight: "4px"
+
+                            }} size='large' className="dltyes" variant="contained" color="secondary">
+                                <p>Yes</p>
+                            </Button>
+
+                        </div>
+                        {/* <div className='dltno'>no</div> */}
+                    </div>
+                </div>
+
+                <div id="Modal-join" class="modal-join">
+                    <div class="modal-content_join">
+                        <h3 className='join-txt'>Are you sure you want to join this group ? </h3>
+
+                        <div className='join-btns'>
+
+
+                            <Button style={{backgroundColor: "Red"}} size='large'
+                                    className="join-no" variant="contained" color="secondary">
+                                <p>No&nbsp;</p>
+                            </Button>
+
+                            <Button style={{
+                                backgroundColor: 'gray',
+                                marginRight: "4px"
+
+                            }} size='large' className="join-yes" variant="contained" color="secondary">
+                                <p>Yes</p>
                             </Button>
 
                         </div>
 
+
                     </div>
 
-                    <div id="myModal2" className="modal2">
-                        <div className="modal-content2">
-                            <h3 className='deleteTEXT'>Are you sure you want to leave this group ? </h3>
-                            <p className='admintext'></p>
-                            <div className='dltbtns'>
+                </div>
+                <header className="head">
 
-                                <Button style={{backgroundColor: "Red"}} size='large'
-                                        className="dltno" variant="contained" color="secondary">
-                                    <p>No&nbsp;</p>
-                                </Button>
-
-                                <Button style={{
-                                    backgroundColor: 'gray',
-                                    marginRight: "4px"
-
-                                }} size='large' className="dltyes" variant="contained" color="secondary">
-                                    <p>Yes</p>
-                                </Button>
-
-                            </div>
-                            {/* <div className='dltno'>no</div> */}
-                        </div>
-                    </div>
-
-
-                    <header className="head">
-
-                        <div className='leftheader'>
-                            <div className='userprofile'>
-                                <IconButton style={{
-                                    color: 'white'
-
-                                }}
-                                            className="profilepic">
-                                    <AccountCircleOutlinedIcon fontSize="large"/>
-                                </IconButton>
-
-                                <p className='username'>Username</p>
-                            </div>
-
-                            <div className='searchgp'>
-
-
-                                <input placeholder='Enter id of the group' className='input'/>
-
-                                <Button style={{
-                                    marginTop: "10px",
-                                    backgroundColor: "Red"
-                                }} startIcon={<GroupAddIcon/>} className="zare" variant="contained" color="secondary">
-                                    join
-                                </Button>
-                                <div id='joinstatus' className='statusofjoin'>
-                                    Group not found !
-                                </div>
-                            </div>
-
-
-                        </div>
-                        <div className='logout'>
-                            <p className='logout_text'>Logout</p>
+                    <div className='leftheader'>
+                        <div className='userprofile'>
                             <IconButton style={{
                                 color: 'white'
+
                             }}
-                                        className="div_leave">
-                                <ExitToAppIcon fontSize="large"/>
+                                        className="profilepic">
+                                <AccountCircleOutlinedIcon fontSize="large"/>
                             </IconButton>
+
                         </div>
-                    </header>
+
+                        <div className='searchgp'>
 
 
-                    <div className="formback">
-                        <div className="formback-content">
-                            <div className="TTitle">
-                                <IconButton style={{color: 'white', marginRight: '130%', marginTop: '4%'}}
-                                            className="KeyboardBackspaceIcon">
-                                    <CloseIcon fontSize="large"/>
-                                </IconButton>
+                            <input placeholder='search' className='inp-search'/>
 
-                                <h4 className="textForm">create new group</h4>
-                                <hr></hr>
 
+                            <div id='joinstatus' className='statusofjoin'>
+                                Group not found !
                             </div>
-                            <input onChange={this.change_name} type="text"
-
-                                   className="input1" placeholder="id" style={{
-                                height: '40px',
-                                width: '65%',
-                            }}/>
-
-                            <br></br>
-
-                            <br></br>
-                            <input onChange={this.change_id} type="text"
-                                   className="input2" placeholder="name" style={{
-                                height: '40px',
-                                width: '65%'
-                            }}/>
-
-                            <div className="Status-Id" id="Status-Id"></div>
-
-
-                            <br></br>
-
-                            <textarea onChange={this.change_bio} type="text"
-                                      className="textarea" placeholder=" bio" style={{
-                                height: '60px',
-                                width: '65%',
-                                marginTop: '8%'
-
-
-                            }}/>
-
-                            <Button style={{
-                                backgroundColor: "Red",
-                                marginRight: "45%",
-                                marginTop: "30%",
-                                marginLeft: "42%"
-                            }} className='nextbtn' variant="contained" color="secondary">
-                                next
-                            </Button>
                         </div>
 
-                        <div className="addmember-content">
-                            <p classname='tit' style={{fontSize: "100%", marginBottom: "8%", marginTop: "8%",}}>Add your
-                                member</p>
+
+                    </div>
+                    <div className='logout'>
+                        <p className='logout_text'>Logout</p>
+                        <IconButton style={{
+                            color: 'white'
+                        }}
+                                    className="div_leave">
+                            <ExitToAppIcon fontSize="large"/>
+                        </IconButton>
+                    </div>
+                </header>
+
+
+                <div className="formback">
+                    <div className="formback-content">
+                        <div className="TTitle">
+                            <IconButton style={{color: 'white', marginRight: '130%', marginTop: '4%'}}
+                                        className="KeyboardBackspaceIcon">
+                                <CloseIcon fontSize="large"/>
+                            </IconButton>
+
+                            <h4 className="textForm">create new group</h4>
                             <hr></hr>
 
-                            <input class='inp' placeholder=" enter your user's id"></input>
-                            <Select className='selector' isMulti placeholder="select your permission"
-                                    value={selectedOption}
-                                    onChange={this.handleChanges}
-                                    options={options}
-                            />
-                            <div className="textarea-addmember"
-                                 style={{borderRadius: "10px", marginTop: "10%", marginBottom: "5%",}}></div>
-
-                            <div className="Status-Addmember" id="Addmember-Status"></div>
-                            <div class="center">
-
-                                <Button style={{marginTop: "14%", backgroundColor: "Red"}} size='large'
-                                        className="addbtn" variant="contained" color="secondary">
-                                    <p>Add&nbsp;</p>
-                                </Button>
-
-                                <Button style={{
-                                    marginTop: "14%",
-                                    backgroundColor: 'gray',
-                                    marginLeft: "3%"
-
-                                }} size='large' className="skipbtn" variant="contained" color="secondary">
-                                    <p>Done</p>
-                                </Button>
-
-
-                            </div>
                         </div>
-                        {/* <div id="myModel" className="modal2">
+                        <input onChange={this.change_name} type="text"
+
+                               className="input1" placeholder="id" style={{
+                            height: '40px',
+                            width: '65%',
+                        }}/>
+
+                        <br></br>
+
+                        <br></br>
+                        <input onChange={this.change_id} type="text"
+                               className="input2" placeholder="name" style={{
+                            height: '40px',
+                            width: '65%'
+                        }}/>
+
+                        <div className="Status-Id" id="Status-Id"></div>
+
+
+                        <br></br>
+
+                        <textarea onChange={this.change_bio} type="text"
+                                  className="textarea" placeholder=" bio" style={{
+                            height: '60px',
+                            width: '65%',
+                            marginTop: '8%'
+
+
+                        }}/>
+
+                        <Button style={{
+                            backgroundColor: "Red",
+                            marginRight: "45%",
+                            marginTop: "30%",
+                            marginLeft: "42%"
+                        }} className='nextbtn' variant="contained" color="secondary">
+                            next
+                        </Button>
+                    </div>
+
+                    <div className="addmember-content">
+                        <p classname='tit' style={{fontSize: "100%", marginBottom: "8%", marginTop: "8%",}}>Add your
+                            member</p>
+                        <hr></hr>
+
+                        <input class='inp' placeholder=" enter your user's id"></input>
+                        <Select className='selector' isMulti placeholder="select your permission"
+                                value={selectedOption}
+                                onChange={this.handleChanges}
+                                options={options}
+                        />
+                        <div className="textarea-addmember"
+                             style={{borderRadius: "10px", marginTop: "10%", marginBottom: "5%",}}></div>
+
+                        <div className="Status-Addmember" id="Addmember-Status"></div>
+                        <div class="center">
+
+                            <Button style={{marginTop: "14%", backgroundColor: "Red"}} size='large'
+                                    className="addbtn" variant="contained" color="secondary">
+                                <p>Add&nbsp;</p>
+                            </Button>
+
+                            <Button style={{
+                                marginTop: "14%",
+                                backgroundColor: 'gray',
+                                marginLeft: "3%"
+
+                            }} size='large' className="skipbtn" variant="contained" color="secondary">
+                                <p>Done</p>
+                            </Button>
+
+
+                        </div>
+                    </div>
+                    {/* <div id="myModel" className="modal2">
                         <div id="mymodal2" class="modal-content2">
                             <p class='tit'>Add your member</p>
                             <input class='inp' placeholder=" enter your user's id"></input>
@@ -983,34 +1151,30 @@ class Homepage extends Component {
                     </div> */}
 
 
-                    </div>
+                </div>
 
 
-                    <div className="groupsShow">
-
-
-                        <Button style={{
-                            backgroundColor: "Red",
-                            marginRight: "10px",
-                            marginTop: "20px"
-                        }} className='createnewgp' startIcon={<AddIcon/>} variant="contained" color="secondary">
-
-                            Create new group
-                        </Button>
-
-                    </div>
+                <div className="groupsShow">
+                    <Button style={{
+                        backgroundColor: "Red",
+                        marginRight: "10px",
+                        marginTop: "20px"
+                    }} className='createnewgp' startIcon={<AddIcon/>} variant="contained" color="secondary">
+                        Create new group
+                    </Button>
 
 
                 </div>
 
+                <div className="search-result" id='res'></div>
+            </div>
 
-            )
 
-        }
-
+        )
 
     }
 
-    export
-    default
-    Homepage
+
+}
+
+export default Homepage

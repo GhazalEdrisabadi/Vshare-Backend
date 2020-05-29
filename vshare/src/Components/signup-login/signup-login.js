@@ -113,6 +113,7 @@ class sl extends Component {
                         // Cookies.set('csrftoken');
                         window.localStorage.setItem('token', response.token);
                         window.localStorage.setItem('username', username);
+                          window.localStorage.setItem('user', username)
                         window.location.replace("/homepage");
                     }
 
