@@ -75,46 +75,8 @@ class UserByUsername(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [AllowAny]
 
 
-class EditProfile(generics.RetrieveUpdateDestroyAPIView):
-	def check(self):
-		user = self.request.user
-		if Account.objects.get(username=user).photo:
-			response = create_presigned_url('vshare-profile-images', user)
-			if response is not None:
-				http_response = requests.get(response)
-				Account.objects.get(username=user).photo = True
-				return response
-				print(response)
-			else:
-				exit(1)	
-		else:
-			response = create_presigned_post('vshare-profile-images', user)
-			if response is not None:
-				http_response = requests.post(response['url'], data=response['fields'], files=files)
-				logging.info(f'File upload HTTP status code: {http_response.status_code}')
-			else:
-				exit(1)
-
-	permission_classes = [AllowAny]
+class UploadPhoto(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Account.objects.all()
+	permission_classes = [AllowAny]
+	serializer_class = UploadPhotoSerializer
 	lookup_field = 'username'
-	serializer_class = EditProfileSerializer
-
-
-
-# # Generate a presigned S3 POST URL
-# object_name = 'OBJECT_NAME'
-# response = create_presigned_post('BUCKET_NAME', object_name)
-# if response is None:
-#     exit(1)
-
-# # Demonstrate how another Python program can use the presigned URL to upload a file
-# with open(object_name, 'rb') as f:
-#     files = {'file': (object_name, f)}
-#     http_response = requests.post(response['url'], data=response['fields'], files=files)
-
-
-# # If successful, returns HTTP status code 204
-
-		
-
