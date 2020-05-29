@@ -180,13 +180,13 @@ class sl extends Component {
                         <div class="overlay">
                             <div class="overlay-panel overlay-left">
                                 <h1>Intro of vShare</h1>
-                                <p>Vshare is a web-base service which allows you to watch a video file with other users at the same time. You can talk through the movie with each other
+                                <p className='explain-txt'>Vshare is a web-base service which allows you to watch a video file with other users at the same time. You can talk through the movie with each other
                                 </p>
                                 <button class="ghost" id="signIn">Sign In</button>
                             </div>
                             <div class="overlay-panel overlay-right">
                                 <h1>Intro of vShare</h1>
-                                <p>Vshare is a web-base service which allows you to watch a video file with other users at the same time. You can talk through the movie with each other
+                                <p className='explain-txt'>Vshare is a web-base service which allows you to watch a video file with other users at the same time. You can talk through the movie with each other
                                 </p>
                                    <hr></hr>
                                    <hr></hr>

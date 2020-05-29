@@ -6,7 +6,7 @@
 }
 
 body {
-	background: #2f0003;
+	background: black;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -238,5 +238,33 @@ padding: 5px;
 
 }
 .boro{
-	color: #2F0003;
+	color: black;
 }
+@media (min-width: 300px) and (max-width:600px) {
+.explain-txt{
+display: none;
+}
+input {
+	
+	width: 150%;
+}
+.homepagebtn2 {
+	
+		margin-left: 34%;
+	
+	}
+}
+@media (min-width: 600px) and (max-width:800px) {
+	.explain-txt{
+	display: none;
+	}
+	input {
+		
+		width: 120%;
+	}
+	.homepagebtn2 {
+	
+		margin-left: 39%;
+	
+	}
+	}
