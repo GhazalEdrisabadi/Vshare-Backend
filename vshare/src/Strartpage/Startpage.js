@@ -33,8 +33,8 @@ class startpage extends Component {
                     
                     <div className="container-lg" style={{ backgroundColor: "transparent" , marginTop:'200px' }}>
                         <div className="row">
-                            <div className="txt-container col-sm-12 col-lg-12 col-xl-12 col-md-12">
-                                <div className="txt-content" style={{ display: "block" }}>
+                            <div className="txt-container ">
+                                <div className="txt-content col-sm-12 col-lg-8 col-xl-8 col-md-8" style={{ display: "block" }}>
                                     Vshare is a web-base service which allows you to watch a video file with other users
                                                                             at the same time.
                                                                             You can talk through the movie with each other

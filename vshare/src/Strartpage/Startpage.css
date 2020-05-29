@@ -339,3 +339,8 @@ color:white;
     flex: 0 0 100%;
     max-width: 100%
 }
+@media (min-width:300px) and (max-width:500px) {
+    .txt-container {
+        margin-top: 10px;
+    }
+}
