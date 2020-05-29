@@ -432,7 +432,7 @@ else{
                         htmlcode += '<div>'
                         // htmlcode+='<br/>'
                         htmlcode += '<div class="user-search">';
-                        htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response.result[counter1].who_is_followed + '</p>';
+                        htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result2"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response.result[counter1].who_is_followed + '</p>';
 
                         htmlcode += '<br/>'
 
@@ -487,7 +487,7 @@ else{
                         htmlcode += '<div>'
                         // htmlcode+='<br/>'
                         htmlcode += '<div class="user-search">';
-                        htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response.result[counter1].who_follows + '</p>';
+                        htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result2"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response.result[counter1].who_follows + '</p>';
 
                         htmlcode += '<br/>'
 
