@@ -405,7 +405,7 @@ min-width: 50%;
     width: 500px;
   }
  .input{
-     width: 200px;
+    width: 70px;
  }
   .inputedit{
       width: 150px;
@@ -458,7 +458,7 @@ z-index: 1;
       width: 200px;
 
   }
- 
+
 
   .modal2{
     background-color: red;
@@ -508,7 +508,7 @@ z-index: 1;
 
 .groupsShow{
     width: 70%;
-    margin-top: 13%;
+    margin-top: 20%;
     margin-left: 50px;
 }
 .formback {
@@ -739,11 +739,10 @@ width: 100%;
     display: none;
     background-color: rgb(35, 35, 35);
     border-radius: 10px;
-    width: 310px;
+    width: 290px;
     position: absolute;
     height: 400px;
     margin-top: 50px;
-    margin-left: 41.5%;
     color: white;
     white-space: initial;
     overflow-x:hidden;
