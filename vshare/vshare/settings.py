@@ -138,7 +138,7 @@ DATABASES = {
         'NAME': 'vshare',
 
         'USER' : 'admin',
-        'PASSWORD' : '123qwe',
+        'PASSWORD' : 'Kamyab78',
 
         'HOST' : 'localhost',
         'PORT' : '5432',

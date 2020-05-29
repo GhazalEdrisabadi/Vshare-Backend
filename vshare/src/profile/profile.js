@@ -24,11 +24,11 @@ class profile extends Component {
 
             console.log(username);
 
-            //            if(username==window.localStorage.getItem('username')){
-            //               document.getElementById("content").style.display = 'none'
-            //                document.getElementById("right-button").style.display = 'none'
-            //                 document.getElementById("left-button").style.display = 'none'
-            //            }
+                       if(username==window.localStorage.getItem('username')){
+                          document.getElementById("content").style.display = 'none'
+                           document.getElementById("right-button").style.display = 'none'
+                            document.getElementById("left-button").style.display = 'none'
+                       }
             var settings = {
                 "url": "http://127.0.0.1:8000/user/relations/followers/?user=" + username + "",
                 "method": "GET",
@@ -149,7 +149,7 @@ count=response.followers_count
 
 
             $(".inp-search").change(function () {
-                $(".search-result").text("")
+                $(".search-result").html("")
                 console.log("change")
                 var user_search = $('.inp-search').val()
                 console.log(user_search)
@@ -171,11 +171,7 @@ count=response.followers_count
                     // 
                     console.log(response);
 
-if(response.length==0){
-    $(".search-result").html("<p class='notfound'>not found</p>");
-    $(".search-result").fadeIn()
-}
-else{
+
         var hoverout = 'onMouseOut="this.style.color=';
 
                         var hoverrout = hoverout + "'white'";
@@ -206,60 +202,66 @@ else{
                             $(".search-result").append(htmlcode)
                         }
 
-                        var settings = {
-                            "url": "http://127.0.0.1:8000/groups/?search=" + user_search + "",
-                            "method": "GET",
-                            "timeout": 0,
-                            "headers": {
-                                "Authorization": "token " + window.localStorage.getItem('token'),
-                                "accept": "application/json",
-                                "Access-Control-Allow-Origin": "*",
-                                "Access-Control-Allow-Headers": "*",
-                                "Content-Type": "application/json"
-                            },
+                });
+
+                var settings = {
+                    "url": "http://127.0.0.1:8000/groups/?search=" + user_search + "",
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+                        "Authorization": "token " + window.localStorage.getItem('token'),
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
 
 
 
-                        };
+                };
 
-                        $.ajax(settings).done(function (response) {
+                $.ajax(settings).done(function (response) {
 
-                            var hoverout = 'onMouseOut="this.style.color=';
-                            var hoverrout = hoverout + "'white'";
+                    var hoverout = 'onMouseOut="this.style.color=';
+                    var hoverrout = hoverout + "'white'";
 
-                            var hover = 'onMouseOver="this.style.color=';
-                            var hoverr = hover + "'red'";
-                            var htmlcode = '<br/>'
-                            //   $(".search-result").append(htmlcode)
-                            htmlcode = '';
-                            $(".search-result").append(htmlcode)
-                            for (var counter1 = 0; counter1 < response.length; counter1++, htmlcode = '') {
-                                var a2 = " document.getElementById('Modal-join').style.display = 'block'";
-                                var r = "window.localStorage.setItem('id-join','" + response[counter1].groupid + "')"; //id of the group
-                                htmlcode += '<div>'
-                                // htmlcode+='<br/>'
-                                htmlcode += '<div class="group-search">';
-                                htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].groupid + '</p>';
+                    var hover = 'onMouseOver="this.style.color=';
+                    var hoverr = hover + "'red'";
+                    var htmlcode = '<br/>'
+                    //   $(".search-result").append(htmlcode)
+                    htmlcode = '';
+                    $(".search-result").append(htmlcode)
+                    for (var counter1 = 0; counter1 < response.length; counter1++, htmlcode = '') {
+                        var a2 = " document.getElementById('Modal-join').style.display = 'block'";
+                        var r = "window.localStorage.setItem('id-join','" + response[counter1].groupid + "')"; //id of the group
+                        htmlcode += '<div>'
+                        // htmlcode+='<br/>'
+                        htmlcode += '<div class="group-search">';
+                        htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].groupid + '</p>';
 
-                                htmlcode += '<br/>'
-
-
-                                htmlcode += '</div>'
-
-                                htmlcode += '</div>'
-                                htmlcode += '<hr/>'
-                                $(".search-result").append(htmlcode)
-                            }
-
-                        });
+                        htmlcode += '<br/>'
 
 
+                        htmlcode += '</div>'
 
-                        $(".search-result").fadeIn()
+                        htmlcode += '</div>'
+                        htmlcode += '<hr/>'
+                        $(".search-result").append(htmlcode)
                     }
 
-
                 });
+
+setTimeout(function(){
+    if( $(".search-result").html() == ''){
+    $(".search-result").html("<p class='notfound'>not found</p>");
+    $(".search-result").fadeIn()
+}
+else{
+    $(".search-result").fadeIn()
+}
+},200)
+
+
 
 
             })
