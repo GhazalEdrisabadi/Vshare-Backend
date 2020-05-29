@@ -12,6 +12,7 @@ import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
 import Button from '@material-ui/core/Button';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import EditIcon from '@material-ui/icons/Edit';
+import Avatar from '@material-ui/core/Avatar';
 var username = window.localStorage.getItem('user');
 var respone_get
 var count
@@ -135,9 +136,12 @@ count=response.followers_count
             $.ajax(settings).done(function (response) {
                 // 
                 console.log(response);
-                respone_get = response
-                $(".username_prof").text(respone_get.username)
-                $(".username").text(respone_get.username)
+                respone_get = response;
+                $(".username_prof").text(respone_get.username);
+                 $(".username").text(respone_get.username);
+                 $(".photo").html(response.username.toUpperCase()[0]);
+
+
 
             });
 
@@ -166,12 +170,14 @@ count=response.followers_count
                 $.ajax(settings).done(function (response) {
                     // 
                     console.log(response);
-                    if (response.length == 0) {
-                        $(".search-result").append("not found")
-                        $(".search-result").fadeIn()
-                    }
-                    else {
-                        var hoverout = 'onMouseOut="this.style.color=';
+
+if(response.length==0){
+    $(".search-result").html("<p class='notfound'>not found</p>");
+    $(".search-result").fadeIn()
+}
+else{
+        var hoverout = 'onMouseOut="this.style.color=';
+
                         var hoverrout = hoverout + "'white'";
 
                         var hover = 'onMouseOver="this.style.color=';
@@ -528,7 +534,7 @@ count=response.followers_count
                     var a2 = " document.getElementById('Modal-join').style.display = 'block'";
                     var r = "window.localStorage.setItem('id-join','" + mygroups[counter1].id + "')"; //id of the group
                     htmlcode += '<div>'
-                    htmlcode += '<div class="admin_gp"></div>';
+                    htmlcode += '<div class="admin_gp">'+mygroups[counter1].name.toUpperCase()[0]+'</div>';
                     htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + mygroups[counter1].id + '</p>';
 
 
@@ -589,8 +595,11 @@ count=response.followers_count
                         var a2 = " document.getElementById('Modal-join').style.display = 'block'";
                         var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')"; //id of the group
                         htmlcode2 += '<div>'
-                        htmlcode2 += '<div class="member_gp"></div>';
-                        htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].id + '</p>';
+
+
+                        htmlcode2 += '<div class="member_gp">'+groups[counter2].name.toUpperCase()[0]+'</div>';
+ htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].id + '</p>';
+                      
 
                         htmlcode2 += '</div>'
 
@@ -691,8 +700,11 @@ count=response.followers_count
 
 
                 <div className="back_prof">
-                    <div className="photo" />
-                    <div className="username_prof" >USERNAME</div>
+
+                <div className='MuiAvatar-root MuiAvatar-circle photo MuiAvatar-colorDefault photo'>&nbsp;</div>
+
+                <div className="username_prof" >USERNAME</div>
+
 
 
                     <IconButton style={{ color: 'white', fontSize: "70px" }}
