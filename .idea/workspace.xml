@@ -3,8 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="261f5428-644e-4ccf-b1d6-0289c4e945f1" name="Default Changelist" comment="Merge branch 'features/chatroom-frontend' into features/chatroom-frontend-playVideo&#10;&#10;# Conflicts:&#10;#&#9;vshare/package-lock.json&#10;#&#9;vshare/package.json&#10;#&#9;vshare/src/chatroom/chat_room.css&#10;#&#9;vshare/src/chatroom/chat_room.js">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+
+      <change beforePath="$PROJECT_DIR$/vshare/src/profile/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/vshare/src/profile/profile.css" afterDir="false" />
+    </list>
+
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,25 +25,19 @@
     <auto-save>true</auto-save>
   </component>
   <component name="ProjectId" id="1aLs0lBzjqWNoYwANAZZydJnJvP" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="E:/app_v2" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -76,12 +75,17 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup" timestamp="1590013734825">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup/0.0.1920.1050@0.0.1920.1050" timestamp="1590013734825" />
   </component>
 </project>
