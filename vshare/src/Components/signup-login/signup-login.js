@@ -28,7 +28,7 @@ class sl extends Component {
                         $("#statussignup").text("All field are required and enter a valid email address !");
                     },
                     success: function () {
-                        window.location.replace("/login");
+                        // window.location.replace("/login");
                     },
                     "headers": {
                         "accept": "application/json",
@@ -140,8 +140,8 @@ class sl extends Component {
         return (
             <dev>
 
-
-                <div class='homepagebtn2'><a href='./startpage'>Start page</a></div>
+                <h2 className='boro'>Weekly Coding Challenge #1: Sign in/up FormFDNSKN</h2>
+                <a href='./startpage'><div class='homepagebtn2'>Start page</div></a>
                 <div class="container" id="container">
                     <div class="form-container sign-up-container">
                         <form action="#">
@@ -180,26 +180,16 @@ class sl extends Component {
                         <div class="overlay">
                             <div class="overlay-panel overlay-left">
                                 <h1>Intro of vShare</h1>
-                                <p>Vshare is a web-base service which allows you to watch a video file with other users
-                                    at the same time.
-                                    All the participants can send messages through the room while The video is playing
-                                    for everyone. This service doesn’t stream the video , actually , it works when every
-                                    participant has a similar video file locally on his/her device. While the video is
-                                    playing , every changes to the video playback by any participant affects on what
-                                    other clients are watching at the same time.
+                                <p>Vshare is a web-base service which allows you to watch a video file with other users at the same time. You can talk through the movie with each other
                                 </p>
                                 <button class="ghost" id="signIn">Sign In</button>
                             </div>
                             <div class="overlay-panel overlay-right">
                                 <h1>Intro of vShare</h1>
-                                <p>Vshare is a web-base service which allows you to watch a video file with other users
-                                    at the same time.
-                                    All the participants can send messages through the room while The video is playing
-                                    for everyone. This service doesn’t stream the video , actually , it works when every
-                                    participant has a similar video file locally on his/her device. While the video is
-                                    playing , every changes to the video playback by any participant affects on what
-                                    other clients are watching at the same time.
+                                <p>Vshare is a web-base service which allows you to watch a video file with other users at the same time. You can talk through the movie with each other
                                 </p>
+                                   <hr></hr>
+                                   <hr></hr>
                                 <button class="ghost" id="signUp">Sign Up</button>
                             </div>
                         </div>
