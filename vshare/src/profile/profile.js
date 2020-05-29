@@ -12,6 +12,7 @@ import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
 import Button from '@material-ui/core/Button';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import EditIcon from '@material-ui/icons/Edit';
+import Avatar from '@material-ui/core/Avatar';
 var username = window.localStorage.getItem('user');
 var respone_get
 class profile extends Component {
@@ -134,8 +135,10 @@ else{
                 // 
                 console.log(response);
                 respone_get = response
-                $(".username_prof").text(respone_get.username)
-                 $(".username").text(respone_get.username)
+                $(".username_prof").text(respone_get.username);
+                 $(".username").text(respone_get.username);
+                 $(".photo").html(response.username.toUpperCase()[0]);
+
 
             });
 
@@ -523,7 +526,7 @@ var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_f
 var a2 = " document.getElementById('Modal-join').style.display = 'block'";
 var r = "window.localStorage.setItem('id-join','" + mygroups[counter1].id + "')"; //id of the group
                     htmlcode += '<div>'
-                    htmlcode += '<div class="admin_gp"></div>';
+                    htmlcode += '<div class="admin_gp">'+mygroups[counter1].name.toUpperCase()[0]+'</div>';
                     htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + mygroups[counter1].id + '</p>';
                 
                    
@@ -584,7 +587,8 @@ var r = "window.localStorage.setItem('id-join','" + mygroups[counter1].id + "')"
                         var a2 = " document.getElementById('Modal-join').style.display = 'block'";
 var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')"; //id of the group
                         htmlcode2 += '<div>'
-                        htmlcode2 += '<div class="member_gp"></div>';
+
+                        htmlcode2 += '<div class="member_gp">'+groups[counter2].name.toUpperCase()[0]+'</div>';
  htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].id + '</p>';
                       
                         htmlcode2 += '</div>'
@@ -686,7 +690,8 @@ var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')"; 
 
 
                 <div className="back_prof">
-                <div className="photo" />
+                <div className='MuiAvatar-root MuiAvatar-circle photo MuiAvatar-colorDefault photo'>&nbsp;</div>
+
                 <div className="username_prof" >USERNAME</div>
 
 
