@@ -9,5 +9,5 @@ urlpatterns = [
     path('signup/', Registration.as_view(), name="Signup"),
     path('login/', UserLogin.as_view(), name="Login"),
     path('<str:username>/', UserByUsername.as_view(), name="detail"),
-
+    path('find/username/', UserByUsernameSugestion.as_view(), name="find_with_sugestion"),
 ]
