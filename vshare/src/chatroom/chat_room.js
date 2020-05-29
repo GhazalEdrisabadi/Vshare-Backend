@@ -218,7 +218,7 @@ class chat_room extends Component {
 
             console.log(messagee.message);
 
-            if (logoutclicked == 0 && adminisinstatezero == 0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
+            if (logoutclicked == 0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
                 window.location.reload();
             }
 
@@ -359,6 +359,15 @@ class chat_room extends Component {
                 if (messagee.username == window.localStorage.getItem('username')) {
                     if (messagee.permission1 == "controller" || messagee.permission2 == "controller") {
                         iscontroller = 1;
+                        if (filmplayed == 1) {
+                            if (played == 0) {
+                                this.play();
+                                this.pause();
+                            } else {
+                                this.pause();
+                                this.play();
+                            }
+                        }
                         document.getElementById("controllbuttons2").style.zIndex = "-1";
                         document.getElementById('controllbuttons').style.pointerEvents = 'auto';
                         document.getElementById('movie').style.pointerEvents = 'auto';
@@ -372,6 +381,15 @@ class chat_room extends Component {
                     }
                     if (messagee.permission1 != "controller" && messagee.permission2 != "controller") {
                         iscontroller = 0;
+                        if (filmplayed == 1) {
+                            if (played == 0) {
+                                this.play();
+                                this.pause();
+                            } else {
+                                this.pause();
+                                this.play();
+                            }
+                        }
                         document.getElementById("controllbuttons2").style.zIndex = "1";
                         document.getElementById('controllbuttons').style.pointerEvents = 'none';
                         document.getElementById('movie').style.pointerEvents = 'none';
@@ -391,7 +409,7 @@ class chat_room extends Component {
 
             if (messagee.msg_type == "send admin info") {
                 if (messagee.username.substr(messagee.username.length - 3) == 'nnn') {
-                    $('.name').html(messagee.username.substring(0,messagee.username.length - 3));
+                    $('.name').html(messagee.username.substring(0, messagee.username.length - 3));
                 } else {
                     window.localStorage.setItem('isadmin', '');
                     if (messagee.username == window.localStorage.getItem('username')) {
@@ -566,10 +584,10 @@ class chat_room extends Component {
                     },
                     success: function () {
                         var message_newadmin;
-                         if(title != ""){
-                                 message_newadmin = {"command": "new_admin", "user": title+'nnn'};
-                                   ws.send(JSON.stringify(message_newadmin));
-                            }
+                        if (title != "") {
+                            message_newadmin = {"command": "new_admin", "user": title + 'nnn'};
+                            ws.send(JSON.stringify(message_newadmin));
+                        }
                         if (new_admin != 'yetoopdaramghelghelie') {
                             message_newadmin = {"command": "new_admin", "user": new_admin};
 
@@ -2151,6 +2169,7 @@ class chat_room extends Component {
             if (adminhash == null) {
                 console.log("a hash : " + adminhash);
                 console.log("send as admin");
+                adminhash = encrypted;
                 message_send = {"command": "set_video_hash", "vhash": encrypted};
                 clienthashok = 1;
             } else {
