@@ -445,10 +445,10 @@ z-index: 1;
 }
 .createnewgp{
     width: 200px;
-
+    content: 'Create group';
 }
     }
-@media screen and (min-width: 400px) and (max-width:595px)  {
+@media screen and (min-width: 300px) and (max-width:595px)  {
    .modal {
     width: 150%;
     margin-left: -120px;
@@ -458,12 +458,7 @@ z-index: 1;
       width: 200px;
 
   }
-  .createnewgp{
-      width: 700px;
-     height: 70px;
-      font-size: 5px;
-
-  }
+ 
 
   .modal2{
     background-color: red;
@@ -514,22 +509,26 @@ z-index: 1;
 .groupsShow{
     width: 70%;
     margin-top: 13%;
+    margin-left: 50px;
 }
 .formback {
 width: 70%;
 margin-top: 15%;
-margin-left: 3%;
+margin-left: 50px;
 z-index: 1;
 }
 .createnewgp{
     width: 200px;
+    content: '+';
+    background-color: black;
 
 }
+
 }
 @media screen and (min-width: 780px) and (max-width:800px)  {
 .createnewgp{
     width: 400px;
-
+    content: '+ Create group';
 }
 .groupsShow{
     width: 44%;
@@ -598,9 +597,9 @@ z-index: 1;
 .groupshowbody{
     height: 80%;
 }
-.createnewgp{
+.createnewgp:after{
     width: 200px;
-
+    content: 'Create group';
 }
 }
 @media screen and (min-width: 1200px)  {
@@ -622,9 +621,9 @@ z-index: 1;
     margin-top: 5%;
     margin-right: 38%;
 }
-.createnewgp{
+.createnewgp:after{
     width: 200px;
-
+    content: 'Create group';
 }
 }
 @media screen and (min-width: 1200px) and (max-width:1600px)  {
@@ -733,10 +732,24 @@ min-width: 50%;
     border-right: solid;
     border-color: black;
     flex-direction: row;
-
+width: 100%;
 
 }
+.search-result2{
+    display: none;
+    background-color: rgb(35, 35, 35);
+    border-radius: 10px;
+    width: 310px;
+    position: absolute;
+    height: 400px;
+    margin-top: 50px;
+    margin-left: 41.5%;
+    color: white;
+    white-space: initial;
+    overflow-x:hidden;
+z-index: 1;
 
+}
 .submitedit {
 
 
