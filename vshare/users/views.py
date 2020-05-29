@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#subs backend
 from __future__ import unicode_literals
 from django.shortcuts import render
 #######################################
@@ -18,6 +19,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
+
+from rest_framework import filters
 
 from rest_framework.filters import (
 		SearchFilter,
@@ -71,6 +74,13 @@ class UserByUsername(generics.RetrieveUpdateDestroyAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
     lookup_field = 'username'
+    permission_classes = [AllowAny]
+
+class UserByUsernameSugestion(generics.ListCreateAPIView):
+    search_fields = ['username']
+    filter_backends = (filters.SearchFilter,)
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
     permission_classes = [AllowAny]
 
 class FriendshipList(generics.ListCreateAPIView):
@@ -140,5 +150,6 @@ class UnfollowUser(generics.DestroyAPIView):
 		follower = self.request.user
 		queryset = Friendship.objects.filter(who_follows=follower)
 		return queryset
+
 
 
