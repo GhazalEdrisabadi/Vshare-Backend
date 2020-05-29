@@ -92,8 +92,6 @@ class AccountSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class UploadPhoto():
-
 	# def create_bucket(self, bucket_name):
 	# 	try:
 	# 		s3_client = boto3.client('s3')
@@ -103,14 +101,22 @@ class UploadPhoto():
 	# 		logging.error(e)
 	# 		return False
 
+class UploadPhotoSerializer(serializers.ModelSerializer):
+
+	class Meta(object):
+		model = Account
+		fields = ['username','photo']
+			
 	def create_presigned_url(self, bucket_name, object_name, expiration=3600):
 
 		s3_client = boto3.client('s3')
+
 		try:
-			response = s3_client.generate_presigned_url('get_object',
-														Params={'Bucket': bucket_name,
-																'Key': object_name},
-														ExpiresIn=expiration)
+			response = s3_client.generate_presigned_url(
+				object_name,
+				Params={'Bucket': bucket_name,'Key': object_name},
+				ExpiresIn=expiration
+			)
 		except ClientError as e:
 			logging.error(e)
 			return None
@@ -120,51 +126,42 @@ class UploadPhoto():
 
 	def create_presigned_post(bucket_name, object_name,
 								fields=None, conditions=None, expiration=3600):
+
 		s3_client = boto3.client('s3')
+
 		try:
-			response = s3_client.generate_presigned_post(bucket_name,
-														object_name,
-														Fields=fields,
-														Conditions=conditions,
-														ExpiresIn=expiration)
+			response = s3_client.generate_presigned_post(
+				bucket_name,
+				object_name,
+				Fields=fields,
+				Conditions=conditions,
+				ExpiresIn=expiration
+			)
 		except ClientError as e:
 			logging.error(e)
 			return None
 
 		return response
 
-class EditProfileSerializer(serializers.ModelSerializer):
+	def update_photo(self):
 
-	password2 = serializers.CharField(
-		required=False, 
-		allow_blank=True,
-		help_text='Confirm new password',
-		label='Confirm Password',
-		style = {'input_type' : 'password'}, 
-		write_only=True
-	)
+		if Account.objects.get(username=username).photo:
+			response = create_presigned_url('vshare-profile-images', usernam)
+			if response is not None:
+				http_response = requests.get(response)
+				print(http_response)
+			return http_response
 
-	class Meta:
-		model = Account
-		fields = ['photo','email','password','password2']
-		extra_kwargs = {
-				'password': {'write_only' : True, 'allow_blank' : True, 'required':False},
-				'password2':{'allow_blank' : True, 'required':False},
-				'email':{'allow_blank' : True, 'required':False},
-		}
+		else:
+			response = create_presigned_post('vshare-profile-images', usernam)
+			if response is None:
+				exit(1)
 
-	def update_info(self):
-		account = Account(
-				email = self.validated_data['email'],
-				username = self.validated_data['username'],
-			)
+			with open(user, 'rb') as f:
+				files = {'file': (user, f)}
+				http_response = requests.post(response['url'], data=response['fields'], files=files)
 
-		password = self.validated_data['password']
-		password2 = self.validated_data['password2']
-
-		if password != password2:
-			raise serializers.ValidationError({'password':'Passwords must match.'})
-
-		account.set_password(password)
-		account.save()
-		return account
+			Account.objects.get(username=user).photo = True
+			print(http_response)
+			logging.info(f'File upload HTTP status code: {http_response.status_code}')
+			return http_response
