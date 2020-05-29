@@ -426,13 +426,7 @@ min-width: 50%;
 .modal-content2{
 
 }
-.dltbtns{
-    display: flex;
 
-    flex-direction: row;
-
-    margin-right: 7%;
-}
 .groupsShow{
     width: 70%;
     margin-top: 13%;
@@ -449,11 +443,7 @@ z-index: 1;
 }
     }
 @media screen and (min-width: 300px) and (max-width:595px)  {
-   .modal {
-    width: 150%;
-    margin-left: -120px;
-
-  }
+ 
   .inputedit{
       width: 200px;
 
@@ -468,11 +458,7 @@ z-index: 1;
 
    width: 150%;
 }
-.dltyes{width: 2px;}
-.dltno{
-    width: 2px;
 
-}
 .deleteTEXT{
     font-size: 15px;
 }
@@ -480,13 +466,7 @@ z-index: 1;
 .admintext{
     font-size: 12px;
 }
-.dltbtns{
-    display: flex;
 
-    flex-direction: column;
-
-    margin-right: 24%;
-}
   .logout_text{
       display: none;
   }
@@ -557,10 +537,7 @@ z-index: 1;
 
 }
 @media screen and (min-width: 780px) and (max-width:1200px)  {
-  .modal {
-    width: 100%;
 
-  }
   .inputedit{
       width: 200px;
 
@@ -577,13 +554,7 @@ z-index: 1;
 .admintext{
     font-size: 20px;
 }
-.dltbtns{
-    display: flex;
 
-    flex-direction: row;
-
-    margin-right: 18%;
-}
 .groupsShow{
     width: 47%;
     margin-top: 10%;
@@ -603,10 +574,7 @@ z-index: 1;
 }
 }
 @media screen and (min-width: 1200px)  {
-  .modal {
-    width: 100%;
 
-  }
   .inputedit{
       width: 300px;
 
@@ -617,20 +585,14 @@ z-index: 1;
 .modal-content2{
 
 }
-.dltbtns {
-    margin-top: 5%;
-    margin-right: 38%;
-}
+
 .createnewgp:after{
     width: 200px;
     content: 'Create group';
 }
 }
 @media screen and (min-width: 1200px) and (max-width:1600px)  {
-  .modal {
-    width: 100%;
 
-  }
   .inputedit{
       width: 300px;
 
@@ -641,10 +603,7 @@ z-index: 1;
 .modal-content2{
 
 }
-.dltbtns {
-    margin-top: 5%;
-    margin-right: 30%;
-}
+
 .groupshowbody{
     height: 80%;
 }
@@ -667,9 +626,11 @@ z-index: 1;
     color: whitesmoke;
     margin: auto;
     padding-left: 30px;
+    padding-right: 30px;
     padding-bottom: 40px;
     border: 1px solid #888;
-    width: 30%;
+    width: 27%;
+    min-width: 350px;
 }
 
 .modal2 {
@@ -703,16 +664,16 @@ min-width: 50%;
 
 .dltbtns {
 
-    float: right;
+
 
 }
 
 .dltyes {
-    float: left;
+    float: initial;
 }
 
 .dltno {
-    float: right;
+    float: initial;
 }
 
 .inputedit {
@@ -762,10 +723,10 @@ z-index: 1;
     background-color: rgb(35, 35, 35);
     color: whitesmoke;
     margin: auto;
-
+min-width: 350px;
     border: 1px solid #888;
     width: 30%;
-  min-height: 350px;
+  min-height: 290px;
     font-family: Arial;
 
 
@@ -789,10 +750,7 @@ z-index: 1;
 
     font-family: Arial;
 }
-.dltbtns {
-    margin-top: 5%;
 
-}
 
 .dltyes {
 
