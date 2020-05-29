@@ -4,6 +4,65 @@ from channels.db import database_sync_to_async
 from .exceptions import ClientError
 from groups.models import *
 
+# Set sender of video hash
+@database_sync_to_async	
+def set_sender(sender,roomid):
+	try:
+		obj = Group.objects.get(groupid=roomid)
+		obj.hash_sender = sender
+		obj.save()
+		return obj.hash_sender
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
+
+# Check a user is the sender of video hash
+@database_sync_to_async	
+def is_sender(user,roomid):
+	try:
+		return Group.objects.filter(groupid=roomid, hash_sender=user).exists()
+	except Group.DoesNotExist:
+		raise ClientError("ROOM_INVALID")
+
+#Check if user has the permission of select and reselect in the group or not
+@database_sync_to_async
+def select_permission(user,roomid):
+	try:
+		group_obj = Group.objects.get(groupid=roomid)
+		permission_obj = Permission.objects.get(group=roomid, member=user)
+		if permission_obj.choose_video_permission:
+			return True
+		else:
+			return False
+	except Group.DoesNotExist:
+			raise ClientError("ROOM_INVALID")
+
+# Check if user has the permission of pause,play,backward 
+# and forward the video in the group or not
+@database_sync_to_async
+def playback_permission(user,roomid):
+	try:
+		group_obj = Group.objects.get(groupid=roomid)
+		permission_obj = Permission.objects.get(group=roomid, member=user)
+		if permission_obj.playback_permission:
+			return True
+		else:
+			return False
+	except Group.DoesNotExist:
+			raise ClientError("ROOM_INVALID")
+
+#check if user has the permission of chating in the group or not
+@database_sync_to_async
+def chat_permission(the_user,the_room):
+	try:
+		group_obj = Group.objects.get(groupid=the_room)
+		permission_obj=Permission.objects.get(group=group_obj, member=the_user)
+		if permission_obj.chat_permission:
+			return True
+		else:
+			return False
+	except Group.DoesNotExist:
+			raise ClientError("ROOM_INVALID")
+
 #remove the disconected user from the online users
 @database_sync_to_async
 def remove_online_user(the_user,the_room):
