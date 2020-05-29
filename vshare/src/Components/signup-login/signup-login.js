@@ -28,7 +28,7 @@ class sl extends Component {
                         $("#statussignup").text("All field are required and enter a valid email address !");
                     },
                     success: function () {
-                        window.location.replace("/login");
+                        // window.location.replace("/login");
                     },
                     "headers": {
                         "accept": "application/json",
@@ -113,6 +113,7 @@ class sl extends Component {
                         // Cookies.set('csrftoken');
                         window.localStorage.setItem('token', response.token);
                         window.localStorage.setItem('username', username);
+                          window.localStorage.setItem('user', username)
                         window.location.replace("/homepage");
                     }
 

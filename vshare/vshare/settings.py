@@ -6,9 +6,8 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
+#this is features/online-users-backend
 import os
-from datetime import timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -59,10 +58,10 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.SessionAuthentication',
-        # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
+    #'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    #'PAGE_SIZE': 3,
 }
 
 AUTH_USER_MODEL = 'users.Account'
@@ -83,9 +82,6 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-# CORS_ORIGIN_WHITELIST = [
-# 	"http://127.0.0.1:3000"
-# ]
 
 CORS_ALLOW_METHODS = [
     'DELETE',
@@ -207,3 +203,12 @@ MEDIA_URL =  '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR , 'users/media')
 
+#sudo -u postgres psql postgres
+
+#DROP DATABASE vshare;
+#CREATE DATABASE vshare;
+#ALTER ROLE admin SET client_encoding TO 'utf8';
+
+#ALTER ROLE admin SET default_transaction_isolation TO 'read committed';
+
+#ALTER ROLE admin SET timezone TO 'UTC';
