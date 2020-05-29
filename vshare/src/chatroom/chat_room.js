@@ -304,7 +304,7 @@ class chat_room extends Component {
                     //console.log("admin hash in state 2 : " + adminhash);
 
                 }, 600);
-                console.log('adminhash : '+ adminhash);
+                console.log('adminhash : ' + adminhash);
 
 
             }
@@ -390,12 +390,15 @@ class chat_room extends Component {
 
 
             if (messagee.msg_type == "send admin info") {
-                 window.localStorage.setItem('isadmin', '');
-                if (messagee.username == window.localStorage.getItem('username')) {
-                    isadmin = 1;
-                    iscontroller=1;
-                    isselector=1;
-                     document.getElementById("controllbuttons2").style.zIndex = "-1";
+                if (messagee.username.substr(messagee.username.length - 3) == 'nnn') {
+                    $('.name').html(messagee.username.substring(0,messagee.username.length - 3));
+                } else {
+                    window.localStorage.setItem('isadmin', '');
+                    if (messagee.username == window.localStorage.getItem('username')) {
+                        isadmin = 1;
+                        iscontroller = 1;
+                        isselector = 1;
+                        document.getElementById("controllbuttons2").style.zIndex = "-1";
                         document.getElementById('controllbuttons').style.pointerEvents = 'auto';
                         document.getElementById('movie').style.pointerEvents = 'auto';
                         document.getElementById('reselect').style.pointerEvents = 'auto';
@@ -404,14 +407,13 @@ class chat_room extends Component {
                             window.location.reload();
                         else
                             this.play();
+                    } else
+                        isadmin = 0;
+                    if (adminhash == null && filmplayed == 0)
+                        window.location.reload();
+
                 }
-                else
-                    isadmin = 0;
-                if (adminhash == null && filmplayed==0)
-                    window.location.reload();
-
             }
-
         };
 
 
@@ -550,9 +552,11 @@ class chat_room extends Component {
                     form.append("title", title);
                 if (des != '')
                     form.append("describtion", des);
-                if (new_admin != '')
+                if (new_admin != 'yetoopdaramghelghelie') {
                     form.append("created_by", new_admin)
-
+                    console.log("nayaaaaaaaaaaaaaaaaaaaaaaaaa");
+                }
+                console.log(new_admin);
                 var settings = {
                     "url": "http://127.0.0.1:8000/groups/" + id_gp + "/",
                     "method": "PUT",
@@ -561,45 +565,58 @@ class chat_room extends Component {
                         "Authorization": "Token " + localStorage.getItem('token')
                     },
                     success: function () {
-                        if (new_admin != '') {
-                            const message_newadmin = {"command": "new_admin", "user": new_admin};
+                        var message_newadmin;
+                         if(title != ""){
+                                 message_newadmin = {"command": "new_admin", "user": title+'nnn'};
+                                   ws.send(JSON.stringify(message_newadmin));
+                            }
+                        if (new_admin != 'yetoopdaramghelghelie') {
+                            message_newadmin = {"command": "new_admin", "user": new_admin};
+
+
                             ws.send(JSON.stringify(message_newadmin));
+
+                            var settings = {
+
+                                "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + new_admin + "",
+                                "method": "PUT",
+                                "timeout": 0,
+                                success: function () {
+
+                                    var x = document.getElementById("snackbar-succes-edit");
+                                    x.className = "show";
+                                    setTimeout(function () {
+                                        x.className = x.className.replace("show", "");
+                                    }, 3000);
+                                    document.getElementById('myModal_popup').style.display = 'none'
+                                    document.getElementById('myModal').style.display = 'none';
+                                },
+                                "headers": {
+                                    "accept": "application/json",
+                                    "Access-Control-Allow-Origin": "*",
+                                    "Access-Control-Allow-Headers": "*",
+                                    "Content-Type": "application/json"
+                                },
+                                "data": JSON.stringify({
+                                        "chat_permission": 1,
+                                        "choose_video_permission": 1,
+                                        "playback_permission": 1,
+                                        "group": id_gp,
+                                        "member": new_admin,
+                                    }
+                                ),
+
+                            };
+
+                            $.ajax(settings).done(function (response2) {
+                                console.log("done")
+                                console.log(response2);
+
+                            });
+                        } else {
+                            document.getElementById('myModal_popup').style.display = 'none'
+                            document.getElementById('myModal').style.display = 'none';
                         }
-                        var settings = {
-                            "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + new_admin + "",
-                            "method": "PUT",
-                            "timeout": 0,
-                            success: function () {
-                                var x = document.getElementById("snackbar-succes-edit");
-                                x.className = "show";
-                                setTimeout(function () {
-                                    x.className = x.className.replace("show", "");
-                                }, 3000);
-                                document.getElementById('myModal_popup').style.display = 'none'
-                                document.getElementById('myModal').style.display = 'none';
-                            },
-                            "headers": {
-                                "accept": "application/json",
-                                "Access-Control-Allow-Origin": "*",
-                                "Access-Control-Allow-Headers": "*",
-                                "Content-Type": "application/json"
-                            },
-                            "data": JSON.stringify({
-                                    "chat_permission": 1,
-                                    "choose_video_permission": 1,
-                                    "playback_permission": 1,
-                                    "group": id_gp,
-                                    "member": new_admin,
-                                }
-                            ),
-                        };
-
-                        $.ajax(settings).done(function (response2) {
-                            console.log("done")
-                            console.log(response2);
-
-                        });
-
                     },
                     error: function (event) {
                         if (event.status == 400)
@@ -807,8 +824,8 @@ class chat_room extends Component {
             $.ajax(settings).done(function (response) {
 
                 localresponse = response;
-                if(response.created_by==window.localStorage.getItem('username'))
-                    isadmin=1;
+                if (response.created_by == window.localStorage.getItem('username'))
+                    isadmin = 1;
                 console.log("111111");
 
                 console.log(response);
@@ -905,7 +922,7 @@ class chat_room extends Component {
                     } else {
                         document.getElementById('dropdown-basic').style.display = 'block'
                     }
-                    var htmlcode33 = '<option value="' + null + '">' + "Select new admin " + '</option>'
+                    var htmlcode33 = '<option value="yetoopdaramghelghelie">' + "Select new admin " + '</option>'
                     var htmlcode22 = ''
                     for (var counter1 = 0; counter1 < response.members.length; counter1++, htmlcode = '') {
                         var obj = {}
@@ -2132,7 +2149,7 @@ class chat_room extends Component {
         function Send_data() {
             var message_send
             if (adminhash == null) {
-                console.log("a hash : "+ adminhash);
+                console.log("a hash : " + adminhash);
                 console.log("send as admin");
                 message_send = {"command": "set_video_hash", "vhash": encrypted};
                 clienthashok = 1;
