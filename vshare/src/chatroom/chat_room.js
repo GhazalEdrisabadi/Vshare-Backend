@@ -319,6 +319,7 @@ class chat_room extends Component {
 
         ws.onmessage = evt => {
 
+
             console.log("messsssssage");
 
             const messagee = JSON.parse(evt.data);
@@ -421,17 +422,6 @@ class chat_room extends Component {
             }
 
 
-                if (isadmin == 0) {
-                    // document.getElementById('controllbuttons').style.display = 'none';
-                    //  document.getElementById("controllbuttons2").style.zIndex = "1";
-                    document.getElementById('controllbuttons').style.pointerEvents = 'none';
-                    document.getElementById('videopicks').style.pointerEvents = 'none';
-                    document.getElementById('fullscreenid').style.pointerEvents = 'auto';
-                    document.getElementById('fullscreenid').style.cursor = 'pointer';
-                    document.getElementById("fullscreenid").style.zIndex = "999";
-
-
-                    //   document.getElementById('movie').style.pointerEvents = 'none';
             if (messagee.status == 1 && isadmin == 0 && azavalbude == 0 && clienthashok == 0 && uploaded == 0) {
 
                 setTimeout(function () {
@@ -554,13 +544,13 @@ class chat_room extends Component {
 
                 }
             }
-        };
 
     }
 
         const {id} = this.props.match.params
 
         $(document).ready(function () {
+            $('#fullscreenid').prependTo($('.controllbuttons2'));
             if($(window).width()<800){
                 $(".back_coulom").css("width", "0px");
                 $(".openchat").css("transform", "scaleX(1)");
@@ -2750,30 +2740,7 @@ class chat_room extends Component {
                     </div>
 
                 </header>
-                <div id="myModal" class="modal-">
-
-                    <div class="modal-content-">
-                        <div className='headModal'>
-                            <Avatar style={{
-                                backgroundColor: 'rgba(0,0,0,0.5)',
-                                width: '100px',
-                                height: '100px',
-                                fontSize: '50px'
-                            }} className='photogp'>&nbsp;</Avatar>
-
-                            <div className='infogp'>
-                                <div className='namegp'/>
-                                <div className='idgp'/>
-                            </div>
-                        </div>
-                        <div className='destitle'>Description:</div>
-                        <div className='desbody'/>
-                        <hr/>
-                        <div className='infobody'/>
-                    </div>
-
-
-                </div>
+ 
 
                 <div id="mySidenav" className="sidenav">
                     <div className="name"/>
@@ -2862,14 +2829,14 @@ class chat_room extends Component {
                                     <div className='idgp'/>
 
                                 </div>
+                                
                                 <div class="drop">
                                     <Dropdown>
                                         <Dropdown.Toggle variant="success" id="dropdown-basic" style={{
                                             backgroundColor: 'transparent',
                                             borderColor: 'transparent',
                                             fontSize: '30px',
-                                            cursor: 'pointer',
-                                            
+                                            cursor: 'pointer'
                                         }}>
                                             ⋮
                                         </Dropdown.Toggle>
@@ -3130,7 +3097,8 @@ class chat_room extends Component {
                                 color: 'white',
                                 cursor: "pointer",
                                 pointerEvents: "auto",
-                                marginBottom: "5px"
+                                marginBottom: "5px",
+                                zIndex:'999'
                             }} size='large' className="fullscreenbtn">
 
 
