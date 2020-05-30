@@ -833,7 +833,7 @@ class chat_room extends Component {
                             $(".pm").append("<div  style='float:left' id='pmeman'" + charom + "> me: &nbsp;</div><div  id='pmemantxt'>" + response.results[counterchathistory].message_text + "</div>");
 
                         } else {
-                            $(".pm").append("<div id='pmeoon'" + charom + ">" + response.results[counterchathistory].message_sender + ": &nbsp;</div><div  id='pmemantxt'> " + response.results[counterchathistory].message_text + "</div>");
+                            $(".pm").append("<abbr title='Click to mute' > <div id='pmeoon'" + charom + ">" + response.results[counterchathistory].message_sender + ": &nbsp;</div></abbr><div  id='pmemantxt'> " + response.results[counterchathistory].message_text + "</div>");
                         }
 
                     }

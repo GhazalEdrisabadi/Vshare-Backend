@@ -98,6 +98,7 @@ margin-right: 20px;
 }
 
 #pmeoon {
+     cursor: pointer;
     width: fit-content;
     white-space: initial;
     text-align: left;
@@ -109,6 +110,7 @@ float: left;
 }
 
 #pmeman {
+    cursor: default;
     margin-top: 5px;
     width: fit-content;
     white-space: initial;
