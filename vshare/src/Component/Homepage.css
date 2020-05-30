@@ -450,10 +450,7 @@ z-index: 1;
   }
 
 
-  .modal2{
-    background-color: red;
-  width: 150%;
-}
+
 .modal-content2{
 
    width: 150%;
@@ -728,7 +725,7 @@ min-width: 350px;
     width: 30%;
   min-height: 290px;
     font-family: Arial;
-
+z-index: 1;
 
 }
 
