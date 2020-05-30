@@ -471,15 +471,7 @@ class chat_room extends Component {
                 if (messagee.username == window.localStorage.getItem('username')) {
                     if (messagee.permission1 == "controller" || messagee.permission2 == "controller") {
                         iscontroller = 1;
-                        if (filmplayed == 1) {
-                            if (played == 0) {
-                                this.play();
-                                this.pause();
-                            } else {
-                                this.pause();
-                                this.play();
-                            }
-                        }
+                 
                         document.getElementById("controllbuttons2").style.zIndex = "-1";
                         document.getElementById('controllbuttons').style.pointerEvents = 'auto';
                         document.getElementById('movie').style.pointerEvents = 'auto';
@@ -487,21 +479,14 @@ class chat_room extends Component {
                     if (messagee.permission1 == "selector" || messagee.permission2 == "selector") {
                         isselector = 1;
                         document.getElementById('reselect').style.pointerEvents = 'auto';
+                        if(iscontroller==0)
                         document.getElementById("controllbuttons2").style.zIndex = "100";
                         if (filmplayed == 0)
                             window.location.reload();
                     }
                     if (messagee.permission1 != "controller" && messagee.permission2 != "controller") {
                         iscontroller = 0;
-                        if (filmplayed == 1) {
-                            if (played == 0) {
-                                this.play();
-                                this.pause();
-                            } else {
-                                this.pause();
-                                this.play();
-                            }
-                        }
+            
                         document.getElementById("controllbuttons2").style.zIndex = "1";
                         document.getElementById('controllbuttons').style.pointerEvents = 'none';
                         document.getElementById('movie').style.pointerEvents = 'none';
@@ -509,6 +494,7 @@ class chat_room extends Component {
                     if (messagee.permission1 != "selector" && messagee.permission2 != "selector") {
                         isselector = 0;
                         document.getElementById('reselect').style.pointerEvents = 'none';
+                        if(iscontroller==1)
                         document.getElementById("controllbuttons2").style.zIndex = "-1";
                         if (filmplayed == 0)
                             window.location.reload();
