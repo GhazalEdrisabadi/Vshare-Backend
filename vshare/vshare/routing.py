@@ -23,4 +23,6 @@ application = ProtocolTypeRouter({
 Request to VideoConsumer
 "ws://127.0.0.1:8000/stream/groups/<groupid>/?token=token_id
 {"command":"send_client_hash","roomid":"starwars", "vhash":"fffffffffff"}
+
+{"command":"chat_client","message_client":"starwars"}
 """

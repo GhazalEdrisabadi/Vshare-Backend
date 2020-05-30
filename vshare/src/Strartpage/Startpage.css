@@ -340,6 +340,7 @@ color:white;
     max-width: 100%
 }
 
+
 .navbar {
     position: relative;
     display: -ms-flexbox;
@@ -852,3 +853,4 @@ color:white;
         transition: none
     }
 }
+

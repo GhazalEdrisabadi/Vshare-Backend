@@ -18,7 +18,12 @@
    overflow: scroll;
 }
 
-
+.selector{
+    color:black ;
+   padding-top: 15px;
+   font-size: 16px;
+   background-color: black;
+}
 .zare {
     cursor: pointer;
     text-align: center;
@@ -398,6 +403,37 @@ min-width: 50%;
     }
     @media screen and (min-width: 500px) and (max-width:780px)  {
 
+  .modal {
+    width: 100%;
+
+  }
+  .modal2{
+    width: 500px;
+  }
+ .input{
+    width: 70px;
+ }
+  .inputedit{
+      width: 150px;
+
+  }
+  .texx {
+
+    font-size: 20px;
+
+}
+
+.deleteTEXT{
+    font-size: 15px;
+}
+.admintext{
+    font-size: 12px;
+}
+.modal-content2{
+
+}
+
+
 .groupsShow{
     width: 70%;
     margin-top: 13%;
@@ -410,22 +446,38 @@ z-index: 1;
 }
 .createnewgp{
     width: 200px;
-
+    content: 'Create group';
 }
 .input{
     width: 230px;
 }
     }
-@media screen and (min-width: 400px) and (max-width:595px)  {
 
-  .createnewgp{
-      width: 700px;
-     height: 70px;
-      font-size: 5px;
+@media screen and (min-width: 300px) and (max-width:595px)  {
+ 
+  .inputedit{
+      width: 200px;
 
   }
 
- 
+
+
+
+
+.modal-content2{
+
+   width: 150%;
+}
+
+.deleteTEXT{
+    font-size: 15px;
+}
+
+.admintext{
+    font-size: 12px;
+}
+
+
   .logout_text{
       display: none;
   }
@@ -447,23 +499,27 @@ z-index: 1;
 
 .groupsShow{
     width: 70%;
-    margin-top: 13%;
+    margin-top: 20%;
+    margin-left: 50px;
 }
 .formback {
 width: 70%;
 margin-top: 15%;
-margin-left: 3%;
+margin-left: 50px;
 z-index: 1;
 }
 .createnewgp{
     width: 200px;
+    content: '+';
+    background-color: black;
 
 }
+
 }
 @media screen and (min-width: 780px) and (max-width:800px)  {
 .createnewgp{
     width: 400px;
-
+    content: '+ Create group';
 }
 .groupsShow{
     width: 44%;
@@ -492,7 +548,26 @@ z-index: 1;
 
 }
 @media screen and (min-width: 780px) and (max-width:1200px)  {
- 
+
+
+  .inputedit{
+      width: 200px;
+
+  }
+  .modal2{
+    background-color: red;
+}
+.modal-content2{
+
+}
+.deleteTEXT{
+    font-size: 23px;
+}
+.admintext{
+    font-size: 20px;
+}
+
+
 .groupsShow{
     width: 47%;
     margin-top: 10%;
@@ -506,24 +581,36 @@ z-index: 1;
 .groupshowbody{
     height: 80%;
 }
-.createnewgp{
+.createnewgp:after{
     width: 200px;
-
+    content: 'Create group';
 }
 }
 @media screen and (min-width: 1200px)  {
 
-.createnewgp{
-    width: 200px;
-
-}
-}
-@media screen and (min-width: 1200px) and (max-width:1600px)  {
-  
   .inputedit{
       width: 300px;
 
   }
+  .modal2{
+    background-color: white;
+}
+.modal-content2{
+
+}
+
+.createnewgp:after{
+    width: 200px;
+    content: 'Create group';
+}
+}
+@media screen and (min-width: 1200px) and (max-width:1600px)  {
+
+  .inputedit{
+      width: 300px;
+
+  }
+
 
 .groupshowbody{
     height: 80%;
@@ -550,8 +637,8 @@ z-index: 1;
     padding-right: 30px;
     padding-bottom: 40px;
     border: 1px solid #888;
-    width: 30%;
-    min-width: 400px;
+    width: 27%;
+    min-width: 350px;
 }
 
 .modal2 {
@@ -585,7 +672,7 @@ min-width: 50%;
 
 .dltbtns {
 
-   
+
 
 }
 
@@ -618,10 +705,23 @@ min-width: 50%;
     border-right: solid;
     border-color: black;
     flex-direction: row;
-
+width: 100%;
 
 }
+.search-result2{
+    display: none;
+    background-color: rgb(35, 35, 35);
+    border-radius: 10px;
+    width: 290px;
+    position: absolute;
+    height: 400px;
+    margin-top: 50px;
+    color: white;
+    white-space: initial;
+    overflow-x:hidden;
+z-index: 1;
 
+}
 .submitedit {
 
 
@@ -635,12 +735,12 @@ min-width: 50%;
     background-color: rgb(35, 35, 35);
     color: whitesmoke;
     margin: auto;
-
+min-width: 350px;
     border: 1px solid #888;
     width: 30%;
-  min-height: 350px;
+  min-height: 290px;
     font-family: Arial;
-min-width: 300px;
+z-index: 1;
 
 }
 
@@ -662,10 +762,7 @@ min-width: 300px;
 
     font-family: Arial;
 }
-.dltbtns {
-    margin-top: 5%;
 
-}
 
 .dltyes {
 
