@@ -79,7 +79,7 @@ var filmplayed = 0;
 var comeinstate1 = 0;
 var Play_pause_space = 0;
 var usercolors = {};
-
+var  chatsize;
 class chat_room extends Component {
 
 
@@ -88,11 +88,13 @@ class chat_room extends Component {
     }
 
     componentDidMount() {
-        var chatsize = 400;
+       
         var sizeeeeee = $(".formback_movie").width();
+            console.log(sizeeeeee)
         $(window).resize(function () {
+            chatsize=$(".back_coulom").width();
             if(document.getElementById("mySidenav").style.width == "0px"){
-                
+                var sizeeeeee = $(".formback_movie").width();
                 $(".video-react-video").css("width", sizeeeeee.toString());
                 $(".video-react-video").css("margin-left", '0px');
             }
@@ -103,41 +105,60 @@ class chat_room extends Component {
         }
         });
 
-
+//         $('#formback_movie_id').resize(function () {
+//    console.log("avaz shodm avaz shodm ")
+//         });
         $('.openonlinemember').click(function () {
+            var sizeeeeee = $(".formback_movie").width();
             if ($(".sidenav").width() < 20) {
                 document.getElementById("mySidenav").style.width = "300px";
                 $(".openonlinemember").css("transform", "scaleX(1)");
-                sizeeeeee -= 300;
-                $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
-                $(".video-react-video").css("margin-left", '300px');
+                 // sizeeeeee -= 300;
+                  $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                $(".video-react-video").css("margin-left", '200px');
 
 
             } else {
                 document.getElementById("mySidenav").style.width = "0px";
                 $(".openonlinemember").css("transform", "scaleX(-1)");
-                sizeeeeee += 300;
-                $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
-                $(".video-react-video").css("margin-left", '4%');
+               //  sizeeeeee += 300;
+               $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                $(".video-react-video").css("margin-left", '200px');
             }
+            sizeeeeee = $(".formback_movie").width();
         });
 
         $('.openchat').click(function () {
+           
+            console.log("size "+sizeeeeee)
+            if($(".back_coulom").width()>0)
+             chatsize=$(".back_coulom").width();
 
             if ($(".back_coulom").width() == 0) {
                 $(".back_coulom").css("width", "400px");
+                
                 $(".openchat").css("transform", "scaleX(-1)");
-                sizeeeeee -= chatsize;
-                $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
-                $(".video-react-video").css("margin-right", '400px');
+          
+               // console.log(chatsize)
+                //.sizeeeeee -= chatsize;
+              $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                $(".video-react-video").css("margin-right", '300px');
+                
             } else {
-                chatsize = $(".back_coulom").width();
+               
                 $(".back_coulom").css("width", "0px");
+                
                 $(".openchat").css("transform", "scaleX(1)");
-                sizeeeeee += chatsize;
-                $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
-                $(".video-react-video").css("margin-right", '0px');
+              
+                // console.log(chatsize)
+               // sizeeeeee += chatsize;
+            $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+               $(".video-react-video").css("margin-right", '300px');
+              
             }
+             sizeeeeee = $(".formback_movie").width();
+          //  console.log(sizeeeeee)
+ 
         });
 
         console.log(url)
