@@ -91,9 +91,16 @@ class chat_room extends Component {
         var chatsize = 400;
         var sizeeeeee = $(".formback_movie").width();
         $(window).resize(function () {
+            if(document.getElementById("mySidenav").style.width == "0px"){
+                
+                $(".video-react-video").css("width", sizeeeeee.toString());
+                $(".video-react-video").css("margin-left", '0px');
+            }
+            else{
             sizeeeeee = $(".formback_movie").width();
-            $(".video-react-video").css("width", sizeeeeee.toString());
-            //  $(".video-react-video").css("margin-left", '20px');
+            $(".video-react-video").css("width", sizeeeeee.toString()+'50px');
+              $(".video-react-video").css("margin-left", '210px');
+        }
         });
 
 
