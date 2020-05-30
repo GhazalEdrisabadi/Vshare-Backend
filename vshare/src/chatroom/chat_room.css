@@ -81,6 +81,7 @@
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif ;
     margin-top: 15px;
     margin-left: 30px;
+margin-right: 20px;
     height: 100%;
     width: 100%;
     color: whitesmoke;
@@ -163,6 +164,9 @@ margin-top: 5px;;
 .formback_text {
     font-family: Arial;
     padding-top: 10px;
+padding-left: 5px;
+    padding-bottom: 5px;
+    padding-right: 5px;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -243,6 +247,7 @@ margin-top: 5px;;
     right: 0;
     background-color: #141414;
     overflow-x: hidden;
+    overflow-y: hidden;
     transition: 0.5s;
 margin-right: -10px;
     flex-direction: column;
@@ -510,6 +515,7 @@ border: red solid thin;
     border-radius: 5px;
     margin-top: 60px;
     height: 92%;
+
     width: 300px;
     position: relative;
     z-index: 1;
@@ -526,15 +532,55 @@ padding-top: 10px;
 .fullscreendiv{
     background-color: #FFFFFF;
 }
+@media screen  and (max-width: 1300px){
+
+    .sendbutton{
+        display: none;
+    }
+    .formback_text_input{
+        width: 95%;
+    }
+}
 @media screen and (max-height: 450px) {
     .sidenav {
         padding-top: 15px;
     }
 }
 
-@media screen and (min-width: 400px)  and (max-width: 600px) {
+@media screen and (max-width: 600px) {
     .titleofonlines {
         font-size: 14px;
     }
 }
+@media screen and (max-width: 520px) {
+    .logout_text2 {
+        display: none;
+    }
+
+}
+
+@media screen and (max-height: 600px) {
+    .titleofchat {
+       margin-top: 10%;
+    }
+    .khat{
+        margin: 0px;
+    }
+    .name{
+        margin-top: 10px;
+    }
+
+}
+
+
+@media screen and (max-height: 700px) {
+    .formback_text_input{
+        margin-bottom: 20px;
+    }
+    #nameofthefilm{
+        margin-top: 999px;
+    }
+
+}
+
 
