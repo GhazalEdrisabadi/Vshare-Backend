@@ -112,6 +112,14 @@ class chat_room extends Component {
             var sizeeeeee = $(".formback_movie").width();
             if ($(".sidenav").width() < 20) {
                 document.getElementById("mySidenav").style.width = "300px";
+                if ($(window).width() < 800) {
+                    chatsize = $(".back_coulom").width();
+                    $(".back_coulom").css("width", "0px");
+                    $(".openchat").css("transform", "scaleX(1)");
+                    sizeeeeee += chatsize;
+                    $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                    $(".video-react-video").css("margin-right", '0px');
+                }
                 $(".openonlinemember").css("transform", "scaleX(1)");
                  // sizeeeeee -= 300;
                   $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
@@ -136,7 +144,15 @@ class chat_room extends Component {
 
             if ($(".back_coulom").width() == 0) {
                 $(".back_coulom").css("width", "400px");
-                
+
+                if ($(window).width() < 800) {
+                    document.getElementById("mySidenav").style.width = "0px";
+                    $(".openonlinemember").css("transform", "scaleX(-1)");
+                    sizeeeeee += 300;
+                    $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                    $(".video-react-video").css("margin-left", '4%');
+                }
+
                 $(".openchat").css("transform", "scaleX(-1)");
           
                // console.log(chatsize)
@@ -356,7 +372,7 @@ class chat_room extends Component {
 
                 if (isadmin == 0) {
                     // document.getElementById('controllbuttons').style.display = 'none';
-                  //  document.getElementById("controllbuttons2").style.zIndex = "1";
+                    //  document.getElementById("controllbuttons2").style.zIndex = "1";
                     document.getElementById('controllbuttons').style.pointerEvents = 'none';
                     document.getElementById('videopicks').style.pointerEvents = 'none';
                     document.getElementById('fullscreenid').style.pointerEvents = 'auto';
@@ -406,6 +422,12 @@ class chat_room extends Component {
         const {id} = this.props.match.params
 
         $(document).ready(function () {
+            if($(window).width()<800){
+                $(".back_coulom").css("width", "0px");
+                $(".openchat").css("transform", "scaleX(1)");
+                document.getElementById("mySidenav").style.width = "0px";
+                $(".openonlinemember").css("transform", "scaleX(-1)");
+            }
             window.onclick = function (event) {
 
                 if (event.target == document.getElementById("myModal")) {
@@ -506,9 +528,9 @@ class chat_room extends Component {
 
             $("#movie").dblclick(function (e) {
 
-                $(".formback_movie").css("width", '100%');
-                document.getElementById("mySidenav").style.width = "0px";
-                $(".back_coulom").css("width", "0px");
+                //    $(".formback_movie").css("width", '100%');
+                //         document.getElementById("mySidenav").style.width = "0px";
+                // $(".back_coulom").css("width", "0px");
                 $(".openonlinemember").css("transform", "scaleX(-1)");
                 $(".openchat").css("transform", "scaleX(1)");
                 setTimeout(function () {
@@ -525,12 +547,7 @@ class chat_room extends Component {
             });
 
             /*  $("#formback_movie_id").mouseover(function () {
-<<<<<<< HEAD
->>>>>>> features/stream-frontend
-=======
 
-
->>>>>>> dev
                   if (filmplayed == 1)
                       $('#controll_div').fadeIn();
               });
@@ -1849,16 +1866,16 @@ class chat_room extends Component {
                                 <StopIcon/>
                             </IconButton>
 
-                                <IconButton id="fullscreenid" onClick={this.fullscreen} style={{
-                                    color: 'white',
-                                    cursor: "pointer",
-                                    pointerEvents: "auto",
-                                    marginBottom: "5px"
-                                }} size='large' className="fullscreenbtn">
+                            <IconButton id="fullscreenid" onClick={this.fullscreen} style={{
+                                color: 'white',
+                                cursor: "pointer",
+                                pointerEvents: "auto",
+                                marginBottom: "5px"
+                            }} size='large' className="fullscreenbtn">
 
 
-                                    <FullscreenIcon/>
-                                </IconButton>
+                                <FullscreenIcon/>
+                            </IconButton>
 
 
                         </div>
@@ -1952,7 +1969,7 @@ class chat_room extends Component {
 
                     <div className="formback_text">
 
-                        <div> Chat</div>
+                        <div className='titleofchat'> Chat</div>
                         <p className="khat">______________________________</p>
                         <div id='pmid' className="pm">
 
@@ -1966,15 +1983,15 @@ class chat_room extends Component {
                             <input className="formback_text_input" id="formback_text_input" autocomplete="off">
 
                             </input>
-
-                            <IconButton style={{
-                                color: 'white',
-                                fontSize: '80px'
-                            }}
-                                        className="send_btn">
-                                <SendIcon/>
-                            </IconButton>
-
+                            <div className='sendbutton'>
+                                <IconButton style={{
+                                    color: 'white',
+                                    fontSize: '80px'
+                                }}
+                                            className="send_btn">
+                                    <SendIcon/>
+                                </IconButton>
+                            </div>
                         </div>
 
 
