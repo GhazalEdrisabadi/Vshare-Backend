@@ -1103,9 +1103,11 @@ class chat_room extends Component {
                     console.log(create_by)
                     console.log(window.localStorage.getItem('username'))
                     if (window.localStorage.getItem('username') != create_by) {
+                        
                         document.getElementById('dropdown-basic').style.display = 'none'
                     } else {
                         document.getElementById('dropdown-basic').style.display = 'block'
+                        console.log("mn toooooooooooooooosham")
                     }
                     var htmlcode33 = '<option value="yetoopdaramghelghelie">' + "Select new admin " + '</option>'
                     var htmlcode22 = ''
@@ -2866,7 +2868,8 @@ class chat_room extends Component {
                                             backgroundColor: 'transparent',
                                             borderColor: 'transparent',
                                             fontSize: '30px',
-                                            cursor: 'pointer'
+                                            cursor: 'pointer',
+                                            
                                         }}>
                                             ⋮
                                         </Dropdown.Toggle>
