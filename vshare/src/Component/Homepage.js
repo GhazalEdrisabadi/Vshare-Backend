@@ -70,13 +70,12 @@ class Homepage extends Component {
 
                             // alert("group with this groupid already exists");
 
-
-                            $('#Status-Id').html('group with this groupid already exists!');
-
-
-                        $('#Status-Id').fadeIn();
-
-                        $('#Status-Id').delay(3000).toggle('slow');
+                            var x = document.getElementById("snackbar-exist");
+                            x.className = "show";
+                            setTimeout(function () {
+                                x.className = x.className.replace("show", "");
+                            }, 3000);
+    
 
 
                     },
@@ -171,13 +170,11 @@ class Homepage extends Component {
                     "timeout": 0,
 
                     error: function (event) {
-
-
-                        $('#Addmember-Status').html('User not found !');
-
-                        $('#Addmember-Status').fadeIn();
-
-                        $('#Addmember-Status').delay(3000).toggle('slow');
+                        var x = document.getElementById("snackbar-not");
+                        x.className = "show";
+                        setTimeout(function () {
+                            x.className = x.className.replace("show", "");
+                        }, 3000);
 
 
                     },
@@ -192,11 +189,12 @@ class Homepage extends Component {
                             error: function () {
 
 
-                                $('#Addmember-Status').html('User is already a member of this group !');
-
-                                $('#Addmember-Status').fadeIn();
-
-                                $('#Addmember-Status').delay(3000).toggle('slow');
+                                var x = document.getElementById("snackbar-already");
+                                x.className = "show";
+                                setTimeout(function () {
+                                    x.className = x.className.replace("show", "");
+                                }, 3000);
+                                ;
 
 
                             },
@@ -214,7 +212,11 @@ class Homepage extends Component {
 
                                     },
                                     success: function () {
-
+                                        var x = document.getElementById("snackbar-succes");
+                                        x.className = "show";
+                                        setTimeout(function () {
+                                            x.className = x.className.replace("show", "");
+                                        }, 3000);
                                         $(".textarea-addmember").append(member + '-');
                                     },
                                     "timeout": 0,
@@ -1734,6 +1736,9 @@ else{
                 <div className="search-result" id='res'></div>
                 <div id="snackbar-succes-join">Successfully join</div>
                 <div id="snackbar-already">User is already a member of this group</div>
+                <div id="snackbar-succes">Successfully add to group</div>
+                <div id="snackbar-not">User not found</div>
+                  <div id="snackbar-exist">group with this groupid already exists!</div>
             </div>
 
 
