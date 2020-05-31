@@ -24,7 +24,7 @@ class startpage extends Component {
                                     Contact
                                 </Nav.Link>
                                 <Nav.Link style={{ color: 'white', fontSize: '20px', paddingRight: '100px', fontWeight: 'bold' }}>Application</Nav.Link>
-                                <Nav.Link eventKey={2} href="/login" style={{ color: 'white', fontSize: '20px', fontWeight: 'bold', borderStyle: 'solid', width: '200px', textAlign: 'center' }}>
+                                <Nav.Link eventKey={2} href="/login?#" style={{ color: 'white', fontSize: '20px', fontWeight: 'bold', borderStyle: 'solid', width: '200px', textAlign: 'center' }}>
                                     login/signup
                                 </Nav.Link>
                             </Nav>
@@ -39,7 +39,7 @@ class startpage extends Component {
                                     at the same time.
                                     You can talk through the movie with each other
                                     </div>
-                                <a href="../login" style={{ color: 'black' }}>  <button style={{ cursor: 'pointer' }} className="btn_start">Get Start</button></a>
+                                <a href="../login?#" style={{ color: 'black' }}>  <button style={{ cursor: 'pointer' }} className="btn_start">Get Start</button></a>
                             </div>
                         </div>
 

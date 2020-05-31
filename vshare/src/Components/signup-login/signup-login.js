@@ -4,6 +4,7 @@ import $ from 'jquery';
 import jQuery from 'jquery'
 import {Cookies} from 'js-cookie'
 
+var checksamepass=1;
 class sl extends Component {
     componentDidMount() {
         $(document).ready(function () {
@@ -12,8 +13,8 @@ class sl extends Component {
 
             $(".signupbtn").click(function () {
 
-
-                var username = $(".susername").val();
+                if (checksamepass == 1){
+                    var username = $(".susername").val();
                 var firstname = $(".firstname").val();
                 var lastname = $(".lastname").val();
                 var email = $(".email").val();
@@ -25,10 +26,15 @@ class sl extends Component {
                     "method": "POST",
                     "timeout": 0,
                     error: function () {
-                        $("#statussignup").text("All field are required and enter a valid email address !");
+
                     },
                     success: function () {
-                        // window.location.replace("/login");
+                        var x = document.getElementById("snackbarloginsignup");
+                        x.innerHTML = "Done";
+                        x.className = "show";
+                        setTimeout(function () {
+                            x.className = x.className.replace("show", "");
+                        }, 4000);
                     },
                     "headers": {
                         "accept": "application/json",
@@ -46,17 +52,44 @@ class sl extends Component {
                     }),
                 };
                 $.ajax(settings).done(function (response) {
-                    console.log(response);
+                    console.log(response.username);
                 });
+                $.ajax(settings).fail(function (response) {
+                    document.getElementById("snackbarloginsignup").innerHTML = '';
+                    console.log(response.responseText);
+                    var json = JSON.parse(response.responseText);
+                    var keys2 = Object.keys(json);
+                    for (var counterforsignup = 0; counterforsignup < keys2.length; counterforsignup++) {
+                        var x = document.getElementById("snackbarloginsignup");
+                        x.innerHTML += keys2[counterforsignup] + " : " + json[keys2[counterforsignup]] + '<br>';
+                        x.className = "show";
+                        setTimeout(function () {
+                            x.className = x.className.replace("show", "");
+                        }, 8000);
+                        console.log(keys2[counterforsignup] + " : " + json[keys2[counterforsignup]]);
+                    }
+                });
+            }
+                else{
+                    var x = document.getElementById("snackbarloginsignup");
+                        x.innerHTML = "Your password doesn't match"
+                        x.className = "show";
+                        setTimeout(function () {
+                            x.className = x.className.replace("show", "");
+                        }, 4000);
+                }
             });
+
             $(".cpassword").blur(function () {
                 var password = $(":password").val();
                 var cpassword = $(".cpassword").val();
                 if (cpassword != password) {
                     $("#checkpass").text("Passwords dose not match !");
+                    checksamepass=0;
 
                 } else {
                     $("#checkpass").text("");
+                    checksamepass=1;
                 }
             });
         });
@@ -64,7 +97,7 @@ class sl extends Component {
 /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
 
-        $(document).ready(function () {
+
             $("#status").text("");
             $("#forget").click(function () {
                 alert("I'm just a demo version :)");
@@ -89,42 +122,19 @@ class sl extends Component {
                     "data": JSON.stringify({"username": username, "password": password}),
                 };
                 $.ajax(settings).done(function (response) {
-                    console.log(response);
-                    if (response.status === 400) {
-                        console.log("no");
-                    } else {
-                        function getCSRFToken() {
-                            var cookieValue = null;
-                            if (document.cookie && document.cookie != '') {
-                                var cookies = document.cookie.split(';');
-                                for (var i = 0; i < cookies.length; i++) {
-                                    var cookie = jQuery.trim(cookies[i]);
-                                    if (cookie.substring(0, 10) == ('csrftoken' + '=')) {
-                                        cookieValue = decodeURIComponent(cookie.substring(10));
-                                        break;
-                                    }
-                                }
-                            }
-                            return cookieValue;
-                        }
 
-                        var csrftoken = getCSRFToken();
-                        console.log(csrftoken)
-                        // Cookies.set('csrftoken');
                         window.localStorage.setItem('token', response.token);
                         window.localStorage.setItem('username', username);
                           window.localStorage.setItem('user', username)
                         window.location.replace("/homepage");
-                    }
+
 
                 });
             });
-        });
 
 //////////////////////
 ////////////////////
 /////////////////////
-        window.onload = function () {
             const signUpButton = document.getElementById('signUp');
             const signInButton = document.getElementById('signIn');
             const container = document.getElementById('container');
@@ -134,14 +144,15 @@ class sl extends Component {
             signInButton.addEventListener('click', () => {
                 container.classList.remove("right-panel-active");
             });
-        }
+
     }
 
     render() {
         return (
             <dev>
+                <div id="snackbarloginsignup"></div>
 
-                <h2 className='boro'>Weekly Coding Challenge #1: Sign in/up FormFDNSKN</h2>
+                <h2 className='boro'>vSharee vSharee vSharee vSharee vSharee vSharee  v</h2>
                 <a href='./startpage'><div class='homepagebtn2'>Start page</div></a>
                 <div class="container" id="container">
                     <div class="form-container sign-up-container">
