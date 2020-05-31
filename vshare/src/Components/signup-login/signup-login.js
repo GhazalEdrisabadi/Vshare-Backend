@@ -113,6 +113,7 @@ class sl extends Component {
                         // Cookies.set('csrftoken');
                         window.localStorage.setItem('token', response.token);
                         window.localStorage.setItem('username', username);
+                          window.localStorage.setItem('user', username)
                         window.location.replace("/homepage");
                     }
 
@@ -140,15 +141,14 @@ class sl extends Component {
         return (
             <dev>
 
-
-                <div class='homepagebtn2'><a href='./startpage'>Start page</a></div>
+                <h2 className='boro'>Weekly Coding Challenge #1: Sign in/up FormFDNSKN</h2>
+                <a href='./startpage'><div class='homepagebtn2'>Start page</div></a>
                 <div class="container" id="container">
                     <div class="form-container sign-up-container">
-                        <form action="#">
+                        <form className='form1' action="#">
                             <h1 class="CreatAccount">Create Account</h1>
                             <p id='statussignup'></p>
                             <div class="social-container">
-
                             </div>
                             <input type="text" placeholder="Fisrt name" class='firstname'/>
                             <input type="text" placeholder="Last name" class='lastname'/>
@@ -162,7 +162,7 @@ class sl extends Component {
                         </form>
                     </div>
                     <div class="form-container sign-in-container">
-                        <form action="#">
+                        <form className='form1'  action="#">
                             <h1>Sign in</h1>
                             <div class="social-container">
 
@@ -180,26 +180,16 @@ class sl extends Component {
                         <div class="overlay">
                             <div class="overlay-panel overlay-left">
                                 <h1>Intro of vShare</h1>
-                                <p>Vshare is a web-base service which allows you to watch a video file with other users
-                                    at the same time.
-                                    All the participants can send messages through the room while The video is playing
-                                    for everyone. This service doesn’t stream the video , actually , it works when every
-                                    participant has a similar video file locally on his/her device. While the video is
-                                    playing , every changes to the video playback by any participant affects on what
-                                    other clients are watching at the same time.
+                                <p className='explain-txt'>Vshare is a web-base service which allows you to watch a video file with other users at the same time. You can talk through the movie with each other
                                 </p>
                                 <button class="ghost" id="signIn">Sign In</button>
                             </div>
                             <div class="overlay-panel overlay-right">
                                 <h1>Intro of vShare</h1>
-                                <p>Vshare is a web-base service which allows you to watch a video file with other users
-                                    at the same time.
-                                    All the participants can send messages through the room while The video is playing
-                                    for everyone. This service doesn’t stream the video , actually , it works when every
-                                    participant has a similar video file locally on his/her device. While the video is
-                                    playing , every changes to the video playback by any participant affects on what
-                                    other clients are watching at the same time.
+                                <p className='explain-txt'>Vshare is a web-base service which allows you to watch a video file with other users at the same time. You can talk through the movie with each other
                                 </p>
+                                   <hr></hr>
+                                   <hr></hr>
                                 <button class="ghost" id="signUp">Sign Up</button>
                             </div>
                         </div>

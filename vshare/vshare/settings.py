@@ -138,8 +138,8 @@ DATABASES = {
         'NAME': 'vshare',
 
         'USER' : 'admin',
-        'PASSWORD' : '123qwe',
-\
+        'PASSWORD' : 'Kamyab78',
+
         'HOST' : 'localhost',
         'PORT' : '5432',
     }
@@ -238,5 +238,4 @@ STATIC_URL = '/static/'
 #ALTER ROLE admin SET client_encoding TO 'utf8';
 
 #ALTER ROLE admin SET default_transaction_isolation TO 'read committed';
-
 

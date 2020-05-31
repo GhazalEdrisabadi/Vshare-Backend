@@ -1,56 +1,53 @@
 import React, { Component } from 'react'
+
+
 import './Startpage.css'
+import { Navbar, Nav } from 'react-bootstrap';
 
-
-import AwesomeSlider from 'react-awesome-slider'
-import 'react-awesome-slider/dist/styles.css';
-import ReactDOM from 'react-dom';
 class startpage extends Component {
-    
+
     render() {
 
         return (
 
             <div className="back_startpage">
                 <div className="Main_div">
-                <header className="page-header" >
+                    <Navbar collapseOnSelect expand="lg" style={{ backgroundColor: 'transparent', borderBottomColor: 'white', borderBottomStyle: 'solid' }}>
+                        <Navbar.Brand href="#home" style={{ color: 'white', fontSize: '35px', fontWeight: 'bold' }}>Vshare</Navbar.Brand>
+                        <Navbar.Toggle aria-controls="responsive-navbar-nav " style={{ backgroundColor: 'white', color: 'white' }} />
+                        <Navbar.Collapse id="responsive-navbar-nav" style={{ marginLeft: "30px" }}>
+                            <Nav className="mr-auto" />
 
-                        <div className="div_header_start" style={{ overflow:"hidden" }}>
-                        <div className="div_site_name">
-                            <h1 className="site_name">Vshare</h1>
-                        </div>
-                        <div className="button_header">
-                            <button className="btn_about" type="link" ghost><a href="./about">
-                                about</a>
-                            </button>
-                            <button className="btn_contact" type="link" ghost><a href="./contact">
-                                contact
-</a>        
-                            </button>
-                            <button className="btn_app" type="link" ghost><a href="./app">
-                                Application
-</a>        
-    </button>
-                        <button className="btn_login-singup" type="link" ghost>
-                                    <a href="../login">  login/signup</a>
-    </button>
-                        </div>
-                    </div>
-                    </header>
-                    <div className="txt_explain">
-                        <div>
-                        Vshare is a web-base service which allows you to watch a video file with other users
-                                                                at the same time.
-                                                                You can talk through the movie with each other
+                            <Nav>
+                                <Nav.Link href="/about" style={{ color: 'white', fontSize: '20px', paddingRight: '100px', fontWeight: 'bold' }}>About</Nav.Link>
+                                <Nav.Link eventKey={2} href="#memes" style={{ color: 'white', fontSize: '20px', paddingRight: '100px', fontWeight: 'bold' }}>
+                                    Contact
+                                </Nav.Link>
+                                <Nav.Link style={{ color: 'white', fontSize: '20px', paddingRight: '100px', fontWeight: 'bold' }}>Application</Nav.Link>
+                                <Nav.Link eventKey={2} href="/login" style={{ color: 'white', fontSize: '20px', fontWeight: 'bold', borderStyle: 'solid', width: '200px', textAlign: 'center' }}>
+                                    login/signup
+                                </Nav.Link>
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Navbar>
+
+                    <div className="container-lg" style={{ backgroundColor: "transparent", marginTop: '200px' }}>
+                        <div className="row">
+                            <div className="txt-container ">
+                                <div className="txt-content col-sm-12 col-lg-8 col-xl-8 col-md-8" style={{ display: "block" }}>
+                                    Vshare is a web-base service which allows you to watch a video file with other users
+                                    at the same time.
+                                    You can talk through the movie with each other
+                                    </div>
+                                <a href="../login" style={{ color: 'black' }}>  <button style={{ cursor: 'pointer' }} className="btn_start">Get Start</button></a>
                             </div>
-                        <button className="btn_start"><a href="../login">Get Start</a></button>
+                        </div>
+
                     </div>
-          
-                    </div>
-                
                 </div>
-            
-            )
+            </div>
+
+        )
 
     }
 }
