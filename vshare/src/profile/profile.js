@@ -305,7 +305,7 @@ else{
                             setTimeout(function () {
                                 x.className = x.className.replace("show", "");
                             }, 3000);
-                            setTimeout(function(){   window.location.replace('/profile')},3000)
+                            setTimeout(function(){   window.location.replace('/profile/'+window.localStorage.getItem('user')+'')},3000)
                          
                         },
                         "timeout": 0,
@@ -552,19 +552,20 @@ else{
             var token = window.localStorage.getItem('token');
             var mygroups = [];
             var groups = [];
+
             var settings = {
-                "url": "http://127.0.0.1:8000/group/owned_groups/",
+                "url": "http://127.0.0.1:8000/group/user_groups/?user_id="+window.localStorage.getItem('user')+"",
                 "method": "GET",
                 "timeout": 0,
                 "headers": {
-                    "Authorization": "Token " + token
+                  
                 },
             };
 
             $.ajax(settings).done(function (response) {
-             
-                for (var counter = 0; counter < response.length; counter++)
-                    mygroups.push({ name: response[counter].title, id: response[counter].groupid });
+             console.log(response)
+                // for (var counter = 0; counter < response.length; counter++)
+                //     mygroups.push({ name: response[counter].title, id: response[counter].groupid });
 
                 var hoverout = 'onMouseOut="this.style.color=';
                 var hoverrout = hoverout + "'white'";
@@ -572,12 +573,12 @@ else{
                 var hover = 'onMouseOver="this.style.color=';
                 var hoverr = hover + "'red'";
                 var htmlcode = '';
-                for (var counter1 = 0; counter1 < mygroups.length; counter1++, htmlcode = '') {
+                for (var counter1 = 0; counter1 < response.length; counter1++, htmlcode = '') {
                     var a2 = " document.getElementById('Modal-join').style.display = 'block'";
-                    var r = "window.localStorage.setItem('id-join','" + mygroups[counter1].id + "')"; //id of the group
+                    var r = "window.localStorage.setItem('id-join','" + response[counter1].the_group + "')"; //id of the group
                     htmlcode += '<div>'
-                    htmlcode += '<div class="admin_gp">'+mygroups[counter1].name.toUpperCase()[0]+'</div>';
-                    htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + mygroups[counter1].id + '</p>';
+                    htmlcode += '<div class="admin_gp">'+response[counter1].the_group.toUpperCase()[0]+'</div>';
+                    htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].the_group + '</p>';
 
 
                     htmlcode += '</div>'
@@ -586,76 +587,110 @@ else{
                 }
 
             });
-            var htmlcode = '';
-            var settings = {
-                "url": "http://127.0.0.1:8000/group/joined_groups/",
-                "method": "GET",
-                "timeout": 0,
-                "headers": {
-                    "Authorization": "Token " + token
-                },
-            };
+            // var settings = {
+            //     "url": "http://127.0.0.1:8000/group/owned_groups/",
+            //     "method": "GET",
+            //     "timeout": 0,
+            //     "headers": {
+            //         "Authorization": "Token " + token
+            //     },
+            // };
+
+            // $.ajax(settings).done(function (response) {
+             
+            //     for (var counter = 0; counter < response.length; counter++)
+            //         mygroups.push({ name: response[counter].title, id: response[counter].groupid });
+
+            //     var hoverout = 'onMouseOut="this.style.color=';
+            //     var hoverrout = hoverout + "'white'";
+
+            //     var hover = 'onMouseOver="this.style.color=';
+            //     var hoverr = hover + "'red'";
+            //     var htmlcode = '';
+            //     for (var counter1 = 0; counter1 < mygroups.length; counter1++, htmlcode = '') {
+            //         var a2 = " document.getElementById('Modal-join').style.display = 'block'";
+            //         var r = "window.localStorage.setItem('id-join','" + mygroups[counter1].id + "')"; //id of the group
+            //         htmlcode += '<div>'
+            //         htmlcode += '<div class="admin_gp">'+mygroups[counter1].name.toUpperCase()[0]+'</div>';
+            //         htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + mygroups[counter1].id + '</p>';
 
 
-            $.ajax(settings).done(function (response) {
+            //         htmlcode += '</div>'
+            //         $('.group_prof').append(htmlcode);
+
+            //     }
+
+            // });
+//             var htmlcode = '';
+//             var settings = {
+//                 "url": "http://127.0.0.1:8000/group/joined_groups/",
+//                 "method": "GET",
+//                 "timeout": 0,
+//                 "headers": {
+//                     "Authorization": "Token " + token
+//                 },
+//             };
+
+
+//             $.ajax(settings).done(function (response) {
                 
-                for (var counter = 0; counter < response.length; counter++) {
-                    var gpid2 = response[counter].the_group;
-                    var settings2 = {
-                        "url": "http://127.0.0.1:8000/groups/" + gpid2 + "/",
-                        "method": "GET",
-                        "timeout": 0,
-                        "Content-Type": "application/json",
+//                 for (var counter = 0; counter < response.length; counter++) {
+//                     var gpid2 = response[counter].the_group;
+//                     var settings2 = {
+//                         "url": "http://127.0.0.1:8000/groups/" + gpid2 + "/",
+//                         "method": "GET",
+//                         "timeout": 0,
+//                         "Content-Type": "application/json",
 
-                    };
+//                     };
 
-                    $.ajax(settings2).done(function (response2) {
-                        var booll = 0;
-                        for (var jj = 0; jj < mygroups.length; jj++) {
-                            if (mygroups[jj].id == response2.groupid)
-                                booll = 1;
+//                     $.ajax(settings2).done(function (response2) {
+//                         var booll = 0;
+//                         for (var jj = 0; jj < mygroups.length; jj++) {
+//                             if (mygroups[jj].id == response2.groupid)
+//                                 booll = 1;
 
-                        }
-                        if (booll == 0)
-                            groups.push({ name: response2.title, id: response2.groupid });
-                    });
-
-
-                }
+//                         }
+//                         if (booll == 0)
+//                             groups.push({ name: response2.title, id: response2.groupid });
+//                     });
 
 
-                setTimeout(function () {
+//                 }
+
+
+//                 setTimeout(function () {
                 
-                    var counter2 = 0;
-                    var htmlcode2 = '';
-                    var hoverout = 'onMouseOut="this.style.color=';
-                    var hoverrout = hoverout + "'white'";
+//                     var counter2 = 0;
+//                     var htmlcode2 = '';
+//                     var hoverout = 'onMouseOut="this.style.color=';
+//                     var hoverrout = hoverout + "'white'";
 
-                    var hover = 'onMouseOver="this.style.color=';
-                    var hoverr = hover + "'red'";
-                    while (counter2 < groups.length) {
-                        var a2 = " document.getElementById('Modal-join').style.display = 'block'";
-                        var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')";
-                        htmlcode2 += '<div>'
+//                     var hover = 'onMouseOver="this.style.color=';
+//                     var hoverr = hover + "'red'";
+//                     while (counter2 < groups.length) {
+//                         var a2 = " document.getElementById('Modal-join').style.display = 'block'";
+//                         var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')";
+//                         htmlcode2 += '<div>'
 
 
-                        htmlcode2 += '<div class="member_gp">'+groups[counter2].name.toUpperCase()[0]+'</div>';
- htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].id + '</p>';
+//                         htmlcode2 += '<div class="member_gp">'+groups[counter2].name.toUpperCase()[0]+'</div>';
+//  htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].id + '</p>';
                       
 
-                        htmlcode2 += '</div>'
+//                         htmlcode2 += '</div>'
 
 
-                        $('.group_prof').append(htmlcode2);
-                        counter2++;
-                        htmlcode2 = '';
+//                         $('.group_prof').append(htmlcode2);
+//                         counter2++;
+//                         htmlcode2 = '';
                      
-                    }
+//                     }
                    
-                }, 500);
+//                 }, 500);
 
 
-            });
+//             });
 
 
             document.getElementById('right-button').onclick = function () {
