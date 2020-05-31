@@ -68,7 +68,7 @@ class Homepage extends Component {
 
                         if (event.status == 400)
 
-                            // alert("group with this groupid already exists");
+                      
 
                             var x = document.getElementById("snackbar-exist");
                             x.className = "show";
@@ -81,14 +81,8 @@ class Homepage extends Component {
                     },
 
                     success: function () {
-
-                        //  document.getElementById("myModel").style.display = 'block'
-
                         $('.formback-content').fadeOut();
-
                         $('.addmember-content').fadeIn();
-
-
                         window.localStorage.setItem('id_group', id);
 
 
@@ -132,7 +126,6 @@ class Homepage extends Component {
 
                 $.ajax(settings).done(function (response) {
 
-                    console.log(response);
 
                 });
 
@@ -140,7 +133,6 @@ class Homepage extends Component {
 
             $(".addbtn").click(function () {
 
-                console.log(per)
                 Able_controll = 0;
                 Able_select = 0;
                 for (var count_per = 0; count_per < per.length; count_per++) {
@@ -151,8 +143,7 @@ class Homepage extends Component {
                         Able_controll = 1
                     }
                 }
-                console.log(Able_select)
-                console.log(Able_controll)
+
                 var member = $(".inp").val();
 
 
@@ -239,7 +230,6 @@ class Homepage extends Component {
 
                                 $.ajax(settings).done(function (response) {
 
-                                    console.log(response);
                                 });
                                 ;
                             },
@@ -274,8 +264,6 @@ class Homepage extends Component {
                         $.ajax(settings).done(function (response) {
 
 
-                            console.log(response);
-
                         });
 
                    },
@@ -299,9 +287,6 @@ class Homepage extends Component {
 
                 $.ajax(settings).done(function (response) {
 
-                    // 
-
-                    console.log(response);
 
 
                 });
@@ -330,9 +315,9 @@ class Homepage extends Component {
               
                 $(".search-result2").html("")
 
-                console.log("change")
+    
                 var user_search = $('.inp-search').val()
-                console.log(user_search)
+             
                 var settings = {
                     "url": "http://127.0.0.1:8000/user/find/username/?search=" + user_search + "",
                     "method": "GET",
@@ -348,8 +333,8 @@ class Homepage extends Component {
                 };
 
                 $.ajax(settings).done(function (response) {
-                    // 
-                    console.log(response);
+                    
+                    
 
         var hoverout = 'onMouseOut="this.style.color=';
 
@@ -359,16 +344,16 @@ class Homepage extends Component {
                         var hover = 'onMouseOver="this.style.color=';
                         var hoverr = hover + "'red'";
                         var htmlcode = '<br/>'
-                        //   $(".search-result").append(htmlcode)
+
                         htmlcode = '';
                         $(".search-result2").append(htmlcode)
                         for (var counter1 = 0; counter1 < response.length; counter1++, htmlcode = '') {
                             var a2 = "window.localStorage.setItem('user'," + response[counter1].username + ")";
                             var r = "window.location.replace('/profile/" + response[counter1].username + "')";
 
-                            console.log(r)
+           
                             htmlcode += '<div>'
-                            // htmlcode+='<br/>'
+
                             htmlcode += '<div class="user-search">';
                             htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].username + '</p>';
 
@@ -409,14 +394,13 @@ class Homepage extends Component {
                     var hover = 'onMouseOver="this.style.color=';
                     var hoverr = hover + "'red'";
                     var htmlcode = '<br/>'
-                    //   $(".search-result").append(htmlcode)
+
                     htmlcode = '';
                     $(".search-result2").append(htmlcode)
                     for (var counter1 = 0; counter1 < response.length; counter1++, htmlcode = '') {
                         var a2 = " document.getElementById('Modal-join').style.display = 'block'";
-                        var r = "window.localStorage.setItem('id-join','" + response[counter1].groupid + "')"; //id of the group
+                        var r = "window.localStorage.setItem('id-join','" + response[counter1].groupid + "')";
                         htmlcode += '<div>'
-                        // htmlcode+='<br/>'
                         htmlcode += '<div class="group-search">';
                         htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].groupid + '</p>';
 
@@ -518,14 +502,11 @@ else{
 
                     $.ajax(settings).done(function (response) {
 
-                        console.log(response);
                     });
-                        //  window.localStorage.setItem('id_gp', id);
                        
                     },
 
                     "headers": {
-                        //'X-CSRFToken': csrftoken,
                         "Authorization": "token " + window.localStorage.getItem('token'),
                         "accept": "application/json",
                         "Access-Control-Allow-Origin": "*",
@@ -538,11 +519,9 @@ else{
                         }
                     ),
                 };
-                console.log(settings.headers);
-                console.log(settings.method);
+
                 $.ajax(settings).done(function (response) {
-                    console.log("done")
-                    console.log(response);
+
 
                 });
             })
@@ -558,13 +537,11 @@ else{
 
                 var id = $(".input").val();
 
-                console.log("aaaa" + id);
 
 
                 var token = window.localStorage.getItem('token');
 
-                console.log(token);
-
+     
 
                 var settings = {
 
@@ -631,14 +608,12 @@ else{
 
                         $.ajax(settings).done(function (response) {
 
-                            console.log(response);
+    
                         });
-                        //  window.localStorage.setItem('id_gp', id);
                     },
 
                     "headers": {
 
-                        //'X-CSRFToken': csrftoken,
 
                         "Authorization": "token " + token,
 
@@ -663,17 +638,7 @@ else{
 
                 };
 
-                console.log(settings.headers);
-
-                console.log(settings.method);
-
                 $.ajax(settings).done(function (response) {
-
-                    console.log("done")
-
-                    console.log(response);
-
-                    console.log(response.status);
 
                 });
 
@@ -681,10 +646,6 @@ else{
 
 
             window.localStorage.removeItem('id_gp');
-
-
-            console.log("aa");
-
 
             var token = window.localStorage.getItem('token');
 
@@ -706,7 +667,7 @@ else{
 
                 window.localStorage.setItem('myac', 1)
                 window.location.replace("/profile/" + username + "");
-                //  alert("im just a MVP version :)");
+      
             });
 
 
@@ -734,7 +695,7 @@ else{
 
             $.ajax(settings).done(function (response) {
 
-                console.log(response);
+
 
                 for (var counter = 0; counter < response.length; counter++)
 
@@ -744,94 +705,25 @@ else{
                 var htmlcode = '';
 
                 for (var counter1 = 0; counter1 < mygroups.length; counter1++, htmlcode = '') {
-
-
                     var s = "document.getElementById('myModal')";
-
                     var ss = s + ".style.display = 'block'";
-
-                    var a = "window.localStorage.setItem('id_gp','" + mygroups[counter1].id + "')"; //id of the group
-
-                    var ad = "window.localStorage.setItem('isadmin','" + '1' + "')"; //id of the group
-
-                    //  console.log("mygroupssss" + mygroups[counter1].id);
-
+                    var a = "window.localStorage.setItem('id_gp','" + mygroups[counter1].id + "')"; 
+                    var ad = "window.localStorage.setItem('isadmin','" + '1' + "')"; 
                     var d = "document.getElementById('myModal2')";
-
                     var dd = d + ".style.display = 'block'";
-
-
-                    //   var l = "window.localStorage.setItem('id_gp','" + mygroups[counter1].id + "')";
-
-                    //  console.log("mygroupssss" + mygroups[counter1].id);
-
-                    // var l = "window.localStorage.setItem('id_gp','" + mygroups[counter1].id + "')";
-
-                    //   window.localStorage.setItem('id_gp', id);
-
-                    var r = "window.location.replace('/group/" + mygroups[counter1].id + "')";
-
-                    //window.location.replace("/group/" + id + "");
-
-
+                    var r = "window.location.replace('/group/" + mygroups[counter1].id + "')";    
                     var hoverout = 'onMouseOut="this.style.color=';
-
                     var hoverrout = hoverout + "'white'";
-
-
                     var hover = 'onMouseOver="this.style.color=';
-
-                    var hoverr = hover + "'red'";
-
-                    /*    var s="document.getElementById('close"+counter1+"')";
-
-                        var ss=s+".remove()";
-
-                        var a="document.getElementById('c"+counter1+"')";
-
-                        var aa=a+".remove()";
-
-
-
-                        var d="document.getElementById('h"+counter1+"')";
-
-                        var dd=d+".remove()";
-
-                        htmlcode+='<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close' + counter1 + '">&times;</span>';*/
-
-                    //      onMouseOver="this.style.color='red'"
-
-                    //  onMouseOut="this.style.color='green'" >GeeksforGeeks</a>
-
-
-                    /*     var hoverout='onMouseOut="this.style.color=';
-
-                         var hoverrout=hoverout+"'red'";
-
-
-
-                         var hover='onMouseOver="this.style.color=';
-
-                         var hoverr=hover+"'green'";*/
-
+                    var hoverr = hover + "'red'";        
                     htmlcode += '</br>';
-
                     htmlcode += '<div class="admin"></div>';
-
                     htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="mygroups"  onclick="' + a + "," + ad + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp" + mygroups[counter1].name + '</p>';
-
-
                     htmlcode += '<div class="buttonsforgp">';
-
-
                     htmlcode += '<div  onclick="' + a + "," + dd + '" class="leave"  style={{ width:45px , height:45px}} ></div>';
-
                     htmlcode += '<div  onclick="' + a + "," + ss + '" class="edit"></div>';
-
                     htmlcode += '</div>';
-
                     htmlcode += '</br>';
-
                     $('.groupshowbody').append(htmlcode);
                 }
 
@@ -844,10 +736,6 @@ else{
             $('.modal2').mouseenter(function () {
 
                 var gpid = window.localStorage.getItem("id_gp");
-
-                console.log(gpid);
-
-
                 var settings = {
 
                     "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
@@ -933,8 +821,6 @@ else{
 
                     $.ajax(settings).done(function (response) {
 
-                        console.log(response);
-
                     });
 
                 } else {
@@ -978,8 +864,6 @@ else{
 
                     $.ajax(settings).done(function (response) {
 
-                        console.log(response);
-
                     });
 
                 }
@@ -1022,9 +906,6 @@ else{
 
             });
 
-
-            console.log("shomarash : " + window.localStorage.getItem('id_gp'));
-
             $('.submitedit').click(function () {
 
 
@@ -1034,8 +915,6 @@ else{
                 var title = $('#edittitle').val();
 
                 var des = $('#editdes').val();
-
-                console.log("AAAAAA  " + gpid);
 
                 var form = new FormData();
 
@@ -1094,9 +973,6 @@ else{
 
 
                 $.ajax(settings).done(function (response) {
-
-                    console.log(response);
-
                 });
 
 
@@ -1140,9 +1016,6 @@ else{
 
 
             $.ajax(settings).done(function (response) {
-
-                console.log(response);
-
                 for (var counter = 0; counter < response.length; counter++) {
 
                     var gpid2 = response[counter].the_group;
@@ -1186,7 +1059,7 @@ else{
 
                 setTimeout(function () {
 
-                    console.log(groups[1]);
+                  
 
                     var counter2 = 0;
 
@@ -1197,7 +1070,7 @@ else{
                         var a2 = "window.localStorage.setItem('id_gp','" + groups[counter2].id + "')";
                         var d2 = "document.getElementById('myModal2')";
                         var dd2 = d2 + ".style.display = 'block'";
-                        var ad2 = "window.localStorage.setItem('isadmin','" + '0' + "')"; //id of the group
+                        var ad2 = "window.localStorage.setItem('isadmin','" + '0' + "')"; 
                         var r = "window.location.replace('/group/" + groups[counter2].id + "')";
                         var hoverout = 'onMouseOut="this.style.color=';
                         var hoverrout = hoverout + "'white'";
@@ -1227,7 +1100,7 @@ else{
 
                     }
 
-                    console.log("groups :" + groups);
+                   
 
                 }, 1000);
 
@@ -1248,8 +1121,6 @@ else{
 
         this.states = {
 
-
-            // anchorPosition:null ,
             value: '',
             selectedOption: null,
 
@@ -1326,36 +1197,9 @@ else{
 
     };
 
-    // renderEfect = () => {
-
-    //     if(this.state.showEffect === true){
-
-    //         return(
-
-    //             <div style={{position:"absolute", width:"100% " , height : "100%" , border:"solid red" , zIndex :100 , backgroundColor:"rgba(0, 0, 0, 0.76)" }}></div>
-
-    //     )
-
-    //     }
 
 
-    //     else{
-
-    //         return(null)
-
-    //     }
-
-    // };
-
-    onSelect(selectedList, selectedItem) {
-        console.log(selectedItem)
-        console.log(selectedList)
-    }
-
-    onRemove(selectedList, removedItem) {
-        console.log(selectedList)
-        console.log(removedItem)
-    }
+ 
 
     render() {
 
@@ -1439,8 +1283,7 @@ else{
 
                         </div>
 
-                        {/* <div className='dltno'>no</div> */}
-
+            
                     </div>
 
                 </div>
@@ -1680,27 +1523,6 @@ else{
 
                     </div>
 
-                    {/* <div id="myModel" className="modal2">
-
-                        <div id="mymodal2" class="modal-content2">
-
-                            <p class='tit'>Add your member</p>
-
-                            <input class='inp' placeholder=" enter your user's id"></input>
-
-                            <div class="center">
-
-                                <div class='addbtn'>Add</div>
-
-                                <div class='skipbtn'>Skip</div>
-
-                            </div>
-
-
-
-                        </div>
-
-                    </div> */}
                 </div>
                 <div className="search-result2" id='res'></div>
                 <div className="groupsShow">

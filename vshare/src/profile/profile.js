@@ -18,11 +18,11 @@ var respone_get
 var count
 class profile extends Component {
     componentDidMount() {
-        console.log(username)
+   
         const { id } = this.props.match.params;
         $(document).ready(function () {
 
-            console.log(username);
+           
 
                        if(username==window.localStorage.getItem('username')){
                           document.getElementById("content").style.display = 'none'
@@ -44,8 +44,8 @@ class profile extends Component {
             };
 
             $.ajax(settings).done(function (response) {
-                // 
-                console.log(response);
+              
+             
 count=response.followers_count
                 $(".follower_count").text(response.followers_count)
 
@@ -65,8 +65,7 @@ count=response.followers_count
             };
 
             $.ajax(settings).done(function (response) {
-                // 
-                console.log(response);
+          
 
                 $(".following_count").text(response.followings_count)
 
@@ -108,12 +107,12 @@ count=response.followers_count
 
                 $.ajax(settings).done(function (response) {
 
-                    console.log(response.status);
+               
 
 
                 });
                 document.getElementById("edite-btn").style.display = 'none'
-                console.log(username);
+           
                 document.getElementById("f-btn").style.display = 'block'
                 document.getElementById("uf-btn").style.display = 'none'
             }
@@ -134,8 +133,7 @@ count=response.followers_count
 
 
             $.ajax(settings).done(function (response) {
-                // 
-                console.log(response);
+      
                 respone_get = response;
                 $(".username_prof").text(respone_get.username);
                  $(".username").text(respone_get.username);
@@ -150,9 +148,9 @@ count=response.followers_count
 
             $(".inp-search").change(function () {
                 $(".search-result").html("")
-                console.log("change")
+          
                 var user_search = $('.inp-search').val()
-                console.log(user_search)
+             
                 var settings = {
                     "url": "http://127.0.0.1:8000/user/find/username/?search=" + user_search + "",
                     "method": "GET",
@@ -168,8 +166,7 @@ count=response.followers_count
                 };
 
                 $.ajax(settings).done(function (response) {
-                    // 
-                    console.log(response);
+        
 
 
         var hoverout = 'onMouseOut="this.style.color=';
@@ -179,16 +176,16 @@ count=response.followers_count
                         var hover = 'onMouseOver="this.style.color=';
                         var hoverr = hover + "'red'";
                         var htmlcode = '<br/>'
-                        //   $(".search-result").append(htmlcode)
+                     
                         htmlcode = '';
                         $(".search-result").append(htmlcode)
                         for (var counter1 = 0; counter1 < response.length; counter1++, htmlcode = '') {
                             var a2 = "window.localStorage.setItem('user'," + response[counter1].username + ")";
                             var r = "window.location.replace('/profile/" + response[counter1].username + "')";
 
-                            console.log(r)
+                       
                             htmlcode += '<div>'
-                            // htmlcode+='<br/>'
+                         
                             htmlcode += '<div class="user-search">';
                             htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].username + '</p>';
 
@@ -228,14 +225,14 @@ count=response.followers_count
                     var hover = 'onMouseOver="this.style.color=';
                     var hoverr = hover + "'red'";
                     var htmlcode = '<br/>'
-                    //   $(".search-result").append(htmlcode)
+             
                     htmlcode = '';
                     $(".search-result").append(htmlcode)
                     for (var counter1 = 0; counter1 < response.length; counter1++, htmlcode = '') {
                         var a2 = " document.getElementById('Modal-join').style.display = 'block'";
-                        var r = "window.localStorage.setItem('id-join','" + response[counter1].groupid + "')"; //id of the group
+                        var r = "window.localStorage.setItem('id-join','" + response[counter1].groupid + "')"; 
                         htmlcode += '<div>'
-                        // htmlcode+='<br/>'
+                       
                         htmlcode += '<div class="group-search">';
                         htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].groupid + '</p>';
 
@@ -331,14 +328,14 @@ else{
 
                     $.ajax(settings).done(function (response) {
 
-                        console.log(response);
+                       
                     });
-                        //  window.localStorage.setItem('id_gp', id);
+                       
                        
                     },
 
                     "headers": {
-                        //'X-CSRFToken': csrftoken,
+                        
                         "Authorization": "token " + window.localStorage.getItem('token'),
                         "accept": "application/json",
                         "Access-Control-Allow-Origin": "*",
@@ -351,11 +348,9 @@ else{
                         }
                     ),
                 };
-                console.log(settings.headers);
-                console.log(settings.method);
+    
                 $.ajax(settings).done(function (response) {
-                    console.log("done")
-                    console.log(response);
+    
 
                 });
             })
@@ -391,8 +386,7 @@ else{
                 };
 
                 $.ajax(settings).done(function (response) {
-                    // 
-                    console.log(response);
+                 
                     document.getElementById("f-btn").style.display = 'block'
                     document.getElementById("uf-btn").style.display = 'none'
                    count=count-1
@@ -422,8 +416,7 @@ else{
                 };
 
                 $.ajax(settings).done(function (response) {
-                    // 
-                    console.log(response);
+              
                     document.getElementById("f-btn").style.display = 'none'
                     document.getElementById("uf-btn").style.display = 'block'
                     count=count+1
@@ -464,20 +457,20 @@ else{
                 };
 
                 $.ajax(settings).done(function (response) {
-                    // 
+                  
                     var hoverout = 'onMouseOut="this.style.color=';
                     var hoverrout = hoverout + "'white'";
 
                     var hover = 'onMouseOver="this.style.color=';
                     var hoverr = hover + "'red'";
                     var htmlcode = ''
-                    console.log(response);
+            
                     for (var counter1 = 0; counter1 < response.result.length; counter1++, htmlcode = '') {
-                        console.log("1")
+                 
                         var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_is_followed + ")";
                         var r = "window.location.replace('/profile/" + response.result[counter1].who_is_followed + "')";
                         htmlcode += '<div>'
-                        // htmlcode+='<br/>'
+                      
                         htmlcode += '<div class="user-search">';
                         htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result2"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response.result[counter1].who_is_followed + '</p>';
 
@@ -519,20 +512,20 @@ else{
                 };
 
                 $.ajax(settings).done(function (response) {
-                    // 
+                
                     var hoverout = 'onMouseOut="this.style.color=';
                     var hoverrout = hoverout + "'white'";
 
                     var hover = 'onMouseOver="this.style.color=';
                     var hoverr = hover + "'red'";
                     var htmlcode = ''
-                    console.log(response);
+              
                     for (var counter1 = 0; counter1 < response.result.length; counter1++, htmlcode = '') {
-                        console.log("1")
+                
                         var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_follows + ")";
                         var r = "window.location.replace('/profile/" + response.result[counter1].who_follows + "')";
                         htmlcode += '<div>'
-                        // htmlcode+='<br/>'
+                      
                         htmlcode += '<div class="user-search">';
                         htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result2"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response.result[counter1].who_follows + '</p>';
 
@@ -569,7 +562,7 @@ else{
             };
 
             $.ajax(settings).done(function (response) {
-                console.log(response);
+             
                 for (var counter = 0; counter < response.length; counter++)
                     mygroups.push({ name: response[counter].title, id: response[counter].groupid });
 
@@ -605,7 +598,7 @@ else{
 
 
             $.ajax(settings).done(function (response) {
-                console.log(response);
+                
                 for (var counter = 0; counter < response.length; counter++) {
                     var gpid2 = response[counter].the_group;
                     var settings2 = {
@@ -632,7 +625,7 @@ else{
 
 
                 setTimeout(function () {
-                    console.log(groups[1]);
+                
                     var counter2 = 0;
                     var htmlcode2 = '';
                     var hoverout = 'onMouseOut="this.style.color=';
@@ -642,7 +635,7 @@ else{
                     var hoverr = hover + "'red'";
                     while (counter2 < groups.length) {
                         var a2 = " document.getElementById('Modal-join').style.display = 'block'";
-                        var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')"; //id of the group
+                        var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')";
                         htmlcode2 += '<div>'
 
 
@@ -656,9 +649,9 @@ else{
                         $('.group_prof').append(htmlcode2);
                         counter2++;
                         htmlcode2 = '';
-                        console.log("1")
+                     
                     }
-                    console.log("groups :" + groups);
+                   
                 }, 500);
 
 
@@ -667,18 +660,18 @@ else{
 
             document.getElementById('right-button').onclick = function () {
                 scrollLeft(document.getElementById('content'), 300, 1000);
-                console.log("right")
+             
             }
             document.getElementById('left-button').onclick = function () {
                 scrollLeft(document.getElementById('content'), -300, 1000);
-                console.log("left")
+              
             }
             function scrollLeft(element, change, duration) {
                 var start = element.scrollLeft,
                     currentTime = 0,
                     increment = 20;
 
-                console.log(start)
+               
 
                 var animateScroll = function () {
                     currentTime += increment;
@@ -691,10 +684,7 @@ else{
                 animateScroll();
             }
 
-            //t = current time
-            //b = start value
-            //c = change in value
-            //d = duration
+            
             Math.easeInOutQuad = function (t, b, c, d) {
                 t /= d / 2;
                 if (t < 1) return c / 2 * t * t + b;
