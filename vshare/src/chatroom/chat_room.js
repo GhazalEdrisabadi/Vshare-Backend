@@ -9,10 +9,10 @@ import Websocket from 'react-websocket';
 import Home from './home.png'
 
 import Button from '@material-ui/core/Button';
-
+import Avatar from '@material-ui/core/Avatar';
 import RedoIcon from '@material-ui/icons/Redo';
 
-import Avatar from '@material-ui/core/Avatar'
+
 import './video-react.css';
 
 import {Player, ControlBar, PlayToggle, Shortcut} from 'video-react';
@@ -45,6 +45,8 @@ import PauseIcon from '@material-ui/icons/Pause';
 import Forward10Icon from '@material-ui/icons/Forward10';
 import EjectIcon from '@material-ui/icons/Eject';
 import StopIcon from '@material-ui/icons/Stop';
+import FirstPageIcon from '@material-ui/icons/FirstPage';
+import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import Select from 'react-select';
 
 var Able_chat = 0;
@@ -84,6 +86,8 @@ var isadmin = window.localStorage.getItem('isadmin');
 var filmplayed = 0;
 var comeinstate1 = 0;
 var Play_pause_space = 0;
+var usercolors = {};
+var chatsize;
 
 var create_by = null
 
@@ -106,8 +110,92 @@ class chat_room extends Component {
 
     componentDidMount() {
 
-        this.setState({opt: op});
+        var sizeeeeee = $(".formback_movie").width();
+        console.log(sizeeeeee)
+        $(window).resize(function () {
+            chatsize = $(".back_coulom").width();
+            if (document.getElementById("mySidenav").style.width == "0px") {
+                var sizeeeeee = $(".formback_movie").width();
+                $(".video-react-video").css("width", sizeeeeee.toString());
+                $(".video-react-video").css("margin-left", '0px');
+            } else {
+                sizeeeeee = $(".formback_movie").width();
+                $(".video-react-video").css("width", sizeeeeee.toString() + '50px');
+                $(".video-react-video").css("margin-left", '210px');
+            }
+        });
 
+//         $('#formback_movie_id').resize(function () {
+//    console.log("avaz shodm avaz shodm ")
+//         });
+        $('.openonlinemember').click(function () {
+            var sizeeeeee = $(".formback_movie").width();
+            if ($(".sidenav").width() < 20) {
+                document.getElementById("mySidenav").style.width = "300px";
+                if ($(window).width() < 800) {
+                    chatsize = $(".back_coulom").width();
+                    $(".back_coulom").css("width", "0px");
+                    $(".openchat").css("transform", "scaleX(1)");
+                    sizeeeeee += chatsize;
+                    $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                    $(".video-react-video").css("margin-right", '0px');
+                }
+                $(".openonlinemember").css("transform", "scaleX(1)");
+                // sizeeeeee -= 300;
+                $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                $(".video-react-video").css("margin-left", '200px');
+
+
+            } else {
+                document.getElementById("mySidenav").style.width = "0px";
+                $(".openonlinemember").css("transform", "scaleX(-1)");
+                //  sizeeeeee += 300;
+                $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                $(".video-react-video").css("margin-left", '200px');
+            }
+            sizeeeeee = $(".formback_movie").width();
+        });
+
+        $('.openchat').click(function () {
+
+            console.log("size " + sizeeeeee)
+            if ($(".back_coulom").width() > 0)
+                chatsize = $(".back_coulom").width();
+
+            if ($(".back_coulom").width() == 0) {
+                $(".back_coulom").css("width", "400px");
+
+                if ($(window).width() < 800) {
+                    document.getElementById("mySidenav").style.width = "0px";
+                    $(".openonlinemember").css("transform", "scaleX(-1)");
+                    sizeeeeee += 300;
+                    $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                    $(".video-react-video").css("margin-left", '4%');
+                }
+
+                $(".openchat").css("transform", "scaleX(-1)");
+
+                // console.log(chatsize)
+                //.sizeeeeee -= chatsize;
+                $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                $(".video-react-video").css("margin-right", '300px');
+
+            } else {
+
+                $(".back_coulom").css("width", "0px");
+
+                $(".openchat").css("transform", "scaleX(1)");
+
+                // console.log(chatsize)
+                // sizeeeeee += chatsize;
+                $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                $(".video-react-video").css("margin-right", '300px');
+
+            }
+            sizeeeeee = $(".formback_movie").width();
+            //  console.log(sizeeeeee)
+
+        });
 
         console.log(url)
         console.log(url1)
@@ -140,6 +228,11 @@ class chat_room extends Component {
 
             if (messagee1.command == "chat_client") {
 
+                var aval = 'style=';
+                var dovom = aval + '"color:';
+                var sevom = dovom + usercolors[messagee1.user];
+                //   var sevom = dovom + "red";
+                var charom = sevom + '"';
                 var d = 'document.getElementById("mymutemodal")';
 
                 var dd = d + '.style.display="block"';
@@ -147,14 +240,12 @@ class chat_room extends Component {
                 var a = 'window.localStorage.setItem("muteuser","' + messagee1.user + '")';
 
                 if (messagee1.user == window.localStorage.getItem('username')) {
-                    $(".pm").append("<div id='pmeman'>" + "me: &nbsp;</div><div  id='pmemantxt'>" + messagee1.message + "</div>");
+
+                    $(".pm").append("<div id='pmeman'" + charom + ">" + "me: &nbsp;</div><div  id='pmemantxt'>" + messagee1.message + "</div>");
 
                 } else {
-                    $(".pm").append("<div onclick='" + dd + "," + a + "'id='pmeoon'>" + messagee1.user + ": &nbsp; </div><div  id='pmemantxt'>" + messagee1.message + "</div>");
+                    $(".pm").append("<div onclick='" + dd + "," + a + "' id='pmeoon'" + charom + ">" + messagee1.user + ": &nbsp; </div><div  id='pmemantxt'>" + messagee1.message + "</div>");
                 }
-
-                $(".pm").append("<br>")
-
 
                 var element = document.getElementById("pmid");
                 element.scrollTop = element.scrollHeight;
@@ -183,9 +274,28 @@ class chat_room extends Component {
                     $.ajax(settings).done(function (response) {
                         console.log('aaaa12');
                         console.log(response);
-                        for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
+                        for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++) {
                             //  setTimeout(function () {
-                            $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
+                            var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+
+
+                            var letters = 'BCDEF'.split('');
+                            var color = '#';
+                            for (var i = 0; i < 6; i++) {
+                                color += letters[Math.floor(Math.random() * letters.length)];
+                            }
+
+
+                            var color2 = "hsl(" + Math.random() * 360 + ", 100%, 75%)";
+                            if (usercolors[response[onlinememberscounter].online_user] == null)
+                                usercolors[response[onlinememberscounter].online_user] = color2;
+                            var aval = 'style=';
+                            var dovom = aval + '"color:';
+                            var sevom = dovom + usercolors[response[onlinememberscounter].online_user];
+                            //   var sevom = dovom + "red";
+                            var charom = sevom + '"';
+                            $('.onlinemembers').append('<p id="members"' + charom + '>' + response[onlinememberscounter].online_user + '</p>');
+                        }
                         //  },500);
                     });
 
@@ -207,6 +317,7 @@ class chat_room extends Component {
         }
 
         ws.onmessage = evt => {
+
 
             console.log("messsssssage");
 
@@ -359,15 +470,7 @@ class chat_room extends Component {
                 if (messagee.username == window.localStorage.getItem('username')) {
                     if (messagee.permission1 == "controller" || messagee.permission2 == "controller") {
                         iscontroller = 1;
-                        if (filmplayed == 1) {
-                            if (played == 0) {
-                                this.play();
-                                this.pause();
-                            } else {
-                                this.pause();
-                                this.play();
-                            }
-                        }
+
                         document.getElementById("controllbuttons2").style.zIndex = "-1";
                         document.getElementById('controllbuttons').style.pointerEvents = 'auto';
                         document.getElementById('movie').style.pointerEvents = 'auto';
@@ -375,21 +478,14 @@ class chat_room extends Component {
                     if (messagee.permission1 == "selector" || messagee.permission2 == "selector") {
                         isselector = 1;
                         document.getElementById('reselect').style.pointerEvents = 'auto';
-                        document.getElementById("controllbuttons2").style.zIndex = "100";
+                        if (iscontroller == 0)
+                            document.getElementById("controllbuttons2").style.zIndex = "100";
                         if (filmplayed == 0)
                             window.location.reload();
                     }
                     if (messagee.permission1 != "controller" && messagee.permission2 != "controller") {
                         iscontroller = 0;
-                        if (filmplayed == 1) {
-                            if (played == 0) {
-                                this.play();
-                                this.pause();
-                            } else {
-                                this.pause();
-                                this.play();
-                            }
-                        }
+
                         document.getElementById("controllbuttons2").style.zIndex = "1";
                         document.getElementById('controllbuttons').style.pointerEvents = 'none';
                         document.getElementById('movie').style.pointerEvents = 'none';
@@ -397,7 +493,8 @@ class chat_room extends Component {
                     if (messagee.permission1 != "selector" && messagee.permission2 != "selector") {
                         isselector = 0;
                         document.getElementById('reselect').style.pointerEvents = 'none';
-                        document.getElementById("controllbuttons2").style.zIndex = "-1";
+                        if (iscontroller == 1)
+                            document.getElementById("controllbuttons2").style.zIndex = "-1";
                         if (filmplayed == 0)
                             window.location.reload();
                     }
@@ -432,13 +529,19 @@ class chat_room extends Component {
 
                 }
             }
-        };
 
+        }
 
         const {id} = this.props.match.params
 
         $(document).ready(function () {
-
+            $('#fullscreenid').prependTo($('.controllbuttons2'));
+            if ($(window).width() < 800) {
+                $(".back_coulom").css("width", "0px");
+                $(".openchat").css("transform", "scaleX(1)");
+                document.getElementById("mySidenav").style.width = "0px";
+                $(".openonlinemember").css("transform", "scaleX(-1)");
+            }
 
             // setTimeout(function () {
             //     const message_reselect = {"command": "reset"}
@@ -514,10 +617,12 @@ class chat_room extends Component {
                 if (e.which == 13) {
 
                     var massage = $(".formback_text_input").val();
-                    const message_send_chat = {"command": "chat_client", "message_client": massage}
-                    ws1.send(JSON.stringify(message_send_chat))
-                    $('.formback_text_input').val('');
+                    if (massage != '') {
+                        const message_send_chat = {"command": "chat_client", "message_client": massage}
 
+                        ws1.send(JSON.stringify(message_send_chat));
+                        $('.formback_text_input').val('');
+                    }
 
                     e.preventDefault();
                 }
@@ -549,7 +654,9 @@ class chat_room extends Component {
                 // ws1.close();
                 logoutclicked = 1;
 
+
                 if (isadmin == 1) {
+
                     const message_reselect = {"command": "reset"}
                     ws.send(JSON.stringify(message_reselect));
                 }
@@ -665,25 +772,35 @@ class chat_room extends Component {
 
             });
 
+
             $("#movie").dblclick(function (e) {
-                e.preventDefault();
 
-                /*  Prevents event bubbling  */
-                e.stopPropagation();
+                //    $(".formback_movie").css("width", '100%');
+                //         document.getElementById("mySidenav").style.width = "0px";
+                // $(".back_coulom").css("width", "0px");
+                $(".openonlinemember").css("transform", "scaleX(-1)");
+                $(".openchat").css("transform", "scaleX(1)");
+                setTimeout(function () {
+                    $('.video-react-video').css({
+                        "width": "100%",
+                        "height": "100%",
+                        "top": "0",
+                        "left": "0",
+                        "margin": "0px"
+                    });
 
-                return;
+                }, 1000);
+
             });
 
-            /*  $("#formback_movie_id").mouseenter(function () {
 
+            if (filmplayed == 1)
+                $('#controll_div').fadeIn();
 
-                  if (filmplayed == 1)
-                      $('#controll_div').fadeIn();
-              });
-              $("#formback_movie_id").mouseleave(function () {
-                  $('#controll_div').fadeOut();
-              });
-  */
+            $("#formback_movie_id").mouseleave(function () {
+                $('#controll_div').fadeOut();
+            });
+
 
             $('.username').text(window.localStorage.getItem('username'));
 
@@ -737,13 +854,20 @@ class chat_room extends Component {
 
             $("#formback_movie_id").mouseenter(function () {
 
-                if (filmplayed == 1)
+                if (filmplayed == 1) {
                     $('#controllbuttons').fadeIn();
+                    $('#nameofthefilm').fadeIn();
+                    $('.fullscreendiv').fadeIn();
 
+                }
             });
             $("#formback_movie_id").mouseleave(function () {
-                if (filmplayed == 1)
+                if (filmplayed == 1) {
                     $('#controllbuttons').fadeOut();
+                    $('#nameofthefilm').fadeOut();
+                    $('.fullscreendiv').fadeIn();
+
+                }
             });
 
 
@@ -811,7 +935,29 @@ class chat_room extends Component {
 
             // }
 
+            var settings = {
+                "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+                    //'X-CSRFToken': csrftoken,
+                    //  "Authorization": "token " + token,
+                    "accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                }
+            };
 
+            $.ajax(settings).done(function (response) {
+                $('.onlinemembers').html('');
+                console.log('aaaa');
+                console.log(response);
+                for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
+                    //  setTimeout(function () {
+                    $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
+                //  },500);
+            });
             var settings = {
 
                 "url": "http://127.0.0.1:8000/groups/" + id + '/',
@@ -936,9 +1082,11 @@ class chat_room extends Component {
                     console.log(create_by)
                     console.log(window.localStorage.getItem('username'))
                     if (window.localStorage.getItem('username') != create_by) {
+
                         document.getElementById('dropdown-basic').style.display = 'none'
                     } else {
                         document.getElementById('dropdown-basic').style.display = 'block'
+                        console.log("mn toooooooooooooooosham")
                     }
                     var htmlcode33 = '<option value="yetoopdaramghelghelie">' + "Select new admin " + '</option>'
                     var htmlcode22 = ''
@@ -1413,15 +1561,19 @@ class chat_room extends Component {
                 });
 
             });
+
+
+            //Log the messages that are returned from the server
+
+
             $(".send_btn").click(function () {
                 var massage = $(".formback_text_input").val();
+                if (massage != '') {
+                    const message_send_chat = {"command": "chat_client", "message_client": massage}
 
-                const message_send_chat = {"command": "chat_client", "message_client": massage}
-                ws1.send(JSON.stringify(message_send_chat))
-                $('.formback_text_input').val('');
-
-
-                console.log(JSON.stringify(message_send_chat))
+                    ws1.send(JSON.stringify(message_send_chat));
+                    $('.formback_text_input').val('');
+                }
 
 
             });
@@ -1446,27 +1598,32 @@ class chat_room extends Component {
                 //  document.getElementById("myElement").style.cssText = "display: block; position: absolute";
                 console.log(response);
 
-                var d = 'document.getElementById("mymutemodal")';
-
-                var dd = d + '.style.display="block"';
-
-
                 for (var counterchathistory = response.results.length - 1; counterchathistory >= 0; counterchathistory--) {
-                    var a = 'window.localStorage.setItem("muteuser","' + response.results[counterchathistory].message_sender + '")';
 
+                    var aval = 'style=';
+                    var dovom = aval + '"color:';
+                    var sevom = dovom + usercolors[response.results[counterchathistory].message_sender];
+                    var charom = sevom + '"';
+
+
+                    var d = 'document.getElementById("mymutemodal")';
+
+                    var dd = d + '.style.display="block"';
+
+
+                    var a = 'window.localStorage.setItem("muteuser","' + response.results[counterchathistory].message_sender + '")';
                     if (response.results[counterchathistory].message_sender == window.localStorage.getItem('username')) {
-                        $(".pm").append("<div  style='float:left' id='pmeman'> me: &nbsp;</div><div  id='pmemantxt'>" + response.results[counterchathistory].message_text + "</div>");
+                        $(".pm").append("<div  style='float:left' id='pmeman'" + charom + "> me: &nbsp;</div><div  id='pmemantxt'>" + response.results[counterchathistory].message_text + "</div>");
 
                     } else {
-                        $(".pm").append("<div onclick='" + dd + "," + a + "' id='pmeoon'>" + response.results[counterchathistory].message_sender + ": &nbsp;</div><div  id='pmemantxt'> " + response.results[counterchathistory].message_text + "</div>");
+                        $(".pm").append("<abbr title='Click to mute' > <div onclick='" + dd + "," + a + "' id='pmeoon'" + charom + ">" + response.results[counterchathistory].message_sender + ": &nbsp;</div></abbr><div  id='pmemantxt'> " + response.results[counterchathistory].message_text + "</div>");
                     }
 
                 }
                 var element = document.getElementById("pmid");
                 element.scrollTop = element.scrollHeight;
 
-            });
-
+            })
             setTimeout(function () {
                 console.log("is admin : " + isadmin);
                 console.log("is controller: " + iscontroller);
@@ -1638,8 +1795,8 @@ class chat_room extends Component {
             $('.dltno2').click(function () {
                 $('.mutemodal').fadeOut("slow");
             });
+        })
 
-        });
     }
 
 
@@ -1673,6 +1830,7 @@ class chat_room extends Component {
         this.play = this.play.bind(this);
 
         this.pause = this.pause.bind(this);
+        this.fullscreen = this.fullscreen.bind(this);
         this.handlereq_forward_backward = this.handlereq_forward_backward.bind(this);
 
         this.changeCurrentTime = this.changeCurrentTime.bind(this);
@@ -2265,6 +2423,14 @@ class chat_room extends Component {
 
 
             if (percant == 100) {
+                //   const {player} = this.player.getState();
+                //     console.log("curent " + player.currentTime)
+                $('#nameofthefilm').text(file.name.split('.')[0]);
+                $('#nameofthefilm').fadeIn();
+                $('.fullscreendiv').fadeIn();
+
+                console.log(file.name.split('.')[0]);
+
 
                 uploaded = 1;
                 if (isadmin == 1 || isselector == 1) {
@@ -2371,6 +2537,29 @@ class chat_room extends Component {
         $('#pause_btnid').fadeIn('fast');
 
         //this.player.play();
+
+
+    }
+
+
+    fullscreen() {
+
+        this.player.toggleFullscreen();
+        $(".formback_movie").css("width", '100%');
+        document.getElementById("mySidenav").style.width = "0px";
+        $(".back_coulom").css("width", "0px");
+        $(".openonlinemember").css("transform", "scaleX(-1)");
+        $(".openchat").css("transform", "scaleX(1)");
+        setTimeout(function () {
+            $('.video-react-video').css({
+                "width": "100%",
+                "height": "100%",
+                "top": "0",
+                "left": "0",
+                "margin": "0px"
+            });
+
+        }, 1000);
 
 
     }
@@ -2486,324 +2675,428 @@ class chat_room extends Component {
         return (
 
 
-            <div>
+            <form className="back">
 
 
-                < form className="back">
+                <header class="header_s">
 
+                    <div className='leftheader'>
 
-                    <header class="header_s">
-
-                        <div className='leftheader'>
-
-                            <div className='userprofile'>
-
-                                <IconButton style={{
-
-                                    color: 'white'
-
-
-                                }}
-
-                                            className="profilepic">
-
-                                    <AccountCircleOutlinedIcon fontSize="large"/>
-
-                                </IconButton>
-
-
-                                <p className='username'>Username</p>
-
-                            </div>
-
-
-                        </div>
-
-                        <div className='logout'>
-
-                            <p className='logout_text2'>Exit group</p>
+                        <div className='userprofile'>
 
                             <IconButton style={{
+
                                 color: 'white'
+
 
                             }}
 
-                                        className="div_leave">
+                                        className="profilepic">
 
-                                <ExitToAppIcon fontSize="large"/>
+                                <AccountCircleOutlinedIcon fontSize="large"/>
 
                             </IconButton>
 
-                        </div>
 
-                    </header>
-
-                    <div id="mymutemodal" className="mutemodal">
-
-                        <div className="mute-modal-content">
-
-                            <h3 className='deleteTEXT'>Are you sure you want to mute this user ? </h3>
-
-
-                            <div className='dltbtns'>
-
-
-                                <Button style={{backgroundColor: "Red"}} size='large'
-
-                                        className="dltno2" variant="contained" color="secondary">
-
-                                    <p>No&nbsp;</p>
-
-                                </Button>
-
-
-                                <Button style={{
-
-                                    backgroundColor: 'gray',
-
-                                    marginRight: "4px"
-
-
-                                }} size='large' className="dltyes2" variant="contained" color="secondary">
-
-                                    <p>Yes</p>
-
-                                </Button>
-
-
-                            </div>
-
-                            {/* <div className='dltno'>no</div> */}
-
-                        </div>
-
-                    </div>
-
-
-                    <div id="myModal" class="modal-">
-
-
-                        <div class="modal-content-">
-
-                            <div className='headModal'>
-
-                                <Avatar style={{
-                                    backgroundColor: 'rgba(0,0,0,0.5)',
-                                    width: '100px',
-                                    height: '100px',
-                                    fontSize: '50px'
-                                }} className='photogp'>&nbsp;</Avatar>
-
-
-                                <div className='infogp'>
-
-                                    <div className='namegp'/>
-
-                                    <div className='idgp'/>
-
-                                </div>
-                                <div class="drop">
-                                    <Dropdown>
-                                        <Dropdown.Toggle variant="success" id="dropdown-basic" style={{
-                                            backgroundColor: 'transparent',
-                                            borderColor: 'transparent',
-                                            fontSize: '30px',
-                                            cursor: 'pointer'
-                                        }}>
-                                            ⋮
-                                        </Dropdown.Toggle>
-
-                                        <Dropdown.Menu style={{
-                                            backgroundColor: 'rgba(0,0,0,0.9)',
-                                            color: 'black',
-                                            marginLeft: '-65px'
-                                        }}>
-                                            <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
-                                                 className="edit_group" onClick={this.click_edit}>Edit group
-                                            </div>
-                                            <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
-                                                 className="edit_group" onClick={this.click_edit_permission}>Edit
-                                                permission
-                                            </div>
-                                            <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
-                                                 className="edit_group" onClick={this.click_edit_Add}>Add member
-                                            </div>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                </div>
-                            </div>
-
-                            <div className='destitle'>Description:</div>
-
-                            <div className='desbody'/>
-
-                            <hr/>
-
-                            <div className='infobody'/>
+                            <p className='username'>Username</p>
 
                         </div>
 
 
                     </div>
-                    <div id="myModalPer" class="modalPer">
-                        <div class="modal-content-Per">
-                            <p className='delPer'>Edit permission of user</p>
 
-                            <select id="exams" name="exams" required className='dropbtn-'>
+                    <div className='logout'>
 
-                            </select>
+                        <p className='logout_text2'>Exit group</p>
 
-                            <Select className='select' isMulti placeholder="select your permission"
-                                    value={this.state.selectedOption}
-                                    onChange={this.handleChanges}
-                                    options={options}
-                            />
+                        <IconButton style={{
+                            color: 'white'
 
+                        }}
 
-                            <br/>
-                            <div className='btndl'>
+                                    className="div_leave">
 
-                                <Button style={{backgroundColor: "Red"}} size='large'
-                                        className="btnno" variant="contained" color="secondary">
-                                    <p>Cancel&nbsp;</p>
-                                </Button>
+                            <ExitToAppIcon fontSize="large"/>
 
-                                <Button style={{
-                                    backgroundColor: 'gray',
-                                    marginRight: "4px"
+                        </IconButton>
 
-                                }} size='large' className="btnyes" variant="contained" color="secondary">
-                                    <p>Apply</p>
-                                </Button>
-
-                            </div>
-                        </div>
                     </div>
-                    <div id="snackbar">Successfully permission edit</div>
-                    <div id="snackbar-mute-warning">You don't have permission to send message</div>
-                    <div id="snackbar-">Enter id field</div>
-                    <div id="myModalAdd" class="modaladd">
-                        <div class="modal-content-add">
-                            <p className='delPer'>Add your member</p>
 
-                            <input class='inp-add' placeholder=" enter your user's id"></input>
-                            <Select className='select-' isMulti placeholder="select your permission"
-                                    value={this.state.selectedOption_Add}
-                                    onChange={this.handleChanges_Add}
-                                    options={options}
-                            />
+                </header>
 
 
-                            <br/>
-                            <div className='btndl'>
+                <div id="mySidenav" className="sidenav">
+                    <div className="name"/>
 
-                                <Button style={{backgroundColor: "Red"}} size='large'
-                                        className="btncancel" variant="contained" color="secondary">
-                                    <p>Cancel&nbsp;</p>
-                                </Button>
-
-                                <Button style={{
-                                    backgroundColor: 'gray',
-                                    marginRight: "4px"
-
-                                }} size='large' className="btnadd" variant="contained" color="secondary">
-                                    <p>Add</p>
-                                </Button>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div id="snackbar-succes">Successfully add to group</div>
-                    <div id="snackbar-not">User not found</div>
-                    <div id="snackbar-already">User is already a member of this group</div>
-                    <div id="snackbar-mute">Successfully mute</div>
-                    <div id="myModal_popup" class="modal_popup">
-                        <div class="modal-content">
-                            <IconButton style={{color: 'white', marginRight: '130%', marginTop: '4%'}}
-                                        className="cancelicon">
-                                <CloseIcon fontSize="large"/>
-                            </IconButton>
-                            <h3 class="texx">Edit your groups deatails</h3>
-
-                            <hr></hr>
-
-                            <input class="inputedit-title" id='edittitle_popup' placeholder="Title"></input>
+                    <p className='titleofonlines'>Online</p>
+                    <p className="khat">_______________________</p>
+                    <div className="onlinemembers"></div>
+                </div>
 
 
-                            <input class="inputedit-des" id='editdes_popup' placeholder="Description"></input>
+                <abbr title="Online Members">
+                    <IconButton style={{
+                        transform: 'scaleX(1)',
+                        color: 'white',
+                        zIndex: '1'
+                    }}
 
-                            <select id="admin-select" name="admin-select" required className='admin-select'>
+                                className="openonlinemember">
 
-                            </select>
-                            <br></br>
+                        <FirstPageIcon fontSize="large"/>
+
+                    </IconButton>
+                </abbr>
+
+                <div id="mymutemodal" className="mutemodal">
+
+                    <div className="mute-modal-content">
+
+                        <h3 className='deleteTEXT'>Are you sure you want to mute this user ? </h3>
+
+
+                        <div className='dltbtns'>
+
+
+                            <Button style={{backgroundColor: "Red"}} size='large'
+
+                                    className="dltno2" variant="contained" color="secondary">
+
+                                <p>No&nbsp;</p>
+
+                            </Button>
+
+
                             <Button style={{
-                                backgroundColor: "Red",
-                                marginTop: "20px"
-                            }} size='large' className="submitedit_popup" variant="contained" color="secondary">
+
+                                backgroundColor: 'gray',
+
+                                marginRight: "4px"
+
+
+                            }} size='large' className="dltyes2" variant="contained" color="secondary">
+
+                                <p>Yes</p>
+
+                            </Button>
+
+
+                        </div>
+
+                        {/* <div className='dltno'>no</div> */}
+
+                    </div>
+
+                </div>
+
+
+                <div id="myModal" class="modal-">
+
+
+                    <div class="modal-content-">
+
+                        <div className='headModal'>
+
+                            <Avatar style={{
+                                backgroundColor: 'rgba(0,0,0,0.5)',
+                                width: '100px',
+                                height: '100px',
+                                fontSize: '50px'
+                            }} className='photogp'>&nbsp;</Avatar>
+
+
+                            <div className='infogp'>
+
+                                <div className='namegp'/>
+
+                                <div className='idgp'/>
+
+                            </div>
+
+                            <div class="drop">
+                                <Dropdown>
+                                    <Dropdown.Toggle variant="success" id="dropdown-basic" style={{
+                                        backgroundColor: 'transparent',
+                                        borderColor: 'transparent',
+                                        fontSize: '30px',
+                                        cursor: 'pointer'
+                                    }}>
+                                        ⋮
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu style={{
+                                        backgroundColor: 'rgba(0,0,0,0.9)',
+                                        color: 'black',
+                                        marginLeft: '-65px'
+                                    }}>
+                                        <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
+                                             className="edit_group" onClick={this.click_edit}>Edit group
+                                        </div>
+                                        <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
+                                             className="edit_group" onClick={this.click_edit_permission}>Edit
+                                            permission
+                                        </div>
+                                        <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
+                                             className="edit_group" onClick={this.click_edit_Add}>Add member
+                                        </div>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </div>
+                        </div>
+
+                        <div className='destitle'>Description:</div>
+
+                        <div className='desbody'/>
+
+                        <hr/>
+
+                        <div className='infobody'/>
+
+                    </div>
+
+
+                </div>
+                <div id="myModalPer" class="modalPer">
+                    <div class="modal-content-Per">
+                        <p className='delPer'>Edit permission of user</p>
+
+                        <select id="exams" name="exams" required className='dropbtn-'>
+
+                        </select>
+
+                        <Select className='select' isMulti placeholder="select your permission"
+                                value={this.state.selectedOption}
+                                onChange={this.handleChanges}
+                                options={options}
+                        />
+
+
+                        <br/>
+                        <div className='btndl'>
+
+                            <Button style={{backgroundColor: "Red"}} size='large'
+                                    className="btnno" variant="contained" color="secondary">
+                                <p>Cancel&nbsp;</p>
+                            </Button>
+
+                            <Button style={{
+                                backgroundColor: 'gray',
+                                marginRight: "4px"
+
+                            }} size='large' className="btnyes" variant="contained" color="secondary">
                                 <p>Apply</p>
                             </Button>
 
                         </div>
-                        <div id="snackbar-succes-edit">Successfully edit</div>
+                    </div>
+                </div>
+                <div id="snackbar">Successfully permission edit</div>
+                <div id="snackbar-mute-warning">You don't have permission to send message</div>
+                <div id="snackbar-">Enter id field</div>
+                <div id="myModalAdd" class="modaladd">
+                    <div class="modal-content-add">
+                        <p className='delPer'>Add your member</p>
+
+                        <input class='inp-add' placeholder=" enter your user's id"></input>
+                        <Select className='select-' isMulti placeholder="select your permission"
+                                value={this.state.selectedOption_Add}
+                                onChange={this.handleChanges_Add}
+                                options={options}
+                        />
+
+
+                        <br/>
+                        <div className='btndl'>
+
+                            <Button style={{backgroundColor: "Red"}} size='large'
+                                    className="btncancel" variant="contained" color="secondary">
+                                <p>Cancel&nbsp;</p>
+                            </Button>
+
+                            <Button style={{
+                                backgroundColor: 'gray',
+                                marginRight: "4px"
+
+                            }} size='large' className="btnadd" variant="contained" color="secondary">
+                                <p>Add</p>
+                            </Button>
+
+                        </div>
+                    </div>
+                </div>
+                <div id="snackbar-succes">Successfully add to group</div>
+                <div id="snackbar-not">User not found</div>
+                <div id="snackbar-already">User is already a member of this group</div>
+                <div id="snackbar-mute">Successfully mute</div>
+                <div id="myModal_popup" class="modal_popup">
+                    <div class="modal-content">
+                        <IconButton style={{color: 'white', marginRight: '130%', marginTop: '4%'}}
+                                    className="cancelicon">
+                            <CloseIcon fontSize="large"/>
+                        </IconButton>
+                        <h3 class="texx">Edit your groups deatails</h3>
+
+                        <hr></hr>
+
+                        <input class="inputedit-title" id='edittitle_popup' placeholder="Title"></input>
+
+
+                        <input class="inputedit-des" id='editdes_popup' placeholder="Description"></input>
+
+                        <select id="admin-select" name="admin-select" required className='admin-select'>
+
+                        </select>
+                        <br></br>
+                        <Button style={{
+                            backgroundColor: "Red",
+                            marginTop: "20px"
+                        }} size='large' className="submitedit_popup" variant="contained" color="secondary">
+                            <p>Apply</p>
+                        </Button>
+
+                    </div>
+                    <div id="snackbar-succes-edit">Successfully edit</div>
+                </div>
+
+
+                <div id='formback_movie_id' className="formback_movie">
+
+                    <div id="movie" className="div_player_movie">
+
+                        <Player
+
+                            ref={player => {
+
+                                this.player = player;
+
+                            }}
+
+                            autoPlay
+
+                            src={this.state.file_show_when_click}
+                            id='players'
+
+                        >
+
+                            <Shortcut clickable={false} shortcuts={this.newShortcuts}/>
+
+
+                        </Player>
+
+
+                    </div>
+
+                    <div id='firstprogress'>
+
+                        <CircularProgress disableShrink color="secondary"/>
+
+                    </div>
+                    <div id='nameofthefilm'>
+                        No movie has been selected yet
+                    </div>
+                    <div className='fullscreendiv'>
+                        <IconButton id="fullscreenid" onClick={this.fullscreen} style={{
+                            color: 'white',
+                            cursor: "pointer",
+                            pointerEvents: "auto",
+                            zIndex: '999',
+                        }} size='large' className="fullscreenbtn">
+
+
+                            <FullscreenIcon/>
+                        </IconButton>
                     </div>
 
 
-                    <div id='formback_movie_id' className="formback_movie">
+                    <div id='movietxtdiv'>
 
-                        <div id="movie" className="div_player_movie">
+                        <p id='movietxt'>Wait for admin to select the video</p>
 
-                            <Player
+                    </div>
+                    <div id='controllbuttons2'></div>
+                    <div id='controllbuttons'>
 
-                                ref={player => {
+                        <div className="upload-btn-wrapper">
 
-                                    this.player = player;
-
-                                }}
-
-                                autoPlay
-
-                                src={this.state.file_show_when_click}
-                                id='players'
-
-                            >
-
-                                <Shortcut clickable={false} shortcuts={this.newShortcuts}/>
+                            <IconButton style={{
+                                color: 'white'
 
 
-                            </Player>
+                            }} size='large' id='videopickbtn' className="btn" variant="contained" color="secondary">
+
+                                <EjectIcon/>
+                            </IconButton>
+
+
+                            <input type="file" id='videopicks' className='videopicsk' name="file"
+
+                                   onChange={(e) => this.onChange(e)}/>
+
+
+                            <IconButton onClick={this.changeCurrentTime(-10)} style={{
+
+                                transform: 'scaleX(-1)',
+                                color: 'white'
+
+
+                            }} size='large' className="mr-3">
+
+
+                                <Forward10Icon/>
+
+                            </IconButton>
+
+
+                            <IconButton onClick={this.play} style={{
+                                color: 'white'
+
+                            }}
+                                        id='play_btnid'
+                                        className="play_btn">
+                                <PlayArrowIcon fontSize="large"/>
+                            </IconButton>
+
+
+                            <IconButton onClick={this.pause} style={{
+                                color: 'white',
+                                marginTop: '2px',
+                                display: 'none'
+                            }} size='large'
+                                        id="pause_btnid"
+                                        className="pause_btn">
+
+
+                                <PauseIcon/>
+
+                            </IconButton>
+
+                            <IconButton onClick={this.changeCurrentTime(10)} style={{
+                                color: 'white'
+
+
+                            }} size='large' className="mr-3">
+
+
+                                <Forward10Icon/>
+                            </IconButton>
+
+                            <IconButton id='reselect' style={{
+                                color: 'white'
+
+
+                            }} size='large' className="mr-3">
+
+
+                                <StopIcon/>
+                            </IconButton>
 
 
                         </div>
 
-                        <div id='firstprogress'>
-
-                            <CircularProgress disableShrink color="secondary"/>
-
-                        </div>
-                        <div id='movietxtdiv'>
-
-                            <p id='movietxt'>Wait for admin to select the video</p>
-
-                        </div>
-                        <div id='controllbuttons2'></div>
-                        <div id='controllbuttons'>
-
-                            <div className="upload-btn-wrapper">
-
-                                <IconButton style={{
-                                    color: 'white'
+                        <div id='blaybtndiv'>
 
 
-                                }} size='large' id='videopickbtn' className="btn" variant="contained" color="secondary">
-
-                                    <EjectIcon/>
-                                </IconButton>
-
-
-                                <input type="file" id='videopicks' className='videopicsk' name="file"
-
-                                       onChange={(e) => this.onChange(e)}/>
-
+                            <div className="control" id='controll_div'>
 
                                 <IconButton onClick={this.changeCurrentTime(-10)} style={{
 
@@ -2823,18 +3116,12 @@ class chat_room extends Component {
                                     color: 'white'
 
                                 }}
-                                            id='play_btnid'
                                             className="play_btn">
                                     <PlayArrowIcon fontSize="large"/>
                                 </IconButton>
 
 
-                                <IconButton onClick={this.pause} style={{
-                                    color: 'white',
-                                    marginTop: '2px',
-                                    display: 'none'
-                                }} size='large'
-                                            id="pause_btnid"
+                                <IconButton onClick={this.pause} style={{color: 'white'}} size='large'
                                             className="pause_btn">
 
 
@@ -2852,81 +3139,19 @@ class chat_room extends Component {
                                     <Forward10Icon/>
                                 </IconButton>
 
-                                <IconButton id='reselect' style={{
-                                    color: 'white'
-
-
-                                }} size='large' className="mr-3">
-
-
-                                    <StopIcon/>
-                                </IconButton>
-
 
                             </div>
-
-                            <div id='blaybtndiv'>
-
-
-                                <div className="control" id='controll_div'>
-
-                                    <IconButton onClick={this.changeCurrentTime(-10)} style={{
-
-                                        transform: 'scaleX(-1)',
-                                        color: 'white'
+                        </div>
 
 
-                                    }} size='large' className="mr-3">
+                        <div id='moviebtnd' className='moviebtns'>
 
 
-                                        <Forward10Icon/>
-
-                                    </IconButton>
+                            <br/><br/><br/><br/>
 
 
-                                    <IconButton onClick={this.play} style={{
-                                        color: 'white'
-
-                                    }}
-                                                className="play_btn">
-                                        <PlayArrowIcon fontSize="large"/>
-                                    </IconButton>
-
-
-                                    <IconButton onClick={this.pause} style={{color: 'white'}} size='large'
-                                                className="pause_btn">
-
-
-                                        <PauseIcon/>
-
-                                    </IconButton>
-
-                                    <IconButton onClick={this.changeCurrentTime(10)} style={{
-                                        color: 'white'
-
-
-                                    }} size='large' className="mr-3">
-
-
-                                        <Forward10Icon/>
-                                    </IconButton>
-
-
-                                </div>
-                            </div>
-
-
-                            <div id='moviebtnd' className='moviebtns'>
-
-
-                                <br/><br/><br/><br/>
-
-
-                                <div id='progress'>
-                                    <CircularProgress disableShrink color="secondary"/>
-                                </div>
-
-
+                            <div id='progress'>
+                                <CircularProgress disableShrink color="secondary"/>
                             </div>
 
 
@@ -2936,25 +3161,30 @@ class chat_room extends Component {
                     </div>
 
 
-                    <div className="back_coulom">
+                </div>
 
 
-                        <div className="formback_info" style={{width: '350px', height: '395px'}}>
+                <abbr title="Chat messanger">
+                    <IconButton style={{
+                        transform: 'scaleX(-1)',
+                        color: 'white'
+                    }}
 
-                            <div className="name"/>
+                                className="openchat">
 
-                            <p className="khat">_______________________</p>
-
-                            <p className='titleofonlines'>Online members :</p>
-
-                            <div className="onlinemembers"></div>
-
-                        </div>
-
-
-                        <div id='formback_text_id' className="formback_text" style={{width: '350px', height: '395px',}}>
+                        <FirstPageIcon fontSize="large"/>
+                    </IconButton>
+                </abbr>
 
 
+                <div id='mysidenav2' className="back_coulom">
+
+                    <div id='formback_text_id' className="formback_text">
+
+                        <div className="formback_text">
+
+                            <div className='titleofchat'> Chat</div>
+                            <p className="khat">______________________________</p>
                             <div id='pmid' className="pm">
 
 
@@ -2964,19 +3194,18 @@ class chat_room extends Component {
                             <div className="input_send">
 
 
-                                <input className="formback_text_input" id="formback_text_input" autoComplete="off">
+                                <input className="formback_text_input" id="formback_text_input" autocomplete="off">
 
                                 </input>
-
-
-                                <IconButton style={{
-                                    color: 'white',
-                                    fontSize: '80px'
-                                }}
-                                            className="send_btn">
-                                    <SendIcon/>
-                                </IconButton>
-
+                                <div className='sendbutton'>
+                                    <IconButton style={{
+                                        color: 'white',
+                                        fontSize: '80px'
+                                    }}
+                                                className="send_btn">
+                                        <SendIcon/>
+                                    </IconButton>
+                                </div>
                             </div>
 
 
@@ -2985,10 +3214,9 @@ class chat_room extends Component {
 
                     </div>
 
+                </div>
+            </form>
 
-                </form>
-
-            </div>
 
         )
 

@@ -84,10 +84,12 @@
     color: whitesmoke;
     margin: auto;
     padding-left: 30px;
+    padding-right: 30px;
     padding-bottom: 40px;
     border: 1px solid #888;
     width: 25%;
-    min-width:400px ;
+    min-width:350px ;
+
 }
 .texx_edite {
     font-size: 30px;
@@ -219,6 +221,10 @@ margin-top:8%;
     overflow-x:hidden;
 
 
+}
+.search-result2{
+
+    margin-left: 870px;
 }
 .inp-search{
       color: whitesmoke;
@@ -408,6 +414,10 @@ margin-top:8%;
 
 
 }
+.search-result2{
+
+    margin-left: 780px;
+}
 .inp-search{
       color: whitesmoke;
     padding: 10px;
@@ -594,6 +604,10 @@ margin-top:8%;
     overflow-x:hidden;
 
 
+}
+.search-result2{
+
+    margin-left: 720px;
 }
 .inp-search{
       color: whitesmoke;
@@ -786,6 +800,10 @@ margin-top:8%;
 
 
 }
+.search-result2{
+
+    margin-left: 660px;
+}
 .inp-search{
       color: whitesmoke;
     padding: 10px;
@@ -977,7 +995,10 @@ margin-top:8%;
 
 
 }
+.search-result2{
 
+    margin-left: 600px;
+}
 .inp-search{
       color: whitesmoke;
     padding: 10px;
@@ -1168,6 +1189,10 @@ margin-top:8%;
 
 
 }
+.search-result2{
+
+    margin-left: 540px;
+}
 .inp-search{
       color: whitesmoke;
     padding: 10px;
@@ -1356,6 +1381,10 @@ margin-top:8%;
     overflow-x:hidden;
 
 
+}
+.search-result2{
+
+    margin-left: 450px;
 }
 .inp-search{
       color: whitesmoke;
@@ -1546,6 +1575,10 @@ margin-top:8%;
 
 
 }
+.search-result2{
+
+    margin-left: 420px;
+}
 .inp-search{
       color: whitesmoke;
     padding: 10px;
@@ -1725,6 +1758,10 @@ margin-top:8%;
     overflow-x:hidden;
 
 
+}
+.search-result2{
+
+    margin-left: 370px;
 }
 .inp-search{
       color: whitesmoke;
@@ -1912,6 +1949,10 @@ margin-top:8%;
     overflow-x:hidden;
 
 
+}
+.search-result2{
+
+    margin-left: 350px;
 }
 .inp-search{
       color: whitesmoke;
@@ -2103,6 +2144,10 @@ margin-top:8%;
 
 
 }
+.search-result2{
+
+    margin-left: 350px;
+}
 .inp-search{
       color: whitesmoke;
     padding: 10px;
@@ -2291,6 +2336,10 @@ margin-top:8%;
     overflow-x:hidden;
 
 
+}
+.search-result2{
+
+    margin-left: 310px;
 }
 .inp-search{
       color: whitesmoke;
@@ -2481,6 +2530,10 @@ margin-top:8%;
 
 
 }
+.search-result2{
+
+    margin-left: 250px;
+}
 .inp-search{
       color: whitesmoke;
     padding: 10px;
@@ -2669,6 +2722,10 @@ line-height: 115px;
     overflow-x:hidden;
 
 
+}
+.search-result2{
+
+    margin-left: 185px;
 }
 .inp-search{
       color: whitesmoke;
@@ -2861,6 +2918,10 @@ line-height: 115px;
 
 
 }
+.search-result2{
+
+    margin-left: 140px;
+}
 .inp-search{
       color: whitesmoke;
     padding: 10px;
@@ -3051,6 +3112,10 @@ line-height: 115px;
 
 
 }
+.search-result2{
+width: 160px;
+    margin-left: 150px;
+}
 .inp-search{
       color: whitesmoke;
     padding: 10px;
@@ -3059,7 +3124,7 @@ line-height: 115px;
     border-radius: 10px;
     font-size: 20px;
     height: 35px;
-    width: 200px;
+    width: 180px;
   margin-left: -3%;
 
     border-top: solid;
@@ -3240,6 +3305,11 @@ line-height: 115px;
     overflow-x:hidden;
 
 
+}
+.search-result2{
+
+    margin-left: 140px;
+    width: 150px;
 }
 .inp-search{
       color: whitesmoke;
@@ -3468,7 +3538,7 @@ line-height: 115px;
     padding-bottom: 40px;
     border: 1px solid #888;
     width: 30%;
-    min-width:400px;
+    min-width:350px;
 }
 .texx_follower {
     font-size: 30px;
@@ -3501,7 +3571,7 @@ line-height: 115px;
     padding-bottom: 40px;
     border: 1px solid #888;
     width: 30%;
-    min-width:400px;
+    min-width:350px;
 }
 .texx_following {
     font-size: 30px;
@@ -3596,6 +3666,7 @@ position: absolute;
 
 }
 .group-search{
+margin-top: 0px;
     width: 300px;
     height: 30px;
     background-image: url('./123467.png');
@@ -3604,12 +3675,20 @@ position: absolute;
 }
 .username-result{
 color:white;
-position: absolute;
+
 
 font-size: large;
 cursor: pointer;
 
 }
+.username-result2{
+    color:white;
+    
+    text-align: left;
+    font-size: large;
+    cursor: pointer;
+    
+    }
 .back-prof{
     position: absolute;
     height: 30px;
@@ -3691,8 +3770,8 @@ cursor:pointer;
     background-color: rgb(35, 35, 35);
     color: whitesmoke;
     margin: auto;
-    min-height:130px;
-    min-width:400px;
+    min-height:190px;
+    min-width:350px;
     border: 1px solid #888;
     width: 30%;
     height: 30%;

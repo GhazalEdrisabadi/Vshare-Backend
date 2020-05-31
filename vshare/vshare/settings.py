@@ -137,9 +137,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'vshare',
 
-        'USER' : 'postgres',
-        'PASSWORD' : '123qwe',
-\
+        'USER' : 'admin',
+        'PASSWORD' : 'Kamyab78',
+
         'HOST' : 'localhost',
         'PORT' : '5432',
     }
@@ -238,5 +238,4 @@ STATIC_URL = '/static/'
 #ALTER ROLE admin SET client_encoding TO 'utf8';
 
 #ALTER ROLE admin SET default_transaction_isolation TO 'read committed';
-
 

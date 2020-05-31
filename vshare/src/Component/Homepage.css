@@ -14,8 +14,8 @@
     font-size: calc(10px + 2vmin);
     color: white;
     background-repeat: no-repeat;
-    background-size: cover
-
+    background-size: cover;
+   overflow: scroll;
 }
 
 .selector{
@@ -40,7 +40,7 @@
 }
 
 .nextbtn{
-    
+
 }
 
 .searchgp {
@@ -63,6 +63,27 @@
     margin-top: 14%;
 }
 
+
+
+/* Demo styles */
+* {
+	box-sizing: border-box;
+}
+
+.Container {
+  position: relative;
+/*   max-width: 800px; */
+
+  margin: 0 auto;
+  background: #fafafa;
+}
+.Container + .Container {
+  margin-top: 0.5rem;
+}
+
+svg {
+  vertical-align: middle;
+}
 .input {
     color: whitesmoke;
     padding: 10px;
@@ -87,7 +108,7 @@
     box-shadow: black;
     /* overflow-y: scroll; */
     border-radius: 27px;
-    margin-left: 55%;
+    /* margin-left: 55%; */
     margin-top: 9%;
     color: white;
 
@@ -107,11 +128,11 @@
     font-size: 24px;
     display: none;
 
-    
+
 
 }
 .formback-content{
-    
+
 }
 .tit{
     font-size: 100%;
@@ -144,15 +165,15 @@
 
 .textarea-addmember{
     font-size: 20px;
-    background-color: rgb(12, 12, 12);
+    background-color:'transparet';
     position: relative;
     border-radius: 10px;
     margin-top: 10%;
     margin-left: 3%;
     text-align: left;
-    
-    
-} 
+
+
+}
 
 
 .input2 {
@@ -218,9 +239,20 @@
 }
 
 .createnewgp {
-    position: absolute;
-    float: right;
 
+
+
+    height: 50px;
+
+    float: right;
+}
+.createnewgp1 {
+
+
+   display: none;
+    height: 50px;
+
+    float: right;
 }
 
 .edit {
@@ -283,7 +315,7 @@
     padding-left: 25px;
 
     padding-right: 25px;
-    width: 30%;
+    width: 40%;
     height: 780px;
     background-color: rgb(12, 12, 12);
     -webkit-box-shadow: 0px 0px 71px 5px rgba(0, 0, 0, 0.76);
@@ -291,11 +323,33 @@
     box-shadow: 0px 0px 71px 5px rgba(0, 0, 0, 0.76);
 
 }
+.groupshowbody
+{overflow:scroll;
 
+    /* overflow-y: scroll; */
+
+width: 100%;
+    height: 82%;
+    color: white;
+
+
+    background-color: 'transparent';
+
+}
 .profileee {
     width: 100px;
 }
+.headershow{
+    text-align: right;
 
+   flex-direction: row;
+   font-size: '10px';
+
+
+}
+.yourgroupstext{
+    float: left;
+}
 
 .sidenav {
     height: 100%;
@@ -335,15 +389,244 @@
 
     height: 100%;
 
-    overflow: auto;
+    overflow-x: scroll;
 
     background-color: rgb(0, 0, 0);
 
     background-color: rgba(0, 0, 0, 0.7);
+min-width: 50%;
+}
+  ::-webkit-scrollbar {
+
+        display: none;
+
+    }
+    @media screen and (min-width: 500px) and (max-width:780px)  {
+
+  .modal {
+    width: 100%;
+
+  }
+  .modal2{
+    width: 500px;
+  }
+ .input{
+    width: 70px;
+ }
+  .inputedit{
+      width: 150px;
+
+  }
+  .texx {
+
+    font-size: 20px;
+
+}
+
+.deleteTEXT{
+    font-size: 15px;
+}
+.admintext{
+    font-size: 12px;
+}
+.modal-content2{
 
 }
 
 
+.groupsShow{
+    width: 70%;
+    margin-top: 13%;
+}
+.formback {
+width: 70%;
+margin-top: 15%;
+margin-left: 3%;
+z-index: 1;
+}
+.createnewgp{
+    width: 200px;
+    content: 'Create group';
+}
+.input{
+    width: 230px;
+}
+    }
+
+@media screen and (min-width: 300px) and (max-width:595px)  {
+ 
+  .inputedit{
+      width: 200px;
+
+  }
+
+
+
+
+
+.modal-content2{
+
+   width: 150%;
+}
+
+.deleteTEXT{
+    font-size: 15px;
+}
+
+.admintext{
+    font-size: 12px;
+}
+
+
+  .logout_text{
+      display: none;
+  }
+ .input{
+     width: 80px;
+
+ }
+
+  .inputedit{
+      width: 150px;
+
+  }
+  .texx {
+
+    font-size: 20px;
+
+}
+
+
+.groupsShow{
+    width: 70%;
+    margin-top: 20%;
+    margin-left: 50px;
+}
+.formback {
+width: 70%;
+margin-top: 15%;
+margin-left: 50px;
+z-index: 1;
+}
+.createnewgp{
+    width: 200px;
+    content: '+';
+    background-color: black;
+
+}
+
+}
+@media screen and (min-width: 780px) and (max-width:800px)  {
+.createnewgp{
+    width: 400px;
+    content: '+ Create group';
+}
+.groupsShow{
+    width: 44%;
+    margin-top: 10%;
+}
+.formback {
+width: 44%;
+margin-top: 11%;
+margin-left: 40%;
+z-index: 1;
+}
+
+}
+@media screen and (min-width: 800px)   {
+
+.groupsShow{
+    width: 30%;
+    margin-top: 5%;
+}
+.formback {
+width: 26%;
+margin-top: 8%;
+margin-left: 54%;
+z-index: 1;
+}
+
+}
+@media screen and (min-width: 780px) and (max-width:1200px)  {
+
+
+  .inputedit{
+      width: 200px;
+
+  }
+  .modal2{
+    background-color: red;
+}
+.modal-content2{
+
+}
+.deleteTEXT{
+    font-size: 23px;
+}
+.admintext{
+    font-size: 20px;
+}
+
+
+.groupsShow{
+    width: 47%;
+    margin-top: 10%;
+}
+.formback {
+width: 35%;
+margin-top: 12%;
+margin-left: 54%;
+z-index: 1;
+}
+.groupshowbody{
+    height: 80%;
+}
+.createnewgp:after{
+    width: 200px;
+    content: 'Create group';
+}
+}
+@media screen and (min-width: 1200px)  {
+
+  .inputedit{
+      width: 300px;
+
+  }
+  .modal2{
+    background-color: white;
+}
+.modal-content2{
+
+}
+
+.createnewgp:after{
+    width: 200px;
+    content: 'Create group';
+}
+}
+@media screen and (min-width: 1200px) and (max-width:1600px)  {
+
+  .inputedit{
+      width: 300px;
+
+  }
+
+
+.groupshowbody{
+    height: 80%;
+}
+}
+
+/* @media screen and (min-width: 400px)  and (max-width:500px) {
+  .f"))modal {
+    width: 100%;
+   background-color: blue;
+  }
+  .inputedit{
+      width: 300px;
+    
+  }
+} */
 .modal-content {
     border-radius: 27px;
     text-align: center;
@@ -351,14 +634,16 @@
     color: whitesmoke;
     margin: auto;
     padding-left: 30px;
+    padding-right: 30px;
     padding-bottom: 40px;
     border: 1px solid #888;
-    width: 30%;
+    width: 27%;
+    min-width: 350px;
 }
 
 .modal2 {
     display: none;
-
+    text-align: center;
     position: fixed;
 
     z-index: 1;
@@ -371,8 +656,8 @@
 
     height: 100%;
 
-    overflow: auto;
-
+    overflow: scroll;
+min-width: 50%;
     background-color: rgb(0, 0, 0);
 
     background-color: rgba(0, 0, 0, 0.7);
@@ -382,32 +667,36 @@
 
 .deleteTEXT {
 
-    margin-left: 11%;
-    margin-top: 10%;
+
 }
 
 .dltbtns {
-    float: right;
+
+
 
 }
 
+
+
 .dltyes {
-    float: left;
+    float: initial;
 }
 
 .dltno {
-    float: right;
+    float: initial;
 }
 
 .inputedit {
     color: black;
     padding: 10px;
 
-    background-color: rgb(215, 215, 215);
+
     border-radius: 10px;
     font-size: 20px;
-    height: 35px;
-    width: 300px;
+   height: 35px;
+
+    width: 300px;;
+
     margin-top: 7px;
     margin-right: 10px;
     border-top: solid;
@@ -416,10 +705,23 @@
     border-right: solid;
     border-color: black;
     flex-direction: row;
-
+width: 100%;
 
 }
+.search-result2{
+    display: none;
+    background-color: rgb(35, 35, 35);
+    border-radius: 10px;
+    width: 290px;
+    position: absolute;
+    height: 400px;
+    margin-top: 50px;
+    color: white;
+    white-space: initial;
+    overflow-x:hidden;
+z-index: 1;
 
+}
 .submitedit {
 
 
@@ -427,43 +729,40 @@
 
 
 .modal-content2 {
+ padding-top: 20px;
     border-radius: 27px;
     text-align: center;
     background-color: rgb(35, 35, 35);
     color: whitesmoke;
     margin: auto;
-
+min-width: 350px;
     border: 1px solid #888;
     width: 30%;
-    height: 30%;
+  min-height: 290px;
     font-family: Arial;
-
+z-index: 1;
 
 }
 
 .texx {
 
-    font-size: 30px;
+
     font-family: Arial;
 }
 
 .deleteTEXT {
     font-family: Arial;
-    font-size: 30px;
     line-height: 45px;
-    float: left;
-    margin-top: 20px;
+
+
 }
 .admintext{
-    width: fit-content;
+
     text-align: center;
-    margin-left: 15%;
+
     font-family: Arial;
 }
-.dltbtns {
-    margin-top: 5%;
-    margin-right: 38%;
-}
+
 
 .dltyes {
 
@@ -477,7 +776,7 @@
 
 
 .Status-Id{
-    
+
     display: none;
     position: fixed;
     font-size: 13px;
@@ -566,7 +865,7 @@
 
 .head {
     position: fixed;
-
+z-index: 1;
     width: 100%;
     background: rgb(0, 0, 0);
 
@@ -602,6 +901,226 @@
 .profilepic {
     float: left;
 }
+
+
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto
+}
+
+@media (min-width:576px) {
+    .container {
+        max-width: 540px
+    }
+}
+
+@media (min-width:768px) {
+    .container {
+        max-width: 720px
+    }
+}
+
+@media (min-width:992px) {
+    .container {
+        max-width: 960px
+    }
+}
+
+@media (min-width:1200px) {
+    .container {
+        max-width: 1140px
+    }
+}
+
+.container-fluid, .container-lg, .container-md, .container-sm, .container-xl {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto
+}
+
+@media (min-width:576px) {
+    .container, .container-sm {
+        max-width: 540px
+    }
+}
+
+@media (min-width:768px) {
+    .container, .container-md, .container-sm {
+        max-width: 720px
+    }
+}
+
+@media (min-width:992px) {
+    .container, .container-lg, .container-md, .container-sm {
+        max-width: 960px
+    }
+}
+
+@media (min-width:1200px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 1140px
+    }
+}
+
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+
+}
+
+.no-gutters {
+    margin-right: 0;
+    margin-left: 0
+}
+
+    .no-gutters > .col, .no-gutters > [class*=col-] {
+        padding-right: 0;
+        padding-left: 0
+    }
+
+.col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px
+}
+
+.col {
+    -ms-flex-preferred-size: 0;
+    flex-basis: 0;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    max-width: 100%
+}
+
+.row-cols-1 > * {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%
+}
+
+.row-cols-2 > * {
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%
+}
+
+.row-cols-3 > * {
+    -ms-flex: 0 0 33.333333%;
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%
+}
+
+.row-cols-4 > * {
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    max-width: 25%
+}
+
+.row-cols-5 > * {
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    max-width: 20%
+}
+
+.row-cols-6 > * {
+    -ms-flex: 0 0 16.666667%;
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%
+}
+
+.col-auto {
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 100%
+}
+
+.col-1 {
+    -ms-flex: 0 0 8.333333%;
+    flex: 0 0 8.333333%;
+    max-width: 8.333333%
+}
+
+.col-2 {
+    -ms-flex: 0 0 16.666667%;
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%
+}
+
+.col-3 {
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    max-width: 25%
+}
+
+.col-4 {
+    -ms-flex: 0 0 33.333333%;
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%
+}
+
+.col-5 {
+    -ms-flex: 0 0 41.666667%;
+    flex: 0 0 41.666667%;
+    max-width: 41.666667%
+}
+
+.col-6 {
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%
+}
+
+.col-7 {
+    -ms-flex: 0 0 58.333333%;
+    flex: 0 0 58.333333%;
+    max-width: 58.333333%
+}
+
+.col-8 {
+    -ms-flex: 0 0 66.666667%;
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%
+}
+
+.col-9 {
+    -ms-flex: 0 0 75%;
+    flex: 0 0 75%;
+    max-width: 75%
+}
+
+.col-10 {
+    -ms-flex: 0 0 83.333333%;
+    flex: 0 0 83.333333%;
+    max-width: 83.333333%
+}
+
+.col-11 {
+    -ms-flex: 0 0 91.666667%;
+    flex: 0 0 91.666667%;
+    max-width: 91.666667%
+}
+
+.col-12 {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%
+}
+
+
+
 #reselect{
     margin-bottom: 5px;
 }
+
