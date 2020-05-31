@@ -122,10 +122,10 @@ class sl extends Component {
                     "data": JSON.stringify({"username": username, "password": password}),
                 };
                 $.ajax(settings).done(function (response) {
-
+                        console.log(response);
                         window.localStorage.setItem('token', response.token);
-                        window.localStorage.setItem('username', username);
-                          window.localStorage.setItem('user', username)
+                        window.localStorage.setItem('username', response.username);
+                          window.localStorage.setItem('user', response.username)
                         window.location.replace("/homepage");
 
 

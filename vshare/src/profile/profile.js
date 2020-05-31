@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import './profile.css'
 import $ from 'jquery';
 import Left from './left.png'
@@ -13,22 +13,23 @@ import Button from '@material-ui/core/Button';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import EditIcon from '@material-ui/icons/Edit';
 import Avatar from '@material-ui/core/Avatar';
+
 var username = window.localStorage.getItem('user');
 var respone_get
 var count
+
 class profile extends Component {
     componentDidMount() {
-   
-        const { id } = this.props.match.params;
+
+        const {id} = this.props.match.params;
         $(document).ready(function () {
 
-           
 
-                       if(username==window.localStorage.getItem('username')){
-                          document.getElementById("content").style.display = 'none'
-                           document.getElementById("right-button").style.display = 'none'
-                            document.getElementById("left-button").style.display = 'none'
-                       }
+            if (username == window.localStorage.getItem('username')) {
+                document.getElementById("content").style.display = 'none'
+                document.getElementById("right-button").style.display = 'none'
+                document.getElementById("left-button").style.display = 'none'
+            }
             var settings = {
                 "url": "http://127.0.0.1:8000/user/relations/followers/?user=" + username + "",
                 "method": "GET",
@@ -44,9 +45,9 @@ class profile extends Component {
             };
 
             $.ajax(settings).done(function (response) {
-              
-             
-count=response.followers_count
+
+
+                count = response.followers_count
                 $(".follower_count").text(response.followers_count)
 
             });
@@ -65,7 +66,7 @@ count=response.followers_count
             };
 
             $.ajax(settings).done(function (response) {
-          
+
 
                 $(".following_count").text(response.followings_count)
 
@@ -77,8 +78,7 @@ count=response.followers_count
                 document.getElementById("edite-btn").style.display = 'block'
                 document.getElementById("f-btn").style.display = 'none'
                 document.getElementById("uf-btn").style.display = 'none'
-            }
-            else {
+            } else {
                 var settings = {
                     "url": "http://127.0.0.1:8000/user/followings/find/" + username + "/",
                     "method": "GET",
@@ -95,8 +95,7 @@ count=response.followers_count
                         if (event.status == 404) {
                             document.getElementById("f-btn").style.display = 'block'
                             document.getElementById("uf-btn").style.display = 'none'
-                        }
-                        else {
+                        } else {
                             document.getElementById("f-btn").style.display = 'none'
                             document.getElementById("uf-btn").style.display = 'block'
                         }
@@ -107,12 +106,10 @@ count=response.followers_count
 
                 $.ajax(settings).done(function (response) {
 
-               
-
 
                 });
                 document.getElementById("edite-btn").style.display = 'none'
-           
+
                 document.getElementById("f-btn").style.display = 'block'
                 document.getElementById("uf-btn").style.display = 'none'
             }
@@ -133,24 +130,21 @@ count=response.followers_count
 
 
             $.ajax(settings).done(function (response) {
-      
+
                 respone_get = response;
                 $(".username_prof").text(respone_get.username);
-                 $(".username").text(respone_get.username);
-                 $(".photo").html(response.username.toUpperCase()[0]);
-
+                $(".username").text(respone_get.username);
+                $(".photo").html(response.username.toUpperCase()[0]);
 
 
             });
 
 
-
-
-            $(".inp-search").change(function () {
+            $(".inp-search").keyup(function () {
                 $(".search-result").html("")
-          
+
                 var user_search = $('.inp-search').val()
-             
+
                 var settings = {
                     "url": "http://127.0.0.1:8000/user/find/username/?search=" + user_search + "",
                     "method": "GET",
@@ -166,38 +160,37 @@ count=response.followers_count
                 };
 
                 $.ajax(settings).done(function (response) {
-        
 
 
-        var hoverout = 'onMouseOut="this.style.color=';
+                    var hoverout = 'onMouseOut="this.style.color=';
 
-                        var hoverrout = hoverout + "'white'";
+                    var hoverrout = hoverout + "'white'";
 
-                        var hover = 'onMouseOver="this.style.color=';
-                        var hoverr = hover + "'red'";
-                        var htmlcode = '<br/>'
-                     
-                        htmlcode = '';
+                    var hover = 'onMouseOver="this.style.color=';
+                    var hoverr = hover + "'red'";
+                    var htmlcode = '<br/>'
+
+                    htmlcode = '';
+                    $(".search-result").append(htmlcode)
+                    for (var counter1 = 0; counter1 < response.length; counter1++, htmlcode = '') {
+                        var a2 = "window.localStorage.setItem('user'," + response[counter1].username + ")";
+                        var r = "window.location.replace('/profile/" + response[counter1].username + "')";
+
+
+                        htmlcode += '<div>'
+
+                        htmlcode += '<div class="user-search">';
+                        htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].username + '</p>';
+
+                        htmlcode += '<br/>'
+
+
+                        htmlcode += '</div>'
+
+                        htmlcode += '</div>'
+                        htmlcode += '<hr/>'
                         $(".search-result").append(htmlcode)
-                        for (var counter1 = 0; counter1 < response.length; counter1++, htmlcode = '') {
-                            var a2 = "window.localStorage.setItem('user'," + response[counter1].username + ")";
-                            var r = "window.location.replace('/profile/" + response[counter1].username + "')";
-
-                       
-                            htmlcode += '<div>'
-                         
-                            htmlcode += '<div class="user-search">';
-                            htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].username + '</p>';
-
-                            htmlcode += '<br/>'
-
-
-                            htmlcode += '</div>'
-
-                            htmlcode += '</div>'
-                            htmlcode += '<hr/>'
-                            $(".search-result").append(htmlcode)
-                        }
+                    }
 
                 });
 
@@ -214,7 +207,6 @@ count=response.followers_count
                     },
 
 
-
                 };
 
                 $.ajax(settings).done(function (response) {
@@ -225,14 +217,14 @@ count=response.followers_count
                     var hover = 'onMouseOver="this.style.color=';
                     var hoverr = hover + "'red'";
                     var htmlcode = '<br/>'
-             
+
                     htmlcode = '';
                     $(".search-result").append(htmlcode)
                     for (var counter1 = 0; counter1 < response.length; counter1++, htmlcode = '') {
                         var a2 = " document.getElementById('Modal-join').style.display = 'block'";
-                        var r = "window.localStorage.setItem('id-join','" + response[counter1].groupid + "')"; 
+                        var r = "window.localStorage.setItem('id-join','" + response[counter1].groupid + "')";
                         htmlcode += '<div>'
-                       
+
                         htmlcode += '<div class="group-search">';
                         htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].groupid + '</p>';
 
@@ -248,17 +240,14 @@ count=response.followers_count
 
                 });
 
-setTimeout(function(){
-    if( $(".search-result").html() == ''){
-    $(".search-result").html("<p class='notfound'>not found</p>");
-    $(".search-result").fadeIn()
-}
-else{
-    $(".search-result").fadeIn()
-}
-},200)
-
-
+                setTimeout(function () {
+                    if ($(".search-result").html() == '') {
+                       // $(".search-result").html("<p class='notfound'>not found</p>");
+                        $(".search-result").fadeOut()
+                    } else {
+                        $(".search-result").fadeIn()
+                    }
+                }, 200)
 
 
             })
@@ -288,54 +277,56 @@ else{
 
                         }
                     },
-                    success: function () {  
-                                            var settings = {
-                        "url": "http://127.0.0.1:8000/group/permissions/",
-                        "method": "POST",
-                        error: function () {
+                    success: function () {
+                        var settings = {
+                            "url": "http://127.0.0.1:8000/group/permissions/",
+                            "method": "POST",
+                            error: function () {
 
-                            alert("nooooooo")
+                                alert("nooooooo")
 
 
-                        },
-                        success: function () {
+                            },
+                            success: function () {
 
-                            var x = document.getElementById("snackbar-succes-join");
-                            x.className = "show";
-                            setTimeout(function () {
-                                x.className = x.className.replace("show", "");
-                            }, 3000);
-                            setTimeout(function(){   window.location.replace('/profile/'+window.localStorage.getItem('user')+'')},3000)
-                         
-                        },
-                        "timeout": 0,
-                        "headers": {
+                                var x = document.getElementById("snackbar-succes-join");
+                                x.className = "show";
+                                setTimeout(function () {
+                                    x.className = x.className.replace("show", "");
+                                }, 3000);
+                                setTimeout(function () {
+                                    window.location.replace('/profile/' + window.localStorage.getItem('user') + '')
+                                }, 3000)
 
-                            "accept": "application/json",
-                            "Access-Control-Allow-Origin": "*",
-                            "Access-Control-Allow-Headers": "*",
-                            "Content-Type": "application/json"
-                        },
-                        "data": JSON.stringify({
-                                "group": window.localStorage.getItem('id-join'),
-                                "member": window.localStorage.getItem('username'),
-                                "chat_permission": 1,
-                                "playback_permission": 0,
-                                "choose_video_permission": 0
-                            }
-                        ),
-                    };
+                            },
+                            "timeout": 0,
+                            "headers": {
 
-                    $.ajax(settings).done(function (response) {
+                                "accept": "application/json",
+                                "Access-Control-Allow-Origin": "*",
+                                "Access-Control-Allow-Headers": "*",
+                                "Content-Type": "application/json"
+                            },
+                            "data": JSON.stringify({
+                                    "group": window.localStorage.getItem('id-join'),
+                                    "member": window.localStorage.getItem('username'),
+                                    "chat_permission": 1,
+                                    "playback_permission": 0,
+                                    "choose_video_permission": 0
+                                }
+                            ),
+                        };
 
-                       
-                    });
-                       
-                       
+                        $.ajax(settings).done(function (response) {
+
+
+                        });
+
+
                     },
 
                     "headers": {
-                        
+
                         "Authorization": "token " + window.localStorage.getItem('token'),
                         "accept": "application/json",
                         "Access-Control-Allow-Origin": "*",
@@ -348,9 +339,9 @@ else{
                         }
                     ),
                 };
-    
+
                 $.ajax(settings).done(function (response) {
-    
+
 
                 });
             })
@@ -386,10 +377,10 @@ else{
                 };
 
                 $.ajax(settings).done(function (response) {
-                 
+
                     document.getElementById("f-btn").style.display = 'block'
                     document.getElementById("uf-btn").style.display = 'none'
-                   count=count-1
+                    count = count - 1
                     $(".follower_count").html(count)
 
                 })
@@ -408,18 +399,18 @@ else{
                         "Content-Type": "application/json"
                     },
                     "data": JSON.stringify({
-                        "who_is_followed": window.localStorage.getItem('user'),
-                        "who_follows": "",
-                    }
+                            "who_is_followed": window.localStorage.getItem('user'),
+                            "who_follows": "",
+                        }
                     ),
 
                 };
 
                 $.ajax(settings).done(function (response) {
-              
+
                     document.getElementById("f-btn").style.display = 'none'
                     document.getElementById("uf-btn").style.display = 'block'
-                    count=count+1
+                    count = count + 1
                     $(".follower_count").html(count)
                 })
 
@@ -457,20 +448,20 @@ else{
                 };
 
                 $.ajax(settings).done(function (response) {
-                  
+
                     var hoverout = 'onMouseOut="this.style.color=';
                     var hoverrout = hoverout + "'white'";
 
                     var hover = 'onMouseOver="this.style.color=';
                     var hoverr = hover + "'red'";
                     var htmlcode = ''
-            
+
                     for (var counter1 = 0; counter1 < response.result.length; counter1++, htmlcode = '') {
-                 
+
                         var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_is_followed + ")";
                         var r = "window.location.replace('/profile/" + response.result[counter1].who_is_followed + "')";
                         htmlcode += '<div>'
-                      
+
                         htmlcode += '<div class="user-search">';
                         htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result2"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response.result[counter1].who_is_followed + '</p>';
 
@@ -512,20 +503,20 @@ else{
                 };
 
                 $.ajax(settings).done(function (response) {
-                
+
                     var hoverout = 'onMouseOut="this.style.color=';
                     var hoverrout = hoverout + "'white'";
 
                     var hover = 'onMouseOver="this.style.color=';
                     var hoverr = hover + "'red'";
                     var htmlcode = ''
-              
+
                     for (var counter1 = 0; counter1 < response.result.length; counter1++, htmlcode = '') {
-                
+
                         var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_follows + ")";
                         var r = "window.location.replace('/profile/" + response.result[counter1].who_follows + "')";
                         htmlcode += '<div>'
-                      
+
                         htmlcode += '<div class="user-search">';
                         htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + ' style="font-size: 21px" class="username-result2"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response.result[counter1].who_follows + '</p>';
 
@@ -554,16 +545,14 @@ else{
             var groups = [];
 
             var settings = {
-                "url": "http://127.0.0.1:8000/group/user_groups/?user_id="+window.localStorage.getItem('user')+"",
+                "url": "http://127.0.0.1:8000/group/user_groups/?user_id=" + window.localStorage.getItem('user') + "",
                 "method": "GET",
                 "timeout": 0,
-                "headers": {
-                  
-                },
+                "headers": {},
             };
 
             $.ajax(settings).done(function (response) {
-             console.log(response)
+                console.log(response)
                 // for (var counter = 0; counter < response.length; counter++)
                 //     mygroups.push({ name: response[counter].title, id: response[counter].groupid });
 
@@ -577,7 +566,7 @@ else{
                     var a2 = " document.getElementById('Modal-join').style.display = 'block'";
                     var r = "window.localStorage.setItem('id-join','" + response[counter1].the_group + "')"; //id of the group
                     htmlcode += '<div>'
-                    htmlcode += '<div class="admin_gp">'+response[counter1].the_group.toUpperCase()[0]+'</div>';
+                    htmlcode += '<div   onclick="' + a2 + "," + r + '"  class="admin_gp">' + response[counter1].the_group.toUpperCase()[0] + '</div>';
                     htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + response[counter1].the_group + '</p>';
 
 
@@ -597,7 +586,7 @@ else{
             // };
 
             // $.ajax(settings).done(function (response) {
-             
+
             //     for (var counter = 0; counter < response.length; counter++)
             //         mygroups.push({ name: response[counter].title, id: response[counter].groupid });
 
@@ -633,7 +622,7 @@ else{
 
 
 //             $.ajax(settings).done(function (response) {
-                
+
 //                 for (var counter = 0; counter < response.length; counter++) {
 //                     var gpid2 = response[counter].the_group;
 //                     var settings2 = {
@@ -660,7 +649,7 @@ else{
 
 
 //                 setTimeout(function () {
-                
+
 //                     var counter2 = 0;
 //                     var htmlcode2 = '';
 //                     var hoverout = 'onMouseOut="this.style.color=';
@@ -676,7 +665,7 @@ else{
 
 //                         htmlcode2 += '<div class="member_gp">'+groups[counter2].name.toUpperCase()[0]+'</div>';
 //  htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].id + '</p>';
-                      
+
 
 //                         htmlcode2 += '</div>'
 
@@ -684,9 +673,9 @@ else{
 //                         $('.group_prof').append(htmlcode2);
 //                         counter2++;
 //                         htmlcode2 = '';
-                     
+
 //                     }
-                   
+
 //                 }, 500);
 
 
@@ -695,18 +684,18 @@ else{
 
             document.getElementById('right-button').onclick = function () {
                 scrollLeft(document.getElementById('content'), 300, 1000);
-             
+
             }
             document.getElementById('left-button').onclick = function () {
                 scrollLeft(document.getElementById('content'), -300, 1000);
-              
+
             }
+
             function scrollLeft(element, change, duration) {
                 var start = element.scrollLeft,
                     currentTime = 0,
                     increment = 20;
 
-               
 
                 var animateScroll = function () {
                     currentTime += increment;
@@ -719,7 +708,7 @@ else{
                 animateScroll();
             }
 
-            
+
             Math.easeInOutQuad = function (t, b, c, d) {
                 t /= d / 2;
                 if (t < 1) return c / 2 * t * t + b;
@@ -731,9 +720,8 @@ else{
 
     render() {
         return (
-            <div className="back_profile" >
+            <div className="back_profile">
                 <header className="head">
-
 
 
                     <div className='leftheader'>
@@ -742,8 +730,8 @@ else{
                                 color: 'white'
 
                             }}
-                                className="profilepic">
-                                <AccountCircleOutlinedIcon fontSize="large" />
+                                        className="profilepic">
+                                <AccountCircleOutlinedIcon fontSize="large"/>
                             </IconButton>
 
                         </div>
@@ -751,7 +739,7 @@ else{
                         <div className='searchgp'>
 
 
-                            <input placeholder='search' className='inp-search' />
+                            <input placeholder='search' className='inp-search'/>
 
 
                             <div id='joinstatus' className='statusofjoin'>
@@ -766,8 +754,8 @@ else{
                         <IconButton style={{
                             color: 'white'
                         }}
-                            className="div_leave">
-                            <HomeIcon fontSize="large" />
+                                    className="div_leave">
+                            <HomeIcon fontSize="large"/>
                         </IconButton>
                     </div>
                 </header>
@@ -775,22 +763,21 @@ else{
 
                 <div className="back_prof">
 
-                <div className='MuiAvatar-root MuiAvatar-circle photo MuiAvatar-colorDefault photo'>&nbsp;</div>
+                    <div className='MuiAvatar-root MuiAvatar-circle photo MuiAvatar-colorDefault photo'>&nbsp;</div>
 
-                <div className="username_prof" >USERNAME</div>
+                    <div className="username_prof">USERNAME</div>
 
 
+                    <IconButton style={{color: 'white', fontSize: "70px"}}
+                                className="edite_profile" id="edite-btn">
 
-                    <IconButton style={{ color: 'white', fontSize: "70px" }}
-                        className="edite_profile" id="edite-btn" >
-
-                        <EditIcon fontSize="medium" />
+                        <EditIcon fontSize="medium"/>
                         Edit profile
                     </IconButton>
-                    <div className="follow-btn" id='f-btn'>   Follow </div>
-                    <div className="unfollow-btn" id='uf-btn'>   UnFollow</div>
+                    <div className="follow-btn" id='f-btn'> Follow</div>
+                    <div className="unfollow-btn" id='uf-btn'> UnFollow</div>
                     <div id="myModal" class="modal_edite_profile">
-                        <div class="modal-content_edite_profile" >
+                        <div class="modal-content_edite_profile">
                             <h3 class="texx_edite">Edit your profile deatails</h3>
                             <hr></hr>
                             <input class="inputedit" id='editfirstname' placeholder="FirstName"></input>
@@ -812,13 +799,13 @@ else{
 
 
                     <div id="Modal-join" class="modal-join">
-                        <div class="modal-content_join" >
+                        <div class="modal-content_join">
                             <h3 className='join-txt'>Are you sure you want to join this group ? </h3>
 
                             <div className='join-btns'>
 
-                                <Button style={{ backgroundColor: "Red" }} size='large'
-                                    className="join-no" variant="contained" color="secondary">
+                                <Button style={{backgroundColor: "Red"}} size='large'
+                                        className="join-no" variant="contained" color="secondary">
                                     <p>No&nbsp;</p>
                                 </Button>
 
@@ -837,16 +824,14 @@ else{
 
                     </div>
                     <div id="myModal-follower" class="modal-follower">
-                        <div class="modal-content-follower" >
-
+                        <div class="modal-content-follower">
 
 
                         </div>
 
                     </div>
                     <div id="myModal-following" class="modal-following">
-                        <div class="modal-content-following" >
-
+                        <div class="modal-content-following">
 
 
                         </div>
@@ -858,15 +843,10 @@ else{
                     <div className="following">following</div>
 
 
-
-
-
-
-                    <IconButton style={{ color: 'white' }}
-                        className="left-button" id="left-button">
-                        <ArrowBackIosIcon fontSize="large" />
+                    <IconButton style={{color: 'white'}}
+                                className="left-button" id="left-button">
+                        <ArrowBackIosIcon fontSize="large"/>
                     </IconButton>
-
 
 
                     <div className="group_prof" id="content">
@@ -874,10 +854,9 @@ else{
                     </div>
 
 
-
-                    <IconButton style={{ color: 'white' }}
-                        className="right-button" id="right-button">
-                        <ArrowForwardIosIcon fontSize="large" />
+                    <IconButton style={{color: 'white'}}
+                                className="right-button" id="right-button">
+                        <ArrowForwardIosIcon fontSize="large"/>
                     </IconButton>
 
 
@@ -890,6 +869,7 @@ else{
         )
     }
 }
+
 export default profile;
 
 

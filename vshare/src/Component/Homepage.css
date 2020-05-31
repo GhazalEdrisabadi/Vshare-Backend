@@ -893,6 +893,7 @@ z-index: 1;
 }
 
 .username {
+    display: none;
     margin-top: 20px;
     font-size: 25px;
     float: right;

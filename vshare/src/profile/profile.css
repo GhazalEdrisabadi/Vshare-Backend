@@ -3456,6 +3456,7 @@ width: 160px;
 
 }
 .admin_gp {
+    cursor: pointer;
     margin-left: 50px;
     height: 100px;
     width: 100px;
