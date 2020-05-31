@@ -145,11 +145,10 @@ class sl extends Component {
                 <a href='./startpage'><div class='homepagebtn2'>Start page</div></a>
                 <div class="container" id="container">
                     <div class="form-container sign-up-container">
-                        <form action="#">
+                        <form className='form1' action="#">
                             <h1 class="CreatAccount">Create Account</h1>
                             <p id='statussignup'></p>
                             <div class="social-container">
-
                             </div>
                             <input type="text" placeholder="Fisrt name" class='firstname'/>
                             <input type="text" placeholder="Last name" class='lastname'/>
@@ -163,7 +162,7 @@ class sl extends Component {
                         </form>
                     </div>
                     <div class="form-container sign-in-container">
-                        <form action="#">
+                        <form className='form1'  action="#">
                             <h1>Sign in</h1>
                             <div class="social-container">
 

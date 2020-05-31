@@ -402,6 +402,7 @@ min-width: 50%;
 
     }
     @media screen and (min-width: 500px) and (max-width:780px)  {
+
   .modal {
     width: 100%;
 
@@ -432,6 +433,7 @@ min-width: 50%;
 
 }
 
+
 .groupsShow{
     width: 70%;
     margin-top: 13%;
@@ -446,13 +448,19 @@ z-index: 1;
     width: 200px;
     content: 'Create group';
 }
+.input{
+    width: 230px;
+}
     }
+
 @media screen and (min-width: 300px) and (max-width:595px)  {
  
   .inputedit{
       width: 200px;
 
   }
+
+
 
 
 
@@ -468,6 +476,7 @@ z-index: 1;
 .admintext{
     font-size: 12px;
 }
+
 
   .logout_text{
       display: none;
@@ -540,6 +549,7 @@ z-index: 1;
 }
 @media screen and (min-width: 780px) and (max-width:1200px)  {
 
+
   .inputedit{
       width: 200px;
 
@@ -556,6 +566,7 @@ z-index: 1;
 .admintext{
     font-size: 20px;
 }
+
 
 .groupsShow{
     width: 47%;
@@ -599,12 +610,7 @@ z-index: 1;
       width: 300px;
 
   }
-  .modal2{
-    background-color: white;
-}
-.modal-content2{
 
-}
 
 .groupshowbody{
     height: 80%;
@@ -670,6 +676,8 @@ min-width: 50%;
 
 }
 
+
+
 .dltyes {
     float: initial;
 }
@@ -685,7 +693,9 @@ min-width: 50%;
 
     border-radius: 10px;
     font-size: 20px;
-    height: 35px;
+   height: 35px;
+
+    width: 300px;;
 
     margin-top: 7px;
     margin-right: 10px;

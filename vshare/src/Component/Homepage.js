@@ -1146,44 +1146,14 @@ else{
                     while (counter2 < groups.length) {
 
                         var a2 = "window.localStorage.setItem('id_gp','" + groups[counter2].id + "')";
-
                         var d2 = "document.getElementById('myModal2')";
-
                         var dd2 = d2 + ".style.display = 'block'";
-
                         var ad2 = "window.localStorage.setItem('isadmin','" + '0' + "')"; //id of the group
-
-
                         var r = "window.location.replace('/group/" + groups[counter2].id + "')";
-
-                        //window.location.replace("/group/" + id + "");
-
-
                         var hoverout = 'onMouseOut="this.style.color=';
-
                         var hoverrout = hoverout + "'white'";
-
-
                         var hover = 'onMouseOver="this.style.color=';
-
                         var hoverr = hover + "'red'";
-
-
-                        /*    var s="document.getElementById('close2"+counter1+"')";
-
-                            var ss=s+".remove()";
-
-                            var a="document.getElementById('c2"+counter1+"')";
-
-                            var aa=a+".remove()";
-
-
-
-                            var d="document.getElementById('h2"+counter1+"')";
-
-                            var dd=d+".remove()";
-
-                        htmlcode+=+'<span onclick="'+ss+','+aa+','+dd+'"class="closes" id="close2' + counter1 + '">&times;</span>';*/
 
 
                         htmlcode2 += '</br>';
