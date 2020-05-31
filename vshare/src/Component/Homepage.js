@@ -841,8 +841,46 @@ else{
 
                         success: function () {
 
+                            var settings = {
 
-                            window.location.replace('/homepage/');
+                                "url": "http://127.0.0.1:8000/group/"+gpid+"/permissions/?member="+window.localStorage.getItem('username')+"",
+        
+                                "method": "DELETE",
+        
+                                "timeout": 0,
+        
+                                "headers": {
+        
+                                    
+                                },
+        
+                                success: function () {
+        
+        
+                                    window.location.replace('/homepage/');
+        
+                                },
+        
+                                error: function () {
+        
+                                    alert('something went wrong');
+        
+                                },
+        
+                                "processData": false,
+        
+                                "mimeType": "multipart/form-data",
+        
+                                "contentType": false,
+        
+        
+                            };
+        
+        
+                            $.ajax(settings).done(function (response) {
+        
+                            });
+                           
 
                         },
 
