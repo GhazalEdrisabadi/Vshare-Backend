@@ -7,6 +7,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from rest_framework import authentication
 #from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
+from utils import *
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -108,14 +109,21 @@ class EditProfileSerializer(serializers.ModelSerializer):
 				'email':{'allow_blank' : True, 'required':False},
 		}
 
+	# Generate a url to upload photo
+	def to_representation(self, instance):
+		ret = super().to_representation(instance)
+		upload_url = self.create_presigned_post()
+		ret["upload_photo"] = upload_url
+		return ret
+
 	def update_info(self):
 		account = Account(
 				email = self.validated_data['email'],
-				username = self.validated_data['username'],
-			)
+		)
 
 		password = self.validated_data['password']
 		password2 = self.validated_data['password2']
+
 
 		if password != password2:
 			raise serializers.ValidationError({'password':'Passwords must match.'})
