@@ -552,7 +552,7 @@ class profile extends Component {
             };
 
             $.ajax(settings).done(function (response) {
-                console.log(response)
+
                 // for (var counter = 0; counter < response.length; counter++)
                 //     mygroups.push({ name: response[counter].title, id: response[counter].groupid });
 

@@ -312,7 +312,7 @@ class Homepage extends Component {
                     //     $(".inp-search").on("change", function() {
 
 
-                    console.log("aaaaaaaaa")
+
                     $(".search-result2").html("")
 
 

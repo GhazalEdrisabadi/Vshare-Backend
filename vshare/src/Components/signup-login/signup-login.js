@@ -52,11 +52,11 @@ class sl extends Component {
                     }),
                 };
                 $.ajax(settings).done(function (response) {
-                    console.log(response.username);
+
                 });
                 $.ajax(settings).fail(function (response) {
                     document.getElementById("snackbarloginsignup").innerHTML = '';
-                    console.log(response.responseText);
+
                     var json = JSON.parse(response.responseText);
                     var keys2 = Object.keys(json);
                     for (var counterforsignup = 0; counterforsignup < keys2.length; counterforsignup++) {
@@ -66,7 +66,7 @@ class sl extends Component {
                         setTimeout(function () {
                             x.className = x.className.replace("show", "");
                         }, 8000);
-                        console.log(keys2[counterforsignup] + " : " + json[keys2[counterforsignup]]);
+
                     }
                 });
             }
@@ -122,7 +122,7 @@ class sl extends Component {
                     "data": JSON.stringify({"username": username, "password": password}),
                 };
                 $.ajax(settings).done(function (response) {
-                        console.log(response);
+
                         window.localStorage.setItem('token', response.token);
                         window.localStorage.setItem('username', response.username);
                           window.localStorage.setItem('user', response.username)

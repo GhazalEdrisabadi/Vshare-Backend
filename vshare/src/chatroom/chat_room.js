@@ -1710,7 +1710,7 @@ class chat_room extends Component {
 
 
                 handle: (player, actions) => {
-                    console.log("press k")
+
 
                 }
 
@@ -1724,7 +1724,7 @@ class chat_room extends Component {
 
                 handle: (player, actions) => {
 
-                    console.log("press j")
+
 
 
                 }
@@ -1738,7 +1738,7 @@ class chat_room extends Component {
 
                 handle: (player, actions) => {
 
-                    console.log("press l")
+
 
 
                 }
@@ -1752,7 +1752,6 @@ class chat_room extends Component {
 
                 handle: (player, actions) => {
 
-                    console.log("press home")
 
 
                 }
@@ -1766,7 +1765,7 @@ class chat_room extends Component {
 
                 handle: (player, actions) => {
 
-                    console.log("press end")
+
 
 
                 }
@@ -1780,7 +1779,7 @@ class chat_room extends Component {
 
                 handle: (player, actions) => {
 
-                    console.log("press f")
+
 
 
                 }
