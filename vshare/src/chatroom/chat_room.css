@@ -325,7 +325,6 @@ margin-right: -10px;
 
     position: fixed;
     height: 55px;
-
 }
 
 #controllbuttons2 {
@@ -814,9 +813,7 @@ padding-top: 10px;
     margin-left: -10px;
 
 }
-.fullscreendiv{
-    background-color: #FFFFFF;
-}
+
 @media screen  and (max-width: 1300px){
 
     .sendbutton{
@@ -1536,4 +1533,6 @@ padding-left: 20px;
     border-color: black;
     flex-direction: row;
   }
-
+.fullscreendiv{
+    display: none;
+}

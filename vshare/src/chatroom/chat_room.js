@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import RedoIcon from '@material-ui/icons/Redo';
 
-    
+
 import './video-react.css';
 
 import {Player, ControlBar, PlayToggle, Shortcut} from 'video-react';
@@ -87,7 +87,7 @@ var filmplayed = 0;
 var comeinstate1 = 0;
 var Play_pause_space = 0;
 var usercolors = {};
-var  chatsize;
+var chatsize;
 
 var create_by = null
 
@@ -109,21 +109,20 @@ class chat_room extends Component {
     }
 
     componentDidMount() {
-       
+
         var sizeeeeee = $(".formback_movie").width();
-            console.log(sizeeeeee)
+        console.log(sizeeeeee)
         $(window).resize(function () {
-            chatsize=$(".back_coulom").width();
-            if(document.getElementById("mySidenav").style.width == "0px"){
+            chatsize = $(".back_coulom").width();
+            if (document.getElementById("mySidenav").style.width == "0px") {
                 var sizeeeeee = $(".formback_movie").width();
                 $(".video-react-video").css("width", sizeeeeee.toString());
                 $(".video-react-video").css("margin-left", '0px');
+            } else {
+                sizeeeeee = $(".formback_movie").width();
+                $(".video-react-video").css("width", sizeeeeee.toString() + '50px');
+                $(".video-react-video").css("margin-left", '210px');
             }
-            else{
-            sizeeeeee = $(".formback_movie").width();
-            $(".video-react-video").css("width", sizeeeeee.toString()+'50px');
-              $(".video-react-video").css("margin-left", '210px');
-        }
         });
 
 //         $('#formback_movie_id').resize(function () {
@@ -142,26 +141,26 @@ class chat_room extends Component {
                     $(".video-react-video").css("margin-right", '0px');
                 }
                 $(".openonlinemember").css("transform", "scaleX(1)");
-                 // sizeeeeee -= 300;
-                  $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                // sizeeeeee -= 300;
+                $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
                 $(".video-react-video").css("margin-left", '200px');
 
 
             } else {
                 document.getElementById("mySidenav").style.width = "0px";
                 $(".openonlinemember").css("transform", "scaleX(-1)");
-               //  sizeeeeee += 300;
-               $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                //  sizeeeeee += 300;
+                $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
                 $(".video-react-video").css("margin-left", '200px');
             }
             sizeeeeee = $(".formback_movie").width();
         });
 
         $('.openchat').click(function () {
-           
-            console.log("size "+sizeeeeee)
-            if($(".back_coulom").width()>0)
-             chatsize=$(".back_coulom").width();
+
+            console.log("size " + sizeeeeee)
+            if ($(".back_coulom").width() > 0)
+                chatsize = $(".back_coulom").width();
 
             if ($(".back_coulom").width() == 0) {
                 $(".back_coulom").css("width", "400px");
@@ -175,27 +174,27 @@ class chat_room extends Component {
                 }
 
                 $(".openchat").css("transform", "scaleX(-1)");
-          
-               // console.log(chatsize)
-                //.sizeeeeee -= chatsize;
-              $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
-                $(".video-react-video").css("margin-right", '300px');
-                
-            } else {
-               
-                $(".back_coulom").css("width", "0px");
-                
-                $(".openchat").css("transform", "scaleX(1)");
-              
+
                 // console.log(chatsize)
-               // sizeeeeee += chatsize;
-            $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
-               $(".video-react-video").css("margin-right", '300px');
-              
+                //.sizeeeeee -= chatsize;
+                $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                $(".video-react-video").css("margin-right", '300px');
+
+            } else {
+
+                $(".back_coulom").css("width", "0px");
+
+                $(".openchat").css("transform", "scaleX(1)");
+
+                // console.log(chatsize)
+                // sizeeeeee += chatsize;
+                $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
+                $(".video-react-video").css("margin-right", '300px');
+
             }
-             sizeeeeee = $(".formback_movie").width();
-          //  console.log(sizeeeeee)
- 
+            sizeeeeee = $(".formback_movie").width();
+            //  console.log(sizeeeeee)
+
         });
 
         console.log(url)
@@ -240,7 +239,7 @@ class chat_room extends Component {
 
                 var a = 'window.localStorage.setItem("muteuser","' + messagee1.user + '")';
 
-            if (messagee1.user == window.localStorage.getItem('username')) {
+                if (messagee1.user == window.localStorage.getItem('username')) {
 
                     $(".pm").append("<div id='pmeman'" + charom + ">" + "me: &nbsp;</div><div  id='pmemantxt'>" + messagee1.message + "</div>");
 
@@ -471,7 +470,7 @@ class chat_room extends Component {
                 if (messagee.username == window.localStorage.getItem('username')) {
                     if (messagee.permission1 == "controller" || messagee.permission2 == "controller") {
                         iscontroller = 1;
-                 
+
                         document.getElementById("controllbuttons2").style.zIndex = "-1";
                         document.getElementById('controllbuttons').style.pointerEvents = 'auto';
                         document.getElementById('movie').style.pointerEvents = 'auto';
@@ -479,14 +478,14 @@ class chat_room extends Component {
                     if (messagee.permission1 == "selector" || messagee.permission2 == "selector") {
                         isselector = 1;
                         document.getElementById('reselect').style.pointerEvents = 'auto';
-                        if(iscontroller==0)
-                        document.getElementById("controllbuttons2").style.zIndex = "100";
+                        if (iscontroller == 0)
+                            document.getElementById("controllbuttons2").style.zIndex = "100";
                         if (filmplayed == 0)
                             window.location.reload();
                     }
                     if (messagee.permission1 != "controller" && messagee.permission2 != "controller") {
                         iscontroller = 0;
-            
+
                         document.getElementById("controllbuttons2").style.zIndex = "1";
                         document.getElementById('controllbuttons').style.pointerEvents = 'none';
                         document.getElementById('movie').style.pointerEvents = 'none';
@@ -494,8 +493,8 @@ class chat_room extends Component {
                     if (messagee.permission1 != "selector" && messagee.permission2 != "selector") {
                         isselector = 0;
                         document.getElementById('reselect').style.pointerEvents = 'none';
-                        if(iscontroller==1)
-                        document.getElementById("controllbuttons2").style.zIndex = "-1";
+                        if (iscontroller == 1)
+                            document.getElementById("controllbuttons2").style.zIndex = "-1";
                         if (filmplayed == 0)
                             window.location.reload();
                     }
@@ -531,19 +530,19 @@ class chat_room extends Component {
                 }
             }
 
-    }
+        }
 
         const {id} = this.props.match.params
 
         $(document).ready(function () {
             $('#fullscreenid').prependTo($('.controllbuttons2'));
-            if($(window).width()<800){
+            if ($(window).width() < 800) {
                 $(".back_coulom").css("width", "0px");
                 $(".openchat").css("transform", "scaleX(1)");
                 document.getElementById("mySidenav").style.width = "0px";
                 $(".openonlinemember").css("transform", "scaleX(-1)");
             }
-       
+
             // setTimeout(function () {
             //     const message_reselect = {"command": "reset"}
             //     ws.send(JSON.stringify(message_reselect));
@@ -795,13 +794,13 @@ class chat_room extends Component {
             });
 
 
-                  if (filmplayed == 1)
-                      $('#controll_div').fadeIn();
-            
-              $("#formback_movie_id").mouseleave(function () {
-                  $('#controll_div').fadeOut();
-              });
-           
+            if (filmplayed == 1)
+                $('#controll_div').fadeIn();
+
+            $("#formback_movie_id").mouseleave(function () {
+                $('#controll_div').fadeOut();
+            });
+
 
             $('.username').text(window.localStorage.getItem('username'));
 
@@ -858,12 +857,16 @@ class chat_room extends Component {
                 if (filmplayed == 1) {
                     $('#controllbuttons').fadeIn();
                     $('#nameofthefilm').fadeIn();
+                    $('.fullscreendiv').fadeIn();
+
                 }
             });
             $("#formback_movie_id").mouseleave(function () {
                 if (filmplayed == 1) {
                     $('#controllbuttons').fadeOut();
                     $('#nameofthefilm').fadeOut();
+                    $('.fullscreendiv').fadeIn();
+
                 }
             });
 
@@ -1079,7 +1082,7 @@ class chat_room extends Component {
                     console.log(create_by)
                     console.log(window.localStorage.getItem('username'))
                     if (window.localStorage.getItem('username') != create_by) {
-                        
+
                         document.getElementById('dropdown-basic').style.display = 'none'
                     } else {
                         document.getElementById('dropdown-basic').style.display = 'block'
@@ -1558,11 +1561,10 @@ class chat_room extends Component {
                 });
 
             });
-          
 
 
             //Log the messages that are returned from the server
-        
+
 
             $(".send_btn").click(function () {
                 var massage = $(".formback_text_input").val();
@@ -1572,9 +1574,6 @@ class chat_room extends Component {
                     ws1.send(JSON.stringify(message_send_chat));
                     $('.formback_text_input').val('');
                 }
-
-
-              
 
 
             });
@@ -1598,28 +1597,27 @@ class chat_room extends Component {
             $.ajax(settings).done(function (response) {
                 //  document.getElementById("myElement").style.cssText = "display: block; position: absolute";
                 console.log(response);
-               
-                    for (var counterchathistory = response.results.length - 1; counterchathistory >= 0; counterchathistory--) {
 
-                        var aval = 'style=';
-                        var dovom = aval + '"color:';
-                        var sevom = dovom + usercolors[response.results[counterchathistory].message_sender];
-                        var charom = sevom + '"';
-                      
+                for (var counterchathistory = response.results.length - 1; counterchathistory >= 0; counterchathistory--) {
 
-                var d = 'document.getElementById("mymutemodal")';
-
-                var dd = d + '.style.display="block"';
+                    var aval = 'style=';
+                    var dovom = aval + '"color:';
+                    var sevom = dovom + usercolors[response.results[counterchathistory].message_sender];
+                    var charom = sevom + '"';
 
 
-              
+                    var d = 'document.getElementById("mymutemodal")';
+
+                    var dd = d + '.style.display="block"';
+
+
                     var a = 'window.localStorage.setItem("muteuser","' + response.results[counterchathistory].message_sender + '")';
-  if (response.results[counterchathistory].message_sender == window.localStorage.getItem('username')) {
-                            $(".pm").append("<div  style='float:left' id='pmeman'" + charom + "> me: &nbsp;</div><div  id='pmemantxt'>" + response.results[counterchathistory].message_text + "</div>");
+                    if (response.results[counterchathistory].message_sender == window.localStorage.getItem('username')) {
+                        $(".pm").append("<div  style='float:left' id='pmeman'" + charom + "> me: &nbsp;</div><div  id='pmemantxt'>" + response.results[counterchathistory].message_text + "</div>");
 
-                        } else {
-                            $(".pm").append("<abbr title='Click to mute' > <div onclick='" + dd + "," + a + "' id='pmeoon'" + charom + ">" + response.results[counterchathistory].message_sender + ": &nbsp;</div></abbr><div  id='pmemantxt'> " + response.results[counterchathistory].message_text + "</div>");
-                        }
+                    } else {
+                        $(".pm").append("<abbr title='Click to mute' > <div onclick='" + dd + "," + a + "' id='pmeoon'" + charom + ">" + response.results[counterchathistory].message_sender + ": &nbsp;</div></abbr><div  id='pmemantxt'> " + response.results[counterchathistory].message_text + "</div>");
+                    }
 
                 }
                 var element = document.getElementById("pmid");
@@ -1793,15 +1791,13 @@ class chat_room extends Component {
 
             });
 
-               
 
             $('.dltno2').click(function () {
                 $('.mutemodal').fadeOut("slow");
             });
         })
-       
-        }
-    
+
+    }
 
 
     constructor(props) {
@@ -2431,9 +2427,10 @@ class chat_room extends Component {
                 //     console.log("curent " + player.currentTime)
                 $('#nameofthefilm').text(file.name.split('.')[0]);
                 $('#nameofthefilm').fadeIn();
+                $('.fullscreendiv').fadeIn();
 
                 console.log(file.name.split('.')[0]);
-               
+
 
                 uploaded = 1;
                 if (isadmin == 1 || isselector == 1) {
@@ -2726,7 +2723,7 @@ class chat_room extends Component {
                     </div>
 
                 </header>
- 
+
 
                 <div id="mySidenav" className="sidenav">
                     <div className="name"/>
@@ -2751,218 +2748,218 @@ class chat_room extends Component {
                     </IconButton>
                 </abbr>
 
-                    <div id="mymutemodal" className="mutemodal">
+                <div id="mymutemodal" className="mutemodal">
 
-                        <div className="mute-modal-content">
+                    <div className="mute-modal-content">
 
-                            <h3 className='deleteTEXT'>Are you sure you want to mute this user ? </h3>
-
-
-                            <div className='dltbtns'>
+                        <h3 className='deleteTEXT'>Are you sure you want to mute this user ? </h3>
 
 
-                                <Button style={{backgroundColor: "Red"}} size='large'
-
-                                        className="dltno2" variant="contained" color="secondary">
-
-                                    <p>No&nbsp;</p>
-
-                                </Button>
+                        <div className='dltbtns'>
 
 
-                                <Button style={{
+                            <Button style={{backgroundColor: "Red"}} size='large'
 
-                                    backgroundColor: 'gray',
+                                    className="dltno2" variant="contained" color="secondary">
 
-                                    marginRight: "4px"
+                                <p>No&nbsp;</p>
 
-
-                                }} size='large' className="dltyes2" variant="contained" color="secondary">
-
-                                    <p>Yes</p>
-
-                                </Button>
+                            </Button>
 
 
-                            </div>
-
-                            {/* <div className='dltno'>no</div> */}
-
-                        </div>
-
-                    </div>
-
-
-                    <div id="myModal" class="modal-">
-
-
-                        <div class="modal-content-">
-
-                            <div className='headModal'>
-
-                                <Avatar style={{
-                                    backgroundColor: 'rgba(0,0,0,0.5)',
-                                    width: '100px',
-                                    height: '100px',
-                                    fontSize: '50px'
-                                }} className='photogp'>&nbsp;</Avatar>
-
-
-                                <div className='infogp'>
-
-                                    <div className='namegp'/>
-
-                                    <div className='idgp'/>
-
-                                </div>
-                                
-                                <div class="drop">
-                                    <Dropdown>
-                                        <Dropdown.Toggle variant="success" id="dropdown-basic" style={{
-                                            backgroundColor: 'transparent',
-                                            borderColor: 'transparent',
-                                            fontSize: '30px',
-                                            cursor: 'pointer'
-                                        }}>
-                                            ⋮
-                                        </Dropdown.Toggle>
-
-                                        <Dropdown.Menu style={{
-                                            backgroundColor: 'rgba(0,0,0,0.9)',
-                                            color: 'black',
-                                            marginLeft: '-65px'
-                                        }}>
-                                            <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
-                                                 className="edit_group" onClick={this.click_edit}>Edit group
-                                            </div>
-                                            <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
-                                                 className="edit_group" onClick={this.click_edit_permission}>Edit
-                                                permission
-                                            </div>
-                                            <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
-                                                 className="edit_group" onClick={this.click_edit_Add}>Add member
-                                            </div>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                </div>
-                            </div>
-
-                            <div className='destitle'>Description:</div>
-
-                            <div className='desbody'/>
-
-                            <hr/>
-
-                            <div className='infobody'/>
-
-                        </div>
-
-
-                    </div>
-                    <div id="myModalPer" class="modalPer">
-                        <div class="modal-content-Per">
-                            <p className='delPer'>Edit permission of user</p>
-
-                            <select id="exams" name="exams" required className='dropbtn-'>
-
-                            </select>
-
-                            <Select className='select' isMulti placeholder="select your permission"
-                                    value={this.state.selectedOption}
-                                    onChange={this.handleChanges}
-                                    options={options}
-                            />
-
-
-                            <br/>
-                            <div className='btndl'>
-
-                                <Button style={{backgroundColor: "Red"}} size='large'
-                                        className="btnno" variant="contained" color="secondary">
-                                    <p>Cancel&nbsp;</p>
-                                </Button>
-
-                                <Button style={{
-                                    backgroundColor: 'gray',
-                                    marginRight: "4px"
-
-                                }} size='large' className="btnyes" variant="contained" color="secondary">
-                                    <p>Apply</p>
-                                </Button>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div id="snackbar">Successfully permission edit</div>
-                    <div id="snackbar-mute-warning">You don't have permission to send message</div>
-                    <div id="snackbar-">Enter id field</div>
-                    <div id="myModalAdd" class="modaladd">
-                        <div class="modal-content-add">
-                            <p className='delPer'>Add your member</p>
-
-                            <input class='inp-add' placeholder=" enter your user's id"></input>
-                            <Select className='select-' isMulti placeholder="select your permission"
-                                    value={this.state.selectedOption_Add}
-                                    onChange={this.handleChanges_Add}
-                                    options={options}
-                            />
-
-
-                            <br/>
-                            <div className='btndl'>
-
-                                <Button style={{backgroundColor: "Red"}} size='large'
-                                        className="btncancel" variant="contained" color="secondary">
-                                    <p>Cancel&nbsp;</p>
-                                </Button>
-
-                                <Button style={{
-                                    backgroundColor: 'gray',
-                                    marginRight: "4px"
-
-                                }} size='large' className="btnadd" variant="contained" color="secondary">
-                                    <p>Add</p>
-                                </Button>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div id="snackbar-succes">Successfully add to group</div>
-                    <div id="snackbar-not">User not found</div>
-                    <div id="snackbar-already">User is already a member of this group</div>
-                    <div id="snackbar-mute">Successfully mute</div>
-                    <div id="myModal_popup" class="modal_popup">
-                        <div class="modal-content">
-                            <IconButton style={{color: 'white', marginRight: '130%', marginTop: '4%'}}
-                                        className="cancelicon">
-                                <CloseIcon fontSize="large"/>
-                            </IconButton>
-                            <h3 class="texx">Edit your groups deatails</h3>
-
-                            <hr></hr>
-
-                            <input class="inputedit-title" id='edittitle_popup' placeholder="Title"></input>
-
-
-                            <input class="inputedit-des" id='editdes_popup' placeholder="Description"></input>
-
-                            <select id="admin-select" name="admin-select" required className='admin-select'>
-
-                            </select>
-                            <br></br>
                             <Button style={{
-                                backgroundColor: "Red",
-                                marginTop: "20px"
-                            }} size='large' className="submitedit_popup" variant="contained" color="secondary">
+
+                                backgroundColor: 'gray',
+
+                                marginRight: "4px"
+
+
+                            }} size='large' className="dltyes2" variant="contained" color="secondary">
+
+                                <p>Yes</p>
+
+                            </Button>
+
+
+                        </div>
+
+                        {/* <div className='dltno'>no</div> */}
+
+                    </div>
+
+                </div>
+
+
+                <div id="myModal" class="modal-">
+
+
+                    <div class="modal-content-">
+
+                        <div className='headModal'>
+
+                            <Avatar style={{
+                                backgroundColor: 'rgba(0,0,0,0.5)',
+                                width: '100px',
+                                height: '100px',
+                                fontSize: '50px'
+                            }} className='photogp'>&nbsp;</Avatar>
+
+
+                            <div className='infogp'>
+
+                                <div className='namegp'/>
+
+                                <div className='idgp'/>
+
+                            </div>
+
+                            <div class="drop">
+                                <Dropdown>
+                                    <Dropdown.Toggle variant="success" id="dropdown-basic" style={{
+                                        backgroundColor: 'transparent',
+                                        borderColor: 'transparent',
+                                        fontSize: '30px',
+                                        cursor: 'pointer'
+                                    }}>
+                                        ⋮
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu style={{
+                                        backgroundColor: 'rgba(0,0,0,0.9)',
+                                        color: 'black',
+                                        marginLeft: '-65px'
+                                    }}>
+                                        <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
+                                             className="edit_group" onClick={this.click_edit}>Edit group
+                                        </div>
+                                        <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
+                                             className="edit_group" onClick={this.click_edit_permission}>Edit
+                                            permission
+                                        </div>
+                                        <div style={{color: 'white', textAlign: 'left', marginLeft: '15px'}}
+                                             className="edit_group" onClick={this.click_edit_Add}>Add member
+                                        </div>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </div>
+                        </div>
+
+                        <div className='destitle'>Description:</div>
+
+                        <div className='desbody'/>
+
+                        <hr/>
+
+                        <div className='infobody'/>
+
+                    </div>
+
+
+                </div>
+                <div id="myModalPer" class="modalPer">
+                    <div class="modal-content-Per">
+                        <p className='delPer'>Edit permission of user</p>
+
+                        <select id="exams" name="exams" required className='dropbtn-'>
+
+                        </select>
+
+                        <Select className='select' isMulti placeholder="select your permission"
+                                value={this.state.selectedOption}
+                                onChange={this.handleChanges}
+                                options={options}
+                        />
+
+
+                        <br/>
+                        <div className='btndl'>
+
+                            <Button style={{backgroundColor: "Red"}} size='large'
+                                    className="btnno" variant="contained" color="secondary">
+                                <p>Cancel&nbsp;</p>
+                            </Button>
+
+                            <Button style={{
+                                backgroundColor: 'gray',
+                                marginRight: "4px"
+
+                            }} size='large' className="btnyes" variant="contained" color="secondary">
                                 <p>Apply</p>
                             </Button>
 
                         </div>
-                        <div id="snackbar-succes-edit">Successfully edit</div>
                     </div>
+                </div>
+                <div id="snackbar">Successfully permission edit</div>
+                <div id="snackbar-mute-warning">You don't have permission to send message</div>
+                <div id="snackbar-">Enter id field</div>
+                <div id="myModalAdd" class="modaladd">
+                    <div class="modal-content-add">
+                        <p className='delPer'>Add your member</p>
+
+                        <input class='inp-add' placeholder=" enter your user's id"></input>
+                        <Select className='select-' isMulti placeholder="select your permission"
+                                value={this.state.selectedOption_Add}
+                                onChange={this.handleChanges_Add}
+                                options={options}
+                        />
 
 
-                    <div id='formback_movie_id' className="formback_movie">
+                        <br/>
+                        <div className='btndl'>
+
+                            <Button style={{backgroundColor: "Red"}} size='large'
+                                    className="btncancel" variant="contained" color="secondary">
+                                <p>Cancel&nbsp;</p>
+                            </Button>
+
+                            <Button style={{
+                                backgroundColor: 'gray',
+                                marginRight: "4px"
+
+                            }} size='large' className="btnadd" variant="contained" color="secondary">
+                                <p>Add</p>
+                            </Button>
+
+                        </div>
+                    </div>
+                </div>
+                <div id="snackbar-succes">Successfully add to group</div>
+                <div id="snackbar-not">User not found</div>
+                <div id="snackbar-already">User is already a member of this group</div>
+                <div id="snackbar-mute">Successfully mute</div>
+                <div id="myModal_popup" class="modal_popup">
+                    <div class="modal-content">
+                        <IconButton style={{color: 'white', marginRight: '130%', marginTop: '4%'}}
+                                    className="cancelicon">
+                            <CloseIcon fontSize="large"/>
+                        </IconButton>
+                        <h3 class="texx">Edit your groups deatails</h3>
+
+                        <hr></hr>
+
+                        <input class="inputedit-title" id='edittitle_popup' placeholder="Title"></input>
+
+
+                        <input class="inputedit-des" id='editdes_popup' placeholder="Description"></input>
+
+                        <select id="admin-select" name="admin-select" required className='admin-select'>
+
+                        </select>
+                        <br></br>
+                        <Button style={{
+                            backgroundColor: "Red",
+                            marginTop: "20px"
+                        }} size='large' className="submitedit_popup" variant="contained" color="secondary">
+                            <p>Apply</p>
+                        </Button>
+
+                    </div>
+                    <div id="snackbar-succes-edit">Successfully edit</div>
+                </div>
+
+
+                <div id='formback_movie_id' className="formback_movie">
 
                     <div id="movie" className="div_player_movie">
 
@@ -2997,6 +2994,20 @@ class chat_room extends Component {
                     <div id='nameofthefilm'>
                         No movie has been selected yet
                     </div>
+                    <div className='fullscreendiv'>
+                        <IconButton id="fullscreenid" onClick={this.fullscreen} style={{
+                            color: 'white',
+                            cursor: "pointer",
+                            pointerEvents: "auto",
+                            zIndex: '999',
+                        }} size='large' className="fullscreenbtn">
+
+
+                            <FullscreenIcon/>
+                        </IconButton>
+                    </div>
+
+
                     <div id='movietxtdiv'>
 
                         <p id='movietxt'>Wait for admin to select the video</p>
@@ -3077,18 +3088,6 @@ class chat_room extends Component {
 
 
                                 <StopIcon/>
-                            </IconButton>
-
-                            <IconButton id="fullscreenid" onClick={this.fullscreen} style={{
-                                color: 'white',
-                                cursor: "pointer",
-                                pointerEvents: "auto",
-                                marginBottom: "5px",
-                                zIndex:'999'
-                            }} size='large' className="fullscreenbtn">
-
-
-                                <FullscreenIcon/>
                             </IconButton>
 
 
@@ -3174,48 +3173,48 @@ class chat_room extends Component {
                                 className="openchat">
 
                         <FirstPageIcon fontSize="large"/>
-   </IconButton>
+                    </IconButton>
                 </abbr>
 
 
                 <div id='mysidenav2' className="back_coulom">
 
-                        <div id='formback_text_id' className="formback_text" style={{width: '350px', height: '395px',}}>
+                    <div id='formback_text_id' className="formback_text">
 
-                    <div className="formback_text">
+                        <div className="formback_text">
 
-                        <div className='titleofchat'> Chat</div>
-                        <p className="khat">______________________________</p>
-                        <div id='pmid' className="pm">
-
-
-                        </div>
+                            <div className='titleofchat'> Chat</div>
+                            <p className="khat">______________________________</p>
+                            <div id='pmid' className="pm">
 
 
-                        <div className="input_send">
-
-
-                            <input className="formback_text_input" id="formback_text_input" autocomplete="off">
-
-                            </input>
-                            <div className='sendbutton'>
-                                <IconButton style={{
-                                    color: 'white',
-                                    fontSize: '80px'
-                                }}
-                                            className="send_btn">
-                                    <SendIcon/>
-                                </IconButton>
                             </div>
+
+
+                            <div className="input_send">
+
+
+                                <input className="formback_text_input" id="formback_text_input" autocomplete="off">
+
+                                </input>
+                                <div className='sendbutton'>
+                                    <IconButton style={{
+                                        color: 'white',
+                                        fontSize: '80px'
+                                    }}
+                                                className="send_btn">
+                                        <SendIcon/>
+                                    </IconButton>
+                                </div>
+                            </div>
+
+
                         </div>
 
 
                     </div>
 
-
                 </div>
-
-</div>
             </form>
 
 
