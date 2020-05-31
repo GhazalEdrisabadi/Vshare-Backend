@@ -281,13 +281,60 @@ else{
                     "timeout": 0,
                     error: function (event) {
                         if (event.status == 500) {
-                            alert("You are already a member of this group !");
+                            var x = document.getElementById("snackbar-already");
+                            x.className = "show";
+                            setTimeout(function () {
+                                x.className = x.className.replace("show", "");
+                            }, 3000);
+                            ;
+
+
                         }
                     },
-                    success: function () {
+                    success: function () {  
+                                            var settings = {
+                        "url": "http://127.0.0.1:8000/group/permissions/",
+                        "method": "POST",
+                        error: function () {
+
+                            alert("nooooooo")
+
+
+                        },
+                        success: function () {
+
+                            var x = document.getElementById("snackbar-succes-join");
+                            x.className = "show";
+                            setTimeout(function () {
+                                x.className = x.className.replace("show", "");
+                            }, 3000);
+                            setTimeout(function(){   window.location.replace('/profile')},3000)
+                         
+                        },
+                        "timeout": 0,
+                        "headers": {
+
+                            "accept": "application/json",
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Headers": "*",
+                            "Content-Type": "application/json"
+                        },
+                        "data": JSON.stringify({
+                                "group": window.localStorage.getItem('id-join'),
+                                "member": window.localStorage.getItem('username'),
+                                "chat_permission": 1,
+                                "playback_permission": 0,
+                                "choose_video_permission": 0
+                            }
+                        ),
+                    };
+
+                    $.ajax(settings).done(function (response) {
+
+                        console.log(response);
+                    });
                         //  window.localStorage.setItem('id_gp', id);
-                        alert("join !");
-                        window.location.replace('/profile/' + username)
+                       
                     },
 
                     "headers": {
@@ -299,9 +346,9 @@ else{
                         "Content-Type": "application/json"
                     },
                     "data": JSON.stringify({
-                        "the_group": window.localStorage.getItem('id-join'),
-                        "the_member": "",
-                    }
+                            "the_group": window.localStorage.getItem('id-join'),
+                            "the_member": "",
+                        }
                     ),
                 };
                 console.log(settings.headers);
@@ -811,6 +858,8 @@ else{
 
                 </div>
                 <div className="search-result" id='res'></div>
+                <div id="snackbar-succes-join">Successfully join</div>
+                <div id="snackbar-already">User is already a member of this group</div>
             </div>
 
         )
