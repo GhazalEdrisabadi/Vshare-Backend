@@ -97,7 +97,7 @@ class AddMembershipList(generics.ListCreateAPIView):
 
 class GroupsOfUser(generics.ListAPIView):
     serializer_class = MembershipSerializer
-
+    permission_classes = [AllowAny]
     def get_queryset(self):
         """
         This view should return a list of all the records
@@ -105,7 +105,14 @@ class GroupsOfUser(generics.ListAPIView):
         """
         user = self.request.user
         return Membership.objects.filter(the_member=user)
-        
+
+class GroupsOfSearchedUser(generics.ListAPIView):
+    serializer_class = MembershipSerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+        user= self.request.query_params.get('user_id')
+        return Membership.objects.filter(the_member=user)
+
 class GroupsWhichUserIsAdmin(generics.ListAPIView):
     serializer_class = GroupSerializer
 
