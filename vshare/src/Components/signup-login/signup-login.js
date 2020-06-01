@@ -30,7 +30,7 @@ class sl extends Component {
                     },
                     success: function () {
                         var x = document.getElementById("snackbarloginsignup");
-                        x.innerHTML = "Done";
+                        x.innerHTML = "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  Account successfully created &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
                         x.className = "show";
                         setTimeout(function () {
                             x.className = x.className.replace("show", "");
