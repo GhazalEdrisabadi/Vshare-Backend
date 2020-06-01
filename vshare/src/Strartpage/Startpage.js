@@ -13,7 +13,7 @@ class startpage extends Component {
             <div className="back_startpage">
                 <div className="Main_div">
                     <Navbar collapseOnSelect expand="lg" style={{ backgroundColor: 'transparent', borderBottomColor: 'white', borderBottomStyle: 'solid' }}>
-                        <Navbar.Brand href="#home" style={{ color: 'white', fontSize: '35px', fontWeight: 'bold' }}>Vshare</Navbar.Brand>
+                        <Navbar.Brand href="#home" style={{ color: 'white', fontSize: '35px', fontWeight: 'bold' }}>Vsharee</Navbar.Brand>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav " style={{ backgroundColor: 'white', color: 'white' }} />
                         <Navbar.Collapse id="responsive-navbar-nav" style={{ marginLeft: "30px" }}>
                             <Nav className="mr-auto" />
@@ -35,7 +35,7 @@ class startpage extends Component {
                         <div className="row">
                             <div className="txt-container ">
                                 <div className="txt-content col-sm-12 col-lg-8 col-xl-8 col-md-8" style={{ display: "block" }}>
-                                    Vshare is a web-base service which allows you to watch a video file with other users
+                                    Vsharee is a web-base service which allows you to watch a video file with other users
                                     at the same time.
                                     You can talk through the movie with each other
                                     </div>
