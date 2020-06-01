@@ -207,3 +207,6 @@ MEDIA_URL =  '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR , 'users/media')
 
+endpoint_url = "http://localhost:9000"
+aws_access_key_id='minio'
+aws_secret_access_key='miniostorage'
