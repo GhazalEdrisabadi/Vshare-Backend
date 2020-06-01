@@ -506,7 +506,9 @@ class chat_room extends Component {
                 document.getElementById("mySidenav").style.width = "0px";
                 $(".openonlinemember").css("transform", "scaleX(-1)");
             }
-
+               
+                 $('.username').fadeIn();
+             
            
 
             if (isadmin == 1 || isselector == 1) {
