@@ -173,7 +173,7 @@ class profile extends Component {
                     htmlcode = '';
                     $(".search-result").append(htmlcode)
                     for (var counter1 = 0; counter1 < response.length; counter1++, htmlcode = '') {
-                        var a2 = "window.localStorage.setItem('user'," + response[counter1].username + ")";
+                        var a2 = "window.localStorage.setItem('user','" + response[counter1].username + "')";
                         var r = "window.location.replace('/profile/" + response[counter1].username + "')";
 
 
