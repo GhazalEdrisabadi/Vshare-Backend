@@ -79,4 +79,3 @@ class EditProfile(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Account.objects.all()
 	lookup_field = 'username'
 	serializer_class = EditProfileSerializer
-		
