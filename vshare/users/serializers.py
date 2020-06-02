@@ -96,7 +96,6 @@ class UploadPhotoSerializer(serializers.ModelSerializer):
 		model = Account
 		fields = ['username','photo']
 		extra_kwargs = {
-				'photo':{'read_only':True},
 				'username': {'read_only' : True}
     }
     
