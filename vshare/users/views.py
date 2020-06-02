@@ -13,6 +13,7 @@ from rest_framework.authtoken.models import Token
 
 from users.models import *
 from rest_framework import generics
+from rest_framework import mixins
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
@@ -75,8 +76,34 @@ class UserByUsername(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [AllowAny]
 
 
-class UploadPhoto(generics.RetrieveUpdateDestroyAPIView):
+class UploadPhoto(mixins.DestroyModelMixin,
+					mixins.CreateModelMixin,
+					generics.GenericAPIView):
+
 	queryset = Account.objects.all()
 	permission_classes = [AllowAny]
 	serializer_class = UploadPhotoSerializer
 	lookup_field = 'username'
+
+	def perform_create(self, instance):
+		print(instance)
+
+	def create(self, request, *args, **kwargs):
+		serializer = self.get_serializer(data=request.data)
+		serializer.is_valid(raise_exception=True)
+		self.perform_create(serializer)
+		return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+	def post(self, request, *args, **kwargs):
+		return self.create(request, *args, **kwargs)
+
+	def perform_destroy(self, instance):
+		instance.delete()
+
+	def destroy(self, request, *args, **kwargs):
+		instance = self.get_object()
+		self.perform_destroy(instance)
+		return Response(status=status.HTTP_204_NO_CONTENT)
+
+	def delete(self, request, *args, **kwargs):
+		return self.destroy(request, *args, **kwargs)
