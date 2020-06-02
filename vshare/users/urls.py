@@ -9,5 +9,7 @@ urlpatterns = [
     path('signup/', Registration.as_view(), name="Signup"),
     path('login/', UserLogin.as_view(), name="Login"),
     path('<str:username>/', UserByUsername.as_view(), name="detail"),
-
+    path('<str:username>/edit_profile/upload_photo', UploadPhoto.as_view(), name="UploadPhoto"),
+    path('<str:username>/edit_profile/', EditProfile.as_view(), name="Edit Profile"),
+    path('<str:username>/edit_profile/change_password', ChangePassword.as_view(), name="Change Password"),
 ]
