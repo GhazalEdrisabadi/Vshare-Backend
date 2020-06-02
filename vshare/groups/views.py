@@ -1,8 +1,8 @@
 from rest_framework import generics
-from .models import Group , Membership , AcceptedClient
+from .models import *
 from users.models import Account
 from .serializers import GroupRegistrationSerializer
-from .serializers import GroupSerializer , MembershipSerializer , GroupUpdateSerializer ,AcceptedClientSerializer
+from .serializers import *
 from rest_framework import filters
 from rest_framework import status
 from rest_framework import viewsets
@@ -11,6 +11,8 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.models import User
+from groups.pagination import CustomPagination
+
 
 from rest_framework.permissions import (
 		AllowAny,
@@ -19,7 +21,40 @@ from rest_framework.permissions import (
 		IsAuthenticatedOrReadOnly,
 	)
 
+class PermissionList(generics.ListCreateAPIView):
+    queryset = Permission.objects.all()
+    serializer_class = PermissionSerializer
+    permission_classes = [AllowAny]
 
+class DeletePermission(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = PermissionSerializer
+    permission_classes = [AllowAny]
+    lookup_field='group'
+    def get_queryset(self):
+        the_member= self.request.query_params.get('member')
+        queryset = Permission.objects.filter(member=the_member)
+        return queryset
+
+class OnlineUserList(generics.ListAPIView):
+    #queryset = OnlineUser.objects.all()
+    serializer_class = OnlineUserSerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+        queryset = OnlineUser.objects.all()
+        the_group = self.request.query_params.get('group','')
+        return queryset.filter(joined_group=the_group)
+
+
+class MessageHistory(generics.ListAPIView):
+    #queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+        queryset = Message.objects.all()
+        the_group = self.request.query_params.get('target','')
+        return queryset.filter(target_group=the_group)
+    pagination_class = CustomPagination
+      
 class GroupList(generics.ListCreateAPIView):
     search_fields = ['groupid']
     filter_backends = (filters.SearchFilter,)
@@ -62,7 +97,7 @@ class AddMembershipList(generics.ListCreateAPIView):
 
 class GroupsOfUser(generics.ListAPIView):
     serializer_class = MembershipSerializer
-
+    permission_classes = [AllowAny]
     def get_queryset(self):
         """
         This view should return a list of all the records
@@ -70,7 +105,14 @@ class GroupsOfUser(generics.ListAPIView):
         """
         user = self.request.user
         return Membership.objects.filter(the_member=user)
-        
+
+class GroupsOfSearchedUser(generics.ListAPIView):
+    serializer_class = MembershipSerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+        user= self.request.query_params.get('user_id')
+        return Membership.objects.filter(the_member=user)
+
 class GroupsWhichUserIsAdmin(generics.ListAPIView):
     serializer_class = GroupSerializer
 
@@ -148,4 +190,3 @@ def GroupRegistration(request):
         else:
             data = serializer_class.errors
         return Response(data)
-

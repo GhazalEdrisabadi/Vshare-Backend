@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 .video-react .video-react-control:before, .video-react .video-react-big-play-button:before {
     position: absolute;
     top: 0;
@@ -239,12 +239,12 @@
 .video-react .video-react-video {
 
     position: fixed;
-    margin-top: 6.5%;
+    margin-top: 5%;
     top: 0;
     left: 0;
-   margin-left: 5%;
-    width: 70%;
-    height: 80%;
+   margin-left: 4%;
+    width: 90%;
+    height: 85%;
 }
 
 .video-react.video-react-fullscreen {
@@ -391,13 +391,15 @@ body.video-react-full-window .video-react-fullscreen {
 }
 
 .video-react .video-react-big-play-button {
+
     font-size: 3em;
     line-height: 1.5em;
     height: 1.5em;
     width: 3em;
     display: block;
     position: absolute;
-    top: 10px;
+    margin-top: 100000px;
+    top: 1000px;
     left: 10px;
     padding: 0;
     cursor: pointer;
@@ -619,7 +621,7 @@ body.video-react-full-window .video-react-fullscreen {
 .video-react .video-react-control {
     outline: none;
     position: relative;
-    margin-top: 730px;
+    margin-top: 99999px;
     padding: 0;
     height: 100%;
     width: 4em;
@@ -663,8 +665,8 @@ body.video-react-full-window .video-react-fullscreen {
     left: 0;
     right: 0;
     height: 3em;
-    background-color: #2B333F;
-    background-color: rgba(43, 51, 63, 0.7);
+    background-color: rgba(43, 51, 63, 0);
+    background-color: rgba(43, 51, 63, 0);
 }
 
 .video-react-has-started .video-react-control-bar {

@@ -25,6 +25,7 @@ class Group(models.Model):
 	created_by = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name='owner',)
 	members = models.ManyToManyField(settings.AUTH_USER_MODEL,blank=True,related_name='joined_groups',through='Membership',)
 	video_hash = models.CharField(max_length=100, blank=True ,default='No hash yet!')
+	hash_sender = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name='sender',)
 	
 	def save(self,*args,**kwargs):
 		created = self.pk is None
@@ -33,6 +34,8 @@ class Group(models.Model):
 			created_group = Group.objects.get(groupid=self.groupid)
 			owner_to_members=Membership(the_group=created_group , the_member=created_group.created_by)
 			owner_to_members.save()
+			default_permit=Permission(group=created_group , member=created_group.created_by , chat_permission=True , playback_permission=True , choose_video_permission=True)
+			default_permit.save()
 
 	state0 = 0
 	state1 = 1
@@ -68,13 +71,13 @@ class Group(models.Model):
 
 
 class Membership(models.Model):
-    the_member = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE)
-    the_group = models.ForeignKey(Group,to_field='groupid', on_delete=models.CASCADE)
-    date_joined = models.DateTimeField(auto_now_add=True)
+	the_member = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE)
+	the_group = models.ForeignKey(Group,to_field='groupid', on_delete=models.CASCADE)
+	date_joined = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        ordering = ['date_joined']
-        unique_together = ("the_group", "the_member")
+	class Meta:
+		ordering = ['date_joined']
+		unique_together = ("the_group", "the_member")
 
 class AcceptedClient(models.Model):
 	entered_group = models.ForeignKey(Group, to_field="groupid" , on_delete=models.CASCADE)
@@ -85,3 +88,29 @@ class AcceptedClient(models.Model):
 		ordering = ['date_accepted']
 		unique_together = ("entered_group", "accepted_client")
 
+class Message(models.Model):
+	message_text = models.CharField(max_length=100, blank=True, default='',)
+	target_group = models.ForeignKey(Group, to_field="groupid" , on_delete=models.CASCADE)
+	message_sender = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE)
+	date_sent = models.DateTimeField(auto_now_add=True)
+	class Meta:
+		ordering = ['-date_sent']
+
+class OnlineUser(models.Model):
+	online_user = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE)
+	joined_group = models.ForeignKey(Group, to_field="groupid" , on_delete=models.CASCADE)
+	data_joined = models.DateTimeField(auto_now_add=True)
+	class Meta:
+		ordering = ['data_joined']
+		unique_together = ("joined_group", "online_user")
+
+class Permission(models.Model):
+	member = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE)
+	group = models.ForeignKey(Group, to_field="groupid" , on_delete=models.CASCADE)
+	chat_permission = models.BooleanField(default=True,)
+	choose_video_permission = models.BooleanField(default=False,)
+	playback_permission = models.BooleanField(default=False,)
+	date_set = models.DateTimeField(auto_now_add=True)
+	class Meta:
+		ordering = ['date_set']
+		unique_together = ("member", "group")

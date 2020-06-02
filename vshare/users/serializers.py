@@ -86,7 +86,6 @@ class UserLoginSerializer(serializers.ModelSerializer):
 		return data
 
 class AccountSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Account
         fields = '__all__'
@@ -154,3 +153,8 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
 			instance.save()
 			return instance
 		return instance
+
+class FriendshipSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Friendship
+        fields = '__all__'  

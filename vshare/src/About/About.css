@@ -1,6 +1,6 @@
 .about {
     width: 100%;
-    background-color: #001A33;
+    background-color: #000000;
 
     height: 100%;
     position: fixed;
@@ -35,6 +35,7 @@
 }
 
 .div_poria {
+
     position: absolute;
     height: 100px;
     width: 100px;
@@ -238,4 +239,7 @@
 .job_amin a:hover,
 .job_amin a:active {
     color: #fa923f;
+}
+.kolli_about{
+    border: red solid thin;
 }
