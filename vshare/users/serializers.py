@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 import logging
 import boto3
 from botocore.exceptions import ClientError
+from users.utils import *
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -91,77 +92,20 @@ class AccountSerializer(serializers.ModelSerializer):
         model = Account
         fields = '__all__'
 
-
-	# def create_bucket(self, bucket_name):
-	# 	try:
-	# 		s3_client = boto3.client('s3')
-	# 		s3_client.create_bucket(Bucket=bucket_name)
-	# 		return True
-	# 	except ClientError as e:
-	# 		logging.error(e)
-	# 		return False
-
 class UploadPhotoSerializer(serializers.ModelSerializer):
 
 	class Meta(object):
 		model = Account
 		fields = ['username','photo']
-			
-	def create_presigned_url(self, bucket_name, object_name, expiration=3600):
+		extra_kwargs = {
+				'photo':{'read_only':True},
+				'username': {'read_only' : True}
+		}
 
-		s3_client = boto3.client('s3')
-
-		try:
-			response = s3_client.generate_presigned_url(
-				object_name,
-				Params={'Bucket': bucket_name,'Key': object_name},
-				ExpiresIn=expiration
-			)
-		except ClientError as e:
-			logging.error(e)
-			return None
-
-		return response
-
-
-	def create_presigned_post(bucket_name, object_name,
-								fields=None, conditions=None, expiration=3600):
-
-		s3_client = boto3.client('s3')
-
-		try:
-			response = s3_client.generate_presigned_post(
-				bucket_name,
-				object_name,
-				Fields=fields,
-				Conditions=conditions,
-				ExpiresIn=expiration
-			)
-		except ClientError as e:
-			logging.error(e)
-			return None
-
-		return response
-
-	def update_photo(self):
-
-		if Account.objects.get(username=username).photo:
-			response = create_presigned_url('vshare-profile-images', usernam)
-			if response is not None:
-				http_response = requests.get(response)
-				print(http_response)
-			return http_response
-
-		else:
-			response = create_presigned_post('vshare-profile-images', usernam)
-			if response is None:
-				exit(1)
-
-			with open(user, 'rb') as f:
-				files = {'file': (user, f)}
-				http_response = requests.post(response['url'], data=response['fields'], files=files)
-
-			Account.objects.get(username=user).photo = True
-			print(http_response)
-			logging.info(f'File upload HTTP status code: {http_response.status_code}')
-			return http_response
+	# Cast the generated url of upload photo to dictionary
+	def to_representation(self, instance):
+		ret = super().to_representation(instance)
+		user = self.context["request"].user
+		upload_url = create_presigned_post('vhare-profile-images',user.username)
+		ret["upload_photo"] = upload_url
+		return ret
