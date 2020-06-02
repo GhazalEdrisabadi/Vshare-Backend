@@ -94,7 +94,10 @@ class UploadPhoto(mixins.DestroyModelMixin,
 	lookup_field = 'username'
 
 	def perform_create(self, instance):
-		print(instance)
+		user = instance.context['request'].user
+		if not user.photo:
+			user.photo = True
+		user.save()
 
 	def create(self, request, *args, **kwargs):
 		serializer = self.get_serializer(data=request.data)
@@ -106,7 +109,8 @@ class UploadPhoto(mixins.DestroyModelMixin,
 		return self.create(request, *args, **kwargs)
 
 	def perform_destroy(self, instance):
-		instance.delete()
+		if instance.photo:
+			instance.photo = False
 
 	def destroy(self, request, *args, **kwargs):
 		instance = self.get_object()

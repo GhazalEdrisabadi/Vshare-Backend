@@ -136,8 +136,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'vshare',
-        'USER' : 'postgres',
-        'PASSWORD' : '123qwe',
+        'USER' : 'admin',
+        'PASSWORD' : 'vshare5432',
         'HOST' : 'localhost',
         'PORT' : '5432',
     }
@@ -195,7 +195,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-# STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
+STATIC_URL = '/static/'
+
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, 'static'),
 #     os.environ.get('FRONT_STATIC' , None),
