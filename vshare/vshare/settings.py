@@ -140,8 +140,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'vshare',
-        'USER' : 'postgres',
-        'PASSWORD' : '123qwe',
+        'USER' : 'admin',
+        'PASSWORD' : 'vshare5432',
         'HOST' : 'localhost',
         'PORT' : '5432',
     }
@@ -207,3 +207,6 @@ MEDIA_URL =  '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR , 'users/media')
 
+endpoint_url = "http://localhost:9000"
+aws_access_key_id='minio'
+aws_secret_access_key='miniostorage'
