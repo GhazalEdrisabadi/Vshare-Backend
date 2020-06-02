@@ -13,6 +13,7 @@ from rest_framework.authtoken.models import Token
 
 from users.models import *
 from rest_framework import generics
+from rest_framework import mixins
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
@@ -40,6 +41,7 @@ from rest_framework.permissions import (
 		IsAdminUser,
 		IsAuthenticatedOrReadOnly,
 	)
+import requests
 
 
 class Registration(generics.ListCreateAPIView):
@@ -73,12 +75,43 @@ class UserByUsername(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'username'
     permission_classes = [AllowAny]
 
-
 class EditProfile(generics.RetrieveUpdateAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = Account.objects.all()
+  serializer_class = EditProfileSerializer
+  lookup_field = 'username'
+
+class UploadPhoto(mixins.DestroyModelMixin,
+					mixins.CreateModelMixin,
+					generics.GenericAPIView):
+
 	permission_classes = [IsAuthenticated]
 	queryset = Account.objects.all()
+	serializer_class = UploadPhotoSerializer
 	lookup_field = 'username'
-	serializer_class = EditProfileSerializer
+
+	def perform_create(self, instance):
+		print(instance)
+
+	def create(self, request, *args, **kwargs):
+		serializer = self.get_serializer(data=request.data)
+		serializer.is_valid(raise_exception=True)
+		self.perform_create(serializer)
+		return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+	def post(self, request, *args, **kwargs):
+		return self.create(request, *args, **kwargs)
+
+	def perform_destroy(self, instance):
+		instance.delete()
+
+	def destroy(self, request, *args, **kwargs):
+		instance = self.get_object()
+		self.perform_destroy(instance)
+		return Response(status=status.HTTP_204_NO_CONTENT)
+
+	def delete(self, request, *args, **kwargs):
+		return self.destroy(request, *args, **kwargs)
 
 class ChangePassword(generics.RetrieveUpdateAPIView):
 	queryset= Account.objects.all()

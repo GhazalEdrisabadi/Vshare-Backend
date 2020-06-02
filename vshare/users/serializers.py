@@ -5,10 +5,11 @@ from django.db.models import Q
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from rest_framework import authentication
-#from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
+import logging
+import boto3
+from botocore.exceptions import ClientError
 from users.utils import *
-from django.contrib.auth.hashers import make_password
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -90,8 +91,26 @@ class AccountSerializer(serializers.ModelSerializer):
         model = Account
         fields = '__all__'
 
-class EditProfileSerializer(serializers.ModelSerializer):
+class UploadPhotoSerializer(serializers.ModelSerializer):
 
+	class Meta(object):
+		model = Account
+		fields = ['username','photo']
+		extra_kwargs = {
+				'photo':{'read_only':True},
+				'username': {'read_only' : True}
+    }
+    
+  	# Cast the generated url of upload photo to dictionary
+	def to_representation(self, instance):
+		ret = super().to_representation(instance)
+		user = self.context["request"].user
+		upload_url = create_presigned_post('vhare-profile-images',user.username)
+		ret["upload_photo"] = upload_url
+		return ret
+    
+class EditProfileSerializer(serializers.ModelSerializer):
+    
 	photo_url = serializers.SerializerMethodField('get_photo_url')
 
 	class Meta:
