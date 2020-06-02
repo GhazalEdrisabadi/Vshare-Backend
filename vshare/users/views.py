@@ -75,13 +75,18 @@ class UserByUsername(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'username'
     permission_classes = [AllowAny]
 
+class EditProfile(generics.RetrieveUpdateAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = Account.objects.all()
+  serializer_class = EditProfileSerializer
+  lookup_field = 'username'
 
 class UploadPhoto(mixins.DestroyModelMixin,
 					mixins.CreateModelMixin,
 					generics.GenericAPIView):
 
+	permission_classes = [IsAuthenticated]
 	queryset = Account.objects.all()
-	permission_classes = [AllowAny]
 	serializer_class = UploadPhotoSerializer
 	lookup_field = 'username'
 
@@ -107,3 +112,9 @@ class UploadPhoto(mixins.DestroyModelMixin,
 
 	def delete(self, request, *args, **kwargs):
 		return self.destroy(request, *args, **kwargs)
+
+class ChangePassword(generics.RetrieveUpdateAPIView):
+	queryset= Account.objects.all()
+	serializer_class = ChangePasswordSerializer
+	lookup_field = 'username'
+	permission_classes = [IsAuthenticated]

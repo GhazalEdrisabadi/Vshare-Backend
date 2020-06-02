@@ -35,6 +35,7 @@ def create_presigned_post(bucket_name, object_name,
       endpoint_url = 'http://localhost:9000',
     )
 
+
     try:
         response = s3_client.generate_presigned_post(bucket_name,
                                                      object_name,
