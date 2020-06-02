@@ -244,7 +244,3 @@ USE_TZ = True
 # AWS_S3_OBJECT_PARAMETERS = {
 #     'CacheControl': 'max-age=86400',
 # }
-
-endpoint_url = "http://localhost:9000"
-aws_access_key_id='minio'
-aws_secret_access_key='miniostorage'
