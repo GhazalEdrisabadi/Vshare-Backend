@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import './profile.css'
 import $ from 'jquery';
 import Left from './left.png'
@@ -14,17 +14,18 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import EditIcon from '@material-ui/icons/Edit';
 import Avatar from '@material-ui/core/Avatar';
 import Dorbin from './camera.png'
-var username = window.localStorage.getItem('user');
+
+var username = window.location.href.split('/')[4];
 var respone_get
 var count
 
 class profile extends Component {
     componentDidMount() {
 
-        const { id } = this.props.match.params;
+        const {id} = this.props.match.params;
         $(document).ready(function () {
-
-console.log(window.location.href)
+             $(".username_prof").text(username);
+            console.log(username);
             if (username == window.localStorage.getItem('username')) {
                 document.getElementById("content").style.display = 'none'
                 document.getElementById("right-button").style.display = 'none'
@@ -114,57 +115,36 @@ console.log(window.location.href)
                 document.getElementById("uf-btn").style.display = 'none'
             }
 
-            var settings = {
-                "url": "http://127.0.0.1:8000/user/" + username + "",
-                "method": "GET",
-                "timeout": 0,
-                "headers": {
 
-                    "accept": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Headers": "*",
-                    "Content-Type": "application/json"
-                },
-
-            };
-
-
-            $.ajax(settings).done(function (response) {
-
-                respone_get = response;
-                $(".username_prof").text(respone_get.username);
-                $(".username").text(respone_get.username);
                 var settings = {
                     "url": "http://127.0.0.1:8000/user/" + username + "/edit/",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
-    
+
                         "accept": "application/json",
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Allow-Headers": "*",
                         "Content-Type": "application/json"
                     },
-    
+
                 };
-    
-    
+
+
                 $.ajax(settings).done(function (response1) {
-    console.log(response)
-                   $(".photo").html(response.username.toUpperCase()[0]);
-    
-    
+                    console.log(response1)
+                    $(".photo").html(username.toUpperCase()[0]);
+
+
                 });
-               
 
 
-            });
 
-$('#file-input').change(function(){
-    $('.status-upload').html(document.getElementById('file-input').files[0].name)
+            $('#file-input').change(function () {
+                $('.status-upload').html(document.getElementById('file-input').files[0].name)
 
 
-})
+            })
             $(".inp-search").keyup(function () {
                 $(".search-result").html("")
 
@@ -320,7 +300,7 @@ $('#file-input').change(function(){
                                     x.className = x.className.replace("show", "");
                                 }, 3000);
                                 setTimeout(function () {
-                                    window.location.replace('/profile/' + window.localStorage.getItem('user') + '')
+                                    window.location.replace('/profile/' + username + '')
                                 }, 3000)
 
                             },
@@ -333,12 +313,12 @@ $('#file-input').change(function(){
                                 "Content-Type": "application/json"
                             },
                             "data": JSON.stringify({
-                                "group": window.localStorage.getItem('id-join'),
-                                "member": window.localStorage.getItem('username'),
-                                "chat_permission": 1,
-                                "playback_permission": 0,
-                                "choose_video_permission": 0
-                            }
+                                    "group": window.localStorage.getItem('id-join'),
+                                    "member": window.localStorage.getItem('username'),
+                                    "chat_permission": 1,
+                                    "playback_permission": 0,
+                                    "choose_video_permission": 0
+                                }
                             ),
                         };
 
@@ -359,9 +339,9 @@ $('#file-input').change(function(){
                         "Content-Type": "application/json"
                     },
                     "data": JSON.stringify({
-                        "the_group": window.localStorage.getItem('id-join'),
-                        "the_member": "",
-                    }
+                            "the_group": window.localStorage.getItem('id-join'),
+                            "the_member": "",
+                        }
                     ),
                 };
 
@@ -385,61 +365,58 @@ $('#file-input').change(function(){
                 $(".status-upload").html('')
 
             })
-$('.submitedit').click(function(){
- var photo_upload=$('#file-input').val()
- var email_edit=$('#editemail').val()
- var password_edit=$('#editpassword').val()
-if(photo_upload!=''){
-        var settings = {
-            "url": "http://127.0.0.1:8000/user/"+window.localStorage.getItem('user')+"/edit/upload_photo",
-            "method": "POST",
-            "timeout": 0,
-            "headers": {
-              
-                "accept": "application/json",
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Headers": "*",
-                "Content-Type": "application/json"
-            },
-       
+            $('.submitedit').click(function () {
+                var photo_upload = $('#file-input').val()
+                var email_edit = $('#editemail').val()
+                var password_edit = $('#editpassword').val()
+                if (photo_upload != '') {
+                    var settings = {
+                        "url": "http://127.0.0.1:8000/user/" + username + "/edit/upload_photo",
+                        "method": "POST",
+                        "timeout": 0,
+                        "headers": {
 
-        };
-
-        $.ajax(settings).done(function (response) {
-
-       console.log(response)
-
-    var file_upload = document.getElementById('file-input').files[0];
-    var fd = new FormData();
-
-    
-
-    fd.append('key', response.fields.key);
-  //  fd.append('acl', 'public-read'); 
-    //fd.append('Content-Type', file.type);      
-    fd.append('AWSAccessKeyId', response.fields.AWSAccessKeyId);
-    fd.append('policy', response.fields.policy)
-    fd.append('signature',response.fields.signature);
-
-    fd.append("file",file_upload);
-
-    var xhr = new XMLHttpRequest();
-
-    // xhr.upload.addEventListener("progress", uploadProgress, false);
-    // xhr.addEventListener("load", uploadComplete, false);
-    // xhr.addEventListener("error", uploadFailed, false);
-    // xhr.addEventListener("abort", uploadCanceled, false);
-
-    xhr.open('POST', response.url, true); //MUST BE LAST LINE BEFORE YOU SEND 
-
-    xhr.send(fd);
-        })
-    }
+                            "accept": "application/json",
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Headers": "*",
+                            "Content-Type": "application/json"
+                        },
 
 
+                    };
 
-   
-})
+                    $.ajax(settings).done(function (response) {
+
+                        console.log(response)
+
+                        var file_upload = document.getElementById('file-input').files[0];
+                        var fd = new FormData();
+
+
+                        fd.append('key', response.fields.key);
+                        //  fd.append('acl', 'public-read');
+                        //fd.append('Content-Type', file.type);
+                        fd.append('AWSAccessKeyId', response.fields.AWSAccessKeyId);
+                        fd.append('policy', response.fields.policy)
+                        fd.append('signature', response.fields.signature);
+
+                        fd.append("file", file_upload);
+
+                        var xhr = new XMLHttpRequest();
+
+                        // xhr.upload.addEventListener("progress", uploadProgress, false);
+                        // xhr.addEventListener("load", uploadComplete, false);
+                        // xhr.addEventListener("error", uploadFailed, false);
+                        // xhr.addEventListener("abort", uploadCanceled, false);
+
+                        xhr.open('POST', response.url, true); //MUST BE LAST LINE BEFORE YOU SEND
+
+                        xhr.send(fd);
+                    })
+                }
+
+
+            })
             $(".unfollow-btn").click(function () {
                 var settings = {
                     "url": "http://127.0.0.1:8000/user/followers/unfollow/" + username + "/",
@@ -479,9 +456,9 @@ if(photo_upload!=''){
                         "Content-Type": "application/json"
                     },
                     "data": JSON.stringify({
-                        "who_is_followed": window.localStorage.getItem('user'),
-                        "who_follows": "",
-                    }
+                            "who_is_followed": username,
+                            "who_follows": "",
+                        }
                     ),
 
                 };
@@ -538,7 +515,7 @@ if(photo_upload!=''){
 
                     for (var counter1 = 0; counter1 < response.result.length; counter1++, htmlcode = '') {
 
-                        var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_is_followed + ")";
+                        var a2 = "window.localStorage.setItem('user','" + response.result[counter1].who_is_followed + "')";
                         var r = "window.location.replace('/profile/" + response.result[counter1].who_is_followed + "')";
                         htmlcode += '<div>'
 
@@ -594,7 +571,7 @@ if(photo_upload!=''){
 
                     for (var counter1 = 0; counter1 < response.result.length; counter1++, htmlcode = '') {
 
-                        var a2 = "window.localStorage.setItem('user'," + response.result[counter1].who_follows + ")";
+                        var a2 = "window.localStorage.setItem('user','" + response.result[counter1].who_follows + "')";
                         var r = "window.location.replace('/profile/" + response.result[counter1].who_follows + "')";
                         htmlcode += '<div>'
 
@@ -634,7 +611,7 @@ if(photo_upload!=''){
             var groups = [];
 
             var settings = {
-                "url": "http://127.0.0.1:8000/group/user_groups/?user_id=" + window.localStorage.getItem('user') + "",
+                "url": "http://127.0.0.1:8000/group/user_groups/?user_id=" + username + "",
                 "method": "GET",
                 "timeout": 0,
                 "headers": {},
@@ -665,7 +642,6 @@ if(photo_upload!=''){
                 }
 
             });
-
 
 
             document.getElementById('right-button').onclick = function () {
@@ -716,8 +692,8 @@ if(photo_upload!=''){
                                 color: 'white'
 
                             }}
-                                className="profilepic">
-                                <AccountCircleOutlinedIcon fontSize="large" />
+                                        className="profilepic">
+                                <AccountCircleOutlinedIcon fontSize="large"/>
                             </IconButton>
 
                         </div>
@@ -725,7 +701,7 @@ if(photo_upload!=''){
                         <div className='searchgp'>
 
 
-                            <input placeholder='search' className='inp-search' />
+                            <input placeholder='search' className='inp-search'/>
 
 
                             <div id='joinstatus' className='statusofjoin'>
@@ -740,8 +716,8 @@ if(photo_upload!=''){
                         <IconButton style={{
                             color: 'white'
                         }}
-                            className="div_leave">
-                            <HomeIcon fontSize="large" />
+                                    className="div_leave">
+                            <HomeIcon fontSize="large"/>
                         </IconButton>
                     </div>
                 </header>
@@ -754,10 +730,10 @@ if(photo_upload!=''){
                     <div className="username_prof">USERNAME</div>
 
 
-                    <IconButton style={{ color: 'white', fontSize: "70px" }}
-                        className="edite_profile" id="edite-btn">
+                    <IconButton style={{color: 'white', fontSize: "70px"}}
+                                className="edite_profile" id="edite-btn">
 
-                        <EditIcon fontSize="medium" />
+                        <EditIcon fontSize="medium"/>
                         Edit profile
                     </IconButton>
                     <div className="follow-btn" id='f-btn'> Follow</div>
@@ -768,12 +744,13 @@ if(photo_upload!=''){
                             <hr></hr>
                             <div class="image-upload">
                                 <label for="file-input">
-                                    <img src="http://127.0.0.1:9000/minio/download/test/download.png?token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiJtaW5pbyIsImV4cCI6MTU5MTA2MjMwMCwic3ViIjoibWluaW8ifQ.4GxEaTiHCu8bJQdIHRNv4eJGv0mqCdgRIBQU_8iBKL-QBju2HtlJOdBan335lAifhW6xWi9rze-pkbEKC3jhqA"/>
+                                    <img
+                                        src="http://127.0.0.1:9000/minio/download/test/download.png?token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiJtaW5pbyIsImV4cCI6MTU5MTA2MjMwMCwic3ViIjoibWluaW8ifQ.4GxEaTiHCu8bJQdIHRNv4eJGv0mqCdgRIBQU_8iBKL-QBju2HtlJOdBan335lAifhW6xWi9rze-pkbEKC3jhqA"/>
                                 </label>
 
-                                <input  id="file-input" type="file" accept=" image/jpeg, image/png" />
+                                <input id="file-input" type="file" accept=" image/jpeg, image/png"/>
                             </div>
-<p className='status-upload'/>
+                            <p className='status-upload'/>
                             <input class="inputedit" id='editemail' placeholder="PassWord"></input>
                             <input class="inputedit" id='editpassword' placeholder="Email"></input>
                             <br></br>
@@ -795,8 +772,8 @@ if(photo_upload!=''){
 
                             <div className='join-btns'>
 
-                                <Button style={{ backgroundColor: "Red" }} size='large'
-                                    className="join-no" variant="contained" color="secondary">
+                                <Button style={{backgroundColor: "Red"}} size='large'
+                                        className="join-no" variant="contained" color="secondary">
                                     <p>No&nbsp;</p>
                                 </Button>
 
@@ -834,9 +811,9 @@ if(photo_upload!=''){
                     <div className="following">following</div>
 
 
-                    <IconButton style={{ color: 'white' }}
-                        className="left-button" id="left-button">
-                        <ArrowBackIosIcon fontSize="large" />
+                    <IconButton style={{color: 'white'}}
+                                className="left-button" id="left-button">
+                        <ArrowBackIosIcon fontSize="large"/>
                     </IconButton>
 
 
@@ -845,9 +822,9 @@ if(photo_upload!=''){
                     </div>
 
 
-                    <IconButton style={{ color: 'white' }}
-                        className="right-button" id="right-button">
-                        <ArrowForwardIosIcon fontSize="large" />
+                    <IconButton style={{color: 'white'}}
+                                className="right-button" id="right-button">
+                        <ArrowForwardIosIcon fontSize="large"/>
                     </IconButton>
 
 

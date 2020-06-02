@@ -573,10 +573,10 @@ class chat_room extends Component {
             if (window.localStorage.getItem('token') == null) {
 
 
-                alert("Login first !");
+                alert("Login please !");
 
 
-                window.location.replace("/login/");
+                window.location.replace("/startpage/");
 
 
             }
