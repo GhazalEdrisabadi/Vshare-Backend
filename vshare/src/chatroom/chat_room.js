@@ -60,8 +60,8 @@ var uploaded = 0;
 var muted = 0;
 
 var id_gp = window.localStorage.getItem('id_gp')
-const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
-const url1 = "ws://127.0.0.1:8000/chat/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
+const url = "ws://185.206.92.246:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
+const url1 = "ws://185.206.92.246:8000/chat/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
 var ws1 = new WebSocket(url1)
 var encrypted
 
@@ -243,7 +243,7 @@ class chat_room extends Component {
                 setTimeout(function () {
                     $('.onlinemembers').html('');
                     var settings = {
-                        "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                        "url": "http://185.206.92.246:8000/group/online_users/?group=" + id,
                         "method": "GET",
                         "timeout": 0,
                         "headers": {
@@ -525,7 +525,7 @@ class chat_room extends Component {
       
             var settings = {
 
-                "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('username') + "",
+                "url": "http://185.206.92.246:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('username') + "",
 
                 "method": "GET",
 
@@ -624,7 +624,7 @@ class chat_room extends Component {
                 }
   
                 var settings = {
-                    "url": "http://127.0.0.1:8000/groups/" + id_gp + "/",
+                    "url": "http://185.206.92.246:8000/groups/" + id_gp + "/",
                     "method": "PUT",
                     "timeout": 0,
                     "headers": {
@@ -644,7 +644,7 @@ class chat_room extends Component {
 
                             var settings = {
 
-                                "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + new_admin + "",
+                                "url": "http://185.206.92.246:8000/group/" + id_gp + "/permissions/?member=" + new_admin + "",
                                 "method": "PUT",
                                 "timeout": 0,
                                 success: function () {
@@ -800,7 +800,7 @@ class chat_room extends Component {
 
 
             var settings = {
-                "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                "url": "http://185.206.92.246:8000/group/online_users/?group=" + id,
                 "method": "GET",
                 "timeout": 0,
                 "headers": {
@@ -841,7 +841,7 @@ class chat_room extends Component {
 
          
             var settings = {
-                "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                "url": "http://185.206.92.246:8000/group/online_users/?group=" + id,
                 "method": "GET",
                 "timeout": 0,
                 "headers": {
@@ -863,7 +863,7 @@ class chat_room extends Component {
             });
             var settings = {
 
-                "url": "http://127.0.0.1:8000/groups/" + id + '/',
+                "url": "http://185.206.92.246:8000/groups/" + id + '/',
 
                 "method": "GET",
 
@@ -905,7 +905,7 @@ class chat_room extends Component {
                 document.getElementById('myModal').style.display = 'block';
                 var settings = {
 
-                    "url": "http://127.0.0.1:8000/groups/" + id + '/',
+                    "url": "http://185.206.92.246:8000/groups/" + id + '/',
 
                     "method": "GET",
 
@@ -970,7 +970,7 @@ class chat_room extends Component {
 
                         var settings = {
 
-                            "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + response.members[counter1] + "",
+                            "url": "http://185.206.92.246:8000/group/" + id_gp + "/permissions/?member=" + response.members[counter1] + "",
 
                             "method": "GET",
 
@@ -1101,7 +1101,7 @@ class chat_room extends Component {
                 var username_edite = $('#exams').val();
 
                 var settings = {
-                    "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + username_edite + "",
+                    "url": "http://185.206.92.246:8000/group/" + id_gp + "/permissions/?member=" + username_edite + "",
                     "method": "PUT",
                     "timeout": 0,
                     error: function (event) {
@@ -1151,7 +1151,7 @@ class chat_room extends Component {
                         }, 3000);
                         var settings = {
 
-                            "url": "http://127.0.0.1:8000/groups/" + id + '/',
+                            "url": "http://185.206.92.246:8000/groups/" + id + '/',
 
                             "method": "GET",
 
@@ -1233,7 +1233,7 @@ class chat_room extends Component {
 
 
                 var settings = {
-                    "url": "http://127.0.0.1:8000/user/" + member_add + "",
+                    "url": "http://185.206.92.246:8000/user/" + member_add + "",
                     "method": "GET",
                     "timeout": 0,
                     error: function (event) {
@@ -1248,7 +1248,7 @@ class chat_room extends Component {
                     },
                     success: function () {
                         var settings = {
-                            "url": "http://127.0.0.1:8000/group/add_member/",
+                            "url": "http://185.206.92.246:8000/group/add_member/",
                             "method": "POST",
                             error: function () {
 
@@ -1264,7 +1264,7 @@ class chat_room extends Component {
                             success: function () {
 
                                 var settings = {
-                                    "url": "http://127.0.0.1:8000/group/permissions/",
+                                    "url": "http://185.206.92.246:8000/group/permissions/",
                                     "method": "POST",
                                     error: function () {
 
@@ -1280,7 +1280,7 @@ class chat_room extends Component {
                                         }, 3000);
                                         var settings = {
 
-                                            "url": "http://127.0.0.1:8000/groups/" + id + '/',
+                                            "url": "http://185.206.92.246:8000/groups/" + id + '/',
 
                                             "method": "GET",
 
@@ -1394,7 +1394,7 @@ class chat_room extends Component {
 
             var settings = {
 
-                "url": "  http://127.0.0.1:8000/group/messages/?target=" + id,
+                "url": "  http://185.206.92.246:8000/group/messages/?target=" + id,
                 "method": "GET",
                 "timeout": 0,
                 "headers": {
@@ -1440,7 +1440,7 @@ class chat_room extends Component {
                 if (isadmin == 1) {
                     var settings = {
 
-                        "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
+                        "url": "http://185.206.92.246:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
 
                         "method": "GET",
 
@@ -1485,7 +1485,7 @@ class chat_room extends Component {
                 var controllpermission;
                 var settings = {
 
-                    "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
+                    "url": "http://185.206.92.246:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
 
                     "method": "GET",
 
@@ -1515,7 +1515,7 @@ class chat_room extends Component {
 
                 if (muted == 0) {
                     var settings = {
-                        "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
+                        "url": "http://185.206.92.246:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
                         "method": "PUT",
                         "timeout": 0,
                         success: function () {
@@ -1549,7 +1549,7 @@ class chat_room extends Component {
 
                 } else {
                     var settings = {
-                        "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
+                        "url": "http://185.206.92.246:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
                         "method": "PUT",
                         "timeout": 0,
                         success: function () {

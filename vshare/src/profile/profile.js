@@ -32,7 +32,7 @@ class profile extends Component {
                 document.getElementById("left-button").style.display = 'none'
             }
             var settings = {
-                "url": "http://127.0.0.1:8000/user/relations/followers/?user=" + username + "",
+                "url": "http://185.206.92.246:8000/user/relations/followers/?user=" + username + "",
                 "method": "GET",
                 "timeout": 0,
                 "headers": {
@@ -53,7 +53,7 @@ class profile extends Component {
 
             });
             var settings = {
-                "url": "http://127.0.0.1:8000/user/relations/followings/?user=" + username + "",
+                "url": "http://185.206.92.246:8000/user/relations/followings/?user=" + username + "",
                 "method": "GET",
                 "timeout": 0,
                 "headers": {
@@ -81,7 +81,7 @@ class profile extends Component {
                 document.getElementById("uf-btn").style.display = 'none'
             } else {
                 var settings = {
-                    "url": "http://127.0.0.1:8000/user/followings/find/" + username + "/",
+                    "url": "http://185.206.92.246:8000/user/followings/find/" + username + "/",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -117,7 +117,7 @@ class profile extends Component {
 
 
                 var settings = {
-                    "url": "http://127.0.0.1:8000/user/" + username + "/edit/",
+                    "url": "http://185.206.92.246:8000/user/" + username + "/edit/",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -151,7 +151,7 @@ class profile extends Component {
                 var user_search = $('.inp-search').val()
 
                 var settings = {
-                    "url": "http://127.0.0.1:8000/user/find/username/?search=" + user_search + "",
+                    "url": "http://185.206.92.246:8000/user/find/username/?search=" + user_search + "",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -200,7 +200,7 @@ class profile extends Component {
                 });
 
                 var settings = {
-                    "url": "http://127.0.0.1:8000/groups/?search=" + user_search + "",
+                    "url": "http://185.206.92.246:8000/groups/?search=" + user_search + "",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -267,7 +267,7 @@ class profile extends Component {
             })
             $(".join-yes ").click(function () {
                 var settings = {
-                    "url": "http://127.0.0.1:8000/group/join/",
+                    "url": "http://185.206.92.246:8000/group/join/",
                     "method": "POST",
                     "timeout": 0,
                     error: function (event) {
@@ -284,7 +284,7 @@ class profile extends Component {
                     },
                     success: function () {
                         var settings = {
-                            "url": "http://127.0.0.1:8000/group/permissions/",
+                            "url": "http://185.206.92.246:8000/group/permissions/",
                             "method": "POST",
                             error: function () {
 
@@ -371,7 +371,7 @@ class profile extends Component {
                 var password_edit = $('#editpassword').val()
                 if (photo_upload != '') {
                     var settings = {
-                        "url": "http://127.0.0.1:8000/user/" + username + "/edit/upload_photo",
+                        "url": "http://185.206.92.246:8000/user/" + username + "/edit/upload_photo",
                         "method": "POST",
                         "timeout": 0,
                         "headers": {
@@ -419,7 +419,7 @@ class profile extends Component {
             })
             $(".unfollow-btn").click(function () {
                 var settings = {
-                    "url": "http://127.0.0.1:8000/user/followers/unfollow/" + username + "/",
+                    "url": "http://185.206.92.246:8000/user/followers/unfollow/" + username + "/",
                     "method": "DELETE",
                     "timeout": 0,
                     "headers": {
@@ -445,7 +445,7 @@ class profile extends Component {
             })
             $(".follow-btn").click(function () {
                 var settings = {
-                    "url": "http://127.0.0.1:8000/user/relations/follow/",
+                    "url": "http://185.206.92.246:8000/user/relations/follow/",
                     "method": "POST",
                     "timeout": 0,
                     "headers": {
@@ -491,7 +491,7 @@ class profile extends Component {
 
                 $(".modal-content-following").append(html)
                 var settings = {
-                    "url": "http://127.0.0.1:8000/user/relations/followings/?user=" + username + "",
+                    "url": "http://185.206.92.246:8000/user/relations/followings/?user=" + username + "",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -547,7 +547,7 @@ class profile extends Component {
 
                 $(".modal-content-follower").append(html)
                 var settings = {
-                    "url": "http://127.0.0.1:8000/user/relations/followers/?user=" + username + "",
+                    "url": "http://185.206.92.246:8000/user/relations/followers/?user=" + username + "",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -611,7 +611,7 @@ class profile extends Component {
             var groups = [];
 
             var settings = {
-                "url": "http://127.0.0.1:8000/group/user_groups/?user_id=" + username + "",
+                "url": "http://185.206.92.246:8000/group/user_groups/?user_id=" + username + "",
                 "method": "GET",
                 "timeout": 0,
                 "headers": {},
@@ -745,7 +745,7 @@ class profile extends Component {
                             <div class="image-upload">
                                 <label for="file-input">
                                     <img
-                                        src="http://127.0.0.1:9000/minio/download/test/download.png?token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiJtaW5pbyIsImV4cCI6MTU5MTA2MjMwMCwic3ViIjoibWluaW8ifQ.4GxEaTiHCu8bJQdIHRNv4eJGv0mqCdgRIBQU_8iBKL-QBju2HtlJOdBan335lAifhW6xWi9rze-pkbEKC3jhqA"/>
+                                        src="http://185.206.92.246:9000/minio/download/test/download.png?token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiJtaW5pbyIsImV4cCI6MTU5MTA2MjMwMCwic3ViIjoibWluaW8ifQ.4GxEaTiHCu8bJQdIHRNv4eJGv0mqCdgRIBQU_8iBKL-QBju2HtlJOdBan335lAifhW6xWi9rze-pkbEKC3jhqA"/>
                                 </label>
 
                                 <input id="file-input" type="file" accept=" image/jpeg, image/png"/>

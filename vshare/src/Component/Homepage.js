@@ -58,7 +58,7 @@ class Homepage extends Component {
 
                     var settings = {
 
-                        "url": "http://localhost:8000/groups/",
+                        "url": "http://185.206.92.246:8000/groups/",
 
                         "method": "POST",
 
@@ -152,7 +152,7 @@ class Homepage extends Component {
 
                     var settings = {
 
-                        "url": "http://127.0.0.1:8000/user/" + member + "",
+                        "url": "http://185.206.92.246:8000/user/" + member + "",
 
                         "method": "GET",
 
@@ -171,7 +171,7 @@ class Homepage extends Component {
                         success: function () {
                             var settings = {
 
-                                "url": "http://127.0.0.1:8000/group/add_member/",
+                                "url": "http://185.206.92.246:8000/group/add_member/",
 
                                 "method": "POST",
 
@@ -192,7 +192,7 @@ class Homepage extends Component {
 
 
                                     var settings = {
-                                        "url": "http://127.0.0.1:8000/group/permissions/",
+                                        "url": "http://185.206.92.246:8000/group/permissions/",
                                         "method": "POST",
                                         error: function () {
 
@@ -319,7 +319,7 @@ class Homepage extends Component {
                     var user_search = $('.inp-search').val()
 
                     var settings = {
-                        "url": "http://127.0.0.1:8000/user/find/username/?search=" + user_search + "",
+                        "url": "http://185.206.92.246:8000/user/find/username/?search=" + user_search + "",
                         "method": "GET",
                         "timeout": 0,
                         "headers": {
@@ -370,7 +370,7 @@ class Homepage extends Component {
 
 
                     var settings = {
-                        "url": "http://127.0.0.1:8000/groups/?search=" + user_search + "",
+                        "url": "http://185.206.92.246:8000/groups/?search=" + user_search + "",
                         "method": "GET",
                         "timeout": 0,
                         "headers": {
@@ -442,7 +442,7 @@ class Homepage extends Component {
                 })
                 $(".join-yes ").click(function () {
                     var settings = {
-                        "url": "http://127.0.0.1:8000/group/join/",
+                        "url": "http://185.206.92.246:8000/group/join/",
                         "method": "POST",
                         "timeout": 0,
                         error: function (event) {
@@ -459,7 +459,7 @@ class Homepage extends Component {
                         },
                         success: function () {
                             var settings = {
-                                "url": "http://127.0.0.1:8000/group/permissions/",
+                                "url": "http://185.206.92.246:8000/group/permissions/",
                                 "method": "POST",
                                 error: function () {
 
@@ -540,7 +540,7 @@ class Homepage extends Component {
 
                     var settings = {
 
-                        "url": "http://127.0.0.1:8000/group/join/",
+                        "url": "http://185.206.92.246:8000/group/join/",
 
                         "method": "POST",
 
@@ -571,7 +571,7 @@ class Homepage extends Component {
                         success: function () {
 
                             var settings = {
-                                "url": "http://127.0.0.1:8000/group/permissions/",
+                                "url": "http://185.206.92.246:8000/group/permissions/",
                                 "method": "POST",
                                 error: function () {
 
@@ -673,7 +673,7 @@ class Homepage extends Component {
 
                 var settings = {
 
-                    "url": "http://127.0.0.1:8000/group/owned_groups/",
+                    "url": "http://185.206.92.246:8000/group/owned_groups/",
 
                     "method": "GET",
 
@@ -740,7 +740,7 @@ class Homepage extends Component {
                     var gpid = window.localStorage.getItem("id_gp");
                     var settings = {
 
-                        "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
+                        "url": "http://185.206.92.246:8000/groups/" + gpid + "/",
 
                         "method": "GET",
 
@@ -786,7 +786,7 @@ class Homepage extends Component {
 
                         var settings = {
 
-                            "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
+                            "url": "http://185.206.92.246:8000/groups/" + gpid + "/",
 
                             "method": "DELETE",
 
@@ -829,7 +829,7 @@ class Homepage extends Component {
 
                         var settings = {
 
-                            "url": "http://127.0.0.1:8000/group/" + gpid + "/leave/",
+                            "url": "http://185.206.92.246:8000/group/" + gpid + "/leave/",
 
                             "method": "DELETE",
 
@@ -845,7 +845,7 @@ class Homepage extends Component {
 
                                 var settings = {
 
-                                    "url": "http://127.0.0.1:8000/group/" + gpid + "/permissions/?member=" + window.localStorage.getItem('username') + "",
+                                    "url": "http://185.206.92.246:8000/group/" + gpid + "/permissions/?member=" + window.localStorage.getItem('username') + "",
 
                                     "method": "DELETE",
 
@@ -922,7 +922,7 @@ class Homepage extends Component {
 
                     var settings = {
 
-                        "url": "http://127.0.0.1:8000/groups/" + gpid,
+                        "url": "http://185.206.92.246:8000/groups/" + gpid,
 
                         "method": "GET",
 
@@ -967,7 +967,7 @@ class Homepage extends Component {
 
                     var settings = {
 
-                        "url": "http://127.0.0.1:8000/groups/" + gpid + "/",
+                        "url": "http://185.206.92.246:8000/groups/" + gpid + "/",
 
                         "method": "PUT",
 
@@ -1037,7 +1037,7 @@ class Homepage extends Component {
 
                 var settings = {
 
-                    "url": "http://127.0.0.1:8000/group/joined_groups/",
+                    "url": "http://185.206.92.246:8000/group/joined_groups/",
 
                     "method": "GET",
 
@@ -1059,7 +1059,7 @@ class Homepage extends Component {
 
                         var settings2 = {
 
-                            "url": "http://127.0.0.1:8000/groups/" + gpid2 + "/",
+                            "url": "http://185.206.92.246:8000/groups/" + gpid2 + "/",
 
                             "method": "GET",
 
