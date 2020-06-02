@@ -74,8 +74,14 @@ class UserByUsername(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [AllowAny]
 
 
-class EditProfile(generics.RetrieveUpdateDestroyAPIView):
-	permission_classes = [AllowAny]
+class EditProfile(generics.RetrieveUpdateAPIView):
+	permission_classes = [IsAuthenticated]
 	queryset = Account.objects.all()
 	lookup_field = 'username'
 	serializer_class = EditProfileSerializer
+
+class ChangePassword(generics.RetrieveUpdateAPIView):
+	queryset= Account.objects.all()
+	serializer_class = ChangePasswordSerializer
+	lookup_field = 'username'
+	permission_classes = [IsAuthenticated]
