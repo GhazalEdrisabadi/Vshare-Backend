@@ -60,8 +60,8 @@ var uploaded = 0;
 var muted = 0;
 
 var id_gp = window.localStorage.getItem('id_gp')
-const url = "ws://127.0.0.1:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
-const url1 = "ws://127.0.0.1:8000/chat/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
+const url = "ws://185.206.92.246:8000/stream/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
+const url1 = "ws://185.206.92.246:8000/chat/groups/" + id_gp + "/?token=" + localStorage.getItem('token') + ""
 var ws1 = new WebSocket(url1)
 var encrypted
 
@@ -111,7 +111,7 @@ class chat_room extends Component {
     componentDidMount() {
 
         var sizeeeeee = $(".formback_movie").width();
-        console.log(sizeeeeee)
+    
         $(window).resize(function () {
             chatsize = $(".back_coulom").width();
             if (document.getElementById("mySidenav").style.width == "0px") {
@@ -124,10 +124,6 @@ class chat_room extends Component {
                 $(".video-react-video").css("margin-left", '210px');
             }
         });
-
-//         $('#formback_movie_id').resize(function () {
-//    console.log("avaz shodm avaz shodm ")
-//         });
         $('.openonlinemember').click(function () {
             var sizeeeeee = $(".formback_movie").width();
             if ($(".sidenav").width() < 20) {
@@ -141,7 +137,7 @@ class chat_room extends Component {
                     $(".video-react-video").css("margin-right", '0px');
                 }
                 $(".openonlinemember").css("transform", "scaleX(1)");
-                // sizeeeeee -= 300;
+            
                 $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
                 $(".video-react-video").css("margin-left", '200px');
 
@@ -149,7 +145,7 @@ class chat_room extends Component {
             } else {
                 document.getElementById("mySidenav").style.width = "0px";
                 $(".openonlinemember").css("transform", "scaleX(-1)");
-                //  sizeeeeee += 300;
+              
                 $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
                 $(".video-react-video").css("margin-left", '200px');
             }
@@ -158,7 +154,7 @@ class chat_room extends Component {
 
         $('.openchat').click(function () {
 
-            console.log("size " + sizeeeeee)
+    
             if ($(".back_coulom").width() > 0)
                 chatsize = $(".back_coulom").width();
 
@@ -175,8 +171,6 @@ class chat_room extends Component {
 
                 $(".openchat").css("transform", "scaleX(-1)");
 
-                // console.log(chatsize)
-                //.sizeeeeee -= chatsize;
                 $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
                 $(".video-react-video").css("margin-right", '300px');
 
@@ -186,44 +180,35 @@ class chat_room extends Component {
 
                 $(".openchat").css("transform", "scaleX(1)");
 
-                // console.log(chatsize)
-                // sizeeeeee += chatsize;
+              
                 $(".video-react-video").css("width", sizeeeeee.toString() + 'px');
                 $(".video-react-video").css("margin-right", '300px');
 
             }
             sizeeeeee = $(".formback_movie").width();
-            //  console.log(sizeeeeee)
+           
 
         });
 
-        console.log(url)
-        console.log(url1)
-        console.log("is admin : " + isadmin);
+   
         document.addEventListener("keyup", this.handlereq_forward_backward, false);
 
-        console.log(localStorage.getItem('token'))
-
-        //  id_gp = "test";
-
-        //This will open the connection*
-
+     
 
         ws.onopen = function () {
 
-            console.log("Ping");
+            
 
         };
         ws1.onopen = function () {
-            console.log("ws1.open")
+         
 
         }
 
 
         ws1.onmessage = evt => {
             messagee1 = JSON.parse(evt.data);
-            console.log(messagee1);
-            console.log(messagee1.message);
+            
 
 
             if (messagee1.command == "chat_client") {
@@ -231,7 +216,7 @@ class chat_room extends Component {
                 var aval = 'style=';
                 var dovom = aval + '"color:';
                 var sevom = dovom + usercolors[messagee1.user];
-                //   var sevom = dovom + "red";
+                
                 var charom = sevom + '"';
                 var d = 'document.getElementById("mymutemodal")';
 
@@ -253,17 +238,16 @@ class chat_room extends Component {
 
             }
             if (messagee1.message == 'isoffline' || messagee1.message == 'isonline') {
-                console.log("onlineeeeeee")
+              
 
                 setTimeout(function () {
                     $('.onlinemembers').html('');
                     var settings = {
-                        "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                        "url": "http://185.206.92.246:8000/group/online_users/?group=" + id,
                         "method": "GET",
                         "timeout": 0,
                         "headers": {
-                            //'X-CSRFToken': csrftoken,
-                            //  "Authorization": "token " + token,
+               
                             "accept": "application/json",
                             "Access-Control-Allow-Origin": "*",
                             "Access-Control-Allow-Headers": "*",
@@ -272,10 +256,9 @@ class chat_room extends Component {
                     };
 
                     $.ajax(settings).done(function (response) {
-                        console.log('aaaa12');
-                        console.log(response);
+                      
                         for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++) {
-                            //  setTimeout(function () {
+ 
                             var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
 
@@ -292,11 +275,11 @@ class chat_room extends Component {
                             var aval = 'style=';
                             var dovom = aval + '"color:';
                             var sevom = dovom + usercolors[response[onlinememberscounter].online_user];
-                            //   var sevom = dovom + "red";
+                           
                             var charom = sevom + '"';
                             $('.onlinemembers').append('<p id="members"' + charom + '>' + response[onlinememberscounter].online_user + '</p>');
                         }
-                        //  },500);
+                       
                     });
 
                 }, 250);
@@ -319,15 +302,10 @@ class chat_room extends Component {
         ws.onmessage = evt => {
 
 
-            console.log("messsssssage");
 
             const messagee = JSON.parse(evt.data);
 
             this.setState({server_pm: messagee});
-
-            console.log(messagee);
-
-            console.log(messagee.message);
 
             if (logoutclicked == 0 && ("group was reset!" == messagee.message || "Nothing to reset in this state!" == messagee.message)) {
                 window.location.reload();
@@ -347,12 +325,9 @@ class chat_room extends Component {
                 filmplayed = 1;
                 document.getElementById('movietxt').style.display = 'none';
                 if (iscontroller == 1) {
-                    console.log("ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
                     document.getElementById("controllbuttons2").style.zIndex = "-1";
                     document.getElementById('controllbuttons').style.pointerEvents = 'auto';
                 } else if (isadmin == 0) {
-                    console.log("ppppppppppppppppppppppppppppppppppppppppppp");
-                    // document.getElementById('controllbuttons').style.display = 'none';
                     document.getElementById("controllbuttons2").style.zIndex = "1";
                     document.getElementById('controllbuttons').style.pointerEvents = 'none';
                     document.getElementById('videopicks').style.pointerEvents = 'none';
@@ -361,8 +336,7 @@ class chat_room extends Component {
                 }
 
 
-                // document.getElementById('controll_div').style.display = 'block'
-
+               
 
             }
 
@@ -370,7 +344,7 @@ class chat_room extends Component {
 
                 this.changeCurrentTime(messagee.time);
                 const {player} = this.player.getState();
-                console.log("curent " + player.currentTime)
+            
                 if (player.currentTime > 1)
                     this.play();
                 $('#moviebtnd').fadeOut();
@@ -379,24 +353,21 @@ class chat_room extends Component {
 
                 adminhash = messagee.hash;
                 $('#movietxt').fadeOut('slow');
-                //  $('#reselect').fadeOut('fast');
+           
                 document.getElementById('reselect').style.pointerEvents = 'none';
                 $('#moviebtnd').fadeIn('slow');
                 if (iscontroller == 0)
                     document.getElementById('controllbuttons').style.pointerEvents = 'none';
                 document.getElementById('videopickbtn').style.pointerEvents = 'auto';
                 document.getElementById('videopicks').style.pointerEvents = 'auto';
-                console.log("dovomin selectttt ");
                 $('#movietxt').text('Admin or selector has selected the video , select it too by clicking on ▲ ');
                 $('#movietxt').fadeIn();
-                console.log('admin hash : ' + adminhash);
 
 
             }
 
 
-            console.log(play_or_no)
-
+            
             if (messagee.status == 0 && isadmin == 0) {
                 azavalbude = 1;
             }
@@ -411,13 +382,9 @@ class chat_room extends Component {
                     document.getElementById('videopicks').style.pointerEvents = 'auto';
                     if (comeinstate1 == 0 && azavalbude == 0)
                         adminhash = messagee.hash;
-                    console.log(adminhash);
-                    //console.log("admin hash in state 2 : " + adminhash);
-
+                 
                 }, 600);
-                console.log('adminhash : ' + adminhash);
-
-
+            
             }
 
 
@@ -425,8 +392,7 @@ class chat_room extends Component {
 
                 setTimeout(function () {
                     adminhash = messagee.hash;
-                    console.log("admin hash in state 2 : " + adminhash);
-                    rejoined = 1;
+                  rejoined = 1;
                     $('#movietxt').text('Admin or selector has selected the video , select it too by clicking on ▲ ');
                     $('#moviebtnd').fadeIn('slow');
                     adminhash = messagee.hash;
@@ -441,8 +407,7 @@ class chat_room extends Component {
 
                 this.player.pause();
                 const {player} = this.player.getState();
-                console.log("curent " + player.currentTime)
-
+               
                 const message_send_play = {"command": "send_current_time", "currentTime": player.currentTime};
                 ws.send(JSON.stringify(message_send_play));
 
@@ -499,8 +464,7 @@ class chat_room extends Component {
                             window.location.reload();
                     }
                 }
-                console.log("controller : " + iscontroller);
-                console.log("selector : " + isselector);
+            
             }
 
 
@@ -542,12 +506,10 @@ class chat_room extends Component {
                 document.getElementById("mySidenav").style.width = "0px";
                 $(".openonlinemember").css("transform", "scaleX(-1)");
             }
-
-            // setTimeout(function () {
-            //     const message_reselect = {"command": "reset"}
-            //     ws.send(JSON.stringify(message_reselect));
-            // }, 300);
-
+               
+                 $('.username').fadeIn();
+             
+           
 
             if (isadmin == 1 || isselector == 1) {
                 $('#videopicks').fadeIn('fast');
@@ -560,37 +522,16 @@ class chat_room extends Component {
                 filmplayed = 1;
             });
 
-            //$(document).keyup(function (e) {
-            //    if (e.keyCode == 39) {
-
-            //        const { player } = this.player.getState();
-
-            //        console.log("curent " + player.currentTime)
-
-            //        const message_send_play = { "command": "play_video", "currentTime": player.currentTime }
-
-
-            //        // ws.send(JSON.stringify(message_send))
-
-            //        ws.send(JSON.stringify(message_send_play))
-
-            //        console.log(JSON.stringify(message_send_play))
-            //    }
-            //});
-
+      
             var settings = {
 
-                "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('username') + "",
+                "url": "http://185.206.92.246:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('username') + "",
 
                 "method": "GET",
 
                 "timeout": 0,
 
                 "headers": {
-
-                    //'X-CSRFToken': csrftoken,
-
-                    //  "Authorization": "token " + token,
 
                     "accept": "application/json",
 
@@ -632,10 +573,10 @@ class chat_room extends Component {
             if (window.localStorage.getItem('token') == null) {
 
 
-                alert("Login first !");
+                alert("Login please !");
 
 
-                window.location.replace("/login/");
+                window.location.replace("/startpage/");
 
 
             }
@@ -651,7 +592,7 @@ class chat_room extends Component {
             }
             $('.logout').click(function () {
                 window.localStorage.setItem('id_gp', '');
-                // ws1.close();
+               
                 logoutclicked = 1;
 
 
@@ -679,11 +620,11 @@ class chat_room extends Component {
                     form.append("describtion", des);
                 if (new_admin != 'yetoopdaramghelghelie') {
                     form.append("created_by", new_admin)
-                    console.log("nayaaaaaaaaaaaaaaaaaaaaaaaaa");
+                 
                 }
-                console.log(new_admin);
+  
                 var settings = {
-                    "url": "http://127.0.0.1:8000/groups/" + id_gp + "/",
+                    "url": "http://185.206.92.246:8000/groups/" + id_gp + "/",
                     "method": "PUT",
                     "timeout": 0,
                     "headers": {
@@ -703,7 +644,7 @@ class chat_room extends Component {
 
                             var settings = {
 
-                                "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + new_admin + "",
+                                "url": "http://185.206.92.246:8000/group/" + id_gp + "/permissions/?member=" + new_admin + "",
                                 "method": "PUT",
                                 "timeout": 0,
                                 success: function () {
@@ -734,9 +675,7 @@ class chat_room extends Component {
                             };
 
                             $.ajax(settings).done(function (response2) {
-                                console.log("done")
-                                console.log(response2);
-
+                          
                             });
                         } else {
                             document.getElementById('myModal_popup').style.display = 'none'
@@ -756,28 +695,24 @@ class chat_room extends Component {
                 };
 
                 $.ajax(settings).done(function (response) {
-                    console.log(response);
+                  
                 });
 
             })
             $('.edit_group').click(function () {
-                alert('hdhhfhfhf')
-                console.log("sdnskdbclskdbcn")
+              
             });
             $('#reselect').click(function () {
                 const message_reselect = {"command": "reset"}
                 ws.send(JSON.stringify(message_reselect));
 
-                //
+              
 
             });
 
 
             $("#movie").dblclick(function (e) {
 
-                //    $(".formback_movie").css("width", '100%');
-                //         document.getElementById("mySidenav").style.width = "0px";
-                // $(".back_coulom").css("width", "0px");
                 $(".openonlinemember").css("transform", "scaleX(-1)");
                 $(".openchat").css("transform", "scaleX(1)");
                 setTimeout(function () {
@@ -804,9 +739,6 @@ class chat_room extends Component {
 
             $('.username').text(window.localStorage.getItem('username'));
 
-            //id_gp = "test";
-
-            //This will open the connection*
 
             document.getElementById('moviebtnd').style.display = 'none';
 
@@ -819,7 +751,7 @@ class chat_room extends Component {
 
 
                     document.getElementById('movietxt').style.display = 'block';
-                    console.log("avalin selecttttt");
+                   
                     if (adminhash == null)
                         $('#movietxt').text('Click ▲ to select your video ');
                     if (iscontroller == 0)
@@ -829,24 +761,15 @@ class chat_room extends Component {
                     document.getElementById('videopicks').style.pointerEvents = 'auto';
 
 
-                    //$('#videopickbtn').fadeIn('fast');
-
-                    //    $('#movietxt').fadeOut('fast');
-
 
                 } else {
 
-                    // document.getElementById('reselect').style.display = 'none';
                     document.getElementById('reselect').style.pointerEvents = 'none';
 
                     if (rejoined == 0)
                         document.getElementById('moviebtnd').style.display = 'none';
 
                     document.getElementById('movietxt').style.display = 'block';
-
-                    //   $('#videopickbtn').fadeOut('fast');
-
-                    // $('#movietxt').fadeIn('fast');
 
                 }
 
@@ -871,26 +794,17 @@ class chat_room extends Component {
             });
 
 
-            //$('#videopickbtn').fadeIn('fast');
-            //    $('#movietxt').fadeOut('fast');
-
-
-            // if (localStorage.getItem('token') == null) {
-            //     alert("Login please !");
-            //     window.location.replace("/login/");
-            // }
-
+           
 
             var id = window.localStorage.getItem('id_gp');
 
 
             var settings = {
-                "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                "url": "http://185.206.92.246:8000/group/online_users/?group=" + id,
                 "method": "GET",
                 "timeout": 0,
                 "headers": {
-                    //'X-CSRFToken': csrftoken,
-                    //  "Authorization": "token " + token,
+               
                     "accept": "application/json",
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Headers": "*",
@@ -899,12 +813,11 @@ class chat_room extends Component {
             };
 
             $.ajax(settings).done(function (response) {
-                console.log('aaaa');
-                console.log(response);
+           
                 for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
-                    //  setTimeout(function () {
+        
                     $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
-                //  },500);
+       
             });
 
 
@@ -912,11 +825,10 @@ class chat_room extends Component {
 
                 if (isadmin == 1 || isselector == 1) {
 
-                    //   $('#videopickbtn').fadeOut('fast');
+                  
                     document.getElementById('videopickbtn').style.pointerEvents = 'none';
                     document.getElementById('videopicks').style.pointerEvents = 'none';
 
-                    // $('#reselect').fadeIn('fast');
                     document.getElementById('reselect').style.pointerEvents = 'auto';
 
                     $('#firstprogress').fadeIn();
@@ -927,21 +839,13 @@ class chat_room extends Component {
             });
 
 
-            // if (localStorage.getItem('token') == null) {
-
-            //     alert("Login please !");
-
-            //     window.location.replace("/login/");
-
-            // }
-
+         
             var settings = {
-                "url": "http://127.0.0.1:8000/group/online_users/?group=" + id,
+                "url": "http://185.206.92.246:8000/group/online_users/?group=" + id,
                 "method": "GET",
                 "timeout": 0,
                 "headers": {
-                    //'X-CSRFToken': csrftoken,
-                    //  "Authorization": "token " + token,
+                   
                     "accept": "application/json",
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Headers": "*",
@@ -951,16 +855,15 @@ class chat_room extends Component {
 
             $.ajax(settings).done(function (response) {
                 $('.onlinemembers').html('');
-                console.log('aaaa');
-                console.log(response);
+         
                 for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
-                    //  setTimeout(function () {
+                 
                     $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
-                //  },500);
+             
             });
             var settings = {
 
-                "url": "http://127.0.0.1:8000/groups/" + id + '/',
+                "url": "http://185.206.92.246:8000/groups/" + id + '/',
 
                 "method": "GET",
 
@@ -968,9 +871,6 @@ class chat_room extends Component {
 
                 "headers": {
 
-                    //'X-CSRFToken': csrftoken,
-
-                    //  "Authorization": "token " + token,
 
                     "accept": "application/json",
 
@@ -990,30 +890,14 @@ class chat_room extends Component {
                 localresponse = response;
                 if (response.created_by == window.localStorage.getItem('username'))
                     isadmin = 1;
-                console.log("111111");
-
-                console.log(response);
-
-                /*  for (var i = 0; i < response.members.length; i++) {
-                      var hoverout = 'onMouseOut="this.style.color=';
-                      var hoverrout = hoverout + "'white'";
-                      var htmlcode = '';
-                      var hover = 'onmouseenter="this.style.color=';
-                      var hoverr = hover + "'red'";
-                      htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
-                      $(".textarea_member").append(htmlcode);
-                      console.log("2")
-                      //$(".textarea_member").append(response.members[i] + "\n")
-                  }*/
-
-                //  $(".textarea_bio").append(response.describtion + "\n")
+              
                 $(".name").append(response.title);
 
-                console.log(op)
+                
             });
 
 
-            //Log the messages that are returned from the server
+        
 
             $(".name").click(function () {
 
@@ -1021,7 +905,7 @@ class chat_room extends Component {
                 document.getElementById('myModal').style.display = 'block';
                 var settings = {
 
-                    "url": "http://127.0.0.1:8000/groups/" + id + '/',
+                    "url": "http://185.206.92.246:8000/groups/" + id + '/',
 
                     "method": "GET",
 
@@ -1029,9 +913,7 @@ class chat_room extends Component {
 
                     "headers": {
 
-                        //'X-CSRFToken': csrftoken,
-
-                        //  "Authorization": "token " + token,
+                     
 
                         "accept": "application/json",
 
@@ -1050,24 +932,7 @@ class chat_room extends Component {
 
                     localresponse = response;
 
-                    console.log("111111");
-
-                    console.log(response);
-
-                    /*  for (var i = 0; i < response.members.length; i++) {
-                          var hoverout = 'onMouseOut="this.style.color=';
-                          var hoverrout = hoverout + "'white'";
-                          var htmlcode = '';
-                          var hover = 'onmouseenter="this.style.color=';
-                          var hoverr = hover + "'red'";
-                          htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
-                          $(".textarea_member").append(htmlcode);
-                          console.log("2")
-                          //$(".textarea_member").append(response.members[i] + "\n")
-                      }*/
-
-                    //  $(".textarea_bio").append(response.describtion + "\n")
-
+                
                     $(".photogp").html(response.title.toUpperCase()[0]);
 
 
@@ -1079,14 +944,13 @@ class chat_room extends Component {
                     $(".inputedit-title").val(response.title)
                     $(".inputedit-des").val(response.describtion)
                     create_by = response.created_by
-                    console.log(create_by)
-                    console.log(window.localStorage.getItem('username'))
+                
                     if (window.localStorage.getItem('username') != create_by) {
 
                         document.getElementById('dropdown-basic').style.display = 'none'
                     } else {
                         document.getElementById('dropdown-basic').style.display = 'block'
-                        console.log("mn toooooooooooooooosham")
+                       
                     }
                     var htmlcode33 = '<option value="yetoopdaramghelghelie">' + "Select new admin " + '</option>'
                     var htmlcode22 = ''
@@ -1106,7 +970,7 @@ class chat_room extends Component {
 
                         var settings = {
 
-                            "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + response.members[counter1] + "",
+                            "url": "http://185.206.92.246:8000/group/" + id_gp + "/permissions/?member=" + response.members[counter1] + "",
 
                             "method": "GET",
 
@@ -1114,10 +978,7 @@ class chat_room extends Component {
 
                             "headers": {
 
-                                //'X-CSRFToken': csrftoken,
-
-                                //  "Authorization": "token " + token,
-
+                  
                                 "accept": "application/json",
 
                                 "Access-Control-Allow-Origin": "*",
@@ -1134,7 +995,7 @@ class chat_room extends Component {
                         $.ajax(settings).done(function (response_) {
 
 
-                            console.log(response_);
+                            
                             if (response_.member == window.localStorage.getItem('username')) {
                                 iscontroller = response_.playback_permission;
                                 isselector = response_.choose_video_permission;
@@ -1142,7 +1003,7 @@ class chat_room extends Component {
                             controller = response_.playback_permission
                             selector = response_.choose_video_permission
                             var chat = response_.chat_permission
-                            console.log("117778878")
+                            
                             var r = "window.open('/profile/" + response_.member + "')";
                             var a = "window.localStorage.setItem('user','" + response_.member + "')"; //id of the group
                             var hoverout = 'onMouseOut="this.style.color=';
@@ -1204,13 +1065,13 @@ class chat_room extends Component {
                     }
                     $('#exams').html(htmlcode22);
                     $('#admin-select').html(htmlcode33);
-                    console.log("opppppppppppp");
+                
 
 
                 });
             })
 
-            //Log the messages that are returned from the server
+            
             $(".btnno").click(function () {
                 document.getElementById('myModalPer').style.display = 'none';
             })
@@ -1240,7 +1101,7 @@ class chat_room extends Component {
                 var username_edite = $('#exams').val();
 
                 var settings = {
-                    "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + username_edite + "",
+                    "url": "http://185.206.92.246:8000/group/" + id_gp + "/permissions/?member=" + username_edite + "",
                     "method": "PUT",
                     "timeout": 0,
                     error: function (event) {
@@ -1290,7 +1151,7 @@ class chat_room extends Component {
                         }, 3000);
                         var settings = {
 
-                            "url": "http://127.0.0.1:8000/groups/" + id + '/',
+                            "url": "http://185.206.92.246:8000/groups/" + id + '/',
 
                             "method": "GET",
 
@@ -1298,10 +1159,7 @@ class chat_room extends Component {
 
                             "headers": {
 
-                                //'X-CSRFToken': csrftoken,
-
-                                //  "Authorization": "token " + token,
-
+                             
                                 "accept": "application/json",
 
                                 "Access-Control-Allow-Origin": "*",
@@ -1319,24 +1177,7 @@ class chat_room extends Component {
 
                             localresponse = response;
 
-                            console.log("111111");
-
-                            console.log(response);
-                            $(".infobody").html('');
-                            /*  for (var i = 0; i < response.members.length; i++) {
-                                  var hoverout = 'onMouseOut="this.style.color=';
-                                  var hoverrout = hoverout + "'white'";
-                                  var htmlcode = '';
-                                  var hover = 'onmouseenter="this.style.color=';
-                                  var hoverr = hover + "'red'";
-                                  htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
-                                  $(".textarea_member").append(htmlcode);
-                                  console.log("2")
-                                  //$(".textarea_member").append(response.members[i] + "\n")
-                              }*/
-
-                            //  $(".textarea_bio").append(response.describtion + "\n")
-
+                           
                             create_by = response.created_by
 
 
@@ -1370,14 +1211,13 @@ class chat_room extends Component {
                 };
 
                 $.ajax(settings).done(function (response) {
-                    console.log("done")
-                    console.log(response);
+                 
 
                 });
 
             })
             $(".btnadd").click(function () {
-                console.log(per_add)
+       
                 Able_controll = 0;
                 Able_select = 0;
                 for (var count_per_add = 0; count_per_add < per_add.length; count_per_add++) {
@@ -1388,14 +1228,12 @@ class chat_room extends Component {
                         Able_controll = 1
                     }
                 }
-                console.log(Able_select)
-                console.log(Able_controll)
+            
                 var member_add = $(".inp-add").val();
 
-                console.log(id_gp)
 
                 var settings = {
-                    "url": "http://127.0.0.1:8000/user/" + member_add + "",
+                    "url": "http://185.206.92.246:8000/user/" + member_add + "",
                     "method": "GET",
                     "timeout": 0,
                     error: function (event) {
@@ -1410,7 +1248,7 @@ class chat_room extends Component {
                     },
                     success: function () {
                         var settings = {
-                            "url": "http://127.0.0.1:8000/group/add_member/",
+                            "url": "http://185.206.92.246:8000/group/add_member/",
                             "method": "POST",
                             error: function () {
 
@@ -1426,7 +1264,7 @@ class chat_room extends Component {
                             success: function () {
 
                                 var settings = {
-                                    "url": "http://127.0.0.1:8000/group/permissions/",
+                                    "url": "http://185.206.92.246:8000/group/permissions/",
                                     "method": "POST",
                                     error: function () {
 
@@ -1442,17 +1280,13 @@ class chat_room extends Component {
                                         }, 3000);
                                         var settings = {
 
-                                            "url": "http://127.0.0.1:8000/groups/" + id + '/',
+                                            "url": "http://185.206.92.246:8000/groups/" + id + '/',
 
                                             "method": "GET",
 
                                             "timeout": 0,
 
                                             "headers": {
-
-                                                //'X-CSRFToken': csrftoken,
-
-                                                //  "Authorization": "token " + token,
 
                                                 "accept": "application/json",
 
@@ -1471,24 +1305,7 @@ class chat_room extends Component {
 
                                             localresponse = response;
 
-                                            console.log("111111");
-
-                                            console.log(response);
-                                            $(".infobody").html('');
-                                            /*  for (var i = 0; i < response.members.length; i++) {
-                                                  var hoverout = 'onMouseOut="this.style.color=';
-                                                  var hoverrout = hoverout + "'white'";
-                                                  var htmlcode = '';
-                                                  var hover = 'onmouseenter="this.style.color=';
-                                                  var hoverr = hover + "'red'";
-                                                  htmlcode += '<p class="mygroups" id=' + '"c' + i + '"' + hoverr + '"' + hoverrout + '"' + '>' + response.members[i] + ' - </p>';
-                                                  $(".textarea_member").append(htmlcode);
-                                                  console.log("2")
-                                                  //$(".textarea_member").append(response.members[i] + "\n")
-                                              }*/
-
-                                            //  $(".textarea_bio").append(response.describtion + "\n")
-
+                                           
                                             create_by = response.created_by
 
 
@@ -1518,7 +1335,7 @@ class chat_room extends Component {
 
                                 $.ajax(settings).done(function (response) {
 
-                                    console.log(response);
+                                  
                                 });
                                 ;
                             },
@@ -1539,7 +1356,7 @@ class chat_room extends Component {
 
                         $.ajax(settings).done(function (response) {
 
-                            console.log(response);
+                          
                         });
 
 
@@ -1555,15 +1372,11 @@ class chat_room extends Component {
                 };
 
                 $.ajax(settings).done(function (response) {
-                    //
-                    console.log(response);
+             
 
                 });
 
             });
-
-
-            //Log the messages that are returned from the server
 
 
             $(".send_btn").click(function () {
@@ -1581,12 +1394,11 @@ class chat_room extends Component {
 
             var settings = {
 
-                "url": "  http://127.0.0.1:8000/group/messages/?target=" + id,
+                "url": "  http://185.206.92.246:8000/group/messages/?target=" + id,
                 "method": "GET",
                 "timeout": 0,
                 "headers": {
-                    //'X-CSRFToken': csrftoken,
-                    //  "Authorization": "token " + token,
+            
                     "accept": "application/json",
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Headers": "*",
@@ -1595,9 +1407,7 @@ class chat_room extends Component {
             };
 
             $.ajax(settings).done(function (response) {
-                //  document.getElementById("myElement").style.cssText = "display: block; position: absolute";
-                console.log(response);
-
+             
                 for (var counterchathistory = response.results.length - 1; counterchathistory >= 0; counterchathistory--) {
 
                     var aval = 'style=';
@@ -1624,19 +1434,13 @@ class chat_room extends Component {
                 element.scrollTop = element.scrollHeight;
 
             })
-            setTimeout(function () {
-                console.log("is admin : " + isadmin);
-                console.log("is controller: " + iscontroller);
-                console.log("is selector : " + isselector);
-
-            }, 1000);
-
+          
 
             $('.mutemodal').mouseenter(function () {
                 if (isadmin == 1) {
                     var settings = {
 
-                        "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
+                        "url": "http://185.206.92.246:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
 
                         "method": "GET",
 
@@ -1644,9 +1448,7 @@ class chat_room extends Component {
 
                         "headers": {
 
-                            //'X-CSRFToken': csrftoken,
-
-                            //  "Authorization": "token " + token,
+                           
 
                             "accept": "application/json",
 
@@ -1661,7 +1463,7 @@ class chat_room extends Component {
                     };
 
                     $.ajax(settings).done(function (response0) {
-                        console.log(response0);
+                 
                         if (response0.chat_permission == true) {
                             muted = 0;
                             var obj = $('.deleteTEXT').text("Are you sure  you want to mute \n   " + window.localStorage.getItem('muteuser') + "  ? ");
@@ -1672,8 +1474,7 @@ class chat_room extends Component {
                             obj.html(obj.html().replace(/\n/g, '<br/>'));
                         }
                     });
-                    //(window.localStorage.getItem('muteuser'));
-
+                   
                 } else
                     $('.mutemodal').fadeOut('fast');
             });
@@ -1684,7 +1485,7 @@ class chat_room extends Component {
                 var controllpermission;
                 var settings = {
 
-                    "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
+                    "url": "http://185.206.92.246:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
 
                     "method": "GET",
 
@@ -1692,10 +1493,7 @@ class chat_room extends Component {
 
                     "headers": {
 
-                        //'X-CSRFToken': csrftoken,
-
-                        //  "Authorization": "token " + token,
-
+                  
                         "accept": "application/json",
 
                         "Access-Control-Allow-Origin": "*",
@@ -1717,7 +1515,7 @@ class chat_room extends Component {
 
                 if (muted == 0) {
                     var settings = {
-                        "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
+                        "url": "http://185.206.92.246:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
                         "method": "PUT",
                         "timeout": 0,
                         success: function () {
@@ -1746,14 +1544,12 @@ class chat_room extends Component {
                     };
 
                     $.ajax(settings).done(function (response2) {
-                        console.log("done")
-                        console.log(response2);
-
+                  
                     });
 
                 } else {
                     var settings = {
-                        "url": "http://127.0.0.1:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
+                        "url": "http://185.206.92.246:8000/group/" + id_gp + "/permissions/?member=" + window.localStorage.getItem('muteuser') + "",
                         "method": "PUT",
                         "timeout": 0,
                         success: function () {
@@ -1783,8 +1579,7 @@ class chat_room extends Component {
                     };
 
                     $.ajax(settings).done(function (response3) {
-                        console.log("done")
-                        console.log(response3);
+                     
 
                     });
                 }
@@ -1838,19 +1633,13 @@ class chat_room extends Component {
         this.newShortcuts = [
 
 
-            // Press number 1 to jump to the postion of 10%
+            
 
             {
 
 
-                keyCode: 32, // Number 1
+                keyCode: 32, 
 
-
-                // handle is the function to control the player
-
-                // player: the player's state
-
-                // actions: the player's actions
 
                 handle: (player, actions) => {
 
@@ -1858,29 +1647,29 @@ class chat_room extends Component {
                     const current_time = player.currentTime;
 
 
-                    // jump to the postion of 10%
+                    
 
 
                     if (Play_pause_space == 0) {
 
-                        console.log("pause")
+                       
                         played = 0;
-                        //  actions.pause()
+                    
 
 
-                        console.log("curent " + current_time)
+                       
 
                         const message_send_play = {"command": "pause_video", "currentTime": current_time}
 
-                        // ws.send(JSON.stringify(message_send))
+                       
 
                         ws.send(JSON.stringify(message_send_play))
 
-                        console.log(JSON.stringify(message_send_play))
+                        
                         $('#play_btnid').fadeIn('fast');
                         $('#pause_btnid').fadeOut('fast');
 
-                        // this.player.pause();
+                        
 
                         Play_pause_space = 1;
 
@@ -1891,26 +1680,23 @@ class chat_room extends Component {
 
                     if (Play_pause_space == 1) {
                         played = 1;
-                        console.log("play")
-
-                        //  actions.play()
-
+                      
                         Play_pause_space = 0;
 
-                        console.log("curent " + current_time)
+                        
 
                         const message_send_play = {"command": "play_video", "currentTime": current_time}
 
-                        // ws.send(JSON.stringify(message_send))
+                  
 
                         ws.send(JSON.stringify(message_send_play))
 
-                        console.log(JSON.stringify(message_send_play))
+                      
 
                         $('#play_btnid').fadeOut('fast');
                         $('#pause_btnid').fadeIn('fast');
 
-                        // this.player.play();
+                    
 
                         return
 
@@ -1922,12 +1708,11 @@ class chat_room extends Component {
 
             {
 
-                keyCode: 75, // Right arrow
+                keyCode: 75,
 
-                // Ctrl/Cmd
 
                 handle: (player, actions) => {
-                    console.log("press k")
+
 
                 }
 
@@ -1935,13 +1720,13 @@ class chat_room extends Component {
 
             {
 
-                keyCode: 74, // Right arrow
+                keyCode: 74, 
 
-                // Ctrl/Cmd
+               
 
                 handle: (player, actions) => {
 
-                    console.log("press j")
+
 
 
                 }
@@ -1949,13 +1734,13 @@ class chat_room extends Component {
             },
             {
 
-                keyCode: 76, // Right arrow
+                keyCode: 76, 
 
-                // Ctrl/Cmd
+               
 
                 handle: (player, actions) => {
 
-                    console.log("press l")
+
 
 
                 }
@@ -1963,13 +1748,12 @@ class chat_room extends Component {
             },
             {
 
-                keyCode: 36, // Right arrow
+                keyCode: 36, 
 
-                // Ctrl/Cmd
+               
 
                 handle: (player, actions) => {
 
-                    console.log("press home")
 
 
                 }
@@ -1977,13 +1761,13 @@ class chat_room extends Component {
             },
             {
 
-                keyCode: 74, // Right arrow
+                keyCode: 74, 
 
-                // Ctrl/Cmd
+               
 
                 handle: (player, actions) => {
 
-                    console.log("press end")
+
 
 
                 }
@@ -1991,13 +1775,13 @@ class chat_room extends Component {
             },
             {
 
-                keyCode: 70, // Right arrow
+                keyCode: 70, 
 
-                // Ctrl/Cmd
+                
 
                 handle: (player, actions) => {
 
-                    console.log("press f")
+
 
 
                 }
@@ -2005,115 +1789,94 @@ class chat_room extends Component {
             },
             {
 
-                keyCode: 49, // Right arrow
+                keyCode: 49, 
 
-                // Ctrl/Cmd
+               
 
                 handle: (player, actions) => {
 
 
                     const duration = player.duration;
-                    // jump to the postion of 10%
+                   
 
                     const message_send_play = {"command": "play_video", "currentTime": duration * 0.1}
 
-                    // ws.send(JSON.stringify(message_send))
-
+                   
                     ws.send(JSON.stringify(message_send_play))
 
-                    console.log(JSON.stringify(message_send_play))
+                   
 
                 }
 
             },
             {
 
-                keyCode: 57, // Right arrow
-
-                // Ctrl/Cmd
+                keyCode: 57, 
 
                 handle: (player, actions) => {
 
 
                     const duration = player.duration;
-                    // jump to the postion of 10%
+                   
 
                     const message_send_play = {"command": "play_video", "currentTime": duration * 0.9}
 
-                    // ws.send(JSON.stringify(message_send))
-
+                   
                     ws.send(JSON.stringify(message_send_play))
 
-                    console.log(JSON.stringify(message_send_play))
+                   
 
                 }
 
             },
             {
 
-                keyCode: 50, // Right arrow
-
-                // Ctrl/Cmd
+                keyCode: 50, 
 
                 handle: (player, actions) => {
 
 
                     const duration = player.duration;
-                    // jump to the postion of 10%
-
+                    
                     const message_send_play = {"command": "play_video", "currentTime": duration * 0.2}
 
-                    // ws.send(JSON.stringify(message_send))
-
+                    
                     ws.send(JSON.stringify(message_send_play))
 
-                    console.log(JSON.stringify(message_send_play))
-
+                   
                 }
 
             },
             {
 
-                keyCode: 51, // Right arrow
-
-                // Ctrl/Cmd
+                keyCode: 51,
 
                 handle: (player, actions) => {
 
 
                     const duration = player.duration;
-                    // jump to the postion of 10%
-
+                   
                     const message_send_play = {"command": "play_video", "currentTime": duration * 0.3}
 
-                    // ws.send(JSON.stringify(message_send))
-
                     ws.send(JSON.stringify(message_send_play))
 
-                    console.log(JSON.stringify(message_send_play))
-
+                    
                 }
 
             },
             {
 
-                keyCode: 52, // Right arrow
-
-                // Ctrl/Cmd
+                keyCode: 52,
 
                 handle: (player, actions) => {
 
 
                     const duration = player.duration;
-                    // jump to the postion of 10%
-
+                   
                     const message_send_play = {"command": "play_video", "currentTime": duration * 0.4}
 
-                    // ws.send(JSON.stringify(message_send))
-
+                   
                     ws.send(JSON.stringify(message_send_play))
-
-                    console.log(JSON.stringify(message_send_play))
 
                 }
 
@@ -2121,92 +1884,69 @@ class chat_room extends Component {
             },
             {
 
-                keyCode: 53, // Right arrow
-
-                // Ctrl/Cmd
+                keyCode: 53, 
 
                 handle: (player, actions) => {
 
 
                     const duration = player.duration;
-                    // jump to the postion of 10%
-
+                   
                     const message_send_play = {"command": "play_video", "currentTime": duration * 0.5}
 
-                    // ws.send(JSON.stringify(message_send))
-
+                    
                     ws.send(JSON.stringify(message_send_play))
 
-                    console.log(JSON.stringify(message_send_play))
-
+                    
                 }
 
             },
             {
 
-                keyCode: 54, // Right arrow
-
-                // Ctrl/Cmd
+                keyCode: 54, 
 
                 handle: (player, actions) => {
 
 
                     const duration = player.duration;
-                    // jump to the postion of 10%
-
+                    
                     const message_send_play = {"command": "play_video", "currentTime": duration * 0.6}
 
-                    // ws.send(JSON.stringify(message_send))
-
                     ws.send(JSON.stringify(message_send_play))
 
-                    console.log(JSON.stringify(message_send_play))
-
+                  
                 }
 
             },
             {
 
-                keyCode: 55, // Right arrow
-
-                // Ctrl/Cmd
+                keyCode: 55, 
 
                 handle: (player, actions) => {
 
 
                     const duration = player.duration;
-                    // jump to the postion of 10%
-
+                   
                     const message_send_play = {"command": "play_video", "currentTime": duration * 0.7}
 
-                    // ws.send(JSON.stringify(message_send))
-
                     ws.send(JSON.stringify(message_send_play))
 
-                    console.log(JSON.stringify(message_send_play))
-
+                   
                 }
 
             },
             {
 
-                keyCode: 56, // Right arrow
-
-                // Ctrl/Cmd
+                keyCode: 56, 
 
                 handle: (player, actions) => {
 
 
                     const duration = player.duration;
-                    // jump to the postion of 10%
-
+                   
                     const message_send_play = {"command": "play_video", "currentTime": duration * 0.8}
 
-                    // ws.send(JSON.stringify(message_send))
-
+                    
                     ws.send(JSON.stringify(message_send_play))
-
-                    console.log(JSON.stringify(message_send_play))
 
                 }
 
@@ -2222,12 +1962,9 @@ class chat_room extends Component {
         const message_send_play = {"command": "play_video", "currentTime": "0"}
 
 
-        // ws.send(JSON.stringify(message_send))
-
         ws.send(JSON.stringify(message_send_play))
 
-        console.log(JSON.stringify(message_send_play))
-
+        
         play_or_no = true
 
 
@@ -2263,7 +2000,7 @@ class chat_room extends Component {
 
         function loading(file, callbackProgress, callbackFinal) {
 
-            var chunkSize = 1024 * 1024; // bytes
+            var chunkSize = 1024 * 1024;
 
             var offset = 0;
 
@@ -2320,45 +2057,27 @@ class chat_room extends Component {
         var counter = 0;
 
         var self = this;
-        console.log(file)
+     
 
         function Send_data() {
             var message_send
             if (adminhash == null) {
-                console.log("a hash : " + adminhash);
-                console.log("send as admin");
+                
                 adminhash = encrypted;
                 message_send = {"command": "set_video_hash", "vhash": encrypted};
                 clienthashok = 1;
             } else {
-                console.log("send as client");
+                
                 message_send = {"command": "send_client_hash", "vhash": encrypted};
 
             }
             if (isselector == 1)
                 play_or_no = true;
 
-            // ws.send(JSON.stringify(message_send))
-
+            
             ws.send(JSON.stringify(message_send))
 
-            console.log(JSON.stringify(message_send))
-
-
-            //ws.onmessage = evt => {
-
-            //    console.log("messsssssage")
-
-            //    const messagee = JSON.parse(evt.data)
-
-            //    // this.setState({server_pm: messagee})
-
-            //    console.log(messagee)
-
-            //    console.log(+messagee.message)
-
-            //};
-
+           
         }
 
 
@@ -2369,27 +2088,9 @@ class chat_room extends Component {
             play_or_no = true
 
 
-            // ws.send(JSON.stringify(message_send))
-
             ws.send(JSON.stringify(message_send))
 
-            console.log(JSON.stringify(message_send))
-
-
-            //ws.onmessage = evt => {
-
-            //    console.log("messsssssage")
-
-            //    const messagee = JSON.parse(evt.data)
-
-            //    // this.setState({server_pm: messagee})
-
-            //    console.log(messagee)
-
-            //    console.log(+messagee.message)
-
-            //};
-
+            
         }
 
 
@@ -2404,33 +2105,20 @@ class chat_room extends Component {
 
             percant = ((counter / file.size) * 100).toFixed(0);
 
-            console.log("pp : " + percant);
-
-            console.log(((counter / file.size) * 100).toFixed(0) + '%');
-
-
         }, function (data) {
 
 
-            console.log('100%');
-
+            
             encrypted = SHA256.finalize().toString();
-
-            console.log('encrypted: ' + encrypted);
-
-
-            // eslint-disable-next-line no-undef
 
 
             if (percant == 100) {
-                //   const {player} = this.player.getState();
-                //     console.log("curent " + player.currentTime)
+               
                 $('#nameofthefilm').text(file.name.split('.')[0]);
                 $('#nameofthefilm').fadeIn();
                 $('.fullscreendiv').fadeIn();
 
-                console.log(file.name.split('.')[0]);
-
+               
 
                 uploaded = 1;
                 if (isadmin == 1 || isselector == 1) {
@@ -2474,7 +2162,7 @@ class chat_room extends Component {
                         if (iscontroller == 0)
                             document.getElementById('controllbuttons').style.pointerEvents = 'none';
                         document.getElementById('videopicks').style.pointerEvents = 'none';
-                        //  play_or_no = true
+                      
                         if (isselector == 0)
                             Send_data2();
 
@@ -2508,8 +2196,6 @@ class chat_room extends Component {
         });
 
 
-        console.log("aa");
-
     }
 
 
@@ -2522,22 +2208,16 @@ class chat_room extends Component {
 
         const {player} = this.player.getState();
 
-        console.log("curent " + player.currentTime)
-
+        
         const message_send_play = {"command": "play_video", "currentTime": player.currentTime}
 
-        // ws.send(JSON.stringify(message_send))
-
+        
         ws.send(JSON.stringify(message_send_play))
 
-        console.log(JSON.stringify(message_send_play))
         play_or_no = true;
         played = 1;
         $('#play_btnid').fadeOut('fast');
         $('#pause_btnid').fadeIn('fast');
-
-        //this.player.play();
-
 
     }
 
@@ -2569,22 +2249,15 @@ class chat_room extends Component {
 
         const {player} = this.player.getState();
 
-        console.log("curent " + player.currentTime)
-
         const message_send_play = {"command": "pause_video", "currentTime": player.currentTime}
 
-        // ws.send(JSON.stringify(message_send))
-
+       
         ws.send(JSON.stringify(message_send_play))
 
-        console.log(JSON.stringify(message_send_play))
-
         played = 0;
-        console.log('played : ' + played);
+        
         $('#play_btnid').fadeIn('fast');
         $('#pause_btnid').fadeOut('fast');
-
-        //this.player.pause();
 
 
     }
@@ -2595,18 +2268,12 @@ class chat_room extends Component {
 
             const {player} = this.player.getState();
 
-            console.log("curent " + player.currentTime)
-            var message_send_play;
+           var message_send_play;
             if (played == 1)
                 message_send_play = {"command": "play_video", "currentTime": player.currentTime + seconds}
             else
                 message_send_play = {"command": "pause_video", "currentTime": player.currentTime + seconds}
             ws.send(JSON.stringify(message_send_play))
-
-            console.log(JSON.stringify(message_send_play))
-
-
-            // this.player.seek(player.currentTime + seconds);
 
         };
 
@@ -2625,24 +2292,21 @@ class chat_room extends Component {
     }
 
     handlereq_forward_backward(event) {
-        console.log("hoooooooold")
+        
         if (event.keyCode == 39 || event.keyCode == 37) {
-            console.log('played : ' + played);
+           
             const {player} = this.player.getState();
 
-            console.log("curent " + player.currentTime)
+            
             var message_send_play2;
             if (played == 1)
                 message_send_play2 = {"command": "play_video", "currentTime": player.currentTime}
             else
                 message_send_play2 = {"command": "pause_video", "currentTime": player.currentTime}
-            // ws.send(JSON.stringify(message_send))
+            
 
             ws.send(JSON.stringify(message_send_play2))
-
-            console.log(JSON.stringify(message_send_play2))
-            //console.log("11111111111111111111111111111111")
-        }
+  }
     }
 
     handleChanges = selectedOption => {
@@ -2657,16 +2321,14 @@ class chat_room extends Component {
             {selectedOption_Add},
             () => per_add = this.state.selectedOption_Add
         );
-        console.log(per_add)
-
+        
     }
     handleChanges_id = selectedOption_id => {
         this.setState(
             {selectedOption_id},
             () => member_edit = this.state.selectedOption_id
         );
-        console.log(per_add)
-
+        
     }
 
     render() {
@@ -2783,7 +2445,7 @@ class chat_room extends Component {
 
                         </div>
 
-                        {/* <div className='dltno'>no</div> */}
+                        
 
                     </div>
 

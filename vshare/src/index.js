@@ -22,7 +22,6 @@ const App = () => {
                 <Route path="/startpage" component={Start}/>
                 <Route path="/about" component={About} />
                 <Route path="/profile/:id" component={Profile} />
-
                 <Route exact path="/group/:id"  component={Chat} />
 
 

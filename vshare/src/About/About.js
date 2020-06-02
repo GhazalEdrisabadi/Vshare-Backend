@@ -11,7 +11,7 @@ class About extends Component {
             <div className="about">
 
                 <h1 className="mem_team">About Us</h1>
-
+              <div className='kolli_about'>
                 <div className='homepagebtn'><a href='../startpage'>Start page</a></div>
                 <div className="div_kamyab"><img src={Kamyab} className="kamyab" /></div>
                 <div className="div_poria"><img src={Poria} className="poria" /></div>
@@ -28,6 +28,7 @@ class About extends Component {
                 <div className="job_ghazal"><a >backend-Developer</a></div>
                 <div className="name_amin"><a  >امین شهیدی</a></div>
                 <div className="job_amin"><a >backend-Developer</a></div>
+                  </div>
             </div>
 
             )
