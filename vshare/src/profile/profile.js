@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import './profile.css'
 import $ from 'jquery';
 import Left from './left.png'
@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import EditIcon from '@material-ui/icons/Edit';
 import Avatar from '@material-ui/core/Avatar';
-
+import Dorbin from './camera.png'
 var username = window.localStorage.getItem('user');
 var respone_get
 var count
@@ -21,10 +21,10 @@ var count
 class profile extends Component {
     componentDidMount() {
 
-        const {id} = this.props.match.params;
+        const { id } = this.props.match.params;
         $(document).ready(function () {
 
-
+console.log(window.location.href)
             if (username == window.localStorage.getItem('username')) {
                 document.getElementById("content").style.display = 'none'
                 document.getElementById("right-button").style.display = 'none'
@@ -134,12 +134,37 @@ class profile extends Component {
                 respone_get = response;
                 $(".username_prof").text(respone_get.username);
                 $(".username").text(respone_get.username);
-                $(".photo").html(response.username.toUpperCase()[0]);
+                var settings = {
+                    "url": "http://127.0.0.1:8000/user/" + username + "/edit/",
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+    
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json"
+                    },
+    
+                };
+    
+    
+                $.ajax(settings).done(function (response1) {
+    console.log(response)
+                   $(".photo").html(response.username.toUpperCase()[0]);
+    
+    
+                });
+               
 
 
             });
 
+$('#file-input').change(function(){
+    $('.status-upload').html(document.getElementById('file-input').files[0].name)
 
+
+})
             $(".inp-search").keyup(function () {
                 $(".search-result").html("")
 
@@ -242,7 +267,7 @@ class profile extends Component {
 
                 setTimeout(function () {
                     if ($(".search-result").html() == '') {
-                       // $(".search-result").html("<p class='notfound'>not found</p>");
+                        // $(".search-result").html("<p class='notfound'>not found</p>");
                         $(".search-result").fadeOut()
                     } else {
                         $(".search-result").fadeIn()
@@ -308,12 +333,12 @@ class profile extends Component {
                                 "Content-Type": "application/json"
                             },
                             "data": JSON.stringify({
-                                    "group": window.localStorage.getItem('id-join'),
-                                    "member": window.localStorage.getItem('username'),
-                                    "chat_permission": 1,
-                                    "playback_permission": 0,
-                                    "choose_video_permission": 0
-                                }
+                                "group": window.localStorage.getItem('id-join'),
+                                "member": window.localStorage.getItem('username'),
+                                "chat_permission": 1,
+                                "playback_permission": 0,
+                                "choose_video_permission": 0
+                            }
                             ),
                         };
 
@@ -334,9 +359,9 @@ class profile extends Component {
                         "Content-Type": "application/json"
                     },
                     "data": JSON.stringify({
-                            "the_group": window.localStorage.getItem('id-join'),
-                            "the_member": "",
-                        }
+                        "the_group": window.localStorage.getItem('id-join'),
+                        "the_member": "",
+                    }
                     ),
                 };
 
@@ -357,9 +382,64 @@ class profile extends Component {
             })
             $(".edite_profile").click(function () {
                 $(".modal_edite_profile").fadeIn();
+                $(".status-upload").html('')
 
             })
+$('.submitedit').click(function(){
+ var photo_upload=$('#file-input').val()
+ var email_edit=$('#editemail').val()
+ var password_edit=$('#editpassword').val()
+if(photo_upload!=''){
+        var settings = {
+            "url": "http://127.0.0.1:8000/user/"+window.localStorage.getItem('user')+"/edit/upload_photo",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+              
+                "accept": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "*",
+                "Content-Type": "application/json"
+            },
+       
 
+        };
+
+        $.ajax(settings).done(function (response) {
+
+       console.log(response)
+
+    var file_upload = document.getElementById('file-input').files[0];
+    var fd = new FormData();
+
+    
+
+    fd.append('key', response.fields.key);
+  //  fd.append('acl', 'public-read'); 
+    //fd.append('Content-Type', file.type);      
+    fd.append('AWSAccessKeyId', response.fields.AWSAccessKeyId);
+    fd.append('policy', response.fields.policy)
+    fd.append('signature',response.fields.signature);
+
+    fd.append("file",file_upload);
+
+    var xhr = new XMLHttpRequest();
+
+    // xhr.upload.addEventListener("progress", uploadProgress, false);
+    // xhr.addEventListener("load", uploadComplete, false);
+    // xhr.addEventListener("error", uploadFailed, false);
+    // xhr.addEventListener("abort", uploadCanceled, false);
+
+    xhr.open('POST', response.url, true); //MUST BE LAST LINE BEFORE YOU SEND 
+
+    xhr.send(fd);
+        })
+    }
+
+
+
+   
+})
             $(".unfollow-btn").click(function () {
                 var settings = {
                     "url": "http://127.0.0.1:8000/user/followers/unfollow/" + username + "/",
@@ -399,9 +479,9 @@ class profile extends Component {
                         "Content-Type": "application/json"
                     },
                     "data": JSON.stringify({
-                            "who_is_followed": window.localStorage.getItem('user'),
-                            "who_follows": "",
-                        }
+                        "who_is_followed": window.localStorage.getItem('user'),
+                        "who_follows": "",
+                    }
                     ),
 
                 };
@@ -479,6 +559,7 @@ class profile extends Component {
                 });
 
             })
+
             $(".follower").click(function () {
                 $(".modal-content-follower").html("")
                 var html = ''
@@ -537,9 +618,17 @@ class profile extends Component {
             $(".modal-following").click(function () {
                 $(".modal-following").fadeOut();
             })
-            $(".modal_edite_profile").click(function () {
-                $(".modal_edite_profile").fadeOut();
-            })
+            window.onclick = function (event) {
+
+                if (event.target == document.getElementById("myModal")) {
+
+                    $(".modal_edite_profile").fadeOut();
+
+                }
+
+
+            }
+
             var token = window.localStorage.getItem('token');
             var mygroups = [];
             var groups = [];
@@ -576,110 +665,7 @@ class profile extends Component {
                 }
 
             });
-            // var settings = {
-            //     "url": "http://127.0.0.1:8000/group/owned_groups/",
-            //     "method": "GET",
-            //     "timeout": 0,
-            //     "headers": {
-            //         "Authorization": "Token " + token
-            //     },
-            // };
 
-            // $.ajax(settings).done(function (response) {
-
-            //     for (var counter = 0; counter < response.length; counter++)
-            //         mygroups.push({ name: response[counter].title, id: response[counter].groupid });
-
-            //     var hoverout = 'onMouseOut="this.style.color=';
-            //     var hoverrout = hoverout + "'white'";
-
-            //     var hover = 'onMouseOver="this.style.color=';
-            //     var hoverr = hover + "'red'";
-            //     var htmlcode = '';
-            //     for (var counter1 = 0; counter1 < mygroups.length; counter1++, htmlcode = '') {
-            //         var a2 = " document.getElementById('Modal-join').style.display = 'block'";
-            //         var r = "window.localStorage.setItem('id-join','" + mygroups[counter1].id + "')"; //id of the group
-            //         htmlcode += '<div>'
-            //         htmlcode += '<div class="admin_gp">'+mygroups[counter1].name.toUpperCase()[0]+'</div>';
-            //         htmlcode += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter1 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + mygroups[counter1].id + '</p>';
-
-
-            //         htmlcode += '</div>'
-            //         $('.group_prof').append(htmlcode);
-
-            //     }
-
-            // });
-//             var htmlcode = '';
-//             var settings = {
-//                 "url": "http://127.0.0.1:8000/group/joined_groups/",
-//                 "method": "GET",
-//                 "timeout": 0,
-//                 "headers": {
-//                     "Authorization": "Token " + token
-//                 },
-//             };
-
-
-//             $.ajax(settings).done(function (response) {
-
-//                 for (var counter = 0; counter < response.length; counter++) {
-//                     var gpid2 = response[counter].the_group;
-//                     var settings2 = {
-//                         "url": "http://127.0.0.1:8000/groups/" + gpid2 + "/",
-//                         "method": "GET",
-//                         "timeout": 0,
-//                         "Content-Type": "application/json",
-
-//                     };
-
-//                     $.ajax(settings2).done(function (response2) {
-//                         var booll = 0;
-//                         for (var jj = 0; jj < mygroups.length; jj++) {
-//                             if (mygroups[jj].id == response2.groupid)
-//                                 booll = 1;
-
-//                         }
-//                         if (booll == 0)
-//                             groups.push({ name: response2.title, id: response2.groupid });
-//                     });
-
-
-//                 }
-
-
-//                 setTimeout(function () {
-
-//                     var counter2 = 0;
-//                     var htmlcode2 = '';
-//                     var hoverout = 'onMouseOut="this.style.color=';
-//                     var hoverrout = hoverout + "'white'";
-
-//                     var hover = 'onMouseOver="this.style.color=';
-//                     var hoverr = hover + "'red'";
-//                     while (counter2 < groups.length) {
-//                         var a2 = " document.getElementById('Modal-join').style.display = 'block'";
-//                         var r = "window.localStorage.setItem('id-join','" + groups[counter2].id + "')";
-//                         htmlcode2 += '<div>'
-
-
-//                         htmlcode2 += '<div class="member_gp">'+groups[counter2].name.toUpperCase()[0]+'</div>';
-//  htmlcode2 += '<p ' + hoverr + '"' + hoverrout + '"' + '  class="id_group"  onclick="' + a2 + "," + r + '" id=' + '"c' + counter2 + '">' + "&nbsp&nbsp&nbsp&nbsp&nbsp" + groups[counter2].id + '</p>';
-
-
-//                         htmlcode2 += '</div>'
-
-
-//                         $('.group_prof').append(htmlcode2);
-//                         counter2++;
-//                         htmlcode2 = '';
-
-//                     }
-
-//                 }, 500);
-
-
-//             });
 
 
             document.getElementById('right-button').onclick = function () {
@@ -730,8 +716,8 @@ class profile extends Component {
                                 color: 'white'
 
                             }}
-                                        className="profilepic">
-                                <AccountCircleOutlinedIcon fontSize="large"/>
+                                className="profilepic">
+                                <AccountCircleOutlinedIcon fontSize="large" />
                             </IconButton>
 
                         </div>
@@ -739,7 +725,7 @@ class profile extends Component {
                         <div className='searchgp'>
 
 
-                            <input placeholder='search' className='inp-search'/>
+                            <input placeholder='search' className='inp-search' />
 
 
                             <div id='joinstatus' className='statusofjoin'>
@@ -754,8 +740,8 @@ class profile extends Component {
                         <IconButton style={{
                             color: 'white'
                         }}
-                                    className="div_leave">
-                            <HomeIcon fontSize="large"/>
+                            className="div_leave">
+                            <HomeIcon fontSize="large" />
                         </IconButton>
                     </div>
                 </header>
@@ -768,10 +754,10 @@ class profile extends Component {
                     <div className="username_prof">USERNAME</div>
 
 
-                    <IconButton style={{color: 'white', fontSize: "70px"}}
-                                className="edite_profile" id="edite-btn">
+                    <IconButton style={{ color: 'white', fontSize: "70px" }}
+                        className="edite_profile" id="edite-btn">
 
-                        <EditIcon fontSize="medium"/>
+                        <EditIcon fontSize="medium" />
                         Edit profile
                     </IconButton>
                     <div className="follow-btn" id='f-btn'> Follow</div>
@@ -780,9 +766,14 @@ class profile extends Component {
                         <div class="modal-content_edite_profile">
                             <h3 class="texx_edite">Edit your profile deatails</h3>
                             <hr></hr>
-                            <input class="inputedit" id='editfirstname' placeholder="FirstName"></input>
-                            <input class="inputedit" id='editlastname' placeholder="LastName"></input>
-                            <input class="inputedit" id='editusername' placeholder="UserName"></input>
+                            <div class="image-upload">
+                                <label for="file-input">
+                                    <img src="http://127.0.0.1:9000/minio/download/test/download.png?token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiJtaW5pbyIsImV4cCI6MTU5MTA2MjMwMCwic3ViIjoibWluaW8ifQ.4GxEaTiHCu8bJQdIHRNv4eJGv0mqCdgRIBQU_8iBKL-QBju2HtlJOdBan335lAifhW6xWi9rze-pkbEKC3jhqA"/>
+                                </label>
+
+                                <input  id="file-input" type="file" accept=" image/jpeg, image/png" />
+                            </div>
+<p className='status-upload'/>
                             <input class="inputedit" id='editemail' placeholder="PassWord"></input>
                             <input class="inputedit" id='editpassword' placeholder="Email"></input>
                             <br></br>
@@ -804,8 +795,8 @@ class profile extends Component {
 
                             <div className='join-btns'>
 
-                                <Button style={{backgroundColor: "Red"}} size='large'
-                                        className="join-no" variant="contained" color="secondary">
+                                <Button style={{ backgroundColor: "Red" }} size='large'
+                                    className="join-no" variant="contained" color="secondary">
                                     <p>No&nbsp;</p>
                                 </Button>
 
@@ -843,9 +834,9 @@ class profile extends Component {
                     <div className="following">following</div>
 
 
-                    <IconButton style={{color: 'white'}}
-                                className="left-button" id="left-button">
-                        <ArrowBackIosIcon fontSize="large"/>
+                    <IconButton style={{ color: 'white' }}
+                        className="left-button" id="left-button">
+                        <ArrowBackIosIcon fontSize="large" />
                     </IconButton>
 
 
@@ -854,9 +845,9 @@ class profile extends Component {
                     </div>
 
 
-                    <IconButton style={{color: 'white'}}
-                                className="right-button" id="right-button">
-                        <ArrowForwardIosIcon fontSize="large"/>
+                    <IconButton style={{ color: 'white' }}
+                        className="right-button" id="right-button">
+                        <ArrowForwardIosIcon fontSize="large" />
                     </IconButton>
 
 

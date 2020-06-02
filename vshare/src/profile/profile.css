@@ -3839,3 +3839,13 @@ cursor:pointer;
     -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
   }
+  .image-upload > input
+  {
+      display: none;
+  }
+  
+  .image-upload img
+  {
+      width: 120px;
+      cursor: pointer;
+  }
