@@ -799,27 +799,6 @@ class chat_room extends Component {
             var id = window.localStorage.getItem('id_gp');
 
 
-            var settings = {
-                "url": "http://185.206.92.246:8000/group/online_users/?group=" + id,
-                "method": "GET",
-                "timeout": 0,
-                "headers": {
-               
-                    "accept": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Headers": "*",
-                    "Content-Type": "application/json"
-                }
-            };
-
-            $.ajax(settings).done(function (response) {
-           
-                for (var onlinememberscounter = 0; onlinememberscounter < response.length; onlinememberscounter++)
-        
-                    $('.onlinemembers').append('<p id="members">' + response[onlinememberscounter].online_user + '</p>');
-       
-            });
-
 
             $('#videopicks').change(function () {
 
