@@ -384,6 +384,15 @@ img.on('load', function(e){
                         "url": "http://localhost:8000/user/" + username + "/edit_profile/upload_photo/",
                         "method": "POST",
                         "timeout": 0,
+                        success:function(){
+                            var x = document.getElementById("snackbar-succes-edit");
+                            x.className = "show";
+                            setTimeout(function () {
+                                x.className = x.className.replace("show", "");
+                            }, 3000);
+                            window.location.reload()
+
+                        },
                         "headers": {
                             "Authorization": "token " + window.localStorage.getItem('token'),
                             "accept": "application/json",
@@ -391,7 +400,7 @@ img.on('load', function(e){
                             "Access-Control-Allow-Headers": "*",
                             "Content-Type": "application/json"
                         },
-
+                    
 
                     };
 
@@ -422,9 +431,86 @@ img.on('load', function(e){
                         xhr.open('POST', response.upload_photo.url, true); //MUST BE LAST LINE BEFORE YOU SEND
 
                         xhr.send(fd);
+                  
                     })
                 }
+if(password_edit!=''){
+    var settings = {
+        "url": "http://localhost:8000/user/"+username+"/edit_profile/change_password/",
+        "method": "PATCH",
+        "timeout": 0,
+        success:function(){
+            var x = document.getElementById("snackbar-succes-edit");
+            x.className = "show";
+            setTimeout(function () {
+                x.className = x.className.replace("show", "");
+            }, 3000);
+            $(".modal_edite_profile").fadeOut();
 
+        },
+        "headers": {
+            "Authorization": "token " + window.localStorage.getItem('token'),
+            "accept": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "*",
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+            "new_password": password_edit,
+            "confirm_password": password_edit,
+          
+        }),
+
+    };
+
+    $.ajax(settings).done(function (response) {
+
+        console.log(response)
+    })
+}
+
+if(email_edit!=''){
+    var settings = {
+        "url": "http://localhost:8000/user/"+username+"/edit_profile/",
+        "method": "PATCH",
+        "timeout": 0,
+        error:function(){
+            var x = document.getElementById("snackbar-not-valid");
+            x.className = "show";
+            setTimeout(function () {
+                x.className = x.className.replace("show", "");
+            }, 3000);
+           
+        },
+        success:function(){
+            var x = document.getElementById("snackbar-succes-edit");
+            x.className = "show";
+            setTimeout(function () {
+                x.className = x.className.replace("show", "");
+            }, 3000);
+            $(".modal_edite_profile").fadeOut();
+
+        },
+        "headers": {
+            "Authorization": "token " + window.localStorage.getItem('token'),
+            "accept": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "*",
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+            "email": email_edit,
+            
+          
+        }),
+
+    };
+
+    $.ajax(settings).done(function (response) {
+
+        console.log(response)
+    })
+}
 
             })
             $(".unfollow-btn").click(function () {
@@ -761,8 +847,8 @@ img.on('load', function(e){
                                 <input id="file-input" type="file" accept=" image/jpeg, image/png"/>
                             </div>
                             <p className='status-upload'/>
-                            <input class="inputedit" id='editemail' placeholder="PassWord"></input>
-                            <input class="inputedit" id='editpassword' placeholder="Email"></input>
+                            <input type="email" class="inputedit" id='editemail' placeholder="Email" autocomplete="off"></input>
+                            <input type="password" class="inputedit" id='editpassword' placeholder="Password" ></input>
                             <br></br>
                             <button style={{
                                 backgroundColor: "Red",
@@ -842,9 +928,12 @@ img.on('load', function(e){
                 <div className="search-result" id='res'></div>
                 <div id="snackbar-succes-join">Successfully join</div>
                 <div id="snackbar-already">User is already a member of this group</div>
+                <div id="snackbar-succes-edit">Successfully edit</div>
+                <div id="snackbar-not-valid">Email is not valid</div>
+                
             </div>
-
         )
+        
     }
 }
 
