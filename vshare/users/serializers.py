@@ -5,11 +5,11 @@ from django.db.models import Q
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from rest_framework import authentication
-#from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
 import logging
 import boto3
 from botocore.exceptions import ClientError
+from users.utils import *
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -90,83 +90,68 @@ class AccountSerializer(serializers.ModelSerializer):
         model = Account
         fields = '__all__'
 
+class UploadPhotoSerializer(serializers.ModelSerializer):
 
-class UploadPhoto():
-
-	# def create_bucket(self, bucket_name):
-	# 	try:
-	# 		s3_client = boto3.client('s3')
-	# 		s3_client.create_bucket(Bucket=bucket_name)
-	# 		return True
-	# 	except ClientError as e:
-	# 		logging.error(e)
-	# 		return False
-
-	def create_presigned_url(self, bucket_name, object_name, expiration=3600):
-
-		s3_client = boto3.client('s3')
-		try:
-			response = s3_client.generate_presigned_url('get_object',
-														Params={'Bucket': bucket_name,
-																'Key': object_name},
-														ExpiresIn=expiration)
-		except ClientError as e:
-			logging.error(e)
-			return None
-
-		return response
-
-
-	def create_presigned_post(bucket_name, object_name,
-								fields=None, conditions=None, expiration=3600):
-		s3_client = boto3.client('s3')
-		try:
-			response = s3_client.generate_presigned_post(bucket_name,
-														object_name,
-														Fields=fields,
-														Conditions=conditions,
-														ExpiresIn=expiration)
-		except ClientError as e:
-			logging.error(e)
-			return None
-
-		return response
-
+	class Meta(object):
+		model = Account
+		fields = ['username','photo']
+		extra_kwargs = {
+				'username': {'read_only' : True}
+    }
+    
+  	# Cast the generated url of upload photo to dictionary
+	def to_representation(self, instance):
+		ret = super().to_representation(instance)
+		user = self.context["request"].user
+		upload_url = create_presigned_post('vhare-profile-images',user.username)
+		ret["upload_photo"] = upload_url
+		return ret
+    
 class EditProfileSerializer(serializers.ModelSerializer):
-
-	password2 = serializers.CharField(
-		required=False, 
-		allow_blank=True,
-		help_text='Confirm new password',
-		label='Confirm Password',
-		style = {'input_type' : 'password'}, 
-		write_only=True
-	)
+    
+	photo_url = serializers.SerializerMethodField('get_photo_url')
 
 	class Meta:
 		model = Account
-		fields = ['photo','email','password','password2']
+		fields = ['photo_url','email']
 		extra_kwargs = {
-				'password': {'write_only' : True, 'allow_blank' : True, 'required':False},
-				'password2':{'allow_blank' : True, 'required':False},
 				'email':{'allow_blank' : True, 'required':False},
 		}
+		
+	def get_photo_url(self, obj):
+		username = obj.username
+		# if Account.objects.get(username=username).photo:
+		return create_presigned_url('vhare-profile-images',username)
+		# else:
+		# 	raise ValidationError("User's photo is not found")
 
-	def update_info(self):
-		account = Account(
-				email = self.validated_data['email'],
-				username = self.validated_data['username'],
-			)
+class ChangePasswordSerializer(serializers.ModelSerializer):
+	confirm_password = serializers.CharField(write_only=True)
+	new_password = serializers.CharField(write_only=True)
 
-		password = self.validated_data['password']
-		password2 = self.validated_data['password2']
+	class Meta:
+		model = Account
+		fields = ['username','new_password','confirm_password']
+		extra_kwargs = {
+				'username':{'read_only':True},
+		}
 
-		if password != password2:
-			raise serializers.ValidationError({'password':'Passwords must match.'})
+	def update(self, instance, validated_data):
 
-		account.set_password(password)
-		account.save()
-		return account
+		if not self.validated_data['new_password']:
+			raise serializers.ValidationError({'new_password': 'not found'})
+
+		if not self.validated_data['confirm_password']:
+			raise serializers.ValidationError({'confirm_password': 'not found'})
+
+		if self.validated_data['new_password'] != self.validated_data['confirm_password']:
+			raise serializers.ValidationError({'passwords': 'passwords do not match'})
+
+		if self.validated_data['new_password'] == self.validated_data['confirm_password']:
+			instance.set_password(validated_data['new_password'])
+			instance.save()
+			return instance
+		return instance
 
 class FriendshipSerializer(serializers.ModelSerializer):
     class Meta:

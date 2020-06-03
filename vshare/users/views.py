@@ -14,6 +14,7 @@ from rest_framework.authtoken.models import Token
 
 from users.models import *
 from rest_framework import generics
+from rest_framework import mixins
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
@@ -77,34 +78,48 @@ class UserByUsername(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'username'
     permission_classes = [AllowAny]
 
+class EditProfile(generics.RetrieveUpdateAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = Account.objects.all()
+  serializer_class = EditProfileSerializer
+  lookup_field = 'username'
 
-
-class EditProfile(generics.RetrieveUpdateDestroyAPIView):
-	def check(self):
-		user = self.request.user
-		if Account.objects.get(username=user).photo:
-			response = create_presigned_url('vshare-profile-images', user)
-			if response is not None:
-				http_response = requests.get(response)
-				Account.objects.get(username=user).photo = True
-				return response
-				print(response)
-			else:
-				exit(1)	
-		else:
-			response = create_presigned_post('vshare-profile-images', user)
-			if response is not None:
-				http_response = requests.post(response['url'], data=response['fields'], files=files)
-				logging.info(f'File upload HTTP status code: {http_response.status_code}')
-			else:
-				exit(1)
-
-	permission_classes = [AllowAny]
+class UploadPhoto(mixins.DestroyModelMixin,
+					mixins.CreateModelMixin,
+					generics.GenericAPIView):
+  
+	permission_classes = [IsAuthenticated]
 	queryset = Account.objects.all()
+	serializer_class = UploadPhotoSerializer
 	lookup_field = 'username'
-	serializer_class = EditProfileSerializer
 
+	def perform_create(self, instance):
+		user = instance.context['request'].user
+		if not user.photo:
+			user.photo = True
+		user.save()
 
+	def create(self, request, *args, **kwargs):
+		serializer = self.get_serializer(data=request.data)
+		serializer.is_valid(raise_exception=True)
+		self.perform_create(serializer)
+		return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+	def post(self, request, *args, **kwargs):
+		return self.create(request, *args, **kwargs)
+
+	def perform_destroy(self, instance):
+		if instance.photo:
+			instance.photo = False
+
+	def destroy(self, request, *args, **kwargs):
+		instance = self.get_object()
+		self.perform_destroy(instance)
+		return Response(status=status.HTTP_204_NO_CONTENT)
+
+	def delete(self, request, *args, **kwargs):
+		return self.destroy(request, *args, **kwargs)
+  
 class UserByUsernameSugestion(generics.ListCreateAPIView):
     search_fields = ['username']
     filter_backends = (filters.SearchFilter,)
@@ -180,5 +195,8 @@ class UnfollowUser(generics.DestroyAPIView):
 		queryset = Friendship.objects.filter(who_follows=follower)
 		return queryset
 
-
-
+class ChangePassword(generics.RetrieveUpdateAPIView):
+	queryset= Account.objects.all()
+	serializer_class = ChangePasswordSerializer
+	lookup_field = 'username'
+	permission_classes = [IsAuthenticated]
