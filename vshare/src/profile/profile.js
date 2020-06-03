@@ -24,6 +24,15 @@ class profile extends Component {
 
         const {id} = this.props.match.params;
         $(document).ready(function () {
+           
+            var uploadField = document.getElementById("file-input");
+
+            uploadField.onchange = function() {
+                if(this.files[0].size >51200){
+                   alert("File is too big! please choose another one");
+                  
+                };
+            };
              $(".username_prof").text(username);
             console.log(username);
             if (username == window.localStorage.getItem('username')) {
@@ -117,11 +126,11 @@ class profile extends Component {
 
 
                 var settings = {
-                    "url": "http://185.206.92.246:8000/user/" + username + "/edit/",
+                    "url": "http://185.206.92.246:8000/user/" + username + "/edit_profile/",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
-
+                       
                         "accept": "application/json",
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Allow-Headers": "*",
@@ -132,8 +141,16 @@ class profile extends Component {
 
 
                 $.ajax(settings).done(function (response1) {
-                    console.log(response1)
-                    $(".photo").html(username.toUpperCase()[0]);
+                  var img = $("<img src='"+response1.photo_url+"' />");
+
+img.on('load', function(e){
+    var htmlcode12='<img src="'+response1.photo_url+'" id="photo_img"/>'
+    $(".photo").html(htmlcode12);
+   
+}).on('error', function(e) {
+    $(".photo").html(username.toUpperCase()[0]);
+});
+                   
 
 
                 });
@@ -371,17 +388,26 @@ class profile extends Component {
                 var password_edit = $('#editpassword').val()
                 if (photo_upload != '') {
                     var settings = {
-                        "url": "http://185.206.92.246:8000/user/" + username + "/edit/upload_photo",
+                        "url": "http://185.206.92.246:8000/user/" + username + "/edit_profile/upload_photo/",
                         "method": "POST",
                         "timeout": 0,
-                        "headers": {
+                        success:function(){
+                            var x = document.getElementById("snackbar-succes-edit");
+                            x.className = "show";
+                            setTimeout(function () {
+                                x.className = x.className.replace("show", "");
+                            }, 3000);
+                            window.location.reload()
 
+                        },
+                        "headers": {
+                            "Authorization": "token " + window.localStorage.getItem('token'),
                             "accept": "application/json",
                             "Access-Control-Allow-Origin": "*",
                             "Access-Control-Allow-Headers": "*",
                             "Content-Type": "application/json"
                         },
-
+                    
 
                     };
 
@@ -393,12 +419,12 @@ class profile extends Component {
                         var fd = new FormData();
 
 
-                        fd.append('key', response.fields.key);
+                        fd.append('key', response.upload_photo.fields.key);
                         //  fd.append('acl', 'public-read');
                         //fd.append('Content-Type', file.type);
-                        fd.append('AWSAccessKeyId', response.fields.AWSAccessKeyId);
-                        fd.append('policy', response.fields.policy)
-                        fd.append('signature', response.fields.signature);
+                        fd.append('AWSAccessKeyId', response.upload_photo.fields.AWSAccessKeyId);
+                        fd.append('policy', response.upload_photo.fields.policy)
+                        fd.append('signature', response.upload_photo.fields.signature);
 
                         fd.append("file", file_upload);
 
@@ -409,12 +435,89 @@ class profile extends Component {
                         // xhr.addEventListener("error", uploadFailed, false);
                         // xhr.addEventListener("abort", uploadCanceled, false);
 
-                        xhr.open('POST', response.url, true); //MUST BE LAST LINE BEFORE YOU SEND
+                        xhr.open('POST', response.upload_photo.url, true); //MUST BE LAST LINE BEFORE YOU SEND
 
                         xhr.send(fd);
+                  
                     })
                 }
+if(password_edit!=''){
+    var settings = {
+        "url": "http://185.206.92.246:8000/user/"+username+"/edit_profile/change_password/",
+        "method": "PATCH",
+        "timeout": 0,
+        success:function(){
+            var x = document.getElementById("snackbar-succes-edit");
+            x.className = "show";
+            setTimeout(function () {
+                x.className = x.className.replace("show", "");
+            }, 3000);
+            $(".modal_edite_profile").fadeOut();
 
+        },
+        "headers": {
+            "Authorization": "token " + window.localStorage.getItem('token'),
+            "accept": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "*",
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+            "new_password": password_edit,
+            "confirm_password": password_edit,
+          
+        }),
+
+    };
+
+    $.ajax(settings).done(function (response) {
+
+        console.log(response)
+    })
+}
+
+if(email_edit!=''){
+    var settings = {
+        "url": "http://185.206.92.246:8000/user/"+username+"/edit_profile/",
+        "method": "PATCH",
+        "timeout": 0,
+        error:function(){
+            var x = document.getElementById("snackbar-not-valid");
+            x.className = "show";
+            setTimeout(function () {
+                x.className = x.className.replace("show", "");
+            }, 3000);
+           
+        },
+        success:function(){
+            var x = document.getElementById("snackbar-succes-edit");
+            x.className = "show";
+            setTimeout(function () {
+                x.className = x.className.replace("show", "");
+            }, 3000);
+            $(".modal_edite_profile").fadeOut();
+
+        },
+        "headers": {
+            "Authorization": "token " + window.localStorage.getItem('token'),
+            "accept": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "*",
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+            "email": email_edit,
+            
+          
+        }),
+
+    };
+
+    $.ajax(settings).done(function (response) {
+
+        console.log(response)
+    })
+}
 
             })
             $(".unfollow-btn").click(function () {
@@ -725,7 +828,7 @@ class profile extends Component {
 
                 <div className="back_prof">
 
-                    <div className='MuiAvatar-root MuiAvatar-circle photo MuiAvatar-colorDefault photo'>&nbsp;</div>
+                    <div className='MuiAvatar-root MuiAvatar-circle photo MuiAvatar-colorDefault photo' id='photo_back'>&nbsp;</div>
 
                     <div className="username_prof">USERNAME</div>
 
@@ -745,14 +848,14 @@ class profile extends Component {
                             <div class="image-upload">
                                 <label for="file-input">
                                     <img
-                                        src="http://185.206.92.246:9000/minio/download/test/download.png?token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiJtaW5pbyIsImV4cCI6MTU5MTA2MjMwMCwic3ViIjoibWluaW8ifQ.4GxEaTiHCu8bJQdIHRNv4eJGv0mqCdgRIBQU_8iBKL-QBju2HtlJOdBan335lAifhW6xWi9rze-pkbEKC3jhqA"/>
+                                        src={Dorbin}/>
                                 </label>
 
                                 <input id="file-input" type="file" accept=" image/jpeg, image/png"/>
                             </div>
                             <p className='status-upload'/>
-                            <input class="inputedit" id='editemail' placeholder="PassWord"></input>
-                            <input class="inputedit" id='editpassword' placeholder="Email"></input>
+                            <input type="email" class="inputedit" id='editemail' placeholder="Email" autocomplete="off"></input>
+                            <input type="password" class="inputedit" id='editpassword' placeholder="Password" ></input>
                             <br></br>
                             <button style={{
                                 backgroundColor: "Red",
@@ -832,9 +935,12 @@ class profile extends Component {
                 <div className="search-result" id='res'></div>
                 <div id="snackbar-succes-join">Successfully join</div>
                 <div id="snackbar-already">User is already a member of this group</div>
+                <div id="snackbar-succes-edit">Successfully edit</div>
+                <div id="snackbar-not-valid">Email is not valid</div>
+                
             </div>
-
         )
+        
     }
 }
 

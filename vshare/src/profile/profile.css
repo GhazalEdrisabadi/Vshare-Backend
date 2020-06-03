@@ -29,8 +29,17 @@
     font-size: 15px;
     color: white;
     font-size: 30px;
-    font-family: 'Malgun Gothic'
+    font-family: 'Malgun Gothic';
+    overflow-x:hidden;
+width: 100px;
 
+     text-overflow: ellipsis;
+
+}
+.username_prof:hover{
+width: fit-content;
+z-index: 999;
+background-color: black;
 }
 .back_prof{
   box-shadow: black;
@@ -3839,6 +3848,47 @@ cursor:pointer;
     -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
   }
+  #snackbar-succes-edit {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+  }
+  #snackbar-succes-edit.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+  #snackbar-not-valid {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+  }
+  #snackbar-not-valid.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+  
   .image-upload > input
   {
       display: none;
@@ -3848,4 +3898,8 @@ cursor:pointer;
   {
       width: 120px;
       cursor: pointer;
+  }
+  #photo_img{
+      max-width:100% ;
+      max-height: 100%;
   }

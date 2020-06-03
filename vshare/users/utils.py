@@ -10,7 +10,7 @@ def create_presigned_url(bucket_name, object_name, expiration=3600):
       's3',
       aws_access_key_id = 'minio',
       aws_secret_access_key = 'miniostorage',
-      endpoint_url = 'http://localhost:9000',
+      endpoint_url = 'http://185.206.92.246:9000',
     )
 
     try:
@@ -32,7 +32,7 @@ def create_presigned_post(bucket_name, object_name,
       's3',
       aws_access_key_id = 'minio',
       aws_secret_access_key = 'miniostorage',
-      endpoint_url = 'http://localhost:9000',
+      endpoint_url = 'http://185.206.92.246:9000',
     )
 
 

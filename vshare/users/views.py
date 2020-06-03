@@ -79,7 +79,7 @@ class UserByUsername(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [AllowAny]
 
 class EditProfile(generics.RetrieveUpdateAPIView):
-  permission_classes = [IsAuthenticated]
+  permission_classes = [AllowAny]
   queryset = Account.objects.all()
   serializer_class = EditProfileSerializer
   lookup_field = 'username'
