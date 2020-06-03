@@ -24,6 +24,8 @@ class profile extends Component {
 
         const {id} = this.props.match.params;
         $(document).ready(function () {
+       
+           
              $(".username_prof").text(username);
             console.log(username);
             if (username == window.localStorage.getItem('username')) {
@@ -32,7 +34,7 @@ class profile extends Component {
                 document.getElementById("left-button").style.display = 'none'
             }
             var settings = {
-                "url": "http://185.206.92.246:8000/user/relations/followers/?user=" + username + "",
+                "url": "http://localhost:8000/user/relations/followers/?user=" + username + "",
                 "method": "GET",
                 "timeout": 0,
                 "headers": {
@@ -53,7 +55,7 @@ class profile extends Component {
 
             });
             var settings = {
-                "url": "http://185.206.92.246:8000/user/relations/followings/?user=" + username + "",
+                "url": "http://localhost:8000/user/relations/followings/?user=" + username + "",
                 "method": "GET",
                 "timeout": 0,
                 "headers": {
@@ -81,7 +83,7 @@ class profile extends Component {
                 document.getElementById("uf-btn").style.display = 'none'
             } else {
                 var settings = {
-                    "url": "http://185.206.92.246:8000/user/followings/find/" + username + "/",
+                    "url": "http://localhost:8000/user/followings/find/" + username + "/",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -117,11 +119,11 @@ class profile extends Component {
 
 
                 var settings = {
-                    "url": "http://185.206.92.246:8000/user/" + username + "/edit/",
+                    "url": "http://localhost:8000/user/" + username + "/edit_profile/",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
-
+                       
                         "accept": "application/json",
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Allow-Headers": "*",
@@ -132,8 +134,16 @@ class profile extends Component {
 
 
                 $.ajax(settings).done(function (response1) {
-                    console.log(response1)
-                    $(".photo").html(username.toUpperCase()[0]);
+                  var img = $("<img src='"+response1.photo_url+"' />");
+
+img.on('load', function(e){
+    var htmlcode12='<img src="'+response1.photo_url+'" id="photo_img"/>'
+    $(".photo").html(htmlcode12);
+   
+}).on('error', function(e) {
+    $(".photo").html(username.toUpperCase()[0]);
+});
+                   
 
 
                 });
@@ -151,7 +161,7 @@ class profile extends Component {
                 var user_search = $('.inp-search').val()
 
                 var settings = {
-                    "url": "http://185.206.92.246:8000/user/find/username/?search=" + user_search + "",
+                    "url": "http://localhost:8000/user/find/username/?search=" + user_search + "",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -200,7 +210,7 @@ class profile extends Component {
                 });
 
                 var settings = {
-                    "url": "http://185.206.92.246:8000/groups/?search=" + user_search + "",
+                    "url": "http://localhost:8000/groups/?search=" + user_search + "",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -267,7 +277,7 @@ class profile extends Component {
             })
             $(".join-yes ").click(function () {
                 var settings = {
-                    "url": "http://185.206.92.246:8000/group/join/",
+                    "url": "http://localhost:8000/group/join/",
                     "method": "POST",
                     "timeout": 0,
                     error: function (event) {
@@ -284,7 +294,7 @@ class profile extends Component {
                     },
                     success: function () {
                         var settings = {
-                            "url": "http://185.206.92.246:8000/group/permissions/",
+                            "url": "http://localhost:8000/group/permissions/",
                             "method": "POST",
                             error: function () {
 
@@ -371,11 +381,11 @@ class profile extends Component {
                 var password_edit = $('#editpassword').val()
                 if (photo_upload != '') {
                     var settings = {
-                        "url": "http://185.206.92.246:8000/user/" + username + "/edit/upload_photo",
+                        "url": "http://localhost:8000/user/" + username + "/edit_profile/upload_photo/",
                         "method": "POST",
                         "timeout": 0,
                         "headers": {
-
+                            "Authorization": "token " + window.localStorage.getItem('token'),
                             "accept": "application/json",
                             "Access-Control-Allow-Origin": "*",
                             "Access-Control-Allow-Headers": "*",
@@ -393,12 +403,12 @@ class profile extends Component {
                         var fd = new FormData();
 
 
-                        fd.append('key', response.fields.key);
+                        fd.append('key', response.upload_photo.fields.key);
                         //  fd.append('acl', 'public-read');
                         //fd.append('Content-Type', file.type);
-                        fd.append('AWSAccessKeyId', response.fields.AWSAccessKeyId);
-                        fd.append('policy', response.fields.policy)
-                        fd.append('signature', response.fields.signature);
+                        fd.append('AWSAccessKeyId', response.upload_photo.fields.AWSAccessKeyId);
+                        fd.append('policy', response.upload_photo.fields.policy)
+                        fd.append('signature', response.upload_photo.fields.signature);
 
                         fd.append("file", file_upload);
 
@@ -409,7 +419,7 @@ class profile extends Component {
                         // xhr.addEventListener("error", uploadFailed, false);
                         // xhr.addEventListener("abort", uploadCanceled, false);
 
-                        xhr.open('POST', response.url, true); //MUST BE LAST LINE BEFORE YOU SEND
+                        xhr.open('POST', response.upload_photo.url, true); //MUST BE LAST LINE BEFORE YOU SEND
 
                         xhr.send(fd);
                     })
@@ -419,7 +429,7 @@ class profile extends Component {
             })
             $(".unfollow-btn").click(function () {
                 var settings = {
-                    "url": "http://185.206.92.246:8000/user/followers/unfollow/" + username + "/",
+                    "url": "http://localhost:8000/user/followers/unfollow/" + username + "/",
                     "method": "DELETE",
                     "timeout": 0,
                     "headers": {
@@ -445,7 +455,7 @@ class profile extends Component {
             })
             $(".follow-btn").click(function () {
                 var settings = {
-                    "url": "http://185.206.92.246:8000/user/relations/follow/",
+                    "url": "http://localhost:8000/user/relations/follow/",
                     "method": "POST",
                     "timeout": 0,
                     "headers": {
@@ -491,7 +501,7 @@ class profile extends Component {
 
                 $(".modal-content-following").append(html)
                 var settings = {
-                    "url": "http://185.206.92.246:8000/user/relations/followings/?user=" + username + "",
+                    "url": "http://localhost:8000/user/relations/followings/?user=" + username + "",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -547,7 +557,7 @@ class profile extends Component {
 
                 $(".modal-content-follower").append(html)
                 var settings = {
-                    "url": "http://185.206.92.246:8000/user/relations/followers/?user=" + username + "",
+                    "url": "http://localhost:8000/user/relations/followers/?user=" + username + "",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -611,7 +621,7 @@ class profile extends Component {
             var groups = [];
 
             var settings = {
-                "url": "http://185.206.92.246:8000/group/user_groups/?user_id=" + username + "",
+                "url": "http://localhost:8000/group/user_groups/?user_id=" + username + "",
                 "method": "GET",
                 "timeout": 0,
                 "headers": {},
@@ -725,7 +735,7 @@ class profile extends Component {
 
                 <div className="back_prof">
 
-                    <div className='MuiAvatar-root MuiAvatar-circle photo MuiAvatar-colorDefault photo'>&nbsp;</div>
+                    <div className='MuiAvatar-root MuiAvatar-circle photo MuiAvatar-colorDefault photo' id='photo_back'>&nbsp;</div>
 
                     <div className="username_prof">USERNAME</div>
 
@@ -745,7 +755,7 @@ class profile extends Component {
                             <div class="image-upload">
                                 <label for="file-input">
                                     <img
-                                        src="http://185.206.92.246:9000/minio/download/test/download.png?token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiJtaW5pbyIsImV4cCI6MTU5MTA2MjMwMCwic3ViIjoibWluaW8ifQ.4GxEaTiHCu8bJQdIHRNv4eJGv0mqCdgRIBQU_8iBKL-QBju2HtlJOdBan335lAifhW6xWi9rze-pkbEKC3jhqA"/>
+                                        src={Dorbin}/>
                                 </label>
 
                                 <input id="file-input" type="file" accept=" image/jpeg, image/png"/>

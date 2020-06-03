@@ -22,7 +22,7 @@ class sl extends Component {
                 var password = $(":password").val();
 
                 var settings = {
-                    "url": "http://185.206.92.246:8000/user/signup/",
+                    "url": "http://localhost:8000/user/signup/",
                     "method": "POST",
                     "timeout": 0,
                     error: function () {
@@ -107,7 +107,7 @@ class sl extends Component {
                 var username = $(".loginusername").val();
                 var password = $(".loginpassword").val();
                 var settings = {
-                    "url": "http://185.206.92.246:8000/user/login/",
+                    "url": "http://localhost:8000/user/login/",
                     "method": "POST",
                     "timeout": 0,
                     error: function () {

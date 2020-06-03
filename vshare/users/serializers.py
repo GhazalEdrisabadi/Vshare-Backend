@@ -103,7 +103,7 @@ class UploadPhotoSerializer(serializers.ModelSerializer):
 	def to_representation(self, instance):
 		ret = super().to_representation(instance)
 		user = self.context["request"].user
-		upload_url = create_presigned_post('vhare-profile-images',user.username)
+		upload_url = create_presigned_post('vshare-profile-images',user.username)
 		ret["upload_photo"] = upload_url
 		return ret
     
@@ -121,7 +121,7 @@ class EditProfileSerializer(serializers.ModelSerializer):
 	def get_photo_url(self, obj):
 		username = obj.username
 		# if Account.objects.get(username=username).photo:
-		return create_presigned_url('vhare-profile-images',username)
+		return create_presigned_url('vshare-profile-images',username)
 		# else:
 		# 	raise ValidationError("User's photo is not found")
 
