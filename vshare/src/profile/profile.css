@@ -29,8 +29,17 @@
     font-size: 15px;
     color: white;
     font-size: 30px;
-    font-family: 'Malgun Gothic'
+    font-family: 'Malgun Gothic';
+    overflow-x:hidden;
+width: 100px;
 
+     text-overflow: ellipsis;
+
+}
+.username_prof:hover{
+width: fit-content;
+z-index: 999;
+background-color: black;
 }
 .back_prof{
   box-shadow: black;
