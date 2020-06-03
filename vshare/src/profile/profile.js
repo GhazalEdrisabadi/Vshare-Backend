@@ -34,7 +34,7 @@ class profile extends Component {
                 document.getElementById("left-button").style.display = 'none'
             }
             var settings = {
-                "url": "http://localhost:8000/user/relations/followers/?user=" + username + "",
+                "url": "http://185.206.92.246:8000/user/relations/followers/?user=" + username + "",
                 "method": "GET",
                 "timeout": 0,
                 "headers": {
@@ -55,7 +55,7 @@ class profile extends Component {
 
             });
             var settings = {
-                "url": "http://localhost:8000/user/relations/followings/?user=" + username + "",
+                "url": "http://185.206.92.246:8000/user/relations/followings/?user=" + username + "",
                 "method": "GET",
                 "timeout": 0,
                 "headers": {
@@ -83,7 +83,7 @@ class profile extends Component {
                 document.getElementById("uf-btn").style.display = 'none'
             } else {
                 var settings = {
-                    "url": "http://localhost:8000/user/followings/find/" + username + "/",
+                    "url": "http://185.206.92.246:8000/user/followings/find/" + username + "/",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -119,7 +119,7 @@ class profile extends Component {
 
 
                 var settings = {
-                    "url": "http://localhost:8000/user/" + username + "/edit_profile/",
+                    "url": "http://185.206.92.246:8000/user/" + username + "/edit_profile/",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -161,7 +161,7 @@ img.on('load', function(e){
                 var user_search = $('.inp-search').val()
 
                 var settings = {
-                    "url": "http://localhost:8000/user/find/username/?search=" + user_search + "",
+                    "url": "http://185.206.92.246:8000/user/find/username/?search=" + user_search + "",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -210,7 +210,7 @@ img.on('load', function(e){
                 });
 
                 var settings = {
-                    "url": "http://localhost:8000/groups/?search=" + user_search + "",
+                    "url": "http://185.206.92.246:8000/groups/?search=" + user_search + "",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -277,7 +277,7 @@ img.on('load', function(e){
             })
             $(".join-yes ").click(function () {
                 var settings = {
-                    "url": "http://localhost:8000/group/join/",
+                    "url": "http://185.206.92.246:8000/group/join/",
                     "method": "POST",
                     "timeout": 0,
                     error: function (event) {
@@ -294,7 +294,7 @@ img.on('load', function(e){
                     },
                     success: function () {
                         var settings = {
-                            "url": "http://localhost:8000/group/permissions/",
+                            "url": "http://185.206.92.246:8000/group/permissions/",
                             "method": "POST",
                             error: function () {
 
@@ -381,7 +381,7 @@ img.on('load', function(e){
                 var password_edit = $('#editpassword').val()
                 if (photo_upload != '') {
                     var settings = {
-                        "url": "http://localhost:8000/user/" + username + "/edit_profile/upload_photo/",
+                        "url": "http://185.206.92.246:8000/user/" + username + "/edit_profile/upload_photo/",
                         "method": "POST",
                         "timeout": 0,
                         success:function(){
@@ -436,7 +436,7 @@ img.on('load', function(e){
                 }
 if(password_edit!=''){
     var settings = {
-        "url": "http://localhost:8000/user/"+username+"/edit_profile/change_password/",
+        "url": "http://185.206.92.246:8000/user/"+username+"/edit_profile/change_password/",
         "method": "PATCH",
         "timeout": 0,
         success:function(){
@@ -471,7 +471,7 @@ if(password_edit!=''){
 
 if(email_edit!=''){
     var settings = {
-        "url": "http://localhost:8000/user/"+username+"/edit_profile/",
+        "url": "http://185.206.92.246:8000/user/"+username+"/edit_profile/",
         "method": "PATCH",
         "timeout": 0,
         error:function(){
@@ -515,7 +515,7 @@ if(email_edit!=''){
             })
             $(".unfollow-btn").click(function () {
                 var settings = {
-                    "url": "http://localhost:8000/user/followers/unfollow/" + username + "/",
+                    "url": "http://185.206.92.246:8000/user/followers/unfollow/" + username + "/",
                     "method": "DELETE",
                     "timeout": 0,
                     "headers": {
@@ -541,7 +541,7 @@ if(email_edit!=''){
             })
             $(".follow-btn").click(function () {
                 var settings = {
-                    "url": "http://localhost:8000/user/relations/follow/",
+                    "url": "http://185.206.92.246:8000/user/relations/follow/",
                     "method": "POST",
                     "timeout": 0,
                     "headers": {
@@ -587,7 +587,7 @@ if(email_edit!=''){
 
                 $(".modal-content-following").append(html)
                 var settings = {
-                    "url": "http://localhost:8000/user/relations/followings/?user=" + username + "",
+                    "url": "http://185.206.92.246:8000/user/relations/followings/?user=" + username + "",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -643,7 +643,7 @@ if(email_edit!=''){
 
                 $(".modal-content-follower").append(html)
                 var settings = {
-                    "url": "http://localhost:8000/user/relations/followers/?user=" + username + "",
+                    "url": "http://185.206.92.246:8000/user/relations/followers/?user=" + username + "",
                     "method": "GET",
                     "timeout": 0,
                     "headers": {
@@ -707,7 +707,7 @@ if(email_edit!=''){
             var groups = [];
 
             var settings = {
-                "url": "http://localhost:8000/group/user_groups/?user_id=" + username + "",
+                "url": "http://185.206.92.246:8000/group/user_groups/?user_id=" + username + "",
                 "method": "GET",
                 "timeout": 0,
                 "headers": {},
