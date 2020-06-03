@@ -24,8 +24,15 @@ class profile extends Component {
 
         const {id} = this.props.match.params;
         $(document).ready(function () {
-       
            
+            var uploadField = document.getElementById("file-input");
+
+            uploadField.onchange = function() {
+                if(this.files[0].size >51200){
+                   alert("File is too big! please choose another one");
+                  
+                };
+            };
              $(".username_prof").text(username);
             console.log(username);
             if (username == window.localStorage.getItem('username')) {
