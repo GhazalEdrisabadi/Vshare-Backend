@@ -526,7 +526,7 @@ class Homepage extends Component {
 
                     alert("Login please !");
 
-                    window.location.replace("/startpage/");
+                    window.location.replace("/");
 
                 }
 
@@ -653,7 +653,7 @@ class Homepage extends Component {
 
                     window.localStorage.clear();
 
-                    window.location.replace("/startpage/");
+                    window.location.replace("/");
 
                 });
 

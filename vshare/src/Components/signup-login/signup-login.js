@@ -153,7 +153,7 @@ class sl extends Component {
                 <div id="snackbarloginsignup"></div>
 
                 <h2 className='boro'>vSharee vSharee vSharee vSharee vSharee vSharee  v</h2>
-                <a href='/startpage'><div class='homepagebtn2'>Start page</div></a>
+                <a href='/'><div class='homepagebtn2'>Landing page</div></a>
                 <div class="container" id="container">
                     <div class="form-container sign-up-container">
                         <form className='form1' action="#">
