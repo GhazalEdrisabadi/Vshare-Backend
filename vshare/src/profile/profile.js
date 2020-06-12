@@ -804,7 +804,7 @@ if(email_edit!=''){
                         <div className='searchgp'>
 
 
-                            <input placeholder='search' className='inp-search'/>
+                            <input placeholder='search' className='inp-search' autocomplete="off" />
 
 
                             <div id='joinstatus' className='statusofjoin'>

@@ -16,10 +16,10 @@ const App = () => {
         <Switch>
                 <Route path="/homepage" component={Homepage}/>
                 <Route path="/login" component={Login}/>
-                <Route path="/" component={Start}/>
+                <Route exact path="/" component={Start}/>
                 <Route path="/about" component={About} />
                 <Route path="/profile/:id" component={Profile} />
-                <Route exact path="/group/:id"  component={Chat} />
+                <Route path="/group/:id"  component={Chat} />
         </Switch>           
         </Router>
  
