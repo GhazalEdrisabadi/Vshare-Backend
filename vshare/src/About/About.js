@@ -12,7 +12,7 @@ class About extends Component {
 
                 <h1 className="mem_team">About Us</h1>
               <div className='kolli_about'>
-                <div className='homepagebtn'><a href='../startpage'>Start page</a></div>
+                <div className='homepagebtn'><a href='/'>Landing page</a></div>
                 <div className="div_kamyab"><img src={Kamyab} className="kamyab" /></div>
                 <div className="div_poria"><img src={Poria} className="poria" /></div>
                 <div className="div_mobin"><img src={Mobin} className="mobin" /></div>
