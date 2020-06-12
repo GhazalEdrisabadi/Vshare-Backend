@@ -5,8 +5,11 @@ from django.db.models import Q
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from rest_framework import authentication
-#from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
+import logging
+import boto3
+from botocore.exceptions import ClientError
+from users.utils import *
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -83,7 +86,74 @@ class UserLoginSerializer(serializers.ModelSerializer):
 		return data
 
 class AccountSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Account
         fields = '__all__'
+
+class UploadPhotoSerializer(serializers.ModelSerializer):
+
+	class Meta(object):
+		model = Account
+		fields = ['username','photo']
+		extra_kwargs = {
+				'username': {'read_only' : True}
+    }
+    
+  	# Cast the generated url of upload photo to dictionary
+	def to_representation(self, instance):
+		ret = super().to_representation(instance)
+		user = self.context["request"].user
+		upload_url = create_presigned_post('vshare-profile-images',user.username)
+		ret["upload_photo"] = upload_url
+		return ret
+    
+class EditProfileSerializer(serializers.ModelSerializer):
+    
+	photo_url = serializers.SerializerMethodField('get_photo_url')
+
+	class Meta:
+		model = Account
+		fields = ['photo_url','email']
+		extra_kwargs = {
+				'email':{'allow_blank' : True, 'required':False},
+		}
+		
+	def get_photo_url(self, obj):
+		username = obj.username
+		# if Account.objects.get(username=username).photo:
+		return create_presigned_url('vshare-profile-images',username)
+		# else:
+		# 	raise ValidationError("User's photo is not found")
+
+class ChangePasswordSerializer(serializers.ModelSerializer):
+	confirm_password = serializers.CharField(write_only=True)
+	new_password = serializers.CharField(write_only=True)
+
+	class Meta:
+		model = Account
+		fields = ['username','new_password','confirm_password']
+		extra_kwargs = {
+				'username':{'read_only':True},
+		}
+
+	def update(self, instance, validated_data):
+
+		if not self.validated_data['new_password']:
+			raise serializers.ValidationError({'new_password': 'not found'})
+
+		if not self.validated_data['confirm_password']:
+			raise serializers.ValidationError({'confirm_password': 'not found'})
+
+		if self.validated_data['new_password'] != self.validated_data['confirm_password']:
+			raise serializers.ValidationError({'passwords': 'passwords do not match'})
+
+		if self.validated_data['new_password'] == self.validated_data['confirm_password']:
+			instance.set_password(validated_data['new_password'])
+			instance.save()
+			return instance
+		return instance
+
+class FriendshipSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Friendship
+        fields = '__all__'  

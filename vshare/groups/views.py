@@ -1,8 +1,8 @@
 from rest_framework import generics
-from .models import Group , Membership , AcceptedClient , Message , OnlineUser
+from .models import *
 from users.models import Account
 from .serializers import GroupRegistrationSerializer
-from .serializers import GroupSerializer , MembershipSerializer , GroupUpdateSerializer ,AcceptedClientSerializer , MessageSerializer , OnlineUserSerializer
+from .serializers import *
 from rest_framework import filters
 from rest_framework import status
 from rest_framework import viewsets
@@ -20,6 +20,21 @@ from rest_framework.permissions import (
 		IsAdminUser,
 		IsAuthenticatedOrReadOnly,
 	)
+
+class PermissionList(generics.ListCreateAPIView):
+    queryset = Permission.objects.all()
+    serializer_class = PermissionSerializer
+    permission_classes = [AllowAny]
+
+class DeletePermission(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = PermissionSerializer
+    permission_classes = [AllowAny]
+    lookup_field='group'
+    def get_queryset(self):
+        the_member= self.request.query_params.get('member')
+        queryset = Permission.objects.filter(member=the_member)
+        return queryset
+
 class OnlineUserList(generics.ListAPIView):
     #queryset = OnlineUser.objects.all()
     serializer_class = OnlineUserSerializer
@@ -82,7 +97,7 @@ class AddMembershipList(generics.ListCreateAPIView):
 
 class GroupsOfUser(generics.ListAPIView):
     serializer_class = MembershipSerializer
-
+    permission_classes = [AllowAny]
     def get_queryset(self):
         """
         This view should return a list of all the records
@@ -90,7 +105,14 @@ class GroupsOfUser(generics.ListAPIView):
         """
         user = self.request.user
         return Membership.objects.filter(the_member=user)
-        
+
+class GroupsOfSearchedUser(generics.ListAPIView):
+    serializer_class = MembershipSerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+        user= self.request.query_params.get('user_id')
+        return Membership.objects.filter(the_member=user)
+
 class GroupsWhichUserIsAdmin(generics.ListAPIView):
     serializer_class = GroupSerializer
 

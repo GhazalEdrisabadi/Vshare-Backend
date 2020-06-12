@@ -40,13 +40,11 @@ class MyAccountManager(BaseUserManager):
 
 class Account(AbstractBaseUser):
 	# notice the absence of a "Password field", that's built in.
-	photo = models.ImageField(upload_to='userimage', blank=True)
+	photo = models.BooleanField(default=False)
 	firstname = models.CharField(max_length=50)
 	lastname = models.CharField(max_length=50)
-
 	username = models.CharField(max_length=20, primary_key=True)
-
-	email = models.EmailField(max_length=100)
+	email = models.EmailField(max_length=100, unique=True)
 	is_admin = models.BooleanField(default=False)	# a superuser
 	is_active = models.BooleanField(default=True)
 	is_staff = models.BooleanField(default=False)	# a admin user; non super-user
@@ -68,8 +66,17 @@ class Account(AbstractBaseUser):
 	#Does this user have permission to view this app?(ALWAYS YES FOR SIMPLICITY)
 	def has_module_perms(self, app_label):
 		return True
-	
+
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
 	if created:
 		Token.objects.create(user=instance)
+
+class Friendship(models.Model):
+	who_follows = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name="top")
+	who_is_followed = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name="bot")
+	the_date = models.DateTimeField(auto_now_add=True)
+	class Meta:
+		ordering = ['the_date']
+		unique_together = ("who_follows", "who_is_followed")
+

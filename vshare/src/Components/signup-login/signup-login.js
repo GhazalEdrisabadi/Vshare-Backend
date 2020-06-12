@@ -4,6 +4,7 @@ import $ from 'jquery';
 import jQuery from 'jquery'
 import {Cookies} from 'js-cookie'
 
+var checksamepass=1;
 class sl extends Component {
     componentDidMount() {
         $(document).ready(function () {
@@ -12,8 +13,8 @@ class sl extends Component {
 
             $(".signupbtn").click(function () {
 
-
-                var username = $(".susername").val();
+                if (checksamepass == 1){
+                    var username = $(".susername").val();
                 var firstname = $(".firstname").val();
                 var lastname = $(".lastname").val();
                 var email = $(".email").val();
@@ -21,14 +22,19 @@ class sl extends Component {
                 var password = $(":password").val();
 
                 var settings = {
-                    "url": "http://127.0.0.1:8000/user/signup/",
+                    "url": "http://185.206.92.246:8000/user/signup/",
                     "method": "POST",
                     "timeout": 0,
                     error: function () {
-                        $("#statussignup").text("All field are required and enter a valid email address !");
+
                     },
                     success: function () {
-                        // window.location.replace("/login");
+                        var x = document.getElementById("snackbarloginsignup");
+                        x.innerHTML = "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  Account successfully created &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
+                        x.className = "show";
+                        setTimeout(function () {
+                            x.className = x.className.replace("show", "");
+                        }, 4000);
                     },
                     "headers": {
                         "accept": "application/json",
@@ -46,17 +52,44 @@ class sl extends Component {
                     }),
                 };
                 $.ajax(settings).done(function (response) {
-                    console.log(response);
+
                 });
+                $.ajax(settings).fail(function (response) {
+                    document.getElementById("snackbarloginsignup").innerHTML = '';
+
+                    var json = JSON.parse(response.responseText);
+                    var keys2 = Object.keys(json);
+                    for (var counterforsignup = 0; counterforsignup < keys2.length; counterforsignup++) {
+                        var x = document.getElementById("snackbarloginsignup");
+                        x.innerHTML += keys2[counterforsignup] + " : " + json[keys2[counterforsignup]] + '<br>';
+                        x.className = "show";
+                        setTimeout(function () {
+                            x.className = x.className.replace("show", "");
+                        }, 8000);
+
+                    }
+                });
+            }
+                else{
+                    var x = document.getElementById("snackbarloginsignup");
+                        x.innerHTML = "Your password doesn't match"
+                        x.className = "show";
+                        setTimeout(function () {
+                            x.className = x.className.replace("show", "");
+                        }, 4000);
+                }
             });
+
             $(".cpassword").blur(function () {
                 var password = $(":password").val();
                 var cpassword = $(".cpassword").val();
                 if (cpassword != password) {
                     $("#checkpass").text("Passwords dose not match !");
+                    checksamepass=0;
 
                 } else {
                     $("#checkpass").text("");
+                    checksamepass=1;
                 }
             });
         });
@@ -64,7 +97,7 @@ class sl extends Component {
 /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
 
-        $(document).ready(function () {
+
             $("#status").text("");
             $("#forget").click(function () {
                 alert("I'm just a demo version :)");
@@ -74,7 +107,7 @@ class sl extends Component {
                 var username = $(".loginusername").val();
                 var password = $(".loginpassword").val();
                 var settings = {
-                    "url": "http://127.0.0.1:8000/user/login/",
+                    "url": "http://185.206.92.246:8000/user/login/",
                     "method": "POST",
                     "timeout": 0,
                     error: function () {
@@ -89,41 +122,19 @@ class sl extends Component {
                     "data": JSON.stringify({"username": username, "password": password}),
                 };
                 $.ajax(settings).done(function (response) {
-                    console.log(response);
-                    if (response.status === 400) {
-                        console.log("no");
-                    } else {
-                        function getCSRFToken() {
-                            var cookieValue = null;
-                            if (document.cookie && document.cookie != '') {
-                                var cookies = document.cookie.split(';');
-                                for (var i = 0; i < cookies.length; i++) {
-                                    var cookie = jQuery.trim(cookies[i]);
-                                    if (cookie.substring(0, 10) == ('csrftoken' + '=')) {
-                                        cookieValue = decodeURIComponent(cookie.substring(10));
-                                        break;
-                                    }
-                                }
-                            }
-                            return cookieValue;
-                        }
 
-                        var csrftoken = getCSRFToken();
-                        console.log(csrftoken)
-                        // Cookies.set('csrftoken');
                         window.localStorage.setItem('token', response.token);
-                        window.localStorage.setItem('username', username);
+                        window.localStorage.setItem('username', response.username);
+                          window.localStorage.setItem('user', response.username)
                         window.location.replace("/homepage");
-                    }
+
 
                 });
             });
-        });
 
 //////////////////////
 ////////////////////
 /////////////////////
-        window.onload = function () {
             const signUpButton = document.getElementById('signUp');
             const signInButton = document.getElementById('signIn');
             const container = document.getElementById('container');
@@ -133,22 +144,22 @@ class sl extends Component {
             signInButton.addEventListener('click', () => {
                 container.classList.remove("right-panel-active");
             });
-        }
+
     }
 
     render() {
         return (
             <dev>
+                <div id="snackbarloginsignup"></div>
 
-
-                <div class='homepagebtn2'><a href='./startpage'>Start page</a></div>
+                <h2 className='boro'>vSharee vSharee vSharee vSharee vSharee vSharee  v</h2>
+                <a href='/'><div class='homepagebtn2'>Landing page</div></a>
                 <div class="container" id="container">
                     <div class="form-container sign-up-container">
-                        <form action="#">
+                        <form className='form1' action="#">
                             <h1 class="CreatAccount">Create Account</h1>
                             <p id='statussignup'></p>
                             <div class="social-container">
-
                             </div>
                             <input type="text" placeholder="Fisrt name" class='firstname'/>
                             <input type="text" placeholder="Last name" class='lastname'/>
@@ -162,7 +173,7 @@ class sl extends Component {
                         </form>
                     </div>
                     <div class="form-container sign-in-container">
-                        <form action="#">
+                        <form className='form1'  action="#">
                             <h1>Sign in</h1>
                             <div class="social-container">
 
@@ -179,27 +190,17 @@ class sl extends Component {
                     <div class="overlay-container">
                         <div class="overlay">
                             <div class="overlay-panel overlay-left">
-                                <h1>Intro of vShare</h1>
-                                <p>Vshare is a web-base service which allows you to watch a video file with other users
-                                    at the same time.
-                                    All the participants can send messages through the room while The video is playing
-                                    for everyone. This service doesn’t stream the video , actually , it works when every
-                                    participant has a similar video file locally on his/her device. While the video is
-                                    playing , every changes to the video playback by any participant affects on what
-                                    other clients are watching at the same time.
+                                <h1>Intro of vSharee</h1>
+                                <p className='explain-txt'>Vsharee is a web-base service which allows you to watch a video file with other users at the same time. You can talk through the movie with each other
                                 </p>
                                 <button class="ghost" id="signIn">Sign In</button>
                             </div>
                             <div class="overlay-panel overlay-right">
-                                <h1>Intro of vShare</h1>
-                                <p>Vshare is a web-base service which allows you to watch a video file with other users
-                                    at the same time.
-                                    All the participants can send messages through the room while The video is playing
-                                    for everyone. This service doesn’t stream the video , actually , it works when every
-                                    participant has a similar video file locally on his/her device. While the video is
-                                    playing , every changes to the video playback by any participant affects on what
-                                    other clients are watching at the same time.
+                                <h1>Intro of vSharee</h1>
+                                <p className='explain-txt'>Vsharee is a web-base service which allows you to watch a video file with other users at the same time. You can talk through the movie with each other
                                 </p>
+                                   <hr></hr>
+                                   <hr></hr>
                                 <button class="ghost" id="signUp">Sign Up</button>
                             </div>
                         </div>
