@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import './signup-logincss.css'
 import $ from 'jquery';
-import jQuery from 'jquery'
-import {Cookies} from 'js-cookie'
+
 
 var checksamepass=1;
 class sl extends Component {
@@ -13,7 +12,7 @@ class sl extends Component {
 
             $(".signupbtn").click(function () {
 
-                if (checksamepass == 1){
+                if (checksamepass === 1){
                     var username = $(".susername").val();
                 var firstname = $(".firstname").val();
                 var lastname = $(".lastname").val();
@@ -83,7 +82,7 @@ class sl extends Component {
             $(".cpassword").blur(function () {
                 var password = $(":password").val();
                 var cpassword = $(".cpassword").val();
-                if (cpassword != password) {
+                if (cpassword !== password) {
                     $("#checkpass").text("Passwords dose not match !");
                     checksamepass=0;
 
