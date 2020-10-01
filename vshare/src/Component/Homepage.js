@@ -1,12 +1,11 @@
-import React, {useState, Component} from "react";
-import MultiSelect from "react-multi-select-component"
+import React, { Component} from "react";
+
 import './Homepage.css'
 
 import AddIcon from '@material-ui/icons/Add';
 
 import $ from 'jquery';
 
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
 
 import IconButton from '@material-ui/core/IconButton';
 
@@ -19,7 +18,6 @@ import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import Select from 'react-select';
 
-var Able_chat = 0;
 var Able_controll = 0;
 var Able_select = 0;
 const options = [

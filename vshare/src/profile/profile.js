@@ -1,28 +1,21 @@
 import React, {Component} from 'react'
 import './profile.css'
 import $ from 'jquery';
-import Left from './left.png'
-import Right from './right.png'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-
 import HomeIcon from '@material-ui/icons/Home';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import Button from '@material-ui/core/Button';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import EditIcon from '@material-ui/icons/Edit';
-import Avatar from '@material-ui/core/Avatar';
 import Dorbin from './camera.png'
-
 var username = window.location.href.split('/')[4];
-var respone_get
 var count
 
 class profile extends Component {
     componentDidMount() {
 
-        const {id} = this.props.match.params;
+      
         $(document).ready(function () {
            
             var uploadField = document.getElementById("file-input");
@@ -804,7 +797,7 @@ if(email_edit!=''){
                         <div className='searchgp'>
 
 
-                            <input placeholder='search' className='inp-search'/>
+                            <input placeholder='search' className='inp-search' autocomplete="off" />
 
 
                             <div id='joinstatus' className='statusofjoin'>

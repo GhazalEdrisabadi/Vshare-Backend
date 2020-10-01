@@ -14,11 +14,11 @@ const App = () => {
     return (
         <Router>
         <Switch>
-                <Route path="/homepage" component={Homepage}/>
-                <Route path="/login" component={Login}/>
-                <Route path="/" component={Start}/>
-                <Route path="/about" component={About} />
-                <Route path="/profile/:id" component={Profile} />
+                <Route exact path="/homepage" component={Homepage}/>
+                <Route exact path="/login" component={Login}/>
+                <Route exact path="/" component={Start}/>
+                <Route exact path="/about" component={About} />
+                <Route exact path="/profile/:id" component={Profile} />
                 <Route exact path="/group/:id"  component={Chat} />
         </Switch>           
         </Router>
