@@ -109,7 +109,9 @@ class chat_room extends Component {
     }
 
     componentDidMount() {
-
+        this.currentJoinedUser = setInterval(() => {
+            this.send_command()
+        }, 60000);
         var sizeeeeee = $(".formback_movie").width();
     
         $(window).resize(function () {
@@ -2200,7 +2202,13 @@ class chat_room extends Component {
 
     }
 
+send_command(){
+    const message_send_play = {"command": "stay_alive"}
 
+       
+    ws.send(JSON.stringify(message_send_play))
+    ws1.send(JSON.stringify(message_send_play))
+}
     fullscreen() {
 
         this.player.toggleFullscreen();
