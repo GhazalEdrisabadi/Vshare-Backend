@@ -23,7 +23,7 @@ SECRET_KEY = '@z)e)2eu^s1fk-9hfz)f66cf6--+dk1gle-hp((0q^nj!4u4^3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','185.206.92.246','vsharee.ir']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','185.204.197.168','vsharee.ir']
 
 # Application definition
 
