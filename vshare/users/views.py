@@ -2,7 +2,7 @@
 #subs backend
 from __future__ import unicode_literals
 from django.shortcuts import render
-#######################################
+
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 
@@ -46,11 +46,41 @@ from rest_framework.permissions import (
 	)
 import requests
 
+from rest_framework_simplejwt.tokens import RefreshToken
+from .utils import Util
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
 
 class Registration(generics.ListCreateAPIView):
 	permission_classes = [AllowAny]
 	queryset = Account.objects.all()
 	serializer_class = RegistrationSerializer
+	
+	def post (self, request):
+		user = request.data
+		serializer = self.serializer_class(data=user)
+		serializer.is_valid(raise_exception=True)
+		serializer.save()
+		user_data = serializer.data
+		user = Account.objects.get(email = user_data['email'])
+
+		token = RefreshToken.for_user(user)
+		
+		current_site = get_current_site(request).domain
+		reletiveLink = reverse('users:email-verify')
+
+		absurl = 'http//' + current_site + reletiveLink + "?token=" + str(token)
+		email_body = 'Hi ' + user.username + 'use link bellow to verify your email\n' + absurl
+		data={'email_body':email_body, 'to_email':user.email,
+			  'email_subject': 'Verify your email'}
+		Util.send_email(data)
+
+		return Response(user_data, status=status.HTTP_201_CREATED)
+
+class VerifyEmail(generics.GenericAPIView):
+	def get(self):
+		pass
+
 
 class UserLogin(APIView):
 	permission_classes = [AllowAny]
