@@ -73,9 +73,12 @@ class Registration(generics.ListCreateAPIView):
 		reletiveLink = reverse('users:email-verify')
 
 		absurl = 'http//' + current_site + reletiveLink + "?token=" + str(token)
-		email_body = 'Hi ' + user.username + ' use link bellow to verify your email\n' + absurl
-		data={'email_body':email_body, 'to_email':user.email,
-			  'email_subject': 'Verify your email'}
+		#email_body = 'Hi ' + user.username + ' use link bellow to verify your email\n' + absurl
+		email_body = absurl
+		data={'email_body': email_body,
+			  'to_email': user.email,
+			  'email_subject': 'Verify your email',
+			  'user_name': user.username}
 		Util.send_email(data)
 
 		return Response(user_data, status=status.HTTP_201_CREATED)
