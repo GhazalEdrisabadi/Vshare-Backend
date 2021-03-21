@@ -2,7 +2,14 @@ import logging
 import boto3
 from botocore.exceptions import ClientError
 from django.conf import settings
+from django.core.mail import EmailMessage
 
+class Util:
+    @staticmethod
+    def send_email(data):
+        print('///////////////////////////////////////////////////////////////////////////////')
+        email = EmailMessage(subject=data['email_subject'], body=data['email_body'], to=[data['to_email']])
+        email.send()
 
 def create_presigned_url(bucket_name, object_name, expiration=3600):
 
