@@ -51,6 +51,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .utils import Util
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
+import jwt
+from django.conf import settings
 
 class Registration(generics.ListCreateAPIView):
 	permission_classes = [AllowAny]
@@ -71,7 +73,7 @@ class Registration(generics.ListCreateAPIView):
 		reletiveLink = reverse('users:email-verify')
 
 		absurl = 'http//' + current_site + reletiveLink + "?token=" + str(token)
-		email_body = 'Hi ' + user.username + 'use link bellow to verify your email\n' + absurl
+		email_body = 'Hi ' + user.username + ' use link bellow to verify your email\n' + absurl
 		data={'email_body':email_body, 'to_email':user.email,
 			  'email_subject': 'Verify your email'}
 		Util.send_email(data)
@@ -79,9 +81,19 @@ class Registration(generics.ListCreateAPIView):
 		return Response(user_data, status=status.HTTP_201_CREATED)
 
 class VerifyEmail(generics.GenericAPIView):
-	def get(self):
-		pass
-
+	def get(self,request):
+		token = request.GET.get('token')
+		try:
+			payload = jwt.decode(token, settings.SECRET_KEY)
+			user = Account.objects.get(username=payload['user_id'])
+			if not user.is_verified:
+				user.is_verified = True
+				user.save()
+			return Response({'email':'Successfully activated!'}, status=status.HTTP_200_OK)
+		except jwt.ExpiredSignatureError as identifier:
+			return Response({'error':'Activation link expired!'}, status=status.HTTP_400_BAD_REQUEST)
+		except jwt.exeptions.ExpiredSignatureError as identifier:
+			return Response({'error':'Invalid token, request a new one!'}, status=status.HTTP_400_BAD_REQUEST)
 
 class UserLogin(APIView):
 	permission_classes = [AllowAny]
