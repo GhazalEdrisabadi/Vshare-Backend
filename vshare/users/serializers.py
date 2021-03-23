@@ -10,6 +10,7 @@ import logging
 import boto3
 from botocore.exceptions import ClientError
 from users.utils import *
+from rest_framework.exceptions import AuthenticationFailed
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -41,7 +42,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 class UserLoginSerializer(serializers.ModelSerializer):
 	
-	token = serializers.CharField(allow_blank=True, read_only=True)
+	tokens = serializers.CharField(allow_blank=True, read_only=True)
 	username = serializers.CharField(required=False, allow_blank=True)
 
 	class Meta:
@@ -49,7 +50,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
 		fields = [
 			'username',
 			'password',
-			'token'
+			'tokens'
 		]
 		extra_kwargs = {
 				'password': {'write_only' : True}
@@ -72,18 +73,36 @@ class UserLoginSerializer(serializers.ModelSerializer):
 		user = user.exclude(email__isnull=True).exclude(email__iexact='')
 
 		
-		if user.exists() and user.count() == 1:
-			user_obj = user.first()
-		else:
-			raise ValidationError("This username or email is not valid.")
+		# if user.exists() and user.count() == 1:
+		# 	user_obj = user.first()
+		# else:
+		# 	raise ValidationError("This username or email is not valid.")
 
-		if user_obj:
-			if not user_obj.check_password(password):
-				raise ValidationError("Incorrect credentials. please try again.")
+		user_obj = user.authenticate(email=email, username=username, password=password)
+		
+		if not user_obj:
+			raise AuthenticationFailed('Invalid credentials, try again')
 
-		token, created = Token.objects.get_or_create(user=user_obj) 
-		data["user"] = user_obj
-		return data
+		if not user_obj.is_active:
+			raise AuthenticationFailed('Account disabled, contact admin')
+
+		if not user_obj.is_verified:
+			raise AuthenticationFailed('Email is not verified')
+
+		return {
+			'email': user_obj.email,
+			'username': user_obj.username,
+			'tokens': user_obj.tokens
+		}
+
+
+		# if notuser_obj:
+		# 	if not user_obj.check_password(password):
+		# 		raise ValidationError("Incorrect credentials. please try again.")
+
+		# token, created = Token.objects.get_or_create(user=user_obj) 
+		# data["user"] = user_obj
+		# return data
 
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
