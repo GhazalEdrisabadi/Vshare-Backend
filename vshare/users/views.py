@@ -72,7 +72,7 @@ class Registration(generics.ListCreateAPIView):
 		current_site = get_current_site(request).domain
 		reletiveLink = reverse('users:email-verify')
 
-		absurl = 'http//' + current_site + reletiveLink + "?token=" + str(token)
+		absurl = 'http://' + current_site + reletiveLink + "?token=" + str(token)
 		#email_body = 'Hi ' + user.username + ' use link bellow to verify your email\n' + absurl
 		email_body = absurl
 		data={'email_body': email_body,
