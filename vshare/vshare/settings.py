@@ -10,6 +10,10 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 #this is features/online-users-backend
 import os
 
+from datetime import timedelta
+from django.conf import settings
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -59,7 +63,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
@@ -205,8 +208,85 @@ USE_TZ = True
 STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
 
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': False,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': settings.SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'username',
+    'USER_ID_CLAIM': 'user_id',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
+
+
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+#     os.environ.get('FRONT_STATIC' , None),
+# )
+# STATIC_ROOT = os.environ.get('DJANGO_STATIC_ROOT', None)
+
+# MEDIA_URL = '/media/'
+# MEDIA_PATH = 'static/media'
+# DEFAULT_MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_PATH),
+# MEDIA_ROOT = os.environ.get('DJANGO_MEDIA_ROOT', DEFAULT_MEDIA_ROOT)
+
+# DEFAULT_FILE_STORAGE = "minio_storage.storage.MinioMediaStorage"
+# STATICFILES_STORAGE = "minio_storage.storage.MinioStaticStorage"
+# MINIO_STORAGE_ACCESS_KEY = os.environ.get('MINIO_ACCESS_KEY')
+# MINIO_STORAGE_SECRET_KEY = os.environ.get('MINIO_SECRET_KEY')
+# MINIO_STORAGE_ENDPOINT = os.environ.get('MINIO_STORAGE_ENDPOINT', "localhost:9000")
+# MINIO_STORAGE_USE_HTTPS = False
+# MINIO_STORAGE_MEDIA_BUCKET_NAME = "vshare-profile-images"
+# MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = True
+# MINIO_STORAGE_STATIC_BUCKET_NAME = "vshare-profile-images"
+# MINIO_STORAGE_AUTO_CREATE_STATIC_BUCKET = True
+
+# # Media files (Profile images, Videos)
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# # Static files (CSS, JavaScript, Images)
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# # Used to authenticate with S3
+# AWS_ACCESS_KEY_ID = os.environ.get('S3_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = os.environ.get('S3_SECRET_ACCESS_KEY')
+
+# Configure which endpoint to send files to, and retrieve files from.
+# AWS_STORAGE_BUCKET_NAME = 'VshareBucket'
+# AWS_S3_REGION_NAME = 'sfo2'
+# AWS_S3_ENDPOINT_URL = f"https://{AWS_S3_REGION_NAME}.vshare.ir"
+# AWS_S3_CUSTOM_DOMAIN =f"{AWS_STORAGE_BUCKET_NAME.{AWS_S3_REGION_NAME}.vshare.ir"
+# AWS_LOCATION = 'files'
+
+# # General optimization for faster delivery
+# AWS_IS_GZIPPED = True
+# AWS_S3_OBJECT_PARAMETERS = {
+#     'CacheControl': 'max-age=86400',
+# }
+
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'vshare.contact@gmail.com'
 EMAIL_HOST_PASSWORD = 'Extra_Terrestrial7799'
+

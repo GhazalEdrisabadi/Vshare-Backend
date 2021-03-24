@@ -106,17 +106,21 @@ class UserLogin(APIView):
 		data = request.data
 		serializer = UserLoginSerializer(data=data)
 		if serializer.is_valid(raise_exception=True):
-			user = serializer.validated_data['user']
-			token = Token.objects.get(user=user) 
-			return Response(
-				{
-					'token': token.key, 
-					'username':user.username,
-					'email': user.email
-				}, status=HTTP_200_OK
-			)
+			return Response(serializer.data, status=status.HTTP_200_OK)
 
-		return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+		# if serializer.is_valid(raise_exception=True):
+		# 	user = serializer.validated_data['user']
+		# 	token = Token.objects.get(user=user) 
+		# 	return Response(
+		# 		{
+		# 			'token': token.key, 
+		# 			'username':user.username,
+		# 			'email': user.email
+		# 		}, status=HTTP_200_OK
+		# 	)
+
+		# return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 class UserByUsername(generics.RetrieveUpdateDestroyAPIView):
     queryset = Account.objects.all()
