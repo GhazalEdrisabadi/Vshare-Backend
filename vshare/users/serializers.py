@@ -10,6 +10,7 @@ import logging
 import boto3
 from botocore.exceptions import ClientError
 from users.utils import *
+from django.contrib import auth
 from rest_framework.exceptions import AuthenticationFailed
 
 
@@ -45,6 +46,9 @@ class UserLoginSerializer(serializers.ModelSerializer):
 	tokens = serializers.CharField(allow_blank=True, read_only=True)
 	username = serializers.CharField(required=False, allow_blank=True)
 
+	# tokens = serializers.CharField(read_only=True)
+	# username = serializers.CharField(required=True)
+
 	class Meta:
 		model = Account
 		fields = [
@@ -63,7 +67,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
 		password = data["password"]
 	
 		if not email and not username:
-			raise ValidationError("A username or email is required to login.")
+			raise ValidationError("An username or email is required to login.")
 
 		user = Account.objects.filter(
 			Q(email__iexact=username) |
@@ -73,21 +77,26 @@ class UserLoginSerializer(serializers.ModelSerializer):
 		user = user.exclude(email__isnull=True).exclude(email__iexact='')
 
 		
-		# if user.exists() and user.count() == 1:
-		# 	user_obj = user.first()
-		# else:
-		# 	raise ValidationError("This username or email is not valid.")
+		if user.exists() and user.count() == 1:
+			user_obj = user.first()
+		else:
+			raise ValidationError("This username or email is not valid.")
 
-		user_obj = user.authenticate(email=email, username=username, password=password)
+		# user_obj = auth.authenticate(email=email, username=username, password=password)
 		
+		# if not user_obj:
+		# 	if not user_obj.check_password(password):
+		# 		raise AuthenticationFailed('Invalid credentials, try again')
+
+		# if not user_obj.is_active:
+		# 	raise AuthenticationFailed('Account disabled, contact admin')
+
+		# if not user_obj.is_verified:
+		# 	raise AuthenticationFailed('Email is not verified')
+
 		if not user_obj:
-			raise AuthenticationFailed('Invalid credentials, try again')
-
-		if not user_obj.is_active:
-			raise AuthenticationFailed('Account disabled, contact admin')
-
-		if not user_obj.is_verified:
-			raise AuthenticationFailed('Email is not verified')
+			if not user_obj.check_password(password):
+				raise ValidationError("Incorrect credentials. please try again.")
 
 		return {
 			'email': user_obj.email,
@@ -95,10 +104,6 @@ class UserLoginSerializer(serializers.ModelSerializer):
 			'tokens': user_obj.tokens
 		}
 
-
-		# if notuser_obj:
-		# 	if not user_obj.check_password(password):
-		# 		raise ValidationError("Incorrect credentials. please try again.")
 
 		# token, created = Token.objects.get_or_create(user=user_obj) 
 		# data["user"] = user_obj
