@@ -84,6 +84,10 @@ class UserLoginSerializer(serializers.ModelSerializer):
 		else:
 			raise ValidationError("This username or email is not valid.")
 
+		if user_obj.is_verified == False:
+			raise ValidationError("Your email is not verified. Please verify first!")
+
+
 		# user_obj = auth.authenticate(email=email, username=username, password=password)
 		
 		# if not user_obj:
@@ -92,9 +96,6 @@ class UserLoginSerializer(serializers.ModelSerializer):
 
 		# if not user_obj.is_active:
 		# 	raise AuthenticationFailed('Account disabled, contact admin')
-
-		# if not user_obj.is_verified:
-		# 	raise AuthenticationFailed('Email is not verified')
 
 		if not user_obj:
 			if not user_obj.check_password(password):
