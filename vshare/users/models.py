@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager , PermissionsMixin
 
 from django.conf import settings
 from django.db.models.signals import post_save
@@ -39,12 +39,12 @@ class MyAccountManager(BaseUserManager):
 		user.save(using=self._db)
 		return user
 
-class Account(AbstractBaseUser):
+class Account(AbstractBaseUser,PermissionsMixin):
 	# notice the absence of a "Password field", that's built in.
 	photo = models.BooleanField(default=False)
 	firstname = models.CharField(max_length=50)
 	lastname = models.CharField(max_length=50)
-	username = models.CharField(max_length=20, primary_key=True)
+	username = models.CharField(max_length=20, primary_key=True)#primary_key=True
 	email = models.EmailField(max_length=100, unique=True)
 	is_verified = models.BooleanField(default=False)
 	is_admin = models.BooleanField(default=False)	# a superuser
@@ -84,4 +84,3 @@ class Friendship(models.Model):
 	class Meta:
 		ordering = ['the_date']
 		unique_together = ("who_follows", "who_is_followed")
-
