@@ -40,12 +40,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'rest_framework',
     'rest_framework.authtoken',
     'groups.apps.GroupsConfig',
     'users',
     'stream',
 	'corsheaders',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 REST_FRAMEWORK = {
@@ -71,6 +76,7 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'users.Account'
+#SOCIAL_AUTH_USER_MODEL = 'users.Account'
 
 SIMPLE_JWT = {
     'USER_ID_FIELD': 'username'
@@ -208,7 +214,12 @@ USE_TZ = True
 STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
+SITE_ID = 1
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
@@ -239,54 +250,10 @@ SIMPLE_JWT = {
 }
 
 
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-#     os.environ.get('FRONT_STATIC' , None),
-# )
-# STATIC_ROOT = os.environ.get('DJANGO_STATIC_ROOT', None)
-
-# MEDIA_URL = '/media/'
-# MEDIA_PATH = 'static/media'
-# DEFAULT_MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_PATH),
-# MEDIA_ROOT = os.environ.get('DJANGO_MEDIA_ROOT', DEFAULT_MEDIA_ROOT)
-
-# DEFAULT_FILE_STORAGE = "minio_storage.storage.MinioMediaStorage"
-# STATICFILES_STORAGE = "minio_storage.storage.MinioStaticStorage"
-# MINIO_STORAGE_ACCESS_KEY = os.environ.get('MINIO_ACCESS_KEY')
-# MINIO_STORAGE_SECRET_KEY = os.environ.get('MINIO_SECRET_KEY')
-# MINIO_STORAGE_ENDPOINT = os.environ.get('MINIO_STORAGE_ENDPOINT', "localhost:9000")
-# MINIO_STORAGE_USE_HTTPS = False
-# MINIO_STORAGE_MEDIA_BUCKET_NAME = "vshare-profile-images"
-# MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = True
-# MINIO_STORAGE_STATIC_BUCKET_NAME = "vshare-profile-images"
-# MINIO_STORAGE_AUTO_CREATE_STATIC_BUCKET = True
-
-# # Media files (Profile images, Videos)
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-# # Static files (CSS, JavaScript, Images)
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-# # Used to authenticate with S3
-# AWS_ACCESS_KEY_ID = os.environ.get('S3_ACCESS_KEY_ID')
-# AWS_SECRET_ACCESS_KEY = os.environ.get('S3_SECRET_ACCESS_KEY')
-
-# Configure which endpoint to send files to, and retrieve files from.
-# AWS_STORAGE_BUCKET_NAME = 'VshareBucket'
-# AWS_S3_REGION_NAME = 'sfo2'
-# AWS_S3_ENDPOINT_URL = f"https://{AWS_S3_REGION_NAME}.vshare.ir"
-# AWS_S3_CUSTOM_DOMAIN =f"{AWS_STORAGE_BUCKET_NAME.{AWS_S3_REGION_NAME}.vshare.ir"
-# AWS_LOCATION = 'files'
-
-# # General optimization for faster delivery
-# AWS_IS_GZIPPED = True
-# AWS_S3_OBJECT_PARAMETERS = {
-#     'CacheControl': 'max-age=86400',
-# }
-
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'vshare.contact@gmail.com'
 EMAIL_HOST_PASSWORD = 'Extra_Terrestrial7799'
 
+SOCIALACCOUNT_EMAIL_REQUIRED = True
