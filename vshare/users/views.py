@@ -69,7 +69,8 @@ class Registration(generics.ListCreateAPIView):
 
 		token = RefreshToken.for_user(user)
 		
-		current_site = get_current_site(request).domain
+		#current_site = get_current_site(request).domain
+		current_site = 'vsharee.ir'
 		reletiveLink = reverse('users:email-verify')
 
 		absurl = 'http://' + current_site + reletiveLink + "?token=" + str(token)
@@ -89,8 +90,8 @@ class VerifyEmail(generics.GenericAPIView):
 		try:
 			payload = jwt.decode(token, settings.SECRET_KEY)
 			user = Account.objects.get(username=payload['user_id'])
-			if not user.is_verified:
-				user.is_verified = True
+			if not user.is_authenticated:
+				user.is_authenticated = True
 				user.save()
 			return Response({'email':'Successfully activated!'}, status=status.HTTP_200_OK)
 		except jwt.ExpiredSignatureError as identifier:
