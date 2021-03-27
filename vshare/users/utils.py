@@ -2,7 +2,27 @@ import logging
 import boto3
 from botocore.exceptions import ClientError
 from django.conf import settings
+from django.core.mail import EmailMessage
+from django.template import Context
+from django.template.loader import render_to_string, get_template
 
+class Util:
+    @staticmethod
+    def send_email(data):
+
+        ctx = {
+        'user': data['user_name'],
+        'url' : data['email_body'],
+        }
+
+        message = get_template('verify.html').render(ctx)
+
+        msg = EmailMessage(subject=data['email_subject'], body=message, to=[data['to_email']],)
+        msg.content_subtype = "html"  # Main content is now text/html
+        msg.send()
+
+        #email = EmailMessage(subject=data['email_subject'], body=data['email_body'], to=[data['to_email']])
+        #email.send()
 
 def create_presigned_url(bucket_name, object_name, expiration=3600):
 
@@ -10,7 +30,7 @@ def create_presigned_url(bucket_name, object_name, expiration=3600):
       's3',
       aws_access_key_id = 'minio',
       aws_secret_access_key = 'miniostorage',
-      endpoint_url = 'http://185.206.92.246:9000',
+      endpoint_url = 'http://185.204.197.168:9000',
     )
 
     try:
@@ -32,7 +52,7 @@ def create_presigned_post(bucket_name, object_name,
       's3',
       aws_access_key_id = 'minio',
       aws_secret_access_key = 'miniostorage',
-      endpoint_url = 'http://185.206.92.246:9000',
+      endpoint_url = 'http://185.204.197.168:9000',
     )
 
 
