@@ -76,6 +76,7 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'users.Account'
+#SOCIAL_AUTH_USER_MODEL = 'users.Account'
 
 SIMPLE_JWT = {
     'USER_ID_FIELD': 'username'
@@ -254,3 +255,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'vshare.contact@gmail.com'
 EMAIL_HOST_PASSWORD = 'Extra_Terrestrial7799'
+
+SOCIALACCOUNT_EMAIL_REQUIRED = True
