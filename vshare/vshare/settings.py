@@ -76,8 +76,12 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'users.Account'
-#SOCIAL_AUTH_USER_MODEL = 'users.Account'
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER' : 'users.serializers.UserDetailsSerializer',
+    'LOGIN_SERIALIZER': 'users.serializers.LoginSerializer',
+}
 SIMPLE_JWT = {
     'USER_ID_FIELD': 'username'
 }
@@ -253,7 +257,12 @@ SIMPLE_JWT = {
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'vshare.contact@gmail.com'
-EMAIL_HOST_PASSWORD = 'Extra_Terrestrial7799'
+EMAIL_HOST_USER = 'vshare.ir.contact@gmail.com'
+EMAIL_HOST_PASSWORD = 'HPlaserjetp2035'
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 SOCIALACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+LOGIN_URL = 'http://127.0.0.1:8000/custom/dj-rest-auth/login'
