@@ -58,50 +58,10 @@ class Registration(generics.ListCreateAPIView):
 	permission_classes = [AllowAny]
 	queryset = Account.objects.all()
 	serializer_class = RegistrationSerializer
-	
-	def post (self, request):
-		user = request.data
-		serializer = self.serializer_class(data=user)
-		serializer.is_valid(raise_exception=True)
-		serializer.save()
-		user_data = serializer.data
-		user = Account.objects.get(email = user_data['email'])
-
-		token = RefreshToken.for_user(user)
-		
-		#current_site = get_current_site(request).domain
-		current_site = 'vsharee.ir'
-		reletiveLink = reverse('users:email-verify')
-
-		absurl = 'http://' + current_site + reletiveLink + "?token=" + str(token)
-		#email_body = 'Hi ' + user.username + ' use link bellow to verify your email\n' + absurl
-		email_body = absurl
-		data={'email_body': email_body,
-			  'to_email': user.email,
-			  'email_subject': 'Verify your email',
-			  'user_name': user.username}
-		Util.send_email(data)
-
-		return Response(user_data, status=status.HTTP_201_CREATED)
-
-class VerifyEmail(generics.GenericAPIView):
-	def get(self,request):
-		token = request.GET.get('token')
-		try:
-			payload = jwt.decode(token, settings.SECRET_KEY)
-			user = Account.objects.get(username=payload['user_id'])
-			if not user.is_authenticated:
-				user.is_authenticated = True
-				user.save()
-			return Response({'email':'Successfully activated!'}, status=status.HTTP_200_OK)
-		except jwt.ExpiredSignatureError as identifier:
-			return Response({'error':'Activation link expired!'}, status=status.HTTP_400_BAD_REQUEST)
-		except jwt.exeptions.ExpiredSignatureError as identifier:
-			return Response({'error':'Invalid token, request a new one!'}, status=status.HTTP_400_BAD_REQUEST)
 
 class UserLogin(APIView):
 	permission_classes = [AllowAny]
-	serializer_class = UserLoginSerializer
+	serializer_class = LoginSerializer
 
 	def post(self,request,*args, **kwargs):
 		data = request.data
