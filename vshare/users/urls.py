@@ -1,6 +1,7 @@
 from django.urls import path
 from users.views import *
-
+from django.urls import include
+from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView, LoginView
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -10,7 +11,6 @@ app_name = "users"
 
 urlpatterns = [
     path('signup/', Registration.as_view(), name="Signup"),
-    path('email-verify/', VerifyEmail.as_view(), name="email-verify"), 
     path('login/', UserLogin.as_view(), name="Login"),
     path('<str:username>/', UserByUsername.as_view(), name="detail"),
     path('<str:username>/edit_profile/upload_photo/', UploadPhoto.as_view(), name="UploadPhoto"),
@@ -23,4 +23,8 @@ urlpatterns = [
     path('followers/find/<str:who_follows>/', FindFollower.as_view(), name="search_follower"),
     path('followings/find/<str:who_is_followed>/', FindFollowing.as_view(), name="search_following"),
     path('followers/unfollow/<str:who_is_followed>/', UnfollowUser.as_view(), name="search_follower"),
+    path('auth/registration/account-confirm-email/<str:key>/',ConfirmEmailView.as_view(),),
+    path('auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('dj-rest-auth/account-confirm-email/',VerifyEmailView.as_view(),name='account_email_verification_sent'),
+    path('auth/login/',LoginView.as_view(),name='account login'),
     ]
