@@ -24,7 +24,7 @@ urlpatterns = [
     path('followings/find/<str:who_is_followed>/', FindFollowing.as_view(), name="search_following"),
     path('followers/unfollow/<str:who_is_followed>/', UnfollowUser.as_view(), name="search_follower"),
     path('auth/registration/account-confirm-email/<str:key>/',ConfirmEmailView.as_view(),),
-    path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('auth/registration/', include('dj_rest_auth.registration.urls')),
     path('dj-rest-auth/account-confirm-email/',VerifyEmailView.as_view(),name='account_email_verification_sent'),
     path('auth/login/',LoginView.as_view(),name='account login'),
     ]

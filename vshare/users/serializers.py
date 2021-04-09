@@ -115,7 +115,7 @@ class LoginSerializer(serializers.Serializer):
                 if EmailAddress.objects.filter(user=username, verified=True).exists() or EmailAddress.objects.filter(email=username, verified=True).exists():
                     user = user2
                 else:
-                    msg = ('This account is not activate.')
+                    msg = ('This account is not activated.')
                     raise exceptions.ValidationError(msg)
             else:
                 msg = ('username/email and password combination is not an active account.')
