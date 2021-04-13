@@ -53,6 +53,21 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 import jwt
 from django.conf import settings
+from allauth.socialaccount.providers.google import views as google_views
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from django.urls import reverse
+from rest_auth.registration.views import SocialLoginView
+
+
+class GoogleLogin(SocialLoginView):
+    adapter_class = google_views.GoogleOAuth2Adapter
+    client_class = OAuth2Client
+
+    @property
+    def callback_url(self):
+        # use the same callback url as defined in your GitHub app, this url
+        # must be absolute:
+        return self.request.build_absolute_uri(reverse('google_callback'))
 
 class Registration(generics.ListCreateAPIView):
 	permission_classes = [AllowAny]

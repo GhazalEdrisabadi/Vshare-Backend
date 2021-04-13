@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'rest_auth',
+    'rest_auth.registration',
 ]
 
 REST_FRAMEWORK = {
@@ -267,6 +269,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_LOGOUT_ON_GET = True
 LOGIN_URL = 'http://127.0.0.1:8000/user/auth/login/'
+LOGIN_URL_REDIRECT = 'http://127.0.0.1:8000/auth/google/'
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'http://127.0.0.1:8000/email-verified/'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'http://127.0.0.1:8000/'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/user/auth/login/'
