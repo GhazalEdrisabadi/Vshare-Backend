@@ -23,19 +23,15 @@ from django.shortcuts import redirect
 from allauth.socialaccount.providers.google import views as google_views
 
 
-def google_callback(request):
-    params = urllib.parse.urlencode(request.GET)
-    return redirect(f'https://frontend/auth/github?{params}')
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('users.urls')),
     path('', include('groups.urls')),
     path('accounts/', include('allauth.urls')),
-    path('auth/', include('rest_auth.urls')),
-    #path('auth/google/callback/', google_callback, name='google_callback'),
-    path('auth/google/url/', google_views.oauth2_login),
-    path('auth/google/', GoogleLogin.as_view())
+    path('dj-rest-auth/', include('dj_rest_auth.urls')),
+    path('dj-rest-auth/google/url/', google_views.oauth2_login),
+    path('dj-rest-auth/google/', GoogleLogin.as_view(), name='google_login'),
+    path('dj-rest-auth/google/connect/', GoogleConnect.as_view(), name='google_connect'),
 ]
 
 if settings.DEBUG:

@@ -56,8 +56,27 @@ from django.conf import settings
 from allauth.socialaccount.providers.google import views as google_views
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from django.urls import reverse
-from rest_auth.registration.views import SocialLoginView
+from dj_rest_auth.registration.views import SocialLoginView
+from dj_rest_auth.registration.views import SocialConnectView
 
+from google.oauth2 import id_token
+from google.auth.transport import requests
+
+from allauth.socialaccount.providers.oauth2.views import (
+    OAuth2Adapter,
+    OAuth2CallbackView,
+    OAuth2LoginView,
+)
+
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+
+from allauth.socialaccount.providers.google.provider import GoogleProvider
+
+
+class GoogleConnect(SocialConnectView):
+    adapter_class = GoogleOAuth2Adapter
+    #callback_url = 'google_callback'
+    client_class = OAuth2Client
 
 class GoogleLogin(SocialLoginView):
     adapter_class = google_views.GoogleOAuth2Adapter

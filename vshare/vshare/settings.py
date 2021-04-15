@@ -51,8 +51,10 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'rest_auth',
-    'rest_auth.registration',
+    #'rest_auth',
+    #'rest_auth.registration',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
 ]
 
 REST_FRAMEWORK = {
@@ -70,6 +72,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
@@ -268,8 +272,21 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_LOGOUT_ON_GET = True
-LOGIN_URL = 'http://127.0.0.1:8000/user/auth/login/'
-LOGIN_URL_REDIRECT = 'http://127.0.0.1:8000/auth/google/'
+LOGIN_URL = 'http://127.0.0.1:8000/dj-rest-auth/google/url/'
+LOGIN_URL_REDIRECT = 'http://127.0.0.1:8000/dj-rest-auth/google/url/'
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'http://127.0.0.1:8000/email-verified/'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'http://127.0.0.1:8000/'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/user/auth/login/'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
