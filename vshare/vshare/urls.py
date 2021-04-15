@@ -17,16 +17,14 @@ from django.urls import path
 from django.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
-from rest_framework.schemas import get_schema_view
-from django.views.generic import TemplateView
+from rest_framework_swagger.views import get_swagger_view
 
 
-schema_view = get_schema_view(title='Vshare API', description='This is the OpenAPI for Vshare.')
-template_view = TemplateView.as_view(template_name='documentation.html',extra_context={'schema_url':'openapi-schema'})
+schema_view = get_swagger_view(title='my vshare project!')
+
 
 urlpatterns = [
-    path('openapi/', schema_view, name='openapi-schema'),
-    path('swagger/', template_view, name='swagger-ui'),
+    path('swagger/', schema_view, name='openapi-schema'),
     path('admin/', admin.site.urls),
     path('user/', include('users.urls')),
     path('', include('groups.urls')),
