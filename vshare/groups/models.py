@@ -1,8 +1,8 @@
 from django.db import models 
 from django.contrib.auth.models import User
-from pygments import highlight # new
-from pygments.formatters.html import HtmlFormatter # new
-from pygments.lexers import get_all_lexers, get_lexer_by_name # new
+from pygments import highlight
+from pygments.formatters.html import HtmlFormatter
+from pygments.lexers import get_all_lexers, get_lexer_by_name
 from pygments.styles import get_all_styles
 from django.conf import settings
 from django.core.validators import RegexValidator
@@ -129,3 +129,11 @@ class Permission(models.Model):
 	class Meta:
 		ordering = ['date_set']
 		unique_together = ("member", "group")
+
+class Invite(models.Model):
+	group = models.ForeignKey(Group, to_field="groupid" , on_delete=models.CASCADE)
+	recipient = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE)
+	date_set = models.DateTimeField(auto_now_add=True)
+	class Meta:
+		ordering = ['date_set']
+		unique_together = ("recipient", "group")
