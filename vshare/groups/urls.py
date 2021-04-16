@@ -4,8 +4,8 @@ from groups import views
 from groups.views import *
 
 urlpatterns = [
-    path('groups/', views.GroupList.as_view()),
-    path('groups/<str:groupid>/', views.GroupDetail.as_view()),
+    path('groups/', views.GroupList.as_view(), name='groups_list'),
+    path('groups/<str:groupid>/', views.GroupDetail.as_view(), name='group_by_groupid'),
     path('groups/', views.GroupList.as_view(), name='all_groups_and_create'),
     path('groups/<str:groupid>/', views.GroupDetail.as_view(), name='group_detail'),
     path('groups/<str:groupid>/edit/', views.GroupDetailUpdate.as_view(), name='group_detail_with_update'),
@@ -22,6 +22,8 @@ urlpatterns = [
     path('group/permissions/', views.PermissionList.as_view(), name='Permission_list'),
     path('group/<str:group>/permissions/', views.DeletePermission.as_view(), name='Permission_detail_delete'),
     path('group/user_groups/',views.GroupsOfSearchedUser.as_view(), name='owned_by_a_user'),
+    path('group/invite/',views.AddInviteList.as_view(), name='invite_user_to_group'),
+    path('group/invitation/<str:group>/',views.DeleteInvite.as_view(), name='acc_dec_invite'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
