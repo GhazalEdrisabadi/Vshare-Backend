@@ -52,6 +52,21 @@ class Group(models.Model):
 		choices=StatusChoice,
 		default=state0,
 	)
+
+	privacy0 = 0
+	privacy1 = 1
+	privacy2 = 2
+
+	PrivacyChoice = (
+		(privacy0, _('Every body can see it and join')),
+		(privacy1, _('Semi Private, everybody can see it but needs acceptance to join')),
+		(privacy2, _('Fully private, no one can see it and can only join it via invitation')),
+	)
+
+	privacy = models.PositiveSmallIntegerField(
+		choices=PrivacyChoice,
+		default=privacy0,
+	)
     
 	class Meta:
 		ordering = ['since']
