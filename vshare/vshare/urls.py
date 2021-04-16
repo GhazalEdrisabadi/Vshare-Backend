@@ -17,8 +17,14 @@ from django.urls import path
 from django.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_swagger.views import get_swagger_view
+
+
+schema_view = get_swagger_view(title='my vshare project!')
+
 
 urlpatterns = [
+    path('swagger/', schema_view, name='openapi-schema'),
     path('admin/', admin.site.urls),
     path('user/', include('users.urls')),
     path('', include('groups.urls')),
@@ -27,4 +33,4 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

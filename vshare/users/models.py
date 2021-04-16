@@ -38,6 +38,7 @@ class MyAccountManager(BaseUserManager):
 		user.is_admin = True
 		user.is_staff = True
 		user.is_superuser = True
+		user.is_active = True
 		user.save(using=self._db)
 		return user
 
@@ -78,30 +79,7 @@ class Account(AbstractBaseUser,PermissionsMixin):
 			'access' : str(refresh.access_token)
 		}
 
-#When a user logs in with google account, beside a social account 
-#instance, a custom user model instance will be alse created, this
-#function populates this instance of custom user model.
-'''
-	@receiver(user_signed_up)
-	def populate_profile(sociallogin, user, **kwargs):
-		user.profile = Account()
 
-		if sociallogin.account.provider == 'google':
-			user_data = user.socialaccount_set.filter(provider='google')[0].extra_data
-			#picture_url = user_data['picture']
-			#email = user_data['email']
-			first_name = user_data['given_name']
-			last_name = user_data['family_name']
-
-		#user.profile.photo = picture_url
-		user.profile.email = '12345@yahoo.com'
-		user.profile.firstname = first_name
-		user.profile.lastname = last_name
-		user.profile.username = '121212'
-		print(last_name)
-		print('//////////////////////////////////////////////////////////////')
-		user.profile.save()
-'''
 class Friendship(models.Model):
 	who_follows = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name="top")
 	who_is_followed = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name="bot")

@@ -95,6 +95,7 @@ class AddMembershipList(generics.ListCreateAPIView):
     serializer_class = MembershipSerializer
     permission_classes = [AllowAny]
 
+
 class GroupsOfUser(generics.ListAPIView):
     serializer_class = MembershipSerializer
     permission_classes = [AllowAny]
@@ -162,31 +163,25 @@ class AcceptedClientList(generics.ListCreateAPIView):
     serializer_class = AcceptedClientSerializer
     permission_classes = [AllowAny]
 
-'''
-class GroupsOfUser(generics.ListCreateAPIView):
-	queryset = Group.objects.all()
-	queryset.account_set.all()
-	serializer_class = GroupSerializer
-	lookup_field = 'Account.username'
-	permission_classes = [AllowAny]
-'''
-@api_view(['POST',])
-@permission_classes([AllowAny])
-@csrf_protect
-def GroupRegistration(request):
-    #context = RequestContext(request)
-    if request.method =='POST':
-        serializer_class = GroupRegistrationSerializer(data=request.data)
-        data = {}
-        if serializer_class.is_valid():
-            account = serializer_class.save()
-            data['response'] = 'Successfully created'
-            data['groupid'] = account.groupid
-            data['title'] = account.title
-            data['describtion'] = account.describtion
-            data['invite_only'] = account.invite_only
-            data['created_by'] = account.created_by
-            data['members'] = account.members
-        else:
-            data = serializer_class.errors
-        return Response(data)
+class AddInviteList(generics.ListCreateAPIView):
+    queryset = Invite.objects.all()
+    serializer_class = InviteSerializer
+    permission_classes = [AllowAny]
+
+class DeleteInvite(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = InviteSerializer
+    permission_classes = [AllowAny]
+    lookup_field='group'
+    def get_queryset(self):
+        user_identifier= self.request.query_params.get('user')
+        decision_identifier= self.request.query_params.get('decision')
+        group_identifier= self.request.query_params.get('group')
+        if decision_identifier == 'acc':
+            group_obj = Group.objects.get(groupid=group_identifier)
+            user_obj = Account.objects.get(username=user_identifier)
+            new_membership_obj = Membership(the_member=user_obj, the_group=group_obj)
+            new_membership_obj.save()
+        elif decision_identifier == 'dec':
+            pass
+        queryset = Invite.objects.filter(recipient=user_identifier)
+        return queryset

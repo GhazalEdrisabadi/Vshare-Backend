@@ -5,14 +5,46 @@ from django.db.models import Q
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from rest_framework import authentication
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 import logging
 import boto3
 from botocore.exceptions import ClientError
 from users.utils import *
 from django.contrib import auth
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework import exceptions
+from allauth.account.models import EmailAddress
 
+UserModel = get_user_model()
+class UserDetailsSerializer(serializers.ModelSerializer):
+    """
+    User model w/o password
+    """
+
+    def validate_username(self, username):
+        if 'allauth.account' not in settings.INSTALLED_APPS:
+            # We don't need to call the all-auth
+            # username validator unless its installed
+            return username
+
+        from allauth.account.adapter import get_adapter
+        username = get_adapter().clean_username(username)
+        return username
+
+    class Meta:
+        extra_fields = []
+        # see https://github.com/iMerica/dj-rest-auth/issues/181
+        # UserModel.XYZ causing attribute error while importing other
+        # classes from `serializers.py`. So, we need to check whether the auth model has
+        # the attribute or not
+        if hasattr(UserModel, "USERNAME_FIELD"):
+            extra_fields.append(UserModel.USERNAME_FIELD)
+        if hasattr(UserModel, "EMAIL_FIELD"):
+            extra_fields.append(UserModel.EMAIL_FIELD)
+
+        model = UserModel
+        fields = ('pk', *extra_fields, 'firstname', 'lastname')
+        read_only_fields = ('email',)
 
 class RegistrationSerializer(serializers.ModelSerializer):
 
@@ -43,74 +75,125 @@ class RegistrationSerializer(serializers.ModelSerializer):
 		account.save()
 		return account
 
-class UserLoginSerializer(serializers.ModelSerializer):
-	
-	tokens = serializers.CharField(allow_blank=True, read_only=True)
-	username = serializers.CharField(required=False, allow_blank=True)
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(required=False, allow_blank=True)
+    email = serializers.EmailField(required=False, allow_blank=True)
+    password = serializers.CharField(style={'input_type': 'password'})
 
-	# tokens = serializers.CharField(read_only=True)
-	# username = serializers.CharField(required=True)
+    def authenticate(self, **kwargs):
+        return authenticate(self.context['request'], **kwargs)
 
-	class Meta:
-		model = Account
-		fields = [
-			'username',
-			'password',
-			'tokens'
-		]
-		extra_kwargs = {
-				'password': {'write_only' : True}
-		}
+    def _validate_email(self, email, password):
+        user = None
 
-	def validate(self, data):
-		user_obj = None
-		username = data.get("username",None)
-		email = data.get("email",None)
-		password = data["password"]
-	
-		if not email and not username:
-			raise ValidationError("An username or email is required to login.")
+        if email and password:
+            user = self.authenticate(email=email, password=password)
+        else:
+            msg = ('Must include "email" and "password".')
+            raise exceptions.ValidationError(msg)
 
-		user = Account.objects.filter(
-			Q(email__iexact=username) |
-			Q(username__iexact=username)
-			).distinct()
+        return user
 
-		user = user.exclude(email__isnull=True).exclude(email__iexact='')
+    def _validate_username(self, username, password):
+        user = None
 
-		
-		if user.exists() and user.count() == 1:
-			user_obj = user.first()
-		else:
-			raise ValidationError("This username or email is not valid.")
+        if username and password:
+            user = self.authenticate(username=username, password=password)
+        else:
+            msg = ('Must include "username" and "password".')
+            raise exceptions.ValidationError(msg)
 
-		if user_obj.is_verified == False:
-			raise ValidationError("Your email is not verified. Please verify first!")
+        return user
 
+    def _validate_username_email(self, username, email, password):
+        user = None
 
-		# user_obj = auth.authenticate(email=email, username=username, password=password)
-		
-		# if not user_obj:
-		# 	if not user_obj.check_password(password):
-		# 		raise AuthenticationFailed('Invalid credentials, try again')
+        if username and password:
+            user2 = self.authenticate(username=username, password=password)
+            user3 = self.authenticate(email=username, password=password)
+            if user2:
+                if EmailAddress.objects.filter(user=username, verified=True).exists() or EmailAddress.objects.filter(email=username, verified=True).exists():
+                    user = user2
+                else:
+                    msg = ('This account is not activated.')
+                    raise exceptions.ValidationError(msg)
+            else:
+                msg = ('username/email and password combination is not an active account.')
+                raise exceptions.ValidationError(msg)
+        else:
+            msg = ('Must include either "username" or "email" and "password".')
+            raise exceptions.ValidationError(msg)
 
-		# if not user_obj.is_active:
-		# 	raise AuthenticationFailed('Account disabled, contact admin')
+        return user
 
-		if not user_obj:
-			if not user_obj.check_password(password):
-				raise ValidationError("Incorrect credentials. please try again.")
+    def get_auth_user_using_allauth(self, username, email, password):
+        from allauth.account import app_settings
 
-		return {
-			'email': user_obj.email,
-			'username': user_obj.username,
-			'tokens': user_obj.tokens
-		}
+        # Authentication through email
+        if app_settings.AUTHENTICATION_METHOD == app_settings.AuthenticationMethod.EMAIL:
+            return self._validate_email(email, password)
 
+        # Authentication through username
+        if app_settings.AUTHENTICATION_METHOD == app_settings.AuthenticationMethod.USERNAME:
+            return self._validate_username(username, password)
 
-		# token, created = Token.objects.get_or_create(user=user_obj) 
-		# data["user"] = user_obj
-		# return data
+        # Authentication through either username or email
+        return self._validate_username_email(username, email, password)
+
+    def get_auth_user_using_orm(self, username, email, password):
+        if email:
+            try:
+                username = UserModel.objects.get(email__iexact=email).get_username()
+            except UserModel.DoesNotExist:
+                pass
+
+        if username:
+            return self._validate_username_email(username, '', password)
+
+        return None
+
+    def get_auth_user(self, username, email, password):
+        """
+        Retrieve the auth user from given POST payload by using
+        either `allauth` auth scheme or bare Django auth scheme.
+        Returns the authenticated user instance if credentials are correct,
+        else `None` will be returned
+        """
+        if 'allauth' in settings.INSTALLED_APPS:
+            return self.get_auth_user_using_allauth(username, email, password)
+        return self.get_auth_user_using_orm(username, email, password)
+
+    def validate_auth_user_status(self, user):
+        if not user.is_active:
+            msg = _('User account is disabled.')
+            raise exceptions.ValidationError(msg)
+
+    def validate_email_verification_status(self, user):
+        from allauth.account import app_settings
+        if app_settings.EMAIL_VERIFICATION == app_settings.EmailVerificationMethod.MANDATORY:
+            email_address = user.emailaddress_set.get(email=user.email)
+            if not email_address.verified:
+                raise serializers.ValidationError(_('E-mail is not verified.'))
+
+    def validate(self, attrs):
+        username = attrs.get('username')
+        email = attrs.get('email')
+        password = attrs.get('password')
+        user = self.get_auth_user(username, email, password)
+
+        if not user:
+            msg = ('Unable to log in with provided credentials.')
+            raise exceptions.ValidationError(msg)
+
+        # Did we get back an active user?
+        self.validate_auth_user_status(user)
+
+        # If required, is the email verified?
+        if 'dj_rest_auth.registration' in settings.INSTALLED_APPS:
+            self.validate_email_verification_status(user)
+
+        attrs['user'] = user
+        return attrs
 
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:

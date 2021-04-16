@@ -61,3 +61,11 @@ class PermissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Permission
         fields = '__all__'
+
+class InviteSerializer(serializers.ModelSerializer):
+    def __init__(self, *args, **kwargs):
+        many = kwargs.pop('many', True)
+        super(InviteSerializer, self).__init__(many=many, *args, **kwargs)
+    class Meta:
+        model = Invite
+        fields = '__all__'
