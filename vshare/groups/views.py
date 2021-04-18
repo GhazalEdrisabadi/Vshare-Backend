@@ -1,6 +1,7 @@
 from rest_framework import generics
 from .models import *
-from users.models import Account
+from users.models import *
+from users.serializers import *
 from .serializers import GroupRegistrationSerializer
 from .serializers import *
 from rest_framework import filters
@@ -111,8 +112,17 @@ class GroupsOfSearchedUser(generics.ListAPIView):
     serializer_class = MembershipSerializer
     permission_classes = [AllowAny]
     def get_queryset(self):
-        user= self.request.query_params.get('user_id')
-        return Membership.objects.filter(the_member=user)
+        user = self.request.user
+        requested_user_param = self.request.query_params.get('user_id')
+        if Membership.objects.filter(the_member = requested_user_param).exists():
+            requested_user = Account.objects.filter(username = requested_user_param)
+        if Friendship.objects.filter(
+            who_is_followed__in = requested_user,
+            who_follows = user
+            ).exists() or requested_user.filter(is_private = False):
+            return Membership.objects.filter(the_member = requested_user_param)
+        else:
+            return
 
 class GroupsWhichUserIsAdmin(generics.ListAPIView):
     serializer_class = GroupSerializer
