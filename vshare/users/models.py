@@ -49,6 +49,7 @@ class Account(AbstractBaseUser,PermissionsMixin):
 	lastname = models.CharField(max_length=50)
 	username = models.CharField(max_length=20, primary_key=True)#primary_key=True
 	email = models.EmailField(max_length=100, unique=True)
+	is_private = models.BooleanField(default=False)
 	is_verified = models.BooleanField(default=False)
 	is_admin = models.BooleanField(default=False)	# a superuser
 	is_active = models.BooleanField(default=True)
