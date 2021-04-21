@@ -69,3 +69,11 @@ class InviteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Invite
         fields = '__all__'
+
+class JoinRequestSerializer(serializers.ModelSerializer):
+    def __init__(self, *args, **kwargs):
+        many = kwargs.pop('many', True)
+        super(JoinRequestSerializer, self).__init__(many=many, *args, **kwargs)
+    class Meta:
+        model = JoinRequest
+        fields = '__all__'
