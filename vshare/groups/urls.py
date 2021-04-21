@@ -25,6 +25,8 @@ urlpatterns = [
     path('group/invitation/<str:group>/',views.DeleteInvite.as_view(), name='acc_dec_invite'),
     path('group/join/', views.JoinGroup, name="join"),
     path('group/accept_join/', views.AcceptJoinRequest, name="accept_join_request"),
+    path('group/invite_list/', views.UserInvitesList, name="user_invite_list"),
+    path('group/join_requests/', views.GroupJoinRequestsList, name="group_join_requests_list"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
