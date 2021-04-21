@@ -57,16 +57,6 @@ class MessageHistory(generics.ListAPIView):
         the_group = self.request.query_params.get('target','')
         return queryset.filter(target_group=the_group)
     pagination_class = CustomPagination
-      
-class GroupList(generics.ListCreateAPIView):
-    search_fields = ['groupid']
-    filter_backends = (filters.SearchFilter,)
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [AllowAny]
-    def perform_create(self, serializer):
-        req = serializer.context['request']
-        serializer.save(created_by=req.user)
 
 
 class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -147,7 +137,7 @@ class GroupsOfSearchedUser(generics.ListAPIView):
         if Friendship.objects.filter(
             who_is_followed__in = requested_user,
             who_follows = user
-            ).exists():
+            ).exists() or requested_user.filter(is_private = False):
             return Membership.objects.filter(the_member = requested_user_param)
         else:
             return
@@ -174,7 +164,7 @@ class DeleteMembership(generics.RetrieveUpdateDestroyAPIView):
         return queryset
 
 class GroupList(generics.ListCreateAPIView):
-    search_fields = ['groupid']
+    search_fields = ['groupid', 'title']
     filter_backends = (filters.SearchFilter,)
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
