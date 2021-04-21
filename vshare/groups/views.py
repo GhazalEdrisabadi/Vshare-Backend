@@ -16,6 +16,7 @@ from groups.pagination import CustomPagination
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_403_FORBIDDEN, HTTP_404_NOT_FOUND
 from django.http import QueryDict
+from django.db.models import Q
 
 from rest_framework.permissions import (
 		AllowAny,
@@ -166,7 +167,7 @@ class DeleteMembership(generics.RetrieveUpdateDestroyAPIView):
 class GroupList(generics.ListCreateAPIView):
     search_fields = ['groupid', 'title']
     filter_backends = (filters.SearchFilter,)
-    queryset = Group.objects.all()
+    queryset = Group.objects.filter(privacy__in=[0,1])
     serializer_class = GroupSerializer
     permission_classes = [AllowAny]
     def perform_create(self, serializer):

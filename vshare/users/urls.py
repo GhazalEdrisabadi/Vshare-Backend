@@ -17,9 +17,8 @@ urlpatterns = [
     path('<str:username>/edit_profile/upload_photo/', UploadPhoto.as_view(), name="UploadPhoto"),
     path('<str:username>/edit_profile/', EditProfile.as_view(), name="Edit Profile"),
     path('<str:username>/edit_profile/change_password/', ChangePassword.as_view(), name="Change Password"),
-
     ###########################################################################################
-    path('find/username/', UserByUsernameSugestion.as_view(), name="find_with_sugestion"),
+    path('find/username/', UserSugestion.as_view(), name="find_with_sugestion"),
     ###########################################################################################
 
     path('relations/follow/', FriendshipList.as_view(), name="follow_operation"),

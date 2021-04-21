@@ -54,11 +54,6 @@ from django.urls import reverse
 import jwt
 from django.conf import settings
 
-class Registration(generics.ListCreateAPIView):
-	permission_classes = [AllowAny]
-	queryset = Account.objects.all()
-	serializer_class = RegistrationSerializer
-
 class UserLogin(APIView):
 	permission_classes = [AllowAny]
 	serializer_class = LoginSerializer
@@ -131,8 +126,8 @@ class UploadPhoto(mixins.DestroyModelMixin,
 	def delete(self, request, *args, **kwargs):
 		return self.destroy(request, *args, **kwargs)
   
-class UserByUsernameSugestion(generics.ListCreateAPIView):
-    search_fields = ['username']
+class UserSugestion(generics.ListCreateAPIView):
+    search_fields = ['username','firstname','lastname']
     filter_backends = (filters.SearchFilter,)
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
