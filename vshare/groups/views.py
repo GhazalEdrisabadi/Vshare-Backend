@@ -13,7 +13,9 @@ from rest_framework.decorators import permission_classes
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.models import User
 from groups.pagination import CustomPagination
-
+from rest_framework.views import APIView
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_403_FORBIDDEN, HTTP_404_NOT_FOUND
+from django.http import QueryDict
 
 from rest_framework.permissions import (
 		AllowAny,
@@ -83,13 +85,39 @@ class GroupDetailUpdate(generics.RetrieveUpdateDestroyAPIView):
         serializer.save(the_member=req.user)
 
 
-class MembershipList(generics.ListCreateAPIView):
-    queryset = Membership.objects.all()
-    serializer_class = MembershipSerializer
-    permission_classes = [AllowAny]
-    def perform_create(self, serializer):
-        req = serializer.context['request']
-        serializer.save(the_member=req.user)
+@api_view(['POST'])
+def JoinGroup(request):
+    temp = {'the_group' : request.data['the_group'], 'the_member' : request.user.username}
+    data2 = QueryDict('', mutable=True)
+    data2.update(temp)
+    serializer = MembershipSerializer(data = data2)
+    print(data2)
+    if serializer.is_valid():
+        group_identifier = request.data['the_group']
+        if Group.objects.filter(groupid = group_identifier).exists():
+            if Group.objects.get(groupid = group_identifier).privacy == 0:# non private
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            elif Group.objects.get(groupid = group_identifier).privacy == 1:#semi private
+                group_obj = Group.objects.get(groupid=request.data['the_group'])
+                new_join_request = JoinRequest(group=group_obj, sender=request.user)
+                new_join_request.save()
+                response_data = {'message':'Join request sent.', }
+                return Response(response_data, status=status.HTTP_201_CREATED)
+            elif Group.objects.get(groupid = group_identifier).privacy == 2:#fully private
+                response_data = {'message':'This group is private. you are not able to join',}
+                return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+            else:
+                response_data = {'error':'Bad Request!',}
+                return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            response_data = {'error':'Group not found!',}
+            return Response(response_data, status=status.HTTP_404_NOT_FOUND)
+    else:
+        response_data = {'error':'Bad Request! maybe wrong group.',}
+        return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class AddMembershipList(generics.ListCreateAPIView):
     queryset = Membership.objects.all()
@@ -183,15 +211,43 @@ class DeleteInvite(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [AllowAny]
     lookup_field='group'
     def get_queryset(self):
-        user_identifier= self.request.query_params.get('user')
-        decision_identifier= self.request.query_params.get('decision')
-        group_identifier= self.request.query_params.get('group')
+        user_identifier = self.request.user
+        decision_identifier = self.request.query_params.get('decision')
+        group_identifier = self.request.query_params.get('group')
         if decision_identifier == 'acc':
             group_obj = Group.objects.get(groupid=group_identifier)
-            user_obj = Account.objects.get(username=user_identifier)
-            new_membership_obj = Membership(the_member=user_obj, the_group=group_obj)
+            new_membership_obj = Membership(the_member=user_identifier, the_group=group_obj)
             new_membership_obj.save()
         elif decision_identifier == 'dec':
             pass
         queryset = Invite.objects.filter(recipient=user_identifier)
         return queryset
+
+@api_view(['POST'])
+def AcceptJoinRequest(request):
+    check_obj = JoinRequest.objects.filter(group=request.data['group'], sender=request.data['sender'])
+    decision = request.data['decision']
+    if check_obj.exists():
+        group_obj = Group.objects.get(groupid=request.data['group'])
+        if group_obj.created_by == request.user:
+            if decision == 'acc':
+                group_obj = Group.objects.get(groupid=request.data['group'])
+                user_obj = Account.objects.get(username=request.data['sender'])
+                new_membership = Membership(the_member=user_obj, the_group=group_obj)
+                new_membership.save()
+                check_obj.delete()
+                response_data = {'message':'Join request accepted.',}
+                return Response(response_data, status=status.HTTP_202_ACCEPTED)
+            elif decision == 'dec':
+                check_obj.delete()
+                response_data = {'message':'Join request declined.',}
+                return Response(response_data, status=status.HTTP_202_ACCEPTED)
+            else:
+                response_data = {'error':'use acc to accept and dec to decline.',}
+                return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            response_data = {'error':'Only owner of the group can accept join requests.',}
+            return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+    else:
+        response_data = {'error':'Bad request!',}
+        return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
