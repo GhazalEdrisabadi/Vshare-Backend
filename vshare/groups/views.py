@@ -147,7 +147,7 @@ class GroupsOfSearchedUser(generics.ListAPIView):
         if Friendship.objects.filter(
             who_is_followed__in = requested_user,
             who_follows = user
-            ).exists() or requested_user.filter(is_private = False):
+            ).exists():
             return Membership.objects.filter(the_member = requested_user_param)
         else:
             return
