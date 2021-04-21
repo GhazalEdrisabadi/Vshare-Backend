@@ -251,3 +251,24 @@ def AcceptJoinRequest(request):
     else:
         response_data = {'error':'Bad request!',}
         return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['Get'])
+def UserInvitesList(request):
+    the_user = request.user
+    invites = Invite.objects.filter(recipient=the_user).order_by('date_set')
+    serializer = InviteSerializer(invites, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['Get'])
+def GroupJoinRequestsList(request):
+    the_user = request.user
+    join_requests = JoinRequest.objects.filter(group=request.data['group'])
+    serializer = JoinRequestSerializer(join_requests, many=True)
+    group_obj = Group.objects.filter(groupid=request.data['group'], created_by=the_user)
+    if group_obj.exists():
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        response_data = {'error':'Only owner can see join requests.'}
+        return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+
