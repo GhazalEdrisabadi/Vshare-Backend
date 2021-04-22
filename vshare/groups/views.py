@@ -115,18 +115,6 @@ class AddMembershipList(generics.ListCreateAPIView):
     serializer_class = MembershipSerializer
     permission_classes = [AllowAny]
 
-
-class GroupsOfUser(generics.ListAPIView):
-    serializer_class = MembershipSerializer
-    permission_classes = [AllowAny]
-    def get_queryset(self):
-        """
-        This view should return a list of all the records
-        for the currently authenticated user.
-        """
-        user = self.request.user
-        return Membership.objects.filter(the_member=user)
-
 class GroupsOfSearchedUser(generics.ListAPIView):
     serializer_class = MembershipSerializer
     permission_classes = [AllowAny]
@@ -262,4 +250,24 @@ def GroupJoinRequestsList(request):
         response_data = {'error':'Only owner can see join requests.'}
         return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['Get'])
+def GroupJoinRequestsList(request):
+    the_user = request.user
+    join_requests = JoinRequest.objects.filter(group=request.data['group'])
+    serializer = JoinRequestSerializer(join_requests, many=True)
+    group_obj = Group.objects.filter(groupid=request.data['group'], created_by=the_user)
+    if group_obj.exists():
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        response_data = {'error':'Only owner can see join requests.'}
+        return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['Get'])
+def GroupsOfUser(request):
+    memberships = Membership.objects.filter(the_member = request.user)
+    groups = []
+    for obj in memberships:
+        groups.append(obj.the_group)
+    groups_obj = Group.objects.filter(groupid__in = groups)
+    serializer = GroupSerializer(groups_obj, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
