@@ -27,6 +27,7 @@ urlpatterns = [
     path('group/accept_join/', views.AcceptJoinRequest, name="accept_join_request"),
     path('group/invite_list/', views.UserInvitesList, name="user_invite_list"),
     path('group/join_requests/', views.GroupJoinRequestsList, name="group_join_requests_list"),
+    path('group/top_groups/', views.TopGroups, name="top_15_groups"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
