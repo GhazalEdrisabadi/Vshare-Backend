@@ -54,35 +54,6 @@ from django.urls import reverse
 import jwt
 from django.conf import settings
 
-class UserLogin(APIView):
-	permission_classes = [AllowAny]
-	serializer_class = LoginSerializer
-
-	def post(self,request,*args, **kwargs):
-		data = request.data
-		serializer = UserLoginSerializer(data=data)
-		if serializer.is_valid(raise_exception=True):
-			return Response(serializer.data, status=status.HTTP_200_OK)
-
-		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-		# if serializer.is_valid(raise_exception=True):
-		# 	user = serializer.validated_data['user']
-		# 	token = Token.objects.get(user=user) 
-		# 	return Response(
-		# 		{
-		# 			'token': token.key, 
-		# 			'username':user.username,
-		# 			'email': user.email
-		# 		}, status=HTTP_200_OK
-		# 	)
-
-		# return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
-class UserByUsername(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Account.objects.all()
-    serializer_class = AccountSerializer
-    lookup_field = 'username'
-    permission_classes = [AllowAny]
 
 class EditProfile(generics.RetrieveUpdateAPIView):
   permission_classes = [AllowAny]
