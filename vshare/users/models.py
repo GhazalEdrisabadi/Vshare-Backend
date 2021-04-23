@@ -8,6 +8,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.dispatch import receiver
 from allauth.account.signals import user_signed_up
+from django.core.cache import cache
+import datetime
 
 class MyAccountManager(BaseUserManager):
 
@@ -79,6 +81,21 @@ class Account(AbstractBaseUser,PermissionsMixin):
 			'refresh' : str(refresh),
 			'access' : str(refresh.access_token)
 		}
+	
+#returns users last seen
+	def last_seen(self):
+		return cache.get('seen_%s' % self.username)
+
+#checks if user online or offline
+	def online(self):
+		if self.last_seen():
+			now = datetime.datetime.now()
+			if now > self.last_seen() + datetime.timedelta(seconds=settings.USER_ONLINE_TIMEOUT):
+				return False
+			else:
+				return True
+		else:
+			return False
 
 
 class Friendship(models.Model):
