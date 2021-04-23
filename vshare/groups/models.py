@@ -26,7 +26,8 @@ class Group(models.Model):
 	members = models.ManyToManyField(settings.AUTH_USER_MODEL,blank=True,related_name='joined_groups',through='Membership',)
 	video_hash = models.CharField(max_length=100, blank=True ,default='No hash yet!')
 	hash_sender = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name='sender',)
-	
+	aux_count = models.IntegerField(blank=True ,default=0)
+
 	def save(self,*args,**kwargs):
 		created = self.pk is None
 		super(Group,self).save(*args, **kwargs)
@@ -69,7 +70,7 @@ class Group(models.Model):
 	)
     
 	class Meta:
-		ordering = ['since']
+		ordering = ['aux_count']
 
 
 	def __str__(self):
@@ -83,6 +84,13 @@ class Group(models.Model):
 	@property
 	def group_status(self):
 		return self.status
+	
+	def update_aux_count(self):
+		members_of_group = Membership.objects.filter(the_group = self.groupid)
+		members_count = members_of_group.count()
+		self.aux_count = members_count
+		self.save()
+		return self.aux_count
 
 
 class Membership(models.Model):
@@ -137,3 +145,11 @@ class Invite(models.Model):
 	class Meta:
 		ordering = ['date_set']
 		unique_together = ("recipient", "group")
+
+class JoinRequest(models.Model):
+	group = models.ForeignKey(Group, to_field="groupid" , on_delete=models.CASCADE)
+	sender = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE)
+	date_set = models.DateTimeField(auto_now_add=True)
+	class Meta:
+		ordering = ['date_set']
+		unique_together = ("sender", "group")

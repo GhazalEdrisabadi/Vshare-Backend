@@ -54,11 +54,6 @@ from django.urls import reverse
 import jwt
 from django.conf import settings
 
-class Registration(generics.ListCreateAPIView):
-	permission_classes = [AllowAny]
-	queryset = Account.objects.all()
-	serializer_class = RegistrationSerializer
-
 class UserLogin(APIView):
 	permission_classes = [AllowAny]
 	serializer_class = LoginSerializer
@@ -131,8 +126,8 @@ class UploadPhoto(mixins.DestroyModelMixin,
 	def delete(self, request, *args, **kwargs):
 		return self.destroy(request, *args, **kwargs)
   
-class UserByUsernameSugestion(generics.ListCreateAPIView):
-    search_fields = ['username']
+class UserSugestion(generics.ListCreateAPIView):
+    search_fields = ['username','firstname','lastname']
     filter_backends = (filters.SearchFilter,)
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
@@ -211,3 +206,32 @@ class ChangePassword(generics.RetrieveUpdateAPIView):
 	serializer_class = ChangePasswordSerializer
 	lookup_field = 'username'
 	permission_classes = [IsAuthenticated]
+
+@api_view(['Get'])
+def UserOnlineFollowings(request):
+	friendships = Friendship.objects.filter(who_follows = request.user)
+	friends_online = []
+	for obj in friendships:
+		the_friend = Account.objects.get(username=obj.who_is_followed)
+		if the_friend.online() == True:
+			print(the_friend.last_seen())
+			friends_online.append(obj.who_is_followed)
+		else:
+			pass
+	friends = Account.objects.filter(username__in = friends_online)
+	serializer = AccountSerializer(friends, many=True)
+	return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['Get'])
+def UserOfflineFollowings(request):
+	friendships = Friendship.objects.filter(who_follows = request.user)
+	friends_offline = []
+	for obj in friendships:
+		the_friend = Account.objects.get(username=obj.who_is_followed)
+		if the_friend.online() == False:
+			friends_offline.append(obj.who_is_followed)
+		else:
+			pass
+	friends = Account.objects.filter(username__in = friends_offline)
+	serializer = AccountSerializer(friends, many=True)
+	return Response(serializer.data, status=status.HTTP_200_OK)

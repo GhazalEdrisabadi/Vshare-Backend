@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '@z)e)2eu^s1fk-9hfz)f66cf6--+dk1gle-hp((0q^nj!4u4^3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['185.204.197.168','vsharee.ir','127.0.0.1']
 
@@ -101,10 +101,24 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'users.activeuser_middleware.ActiveUserMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'default-cache'
+    }
+}
 
+# Number of seconds of inactivity before a user is marked offline
+USER_ONLINE_TIMEOUT = 300
+
+# Number of seconds that we will keep track of inactive users for before 
+# their last seen is removed from the cache
+USER_LASTSEEN_TIMEOUT = 60 * 60 * 24 * 7
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_METHODS = [
     'DELETE',
@@ -136,7 +150,7 @@ ROOT_URLCONF = 'vshare.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'accounts')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -217,9 +231,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-
-STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -270,6 +283,6 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_LOGOUT_ON_GET = True
 LOGIN_URL = 'http://127.0.0.1:8000/user/auth/login/'
-ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'http://127.0.0.1:8000/email-verified/'
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'http://vsharee.ir/email-verified/'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'http://127.0.0.1:8000/'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/user/auth/login/'
