@@ -264,10 +264,35 @@ def GroupJoinRequestsList(request):
 
 @api_view(['Get'])
 def GroupsOfUser(request):
-    memberships = Membership.objects.filter(the_member = request.user)
+    memberships = Membership.objects.filter(the_member=request.user)
     groups = []
     for obj in memberships:
         groups.append(obj.the_group)
     groups_obj = Group.objects.filter(groupid__in = groups)
     serializer = GroupSerializer(groups_obj, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['Get'])
+def TopGroups(request):
+    info = []
+    groups_sorted = []
+    groups = Group.objects.all()
+    if groups.count() == 0:
+        response_data = {'info':'There are no groups to choose.'}
+        return Response(response_data, status=status.HTTP_200_OK)
+    for obj in groups:
+        memberships = Membership.objects.filter(the_group=obj.groupid)
+        count = memberships.count()
+        info.append([count,obj.groupid])      
+    info.sort(key=lambda x: int(x[0]))
+    info.reverse()
+    for l in info:
+        groups_sorted.append(l[1])
+    flag = min(15,len(groups_sorted))
+    top_15_id = groups_sorted[:flag]
+    for i in top_15_id:
+        obj = Group.objects.filter(groupid=i)
+        obj[0].update_aux_count()
+    top_15_group = Group.objects.filter(groupid__in=top_15_id).order_by('-aux_count')
+    serializer = GroupSerializer(top_15_group, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
