@@ -11,6 +11,7 @@ app_name = "users"
 
 urlpatterns = [
     
+    path('information/', UserInformation.as_view(), name="user details"),
     path('<str:username>/edit_profile/upload_photo/', UploadPhoto.as_view(), name="UploadPhoto"),
     path('<str:username>/edit_profile/', EditProfile.as_view(), name="Edit Profile"),
     path('<str:username>/edit_profile/change_password/', ChangePassword.as_view(), name="Change Password"),
