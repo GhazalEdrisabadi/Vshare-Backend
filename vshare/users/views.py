@@ -54,6 +54,13 @@ from django.urls import reverse
 import jwt
 from django.conf import settings
 
+class UserInformation(generics.ListAPIView):
+	serializer_class = AccountSerializer
+	permission_classes = [AllowAny]
+	def get_queryset(self):
+		user = self.request.user
+		queryset = Account.objects.filter(username=user)
+		return queryset
 
 class EditProfile(generics.RetrieveUpdateAPIView):
   permission_classes = [AllowAny]
