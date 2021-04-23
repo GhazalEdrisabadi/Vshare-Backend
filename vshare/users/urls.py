@@ -34,5 +34,7 @@ urlpatterns = [
     path('auth/registration/account-confirm-email/<str:key>/',ConfirmEmailView.as_view(),),
     path('auth/registration/', include('dj_rest_auth.registration.urls')),
     path('dj-rest-auth/account-confirm-email/',VerifyEmailView.as_view(),name='account_email_verification_sent'),
-    path('auth/login/',LoginView.as_view(),name='account login'),
+    path('auth/login/',LoginView.as_view(),name='account_login'),
+    path('relations/online_followings/',UserOnlineFollowings,name='online_followings'),
+    path('relations/offline_followings/',UserOfflineFollowings,name='offline_followings'),
     ]
