@@ -44,14 +44,16 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'groups.apps.GroupsConfig',
-    'users',
     'stream',
 	'corsheaders',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
     'rest_framework_swagger',
+    'users',
 ]
 
 REST_FRAMEWORK = {
@@ -84,6 +86,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER' : 'users.serializers.UserDetailsSerializer',
     'LOGIN_SERIALIZER': 'users.serializers.LoginSerializer',
+    'PASSWORD_RESET_SERIALIZER': 'users.serializers.CustomPasswordResetSerializer'
 }
 SIMPLE_JWT = {
     'USER_ID_FIELD': 'username'
@@ -150,7 +153,7 @@ ROOT_URLCONF = 'vshare.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'accounts')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'accounts'), os.path.join(BASE_DIR, 'users/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
