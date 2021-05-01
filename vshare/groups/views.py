@@ -24,6 +24,8 @@ from rest_framework.permissions import (
 		IsAdminUser,
 		IsAuthenticatedOrReadOnly,
 	)
+from rest_framework import mixins
+
 
 class PermissionList(generics.ListCreateAPIView):
     queryset = Permission.objects.all()
@@ -296,3 +298,41 @@ def TopGroups(request):
     top_15_group = Group.objects.filter(groupid__in=top_15_id).order_by('-aux_count')
     serializer = GroupSerializer(top_15_group, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UploadPhoto(mixins.DestroyModelMixin,
+                    mixins.CreateModelMixin,
+                    generics.GenericAPIView):
+  
+    permission_classes = [IsAuthenticated]
+    queryset = Group.objects.all()
+    serializer_class = UploadPhotoSerializer
+
+    def perform_create(self, instance):
+        request_obj = instance.context["request"]
+        group_id = request_obj.query_params.get('groupid')
+        group = Group.objects.get(groupid=group_id)
+        if not group.photo:
+            group.photo = True
+        group.save()
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+    def perform_destroy(self, instance):
+        if instance.photo:
+            instance.photo = False
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
