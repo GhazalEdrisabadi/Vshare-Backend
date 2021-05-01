@@ -53,6 +53,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 import jwt
 from django.conf import settings
+from django.views.decorators.csrf import csrf_protect
+
 
 class UserLogin(APIView):
 	permission_classes = [AllowAny]
@@ -140,6 +142,53 @@ class FriendshipList(generics.ListCreateAPIView):
 	def perform_create(self, serializer):
 		req = serializer.context['request']
 		serializer.save(who_follows=req.user)
+
+@api_view(['POST'])
+def FollowRequest(request):
+	user = request.user
+	requested_user_param = request.query_params.get('user_id')
+	if Account.objects.get(username=requested_user_param).exists():
+		receiver = Account.objects.get(username=requested_user_param)
+		if Friendship.objects.filters(who_follows=user, who_is_followed=receiver).exists():
+			response = {'Error':'You have already followed this user.'}
+			return Response(response, status=status.HTTP_400_BAD_REQUEST)
+		else:
+			if receiver.is_private :
+				try:
+					# Get any friend requests (active and non-active)
+					friend_requests = FriendRequest.objects.filter(sender=user, receiver=receiver)
+
+					# Find if any of them are active
+					try:
+						for request in friend_requests:
+							if request.is_active:
+								raise Exception("You already sent them a friend request.")
+
+						# If none are active, then create a new friend request
+						friend_request = FriendRequest(sender=user, receiver=receiver)
+						friend_request.is_active = True
+						friend_request.save()
+						response = {'Success':'Friend request sent.'}
+						return Response(response, status=status.HTTP_200_OK)
+
+					except Exception as e:
+						raise
+
+				except FriendRequest.DoesNotExist:
+					# There are no friend requests so create one
+					friend_request = FriendRequest(sender=user, receiver=receiver)
+					friend_request.is_active = True
+					friend_request.save()
+					response = {'Success':'Friend request sent.'}
+					return Response(response, status=status.HTTP_200_OK)
+			else:
+				friendship = Friendship(who_follows=user, who_is_followed=receiver)
+				friendship.save()
+				response = {'Success':'You started following this user.'}
+				return Response(response, status=status.HTTP_200_OK)
+	else:
+		response = {'Error':'This user is not exist.'}
+		return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
 class UserFollowers(ListAPIView):
 	#queryset = OnlineUser.objects.all()

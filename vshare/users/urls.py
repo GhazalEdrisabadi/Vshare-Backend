@@ -22,7 +22,8 @@ urlpatterns = [
     path('find/username/', UserSugestion.as_view(), name="find_with_sugestion"),
     ###########################################################################################
 
-    path('relations/follow/', FriendshipList.as_view(), name="follow_operation"),
+    path('relations/follow/', FollowRequest, name="follow_operation"),
+    #path('relations/follow/', FriendshipList.as_view(), name="follow_operation"),
 
     ###########################################################################################
     path('relations/followers/', UserFollowers.as_view(), name="user_followers"),
