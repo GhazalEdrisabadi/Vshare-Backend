@@ -2,6 +2,7 @@ from django.urls import path
 from users.views import *
 from django.urls import include
 from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView, LoginView
+from dj_rest_auth.views import PasswordResetConfirmView, PasswordResetView
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -34,7 +35,9 @@ urlpatterns = [
 
     path('auth/registration/account-confirm-email/<str:key>/',ConfirmEmailView.as_view(),),
     path('auth/registration/', include('dj_rest_auth.registration.urls')),
-    path('dj-rest-auth/account-confirm-email/',VerifyEmailView.as_view(),name='account_email_verification_sent'),
+    path('auth/account-confirm-email/',VerifyEmailView.as_view(),name='account_email_verification_sent'),
+    path('auth/password-reset/', PasswordResetView.as_view()),
+    #path('auth/password/reset/confirm/<slug:uidb64>/<slug:token>/',PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('auth/login/',LoginView.as_view(),name='account_login'),
     path('relations/online_followings/',UserOnlineFollowings,name='online_followings'),
     path('relations/offline_followings/',UserOfflineFollowings,name='offline_followings'),
