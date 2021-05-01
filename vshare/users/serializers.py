@@ -14,6 +14,9 @@ from django.contrib import auth
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework import exceptions
 from allauth.account.models import EmailAddress
+from django.contrib.auth.forms import PasswordResetForm
+from django.conf import settings
+from django.utils.translation import gettext as _
 
 UserModel = get_user_model()
 class UserDetailsSerializer(serializers.ModelSerializer):
@@ -266,4 +269,21 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
 class FriendshipSerializer(serializers.ModelSerializer):
     class Meta:
         model = Friendship
-        fields = '__all__'  
+        fields = '__all__'
+
+#I needed to overwrite dj_rest_auth PasswordResetSerializer to send desired html email
+from dj_rest_auth.serializers import PasswordResetSerializer
+class CustomPasswordResetSerializer(PasswordResetSerializer):
+    def save(self):
+        request = self.context.get('request')
+        # Set some values to trigger the send_email method.
+        opts = {
+            'use_https': request.is_secure(),
+            'from_email': 'example@yourdomain.com',
+            'request': request,
+            # here I have set my desired template to be used
+            'html_email_template_name': 'password_reset_email.html'
+        }
+
+        opts.update(self.get_email_options())
+        self.reset_form.save(**opts)
