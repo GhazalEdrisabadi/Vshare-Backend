@@ -125,9 +125,9 @@ class FriendshipList(generics.ListCreateAPIView):
 def FollowRequest(request):
 	user = request.user
 	requested_user_param = request.query_params.get('user_id')
-	if Account.objects.get(username=requested_user_param).exists():
+	if Account.objects.filter(username=requested_user_param).exists():
 		receiver = Account.objects.get(username=requested_user_param)
-		if Friendship.objects.filters(who_follows=user, who_is_followed=receiver).exists():
+		if Friendship.objects.filter(who_follows=user, who_is_followed=receiver).exists():
 			response = {'Error':'You have already followed this user.'}
 			return Response(response, status=status.HTTP_400_BAD_REQUEST)
 		else:
