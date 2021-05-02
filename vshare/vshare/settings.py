@@ -27,7 +27,7 @@ SECRET_KEY = '@z)e)2eu^s1fk-9hfz)f66cf6--+dk1gle-hp((0q^nj!4u4^3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['185.204.197.168','vsharee.ir','127.0.0.1']
+ALLOWED_HOSTS = ['185.204.197.168','vsharee.ir','127.0.0.1','api.vsharee.ir']
 
 # Application definition
 
