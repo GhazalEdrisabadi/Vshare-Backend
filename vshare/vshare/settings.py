@@ -44,14 +44,16 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'groups.apps.GroupsConfig',
-    'users',
     'stream',
 	'corsheaders',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
     'rest_framework_swagger',
+    'users',
 ]
 
 REST_FRAMEWORK = {
@@ -84,6 +86,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER' : 'users.serializers.UserDetailsSerializer',
     'LOGIN_SERIALIZER': 'users.serializers.LoginSerializer',
+    'PASSWORD_RESET_SERIALIZER': 'users.serializers.CustomPasswordResetSerializer'
 }
 SIMPLE_JWT = {
     'USER_ID_FIELD': 'username'
@@ -101,10 +104,24 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'users.activeuser_middleware.ActiveUserMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'default-cache'
+    }
+}
 
+# Number of seconds of inactivity before a user is marked offline
+USER_ONLINE_TIMEOUT = 300
+
+# Number of seconds that we will keep track of inactive users for before 
+# their last seen is removed from the cache
+USER_LASTSEEN_TIMEOUT = 60 * 60 * 24 * 7
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_METHODS = [
     'DELETE',
@@ -136,7 +153,7 @@ ROOT_URLCONF = 'vshare.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'accounts'), os.path.join(BASE_DIR, 'users/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -255,7 +272,7 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-
+ACCOUNT_EMAIL_SUBJECT_PREFIX = 'Vshare - '
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -269,6 +286,6 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_LOGOUT_ON_GET = True
 LOGIN_URL = 'http://127.0.0.1:8000/user/auth/login/'
-ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'http://127.0.0.1:8000/email-verified/'
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'http://vsharee.ir/email-verified/'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'http://127.0.0.1:8000/'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/user/auth/login/'

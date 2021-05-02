@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import *
 from django.apps import apps
+from users.utils import *
 
 UserModel = apps.get_model('users', 'Account')
 
@@ -69,3 +70,30 @@ class InviteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Invite
         fields = '__all__'
+
+class JoinRequestSerializer(serializers.ModelSerializer):
+    def __init__(self, *args, **kwargs):
+        many = kwargs.pop('many', True)
+        super(JoinRequestSerializer, self).__init__(many=many, *args, **kwargs)
+    class Meta:
+        model = JoinRequest
+        fields = '__all__'
+
+class UploadPhotoSerializer(serializers.ModelSerializer):
+
+
+    class Meta(object):
+        model = Group
+        fields = ['groupid','photo']
+        extra_kwargs = {
+                'groupid': {'read_only' : True}
+        }
+    
+    # Cast the generated url of upload photo to dictionary
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        request_obj = self.context["request"]
+        group_id = request_obj.query_params.get('groupid')
+        upload_url = create_presigned_post('vshare-group-images',group_id)
+        ret["upload_photo"] = upload_url
+        return ret

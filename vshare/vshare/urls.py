@@ -19,7 +19,9 @@ from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_swagger.views import get_swagger_view
+from dj_rest_auth.views import PasswordResetConfirmView, PasswordResetView
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 
 schema_view = get_swagger_view(title='my vshare project!')
 
@@ -30,6 +32,7 @@ urlpatterns = [
     path('user/', include('users.urls')),
     path('', include('groups.urls')),
     path('accounts/', include('allauth.urls')),
- ]
+    path('auth/password/reset/confirm/<slug:uidb64>/<slug:token>/',PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -8,6 +8,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.dispatch import receiver
 from allauth.account.signals import user_signed_up
+from django.core.cache import cache
+import datetime
 
 class MyAccountManager(BaseUserManager):
 
@@ -79,6 +81,21 @@ class Account(AbstractBaseUser,PermissionsMixin):
 			'refresh' : str(refresh),
 			'access' : str(refresh.access_token)
 		}
+	
+#returns users last seen
+	def last_seen(self):
+		return cache.get('seen_%s' % self.username)
+
+#checks if user online or offline
+	def online(self):
+		if self.last_seen():
+			now = datetime.datetime.now()
+			if now > self.last_seen() + datetime.timedelta(seconds=settings.USER_ONLINE_TIMEOUT):
+				return False
+			else:
+				return True
+		else:
+			return False
 
 
 class Friendship(models.Model):
@@ -88,3 +105,29 @@ class Friendship(models.Model):
 	class Meta:
 		ordering = ['the_date']
 		unique_together = ("who_follows", "who_is_followed")
+
+class FriendRequest(models.Model):
+	sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="request_sender")
+	receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="request_receiver")
+	is_active = models.BooleanField(blank=True, null=False, default=False)
+	timestamp = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return self.sender.username
+
+	def accept(self):
+		# Accept a friend request : Update both SENDER and RECEIVER friend lists
+		friendship = Friendship(who_follows=self.sender, who_is_followed=self.reciever)
+		friendship.save()
+		self.is_active = False
+		self.save()
+
+	def decline(self):
+		# Decline a friend request : It is "declined" by setting the 'is_active' field to False
+		self.is_active = False
+		self.save()
+
+	def cancel(self):
+		self.is_active = False
+		self.save()
+

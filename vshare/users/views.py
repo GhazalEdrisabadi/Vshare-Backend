@@ -53,41 +53,16 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 import jwt
 from django.conf import settings
+from django.views.decorators.csrf import csrf_protect
 
-class Registration(generics.ListCreateAPIView):
+
+class UserInformation(generics.ListAPIView):
+	serializer_class = AccountSerializer
 	permission_classes = [AllowAny]
-	queryset = Account.objects.all()
-	serializer_class = RegistrationSerializer
-
-class UserLogin(APIView):
-	permission_classes = [AllowAny]
-	serializer_class = LoginSerializer
-
-	def post(self,request,*args, **kwargs):
-		data = request.data
-		serializer = UserLoginSerializer(data=data)
-		if serializer.is_valid(raise_exception=True):
-			return Response(serializer.data, status=status.HTTP_200_OK)
-
-		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-		# if serializer.is_valid(raise_exception=True):
-		# 	user = serializer.validated_data['user']
-		# 	token = Token.objects.get(user=user) 
-		# 	return Response(
-		# 		{
-		# 			'token': token.key, 
-		# 			'username':user.username,
-		# 			'email': user.email
-		# 		}, status=HTTP_200_OK
-		# 	)
-
-		# return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
-class UserByUsername(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Account.objects.all()
-    serializer_class = AccountSerializer
-    lookup_field = 'username'
-    permission_classes = [AllowAny]
+	def get_queryset(self):
+		user = self.request.user
+		queryset = Account.objects.filter(username=user)
+		return queryset
 
 class EditProfile(generics.RetrieveUpdateAPIView):
   permission_classes = [AllowAny]
@@ -131,8 +106,8 @@ class UploadPhoto(mixins.DestroyModelMixin,
 	def delete(self, request, *args, **kwargs):
 		return self.destroy(request, *args, **kwargs)
   
-class UserByUsernameSugestion(generics.ListCreateAPIView):
-    search_fields = ['username']
+class UserSugestion(generics.ListCreateAPIView):
+    search_fields = ['username','firstname','lastname']
     filter_backends = (filters.SearchFilter,)
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
@@ -145,6 +120,53 @@ class FriendshipList(generics.ListCreateAPIView):
 	def perform_create(self, serializer):
 		req = serializer.context['request']
 		serializer.save(who_follows=req.user)
+
+@api_view(['POST'])
+def FollowRequest(request):
+	user = request.user
+	requested_user_param = request.query_params.get('user_id')
+	if Account.objects.get(username=requested_user_param).exists():
+		receiver = Account.objects.get(username=requested_user_param)
+		if Friendship.objects.filters(who_follows=user, who_is_followed=receiver).exists():
+			response = {'Error':'You have already followed this user.'}
+			return Response(response, status=status.HTTP_400_BAD_REQUEST)
+		else:
+			if receiver.is_private :
+				try:
+					# Get any friend requests (active and non-active)
+					friend_requests = FriendRequest.objects.filter(sender=user, receiver=receiver)
+
+					# Find if any of them are active
+					try:
+						for request in friend_requests:
+							if request.is_active:
+								raise Exception("You already sent them a friend request.")
+
+						# If none are active, then create a new friend request
+						friend_request = FriendRequest(sender=user, receiver=receiver)
+						friend_request.is_active = True
+						friend_request.save()
+						response = {'Success':'Friend request sent.'}
+						return Response(response, status=status.HTTP_200_OK)
+
+					except Exception as e:
+						raise
+
+				except FriendRequest.DoesNotExist:
+					# There are no friend requests so create one
+					friend_request = FriendRequest(sender=user, receiver=receiver)
+					friend_request.is_active = True
+					friend_request.save()
+					response = {'Success':'Friend request sent.'}
+					return Response(response, status=status.HTTP_200_OK)
+			else:
+				friendship = Friendship(who_follows=user, who_is_followed=receiver)
+				friendship.save()
+				response = {'Success':'You started following this user.'}
+				return Response(response, status=status.HTTP_200_OK)
+	else:
+		response = {'Error':'This user is not exist.'}
+		return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
 class UserFollowers(ListAPIView):
 	#queryset = OnlineUser.objects.all()
@@ -211,3 +233,32 @@ class ChangePassword(generics.RetrieveUpdateAPIView):
 	serializer_class = ChangePasswordSerializer
 	lookup_field = 'username'
 	permission_classes = [IsAuthenticated]
+
+@api_view(['Get'])
+def UserOnlineFollowings(request):
+	friendships = Friendship.objects.filter(who_follows = request.user)
+	friends_online = []
+	for obj in friendships:
+		the_friend = Account.objects.get(username=obj.who_is_followed)
+		if the_friend.online() == True:
+			print(the_friend.last_seen())
+			friends_online.append(obj.who_is_followed)
+		else:
+			pass
+	friends = Account.objects.filter(username__in = friends_online)
+	serializer = AccountSerializer(friends, many=True)
+	return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['Get'])
+def UserOfflineFollowings(request):
+	friendships = Friendship.objects.filter(who_follows = request.user)
+	friends_offline = []
+	for obj in friendships:
+		the_friend = Account.objects.get(username=obj.who_is_followed)
+		if the_friend.online() == False:
+			friends_offline.append(obj.who_is_followed)
+		else:
+			pass
+	friends = Account.objects.filter(username__in = friends_offline)
+	serializer = AccountSerializer(friends, many=True)
+	return Response(serializer.data, status=status.HTTP_200_OK)
