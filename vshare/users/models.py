@@ -105,3 +105,29 @@ class Friendship(models.Model):
 	class Meta:
 		ordering = ['the_date']
 		unique_together = ("who_follows", "who_is_followed")
+
+class FriendRequest(models.Model):
+	sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="request_sender")
+	receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="request_receiver")
+	is_active = models.BooleanField(blank=True, null=False, default=False)
+	timestamp = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return self.sender.username
+
+	def accept(self):
+		# Accept a friend request : Update both SENDER and RECEIVER friend lists
+		friendship = Friendship(who_follows=self.sender, who_is_followed=self.reciever)
+		friendship.save()
+		self.is_active = False
+		self.save()
+
+	def decline(self):
+		# Decline a friend request : It is "declined" by setting the 'is_active' field to False
+		self.is_active = False
+		self.save()
+
+	def cancel(self):
+		self.is_active = False
+		self.save()
+
