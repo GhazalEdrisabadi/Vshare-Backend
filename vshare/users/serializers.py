@@ -287,3 +287,13 @@ class CustomPasswordResetSerializer(PasswordResetSerializer):
 
         opts.update(self.get_email_options())
         self.reset_form.save(**opts)
+
+class FriendRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FriendRequest
+        fields = ['sender','receiver','is_active']
+        extra_kwargs = {
+            'sender':{'read_only':True},
+            'receiver':{'read_only':True},
+            'is_active':{'read_only':True}
+        }
