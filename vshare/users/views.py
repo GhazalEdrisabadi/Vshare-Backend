@@ -280,3 +280,29 @@ class FriendRequestList(ListAPIView):
 				raise
 		else:
 			raise Exception("This is a public account")
+
+# Accept or Decline a friend request for private accounts
+@api_view(['POST'])
+def AccOrDecFriendRequest(request):
+	user = request.user
+	state = request.query_params.get('state')
+	sender = request.query_params.get('userid')
+	try:
+		friend_request = FriendRequest.objects.get(sender=sender, receiver=user, is_active=True)
+		if state == 'acc':
+			friend_request.accept()
+			response = {'Success':'You accepted this follow request.'}
+			return Response(response, status=status.HTTP_200_OK)
+
+		elif state == 'dec':
+			friend_request.decline()
+			response = {'Success':'You declined this follow request.'}
+			return Response(response, status=status.HTTP_200_OK)
+
+		else:
+			response = {'Error':'You should enter a valid status.'}
+			return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+	except FriendRequest.DoesNotExist:
+			response = {'Error':'Friend request does not exist'}
+			return Response(response, status=status.HTTP_400_BAD_REQUEST)
