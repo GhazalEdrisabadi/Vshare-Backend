@@ -264,7 +264,7 @@ def UserOfflineFollowings(request):
 	return Response(serializer.data, status=status.HTTP_200_OK)
 
 # Return follow requests for private accounts
-class FriendRequestsList(ListAPIView):
+class FriendRequestList(ListAPIView):
 	serializer_class = FriendRequestSerializer
 	permission_classes = [AllowAny]
 	def get_queryset(self):
