@@ -125,9 +125,9 @@ class FriendshipList(generics.ListCreateAPIView):
 def FollowRequest(request):
 	user = request.user
 	requested_user_param = request.query_params.get('user_id')
-	if Account.objects.get(username=requested_user_param).exists():
+	if Account.objects.filter(username=requested_user_param).exists():
 		receiver = Account.objects.get(username=requested_user_param)
-		if Friendship.objects.filters(who_follows=user, who_is_followed=receiver).exists():
+		if Friendship.objects.filter(who_follows=user, who_is_followed=receiver).exists():
 			response = {'Error':'You have already followed this user.'}
 			return Response(response, status=status.HTTP_400_BAD_REQUEST)
 		else:
@@ -262,3 +262,21 @@ def UserOfflineFollowings(request):
 	friends = Account.objects.filter(username__in = friends_offline)
 	serializer = AccountSerializer(friends, many=True)
 	return Response(serializer.data, status=status.HTTP_200_OK)
+
+# Return follow requests for private accounts
+class FriendRequestsList(ListAPIView):
+	serializer_class = FriendRequestSerializer
+	permission_classes = [AllowAny]
+	def get_queryset(self):
+		user = self.request.user
+		if user.is_private:
+			try:
+				friend_requests = FriendRequest.objects.filter(receiver=user, is_active=True)
+				if not friend_requests.exists():
+					raise Exception("You have no active request.") 
+				return friend_requests
+
+			except FriendRequest.DoesNotExist:
+				raise
+		else:
+			raise Exception("This is a public account")
