@@ -117,7 +117,7 @@ class FriendRequest(models.Model):
 
 	def accept(self):
 		# Accept a friend request : Update both SENDER and RECEIVER friend lists
-		friendship = Friendship(who_follows=self.sender, who_is_followed=self.reciever)
+		friendship = Friendship(who_follows=self.sender, who_is_followed=self.receiver)
 		friendship.save()
 		self.is_active = False
 		self.save()
