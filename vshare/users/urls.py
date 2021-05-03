@@ -31,4 +31,5 @@ urlpatterns = [
     path('auth/login/',LoginView.as_view(),name='account_login'),
     path('relations/online_followings/',UserOnlineFollowings,name='online_followings'),
     path('relations/offline_followings/',UserOfflineFollowings,name='offline_followings'),
+    path('relations/follow-requests/',FriendRequestList.as_view(),name='friend_requests'),
     ]
