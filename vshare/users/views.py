@@ -295,11 +295,20 @@ def AccOrDecFriendRequest(request):
 		friend_request = FriendRequest.objects.get(sender=sender, receiver=user, is_active=True)
 		if state == 'acc':
 			friend_request.accept()
+			receiver_notification = Notification(notification_type=5, sender=sender, receiver=user)
+			receiver_notification.text_preview = str(sender) + " started following you."
+			receiver_notification.save()
+			sender_notification = Notification(notification_type=3, sender=user, receiver=sender)
+			sender_notification.text_preview = str(user) + " accepted your follow request."
+			sender_notification.save()
 			response = {'Success':'You accepted this follow request.'}
 			return Response(response, status=status.HTTP_200_OK)
 
 		elif state == 'dec':
 			friend_request.decline()
+			sender_notification = Notification(notification_type=3, sender=user, receiver=sender)
+			sender_notification.text_preview = str(user) + " declined your follow request."
+			sender_notification.save()
 			response = {'Success':'You declined this follow request.'}
 			return Response(response, status=status.HTTP_200_OK)
 
