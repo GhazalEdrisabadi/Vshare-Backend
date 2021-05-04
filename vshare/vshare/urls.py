@@ -33,6 +33,7 @@ urlpatterns = [
     path('', include('groups.urls')),
     path('accounts/', include('allauth.urls')),
     path('auth/password/reset/confirm/<slug:uidb64>/<slug:token>/',PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('', include('notifications.urls')),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
