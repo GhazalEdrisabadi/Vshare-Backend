@@ -147,6 +147,20 @@ def FollowRequest(request):
 						friend_request = FriendRequest(sender=user, receiver=receiver)
 						friend_request.is_active = True
 						friend_request.save()
+
+						friends_count_notification = Notification.objects.filter(notification_type=1, receiver=receiver)
+
+						if friends_count_notification:
+							friends_count_notification = Notification.objects.get(notification_type=1, receiver=receiver)
+							friends_count_notification.update_friend_requests_count()
+
+						# There are no notification for friend requests count so create
+						else:
+							requests = FriendRequest.objects.filter(receiver=receiver, is_active=True)
+							new_notify = Notification(notification_type=1, receiver=receiver)
+							new_notify.text_preview = str(requests.count())
+							new_notify.save()
+
 						response = {'Success':'Friend request sent.'}
 						return Response(response, status=status.HTTP_200_OK)
 
@@ -158,6 +172,19 @@ def FollowRequest(request):
 					friend_request = FriendRequest(sender=user, receiver=receiver)
 					friend_request.is_active = True
 					friend_request.save()
+
+					friends_count_notification = Notification.objects.filter(notification_type=1, receiver=receiver)
+
+					if friends_count_notification:
+						friends_count_notification = Notification.objects.get(notification_type=1, receiver=receiver)
+						friends_count_notification.update_friend_requests_count()
+
+					else:
+						requests = FriendRequest.objects.filter(receiver=receiver, is_active=True)
+						new_notify = Notification(notification_type=1, receiver=receiver)
+						new_notify.text_preview = str(requests.count())
+						new_notify.save()
+
 					response = {'Success':'Friend request sent.'}
 					return Response(response, status=status.HTTP_200_OK)
 			else:
@@ -301,24 +328,52 @@ def AccOrDecFriendRequest(request):
 	user = request.user
 	state = request.query_params.get('state')
 	sender = request.query_params.get('userid')
+	sender_obj = Account.objects.get(username=sender)
 	try:
 		friend_request = FriendRequest.objects.get(sender=sender, receiver=user, is_active=True)
 		if state == 'acc':
 			friend_request.accept()
-			receiver_notification = Notification(notification_type=5, sender=sender, receiver=user)
-			receiver_notification.text_preview = str(sender) + " started following you."
+			receiver_notification = Notification(notification_type=5, sender=sender_obj, receiver=user)
+			receiver_notification.text_preview = sender + " started following you."
 			receiver_notification.save()
-			sender_notification = Notification(notification_type=3, sender=user, receiver=sender)
+
+			sender_notification = Notification(notification_type=3, sender=user, receiver=sender_obj)
 			sender_notification.text_preview = str(user) + " accepted your follow request."
 			sender_notification.save()
+
+			friends_count_notification = Notification.objects.filter(notification_type=1, receiver=user)
+
+			if friends_count_notification:
+				friends_count_notification = Notification.objects.get(notification_type=1, receiver=user)
+				friends_count_notification.update_friend_requests_count()
+
+			else:
+				requests = FriendRequest.objects.filter(receiver=user, is_active=True)
+				new_notify = Notification(notification_type=1, receiver=user)
+				new_notify.text_preview = str(requests.count())
+				new_notify.save()
+
 			response = {'Success':'You accepted this follow request.'}
 			return Response(response, status=status.HTTP_200_OK)
 
 		elif state == 'dec':
 			friend_request.decline()
-			sender_notification = Notification(notification_type=3, sender=user, receiver=sender)
+			sender_notification = Notification(notification_type=3, sender=user, receiver=sender_obj)
 			sender_notification.text_preview = str(user) + " declined your follow request."
 			sender_notification.save()
+
+			friends_count_notification = Notification.objects.filter(notification_type=1, receiver=user)
+
+			if friends_count_notification:
+				friends_count_notification = Notification.objects.get(notification_type=1, receiver=user)
+				friends_count_notification.update_friend_requests_count()
+
+			else:
+				requests = FriendRequest.objects.filter(receiver=user, is_active=True)
+				new_notify = Notification(notification_type=1, receiver=user)
+				new_notify.text_preview = str(requests.count())
+				new_notify.save()
+
 			response = {'Success':'You declined this follow request.'}
 			return Response(response, status=status.HTTP_200_OK)
 
