@@ -14,6 +14,7 @@ from groups.serializers import GroupSerializer
 from rest_framework.authtoken.models import Token
 
 from users.models import *
+from notifications.models import *
 from rest_framework import generics
 from rest_framework import mixins
 
@@ -162,6 +163,9 @@ def FollowRequest(request):
 			else:
 				friendship = Friendship(who_follows=user, who_is_followed=receiver)
 				friendship.save()
+				notification = Notification(notification_type=5, sender=user, receiver=receiver)
+				notification.text_preview = str(sender) + " started following you."
+				notification.save()
 				response = {'Success':'You started following this user.'}
 				return Response(response, status=status.HTTP_200_OK)
 	else:
