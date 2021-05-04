@@ -49,6 +49,7 @@ class Account(AbstractBaseUser,PermissionsMixin):
 	photo = models.BooleanField(default=False)
 	firstname = models.CharField(max_length=50)
 	lastname = models.CharField(max_length=50)
+	bio = models.CharField(max_length=80, default="Hi there! Now available on vshare.")
 	username = models.CharField(max_length=20, primary_key=True)#primary_key=True
 	email = models.EmailField(max_length=100, unique=True)
 	is_private = models.BooleanField(default=False)
