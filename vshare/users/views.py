@@ -277,11 +277,21 @@ class FriendRequestList(ListAPIView):
 			try:
 				friend_requests = FriendRequest.objects.filter(receiver=user, is_active=True)
 				if not friend_requests.exists():
-					raise Exception("You have no active request.") 
+					raise Exception("You have no active request.")
 				return friend_requests
 
 			except FriendRequest.DoesNotExist:
 				raise
+		else:
+			raise Exception("This is a public account")
+
+	def list(self, request, *args, **kwargs):
+		user = self.request.user
+		if user.is_private:
+			friend_requests = FriendRequest.objects.filter(receiver=user, is_active=True)
+			serializer = self.get_serializer(friend_requests, many=True)
+			response = {'follow requests': friend_requests.count(),'result': serializer.data}
+			return Response(response)
 		else:
 			raise Exception("This is a public account")
 
