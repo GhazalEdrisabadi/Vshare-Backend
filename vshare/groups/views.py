@@ -336,3 +336,22 @@ class UploadPhoto(mixins.DestroyModelMixin,
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+@api_view(['Get'])
+def GroupUsersPermissions(request):
+    group_identifier = request.query_params.get('group')
+    if Group.objects.filter(groupid=group_identifier).exists():
+        group_obj = Group.objects.get(groupid=group_identifier)
+        group_serializer = GroupSerializer(group_obj)
+        permission_objs = Permission.objects.filter(group=group_identifier)
+        permission_serializer = PermissionSerializer(permission_objs, many=True)
+        response_data = {
+            'group':group_serializer.data,
+            'users&permissions':permission_serializer.data,
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    else:
+        response_data = {
+            'error':'group does not exist!'
+        }
+        return Response(response_data, status=status.HTTP_404_NOT_FOUND)
