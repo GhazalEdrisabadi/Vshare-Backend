@@ -297,3 +297,13 @@ class FriendRequestSerializer(serializers.ModelSerializer):
             'receiver':{'read_only':True},
             'is_active':{'read_only':True}
         }
+
+class DirectMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DirectMessage
+        fields = '__all__'
+
+class ChatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Chat
+        fields = '__all__'
