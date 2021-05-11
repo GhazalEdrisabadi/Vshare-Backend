@@ -132,3 +132,19 @@ class FriendRequest(models.Model):
 		self.is_active = False
 		self.save()
 
+class Chat(models.Model):
+	starter_user = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE, related_name="starter")
+	non_starter_user = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE, related_name="non_starter")
+	last_update = models.DateTimeField(auto_now_add=True)
+	class Meta:
+		ordering = ['-last_update']
+		unique_together = ("starter_user", "non_starter_user")
+
+class DirectMessage(models.Model):
+	chat = models.ForeignKey(Chat, on_delete=models.CASCADE, null=True)
+	message_text = models.CharField(max_length=100, blank=True, default='',)
+	sender = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE, related_name="message_sender")
+	reciever = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE, related_name="message_reciever")
+	date_sent = models.DateTimeField(auto_now_add=True)
+	class Meta:
+		ordering = ['-date_sent']

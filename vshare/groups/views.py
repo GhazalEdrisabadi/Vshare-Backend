@@ -12,7 +12,7 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.models import User
-from groups.pagination import CustomPagination
+from groups.pagination import *
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_403_FORBIDDEN, HTTP_404_NOT_FOUND
 from django.http import QueryDict
@@ -59,7 +59,7 @@ class MessageHistory(generics.ListAPIView):
         queryset = Message.objects.all()
         the_group = self.request.query_params.get('target','')
         return queryset.filter(target_group=the_group)
-    pagination_class = CustomPagination
+    pagination_class = MessageCustomPagination
 
 
 class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -355,3 +355,4 @@ def GroupUsersPermissions(request):
             'error':'group does not exist!'
         }
         return Response(response_data, status=status.HTTP_404_NOT_FOUND)
+
