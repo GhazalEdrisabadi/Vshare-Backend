@@ -34,4 +34,5 @@ urlpatterns = [
     path('relations/request/',AccOrDecFriendRequest, name='Accept or decline a follow request'),
     path('direct-message/',DirectMessageList.as_view(), name='messages_history'),
     path('chat-list/',ChatList, name='messages_history'),
+    path('chat/delete/',DeleteChat, name='delete-chat'),
     ]
