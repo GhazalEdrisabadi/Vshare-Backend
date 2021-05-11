@@ -21,7 +21,7 @@ from rest_framework import mixins
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 from rest_framework.views import APIView
 
 from rest_framework import filters
@@ -447,3 +447,18 @@ def ChatList(request):
 		'chats' : chat_list
 	}
 	return Response(response_data, status=status.HTTP_200_OK)
+
+@api_view(['Delete'])
+def DeleteChat(request):
+	user_identifier = request.user
+	friend_username = request.query_params.get('friend')
+	friend_identifier = Account.objects.get(username=friend_username)
+	sender_and_reciever = [friend_identifier, user_identifier]
+	if Chat.objects.filter(starter_user__in=sender_and_reciever, non_starter_user__in=sender_and_reciever).exists():
+		chat_obj = Chat.objects.filter(starter_user__in=sender_and_reciever, non_starter_user__in=sender_and_reciever)
+		chat_obj.delete()
+		response_data = {'detail':"Successfully deleted."}
+		return Response(response_data, status=status.HTTP_200_OK)
+	else:
+		response_data = {'error':"Selected chat doesn't exist."}
+		return Response(response_data, status=status.HTTP_404_NOT_FOUND)
