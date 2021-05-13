@@ -66,10 +66,10 @@ class UserInformation(generics.ListAPIView):
 		return queryset
 
 class EditProfile(generics.RetrieveUpdateAPIView):
-  permission_classes = [AllowAny]
-  queryset = Account.objects.all()
-  serializer_class = EditProfileSerializer
-  lookup_field = 'username'
+	queryset = Account.objects.all()
+	serializer_class = EditProfileSerializer
+	permission_classes = [IsAuthenticated]
+	lookup_field = 'username'
 
 class UploadPhoto(mixins.DestroyModelMixin,
 					mixins.CreateModelMixin,
