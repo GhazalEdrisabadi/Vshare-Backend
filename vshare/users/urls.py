@@ -33,4 +33,6 @@ urlpatterns = [
     path('relations/offline-followings/',UserOfflineFollowings,name="offline_followings"),
     path('relations/follow-requests/',FriendRequestList.as_view(),name="friend_requests"),
     path('relations/request/',AccOrDecFriendRequest, name="accept_decline_follow_request"),
+    path('direct-message/',DirectMessageList.as_view(), name='messages_history'),
+    path('chat-list/',ChatList, name='messages_history'),
     ]

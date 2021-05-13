@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #subs backend
 from __future__ import unicode_literals
+import django
 from django.shortcuts import render
 
 from django.db.models import Q
@@ -55,6 +56,7 @@ from django.urls import reverse
 import jwt
 from django.conf import settings
 from django.views.decorators.csrf import csrf_protect
+from users.pagination import *
 
 # User info with lookup field
 class UserDetail(generics.RetrieveAPIView):
@@ -392,3 +394,64 @@ def AccOrDecFriendRequest(request):
 	except FriendRequest.DoesNotExist:
 			response = {'Error':'Friend request does not exist'}
 			return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+class DirectMessageList(generics.ListCreateAPIView):
+	serializer_class = DirectMessageSerializer
+	permission_classes = [AllowAny]
+	pagination_class = DirectMessageCustomPagination
+	def get_queryset(self):
+		reciever_username = self.request.query_params.get('user')
+		reciever_identifier = Account.objects.get(username=reciever_username)
+		user_identifier = self.request.user
+		sender_and_reciever = [reciever_identifier, user_identifier]
+		if Chat.objects.filter(starter_user__in=sender_and_reciever, non_starter_user__in=sender_and_reciever).exists():
+			chat_obj = Chat.objects.get(starter_user__in=sender_and_reciever, non_starter_user__in=sender_and_reciever)
+			queryset = DirectMessage.objects.filter(chat=chat_obj)
+		else:
+			queryset = [{}]
+		return queryset
+
+	def perform_create(self, instance):
+		reciever_username = self.request.query_params.get('user')
+		reciever_identifier = Account.objects.get(username=reciever_username)
+		user_identifier = self.request.user
+		sender_and_reciever = [reciever_identifier, user_identifier]
+		if Chat.objects.filter(starter_user__in=sender_and_reciever, non_starter_user__in=sender_and_reciever).exists():
+			new_dm = DirectMessage(message_text=self.request.data['message_text'], sender=user_identifier, reciever=reciever_identifier, chat=Chat.objects.get(starter_user__in=sender_and_reciever, non_starter_user__in=sender_and_reciever))
+			new_dm.save()
+			chat_obj = Chat.objects.get(starter_user__in=sender_and_reciever, non_starter_user__in=sender_and_reciever)
+			chat_obj.last_update = datetime.datetime.now()
+			chat_obj.save()
+		else:
+			new_chat = Chat(starter_user=user_identifier, non_starter_user=reciever_identifier)
+			new_chat.save()
+			new_dm = DirectMessage(message_text=self.request.data['message_text'], sender=user_identifier, reciever=reciever_identifier, chat=new_chat)
+			new_dm.save()
+
+@api_view(['Get'])
+def ChatList(request):
+	user_identifier = request.user
+	chat_objs = Chat.objects.filter(Q(starter_user=user_identifier.username) | Q(non_starter_user=user_identifier.username))
+	print(chat_objs)
+	chat_list = []
+	if chat_objs.count() == 0:
+		response_data = {'detail':'No chats yet.'}
+		return Response(response_data, status=status.HTTP_200_OK)
+	for obj in chat_objs:
+		if obj.starter_user == user_identifier:
+			friend = obj.non_starter_user.username
+		else:
+			friend = obj.starter_user.username
+
+		chat_json = {
+			'friend' : friend,
+			'last_update' : obj.last_update
+		}
+
+		chat_list.append(chat_json)
+
+	response_data = {
+		'count' : chat_objs.count(),
+		'chats' : chat_list
+	}
+	return Response(response_data, status=status.HTTP_200_OK)

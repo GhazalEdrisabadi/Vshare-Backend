@@ -30,7 +30,7 @@ urlpatterns = [
     path('swagger/', schema_view, name='openapi-schema'),
     path('admin/', admin.site.urls),
     path('user/', include('users.urls')),
-    path('', include('groups.urls')),
+    path('group/', include('groups.urls')),
     path('accounts/', include('allauth.urls')),
     path('auth/password/reset/confirm/<slug:uidb64>/<slug:token>/',PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('', include('notifications.urls')),

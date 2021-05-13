@@ -8,3 +8,5 @@ from users.models import *
 admin.site.register(Account)
 admin.site.register(Friendship)
 admin.site.register(FriendRequest)
+admin.site.register(DirectMessage)
+admin.site.register(Chat)
