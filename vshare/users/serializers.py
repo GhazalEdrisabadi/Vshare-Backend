@@ -201,7 +201,7 @@ class LoginSerializer(serializers.Serializer):
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = '__all__'
+        exclude = ('password', )
 
 class UploadPhotoSerializer(serializers.ModelSerializer):
 
