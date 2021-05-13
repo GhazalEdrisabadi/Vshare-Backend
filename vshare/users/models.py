@@ -46,6 +46,7 @@ class MyAccountManager(BaseUserManager):
 
 class Account(AbstractBaseUser,PermissionsMixin):
 	# notice the absence of a "Password field", that's built in.
+	photo_path = models.URLField(max_length=200, null=True, blank=True)
 	photo = models.BooleanField(default=False)
 	firstname = models.CharField(max_length=50)
 	lastname = models.CharField(max_length=50)
