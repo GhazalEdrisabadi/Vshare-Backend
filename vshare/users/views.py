@@ -56,7 +56,15 @@ import jwt
 from django.conf import settings
 from django.views.decorators.csrf import csrf_protect
 
+# User info with lookup field
+class UserDetail(generics.RetrieveAPIView):
+	queryset = Account.objects.all()
+	serializer_class = AccountSerializer
+	permission_classes = [AllowAny]
+	lookup_field = 'username'
 
+
+# User info with jwt token
 class UserInformation(generics.ListAPIView):
 	serializer_class = AccountSerializer
 	permission_classes = [AllowAny]
