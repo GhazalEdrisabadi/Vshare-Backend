@@ -14,7 +14,7 @@ urlpatterns = [
     
     path('information/', UserInformation.as_view(), name="user details"),
     path('<str:username>/edit_profile/upload_photo/', UploadPhoto.as_view(), name="UploadPhoto"),
-    path('<str:username>/edit_profile/', EditProfile.as_view(), name="Edit Profile"),
+    path('<str:username>/edit-profile/', EditProfile.as_view(), name="edit_user_profile"),
     path('<str:username>/edit_profile/change_password/', ChangePassword.as_view(), name="Change Password"),
     path('find/username/', UserSugestion.as_view(), name="find_with_sugestion"),
     path('relations/follow/', FollowRequest, name="follow_operation"),
