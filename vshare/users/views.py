@@ -58,7 +58,15 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_protect
 from users.pagination import *
 
+# User info with lookup field
+class UserDetail(generics.RetrieveAPIView):
+	queryset = Account.objects.all()
+	serializer_class = AccountSerializer
+	permission_classes = [AllowAny]
+	lookup_field = 'username'
 
+
+# User info with jwt token
 class UserInformation(generics.ListAPIView):
 	serializer_class = AccountSerializer
 	permission_classes = [AllowAny]
@@ -68,10 +76,10 @@ class UserInformation(generics.ListAPIView):
 		return queryset
 
 class EditProfile(generics.RetrieveUpdateAPIView):
-  permission_classes = [AllowAny]
-  queryset = Account.objects.all()
-  serializer_class = EditProfileSerializer
-  lookup_field = 'username'
+	queryset = Account.objects.all()
+	serializer_class = EditProfileSerializer
+	permission_classes = [IsAuthenticated]
+	lookup_field = 'username'
 
 class UploadPhoto(mixins.DestroyModelMixin,
 					mixins.CreateModelMixin,
