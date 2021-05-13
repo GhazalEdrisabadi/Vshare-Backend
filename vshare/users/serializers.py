@@ -226,18 +226,21 @@ class EditProfileSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Account
-		fields = ['photo_url','email']
+		fields = ['photo','photo_url','firstname','lastname','bio','is_private']
 		extra_kwargs = {
-				'email':{'allow_blank' : True, 'required':False},
-		}
-		
+			'photo':{'read_only' : True},
+            'firstname':{'allow_blank' : True, 'required':False},
+            'lastname':{'allow_blank' : True, 'required':False},
+            'bio':{'allow_blank' : True, 'required':False},
+            'is_private':{'required':False}
+            }
+
 	def get_photo_url(self, obj):
 		username = obj.username
-		# if Account.objects.get(username=username).photo:
-		return create_presigned_url('vshare-profile-images',username)
-		# else:
-		# 	raise ValidationError("User's photo is not found")
-
+		obj.photo_path = create_presigned_url('vshare-profile-images', username)
+		obj.save()
+		return obj.photo_path
+        
 class ChangePasswordSerializer(serializers.ModelSerializer):
 	confirm_password = serializers.CharField(write_only=True)
 	new_password = serializers.CharField(write_only=True)
