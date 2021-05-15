@@ -68,6 +68,13 @@ class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'groupid'
     permission_classes = [AllowAny]
 
+class GroupPhoto(generics.RetrieveUpdateAPIView):
+    queryset = Group.objects.all()
+    serializer_class = GroupPhotoSerializer
+    permission_classes = [AllowAny]
+    lookup_field = 'groupid'
+
+
 class GroupDetailUpdate(generics.RetrieveUpdateDestroyAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupUpdateSerializer
@@ -309,8 +316,7 @@ class UploadPhoto(mixins.DestroyModelMixin,
     serializer_class = UploadPhotoSerializer
 
     def perform_create(self, instance):
-        request_obj = instance.context["request"]
-        group_id = request_obj.query_params.get('groupid')
+        group_id = self.request.query_params.get('groupid')
         group = Group.objects.get(groupid=group_id)
         if not group.photo:
             group.photo = True

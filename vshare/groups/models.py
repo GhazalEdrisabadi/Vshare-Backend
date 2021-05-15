@@ -16,6 +16,7 @@ alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters a
 
 
 class Group(models.Model):
+	photo_path = models.URLField(max_length=200, null=True, blank=True)
 	photo = models.BooleanField(default=False)
 	since = models.DateTimeField(auto_now_add=True)
 	groupid = models.CharField(max_length=20, blank=False, null=False, validators=[alphanumeric], unique=True, default='',)

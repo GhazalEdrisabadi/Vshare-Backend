@@ -7,10 +7,24 @@ UserModel = apps.get_model('users', 'Account')
 
 
 class GroupSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Group
-        fields = '__all__' 
+        fields = '__all__'
 
+class GroupPhotoSerializer(serializers.ModelSerializer):
+    
+    photo_url = serializers.SerializerMethodField('get_photo_url')
+
+    class Meta:
+        model = Group
+        fields = '__all__'
+
+    def get_photo_url(self, obj):
+        groupid = obj.groupid
+        obj.photo_path = create_presigned_url('vshare-group-images', groupid)
+        obj.save()
+        return obj.photo_path 
 
 class GroupUpdateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -81,7 +95,6 @@ class JoinRequestSerializer(serializers.ModelSerializer):
 
 class UploadPhotoSerializer(serializers.ModelSerializer):
 
-
     class Meta(object):
         model = Group
         fields = ['groupid','photo']
@@ -92,7 +105,7 @@ class UploadPhotoSerializer(serializers.ModelSerializer):
     # Cast the generated url of upload photo to dictionary
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        request_obj = self.context["request"]
+        request_obj = self.context['request']
         group_id = request_obj.query_params.get('groupid')
         upload_url = create_presigned_post('vshare-group-images',group_id)
         ret["upload_photo"] = upload_url
