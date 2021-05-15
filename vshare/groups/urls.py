@@ -6,6 +6,8 @@ from groups.views import *
 urlpatterns = [
     path('detail/<str:groupid>/', views.GroupDetail.as_view(), name='group_by_groupid'),
     path('', views.GroupList.as_view(), name='all_groups_and_create'),
+    path('<str:groupid>/get-photo-path/', views.GroupPhoto.as_view(), name='generate_path_of_photo'),
+    path('upload-photo/', UploadPhoto.as_view(), name='upload_change_delete_photo'),
     path('<str:groupid>/edit/', views.GroupDetailUpdate.as_view(), name='group_detail_with_update'),
     path('add-member/',views.AddMembershipList.as_view(), name='Add_membership'),
     path('joined-groups/',views.GroupsOfUser, name='groups_of_user'),
@@ -26,7 +28,6 @@ urlpatterns = [
     path('invite-list/', views.UserInvitesList, name="user_invite_list"),
     path('join-requests/', views.GroupJoinRequestsList, name="group_join_requests_list"),
     path('top-groups/', views.TopGroups, name="top_15_groups"),
-    path('upload-photo/', UploadPhoto.as_view(), name="UploadPhoto"),
     path('preview/', GroupUsersPermissions, name="Group_users_permissions"),
 ]
 
