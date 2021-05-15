@@ -201,7 +201,7 @@ def FollowRequest(request):
 				friendship = Friendship(who_follows=user, who_is_followed=receiver)
 				friendship.save()
 				notification = Notification(notification_type=5, sender=user, receiver=receiver)
-				notification.text_preview = str(sender) + " started following you."
+				notification.text_preview = str(user) + " started following you."
 				notification.save()
 				response = {'Success':'You started following this user.'}
 				return Response(response, status=status.HTTP_200_OK)
