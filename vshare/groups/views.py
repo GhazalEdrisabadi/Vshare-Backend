@@ -1,6 +1,7 @@
 from rest_framework import generics
 from .models import *
 from users.models import *
+from notifications.models import *
 from users.serializers import *
 from .serializers import GroupRegistrationSerializer
 from .serializers import *
@@ -102,6 +103,18 @@ def JoinGroup(request):
                 group_obj = Group.objects.get(groupid=request.data['the_group'])
                 new_join_request = JoinRequest(group=group_obj, sender=request.user)
                 new_join_request.save()
+
+                groups_count_notification = Notification.objects.filter(notification_type=2, receiver=group_obj.created_by)
+
+                if groups_count_notification:
+                    groups_count_notification = Notification.objects.get(notification_type=2, receiver=group_obj.created_by)
+                    groups_count_notification.update_group_requests_count()
+
+                # There are no notification for group requests count so create
+                else:
+                    new_notify = Notification(notification_type=2, receiver=group_obj.created_by)
+                    new_notify.update_group_requests_count()
+
                 response_data = {'message':'Join request sent.', }
                 return Response(response_data, status=status.HTTP_201_CREATED)
             elif Group.objects.get(groupid = group_identifier).privacy == 2:#fully private
