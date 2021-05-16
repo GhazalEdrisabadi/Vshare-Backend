@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from users.models import *
+from groups.models import *
 
 # Create your models here.
 class Notification(models.Model):
@@ -18,4 +19,17 @@ class Notification(models.Model):
 	def update_friend_requests_count(self):
 		requests = FriendRequest.objects.filter(receiver=self.receiver, is_active=True)							
 		self.text_preview = str(requests.count())
+		self.save()
+
+
+	def update_group_requests_count(self):
+		join_requests = JoinRequest.objects.all()
+		counter = 0
+		print(join_requests)
+		for request in join_requests:
+			group = str(request.group)
+			print(group)
+			if Group.objects.filter(created_by=self.receiver, groupid=group).exists():
+				counter = counter + 1
+		self.text_preview = str(counter)
 		self.save()
