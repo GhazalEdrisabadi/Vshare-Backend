@@ -226,32 +226,51 @@ class DeleteInvite(generics.RetrieveUpdateDestroyAPIView):
 
 @api_view(['POST'])
 def AcceptJoinRequest(request):
-    check_obj = JoinRequest.objects.filter(group=request.data['group'], sender=request.data['sender'])
-    decision = request.data['decision']
-    if check_obj.exists():
-        group_obj = Group.objects.get(groupid=request.data['group'])
-        if group_obj.created_by == request.user:
-            if decision == 'acc':
-                group_obj = Group.objects.get(groupid=request.data['group'])
-                user_obj = Account.objects.get(username=request.data['sender'])
-                new_membership = Membership(the_member=user_obj, the_group=group_obj)
-                new_membership.save()
-                check_obj.delete()
-                response_data = {'message':'Join request accepted.',}
-                return Response(response_data, status=status.HTTP_202_ACCEPTED)
-            elif decision == 'dec':
-                check_obj.delete()
-                response_data = {'message':'Join request declined.',}
-                return Response(response_data, status=status.HTTP_202_ACCEPTED)
-            else:
-                response_data = {'error':'use acc to accept and dec to decline.',}
-                return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            response_data = {'error':'Only owner of the group can accept join requests.',}
-            return Response(response_data, status=status.HTTP_403_FORBIDDEN)
-    else:
-        response_data = {'error':'Bad request!',}
-        return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+	check_obj = JoinRequest.objects.filter(group=request.data['group'], sender=request.data['sender'])
+	decision = request.data['decision']
+	group_creator = request.user
+	if check_obj.exists():
+		group_obj = Group.objects.get(groupid=request.data['group'])
+		if group_obj.created_by == request.user:
+			if decision == 'acc':
+				group_obj = Group.objects.get(groupid=request.data['group'])
+				user_obj = Account.objects.get(username=request.data['sender'])
+				new_membership = Membership(the_member=user_obj, the_group=group_obj)
+				new_membership.save()
+				check_obj.delete()
+
+				sender_notification = Notification(notification_type=4, sender=group_creator, receiver=user_obj)
+				sender_notification.text_preview = str(group_obj) + " group" + " accepted your join request."
+				sender_notification.save()
+
+				groups_count_notification = Notification.objects.get(notification_type=2, receiver=group_creator)
+				groups_count_notification.update_group_requests_count()
+
+				response_data = {'message':'Join request accepted.',}
+				return Response(response_data, status=status.HTTP_202_ACCEPTED)
+
+			elif decision == 'dec':
+				check_obj.delete()
+
+				user_obj = Account.objects.get(username=request.data['sender'])
+				sender_notification = Notification(notification_type=4, sender=group_creator, receiver=user_obj)
+				sender_notification.text_preview = str(group_obj) + " group" + " declined your join request."
+				sender_notification.save()
+
+				groups_count_notification = Notification.objects.get(notification_type=2, receiver=group_creator)
+				groups_count_notification.update_group_requests_count()
+
+				response_data = {'message':'Join request declined.',}
+				return Response(response_data, status=status.HTTP_202_ACCEPTED)
+			else:
+				response_data = {'error':'use acc to accept and dec to decline.',}
+				return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+		else:
+			response_data = {'error':'Only owner of the group can accept join requests.',}
+			return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+	else:
+		response_data = {'error':'Bad request!',}
+		return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['Get'])
 def UserInvitesList(request):
