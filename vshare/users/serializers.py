@@ -237,7 +237,7 @@ class EditProfileSerializer(serializers.ModelSerializer):
 
 	def get_photo_url(self, obj):
 		username = obj.username
-		obj.photo_path = create_presigned_url('vshare-profile-images', username)
+		obj.photo_path = create_presigned_url('vshare-profile-images',username)
 		obj.save()
 		return obj.photo_path
         
