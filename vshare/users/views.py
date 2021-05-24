@@ -406,6 +406,8 @@ class DirectMessageList(generics.ListCreateAPIView):
 		sender_and_reciever = [reciever_identifier, user_identifier]
 		if Chat.objects.filter(starter_user__in=sender_and_reciever, non_starter_user__in=sender_and_reciever).exists():
 			chat_obj = Chat.objects.get(starter_user__in=sender_and_reciever, non_starter_user__in=sender_and_reciever)
+			chat_obj.seen = True
+			chat_obj.save()
 			queryset = DirectMessage.objects.filter(chat=chat_obj)
 		else:
 			queryset = [{}]
@@ -420,10 +422,11 @@ class DirectMessageList(generics.ListCreateAPIView):
 			new_dm = DirectMessage(message_text=self.request.data['message_text'], sender=user_identifier, reciever=reciever_identifier, chat=Chat.objects.get(starter_user__in=sender_and_reciever, non_starter_user__in=sender_and_reciever))
 			new_dm.save()
 			chat_obj = Chat.objects.get(starter_user__in=sender_and_reciever, non_starter_user__in=sender_and_reciever)
+			chat_obj.seen = False
 			chat_obj.last_update = datetime.datetime.now()
 			chat_obj.save()
 		else:
-			new_chat = Chat(starter_user=user_identifier, non_starter_user=reciever_identifier)
+			new_chat = Chat(starter_user=user_identifier, non_starter_user=reciever_identifier, seen=False)
 			new_chat.save()
 			new_dm = DirectMessage(message_text=self.request.data['message_text'], sender=user_identifier, reciever=reciever_identifier, chat=new_chat)
 			new_dm.save()
@@ -445,7 +448,8 @@ def ChatList(request):
 
 		chat_json = {
 			'friend' : friend,
-			'last_update' : obj.last_update
+			'last_update' : obj.last_update,
+			'is_seen_before' : obj.seen,
 		}
 
 		chat_list.append(chat_json)
