@@ -136,6 +136,7 @@ class FriendRequest(models.Model):
 class Chat(models.Model):
 	starter_user = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE, related_name="starter")
 	non_starter_user = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE, related_name="non_starter")
+	seen = models.BooleanField(default=True)
 	last_update = models.DateTimeField(auto_now_add=True)
 	class Meta:
 		ordering = ['-last_update']
