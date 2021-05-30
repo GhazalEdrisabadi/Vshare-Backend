@@ -7,7 +7,8 @@ from groups.models import *
 # Create your models here.
 class Notification(models.Model):
 	NOTIFICATION_TYPES = ((1, 'Friend-Requests-Count'), (2, 'Group-Requests-Count'),
-		(3, 'Friend-Request-State'), (4, 'Group-Request-State'), (5, 'New-Follower'))
+		(3, 'Friend-Request-State'), (4, 'Group-Request-State'), (5, 'New-Follower'), 
+		(6, 'Group-Notice-Count'), (7, 'Group-Notice'))
 	sender = models.ForeignKey(settings.AUTH_USER_MODEL, to_field='username', on_delete=models.CASCADE, related_name="notify_from_user", null=True, blank=True)
 	receiver = models.ForeignKey(settings.AUTH_USER_MODEL, to_field='username', on_delete=models.CASCADE, related_name="notify_to_user", null=True, blank=True)
 	text_preview = models.CharField(max_length=100, blank=True)
