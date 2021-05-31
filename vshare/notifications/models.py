@@ -11,6 +11,7 @@ class Notification(models.Model):
 		(6, 'Group-Notice-Count'), (7, 'Group-Notice'))
 	sender = models.ForeignKey(settings.AUTH_USER_MODEL, to_field='username', on_delete=models.CASCADE, related_name="notify_from_user", null=True, blank=True)
 	receiver = models.ForeignKey(settings.AUTH_USER_MODEL, to_field='username', on_delete=models.CASCADE, related_name="notify_to_user", null=True, blank=True)
+	group = models.ForeignKey(Group, to_field='groupid', on_delete=models.CASCADE, related_name="notify_from_group", null=True, blank=True)
 	text_preview = models.CharField(max_length=100, blank=True)
 	notification_type = models.IntegerField(choices=NOTIFICATION_TYPES)
 	date = models.DateTimeField(auto_now_add=True)
