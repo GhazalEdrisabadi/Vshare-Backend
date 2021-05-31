@@ -4,6 +4,7 @@ from notifications.views import *
 
 urlpatterns = [
     path('notifications/', UserNotification.as_view(), name='user-notifications'),
+    path('notifications/groups-notice-list/', UserGroupsNotification.as_view(), name='groups-notice-list'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
