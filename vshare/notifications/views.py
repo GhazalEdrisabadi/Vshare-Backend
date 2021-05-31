@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from rest_framework.permissions import *
 from rest_framework.generics import *
 from groups.models import *
+from rest_framework.response import Response
 
 class UserNotification(ListAPIView):
 	serializer_class = NotificationSerializer
@@ -57,4 +58,35 @@ class UserNotification(ListAPIView):
 				return notify_list
 
 		except Notification.DoesNotExist:
-			raise 
+			raise
+
+class UserGroupsNotification(ListAPIView):
+
+	serializer_class = NotificationSerializer
+	permission_classes = [AllowAny]
+
+	def get_queryset(self):
+		user = self.request.user
+		try:
+			user_memberships = Membership.objects.filter(the_member=user)
+			groups_have_notification = []
+			notification = Notification.objects.none()
+
+			for group in user_memberships:
+				group_obj = group.the_group
+				if group_obj.have_notice == True:
+					groups_have_notification.append(group_obj)
+
+			for group in groups_have_notification:
+				owner = getattr(group, "created_by")
+				temp = Notification.objects.filter(notification_type=7, group=group)
+				notification = notification.union(temp)
+
+			for notify in notification:
+				notify.is_seen = True
+				notify.save()
+
+			return notification
+
+		except Notification.DoesNotExist:
+			raise
