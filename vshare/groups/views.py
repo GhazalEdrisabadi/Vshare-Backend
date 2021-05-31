@@ -402,14 +402,19 @@ def GroupNotice(request):
 
 	if Group.objects.filter(created_by=group_creator, groupid=group_id).exists():
 
-		if Notification.objects.filter(notification_type=7, sender=group_creator, text_preview=group_notice, is_seen=False).exists():
+		if Notification.objects.filter(notification_type=7, sender=group_creator, group=group_id, 
+			text_preview=group_notice, is_seen=False).exists():
 
 			response_data = {'error':'You already sent this notice!',}
 			return Response(response_data, status=status.HTTP_403_FORBIDDEN)
 
 		else:
-			new_notice = Notification(notification_type=7, sender=group_creator, text_preview=group_notice)
+			group_obj = Group.objects.get(groupid=group_id)
+			new_notice = Notification(notification_type=7, sender=group_creator, group=group_obj, text_preview=group_notice)
 			new_notice.save()
+			if group_obj.have_notice == False:
+				group_obj.have_notice = True
+				group_obj.save()
 			response = {'Success':'Group notice sent.'}
 			return Response(response, status=status.HTTP_200_OK)
 	else:
