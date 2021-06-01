@@ -8,7 +8,7 @@ from groups.models import *
 class Notification(models.Model):
 	NOTIFICATION_TYPES = ((1, 'Friend-Requests-Count'), (2, 'Group-Requests-Count'),
 		(3, 'Friend-Request-State'), (4, 'Group-Request-State'), (5, 'New-Follower'), 
-		(6, 'Group-Notice-Count'), (7, 'Group-Notice'))
+		(6, 'Group-Notice-Count'), (7, 'Group-Notice'), (8, 'Group-Invite-Count'))
 	sender = models.ForeignKey(settings.AUTH_USER_MODEL, to_field='username', on_delete=models.CASCADE, related_name="notify_from_user", null=True, blank=True)
 	receiver = models.ForeignKey(settings.AUTH_USER_MODEL, to_field='username', on_delete=models.CASCADE, related_name="notify_to_user", null=True, blank=True)
 	group = models.ForeignKey(Group, to_field='groupid', on_delete=models.CASCADE, related_name="notify_from_group", null=True, blank=True)
@@ -35,3 +35,11 @@ class Notification(models.Model):
 				counter = counter + 1
 		self.text_preview = str(counter)
 		self.save()
+
+	def update_invite_requests_count(self):
+		invite_list = Invite.objects.filter(recipient=self.receiver)
+		print(invite_list)
+		self.text_preview = str(invite_list.count())
+		self.save()
+
+
