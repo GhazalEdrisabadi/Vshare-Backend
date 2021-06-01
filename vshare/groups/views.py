@@ -202,10 +202,33 @@ class AcceptedClientList(generics.ListCreateAPIView):
 	serializer_class = AcceptedClientSerializer
 	permission_classes = [AllowAny]
 
-class AddInviteList(generics.ListCreateAPIView):
-	queryset = Invite.objects.all()
-	serializer_class = InviteSerializer
-	permission_classes = [AllowAny]
+@api_view(['GET','POST'])
+def AddInviteList(request):
+	
+	if request.method == 'GET':
+		invites = Invite.objects.all()
+		serializer = InviteSerializer(invites, many=True)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
+	elif request.method == 'POST':
+
+		serializer = InviteSerializer(data=request.data)
+		receiver = Account.objects.get(username=request.data.get("recipient"))
+
+		if serializer.is_valid():
+			serializer.save()
+
+			if Notification.objects.filter(notification_type=8, receiver=receiver).exists():
+				invite_count = Notification.objects.get(notification_type=8, receiver=receiver)
+				invite_count.update_invite_requests_count()
+			else:
+				invite_count = Notification(notification_type=8, receiver=receiver)
+				invite_count.update_invite_requests_count()
+
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class DeleteInvite(generics.RetrieveUpdateDestroyAPIView):
 	serializer_class = InviteSerializer
