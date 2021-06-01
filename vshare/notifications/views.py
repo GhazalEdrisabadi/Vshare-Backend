@@ -11,12 +11,12 @@ class UserNotification(ListAPIView):
 	serializer_class = NotificationSerializer
 	permission_classes = [AllowAny]
 	def get_queryset(self):
+		seen_by_user = self.request.query_params.get('seen_by_user')
 		user = self.request.user
 		unseen = 0
 		try:
 			user_memberships = Membership.objects.filter(the_member=user)
 			groups_have_notification = []
-			print(user_memberships)
 
 			for group in user_memberships:
 				group_obj = group.the_group
@@ -36,17 +36,20 @@ class UserNotification(ListAPIView):
 				group_notice_count.text_preview = str(unseen)
 				group_notice_count.save()
 				
-			notifications = Notification.objects.filter(receiver=user, is_seen=False).exclude(notification_type=1).exclude(notification_type=2).exclude(notification_type=6)
+			notifications = Notification.objects.filter(receiver=user, is_seen=False).exclude(notification_type=1).exclude(notification_type=2).exclude(notification_type=6).exclude(notification_type=8)
 
 				
 			friend_count_notify = Notification.objects.filter(notification_type=1, receiver=user)
 			group_count_notify = Notification.objects.filter(notification_type=2, receiver=user)
 			group_notice_count_notify = Notification.objects.filter(notification_type=6, receiver=user)
+			invite_count_notify = Notification.objects.filter(notification_type=8, receiver=user)
 			
 			if notifications:
-				for notify in notifications:
-					notify.is_seen = True
-				notify_list = notifications.union(friend_count_notify, group_count_notify, group_notice_count_notify)
+				if seen_by_user == True:
+					for notify in notifications:
+						notify.is_seen = True
+						
+				notify_list = notifications.union(friend_count_notify, group_count_notify, group_notice_count_notify, invite_count_notify)
 				return notify_list
 
 			# There is no new notification
@@ -54,7 +57,7 @@ class UserNotification(ListAPIView):
 				# Oldest items first
 				notifications = Notification.objects.filter(receiver=user, is_seen=True)
 				last_10_notifications = notifications.order_by('date')[:10]
-				notify_list = last_10_notifications.union(friend_count_notify, group_count_notify, group_notice_count_notify)
+				notify_list = last_10_notifications.union(friend_count_notify, group_count_notify, group_notice_count_notify, invite_count_notify)
 				return notify_list
 
 		except Notification.DoesNotExist:
