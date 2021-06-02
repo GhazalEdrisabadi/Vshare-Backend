@@ -29,6 +29,7 @@ class Group(models.Model):
 	video_hash = models.CharField(max_length=100, blank=True ,default='No hash yet!')
 	hash_sender = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='username',blank=True,null=True,on_delete=models.CASCADE,related_name='sender',)
 	aux_count = models.IntegerField(blank=True ,default=0)
+	have_notice = models.BooleanField(default=False)
 
 	def save(self,*args,**kwargs):
 		created = self.pk is None
