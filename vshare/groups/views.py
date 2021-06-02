@@ -229,23 +229,43 @@ def AddInviteList(request):
 
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET','DELETE'])
+def DeleteInvite(request, group):
 
-class DeleteInvite(generics.RetrieveUpdateDestroyAPIView):
-	serializer_class = InviteSerializer
-	permission_classes = [AllowAny]
-	lookup_field='group'
-	def get_queryset(self):
-		user_identifier = self.request.user
-		decision_identifier = self.request.query_params.get('decision')
-		group_identifier = self.request.query_params.get('group')
+	user_identifier = request.user
+
+	try:
+		invite = Invite.objects.get(group=group, recipient=user_identifier)
+	except Invite.DoesNotExist:
+		return Response(status=status.HTTP_404_NOT_FOUND)
+
+	if request.method == 'GET':
+
+		decision_identifier = request.query_params.get('decision')
+		group_identifier = request.query_params.get('group')
+
 		if decision_identifier == 'acc':
 			group_obj = Group.objects.get(groupid=group_identifier)
 			new_membership_obj = Membership(the_member=user_identifier, the_group=group_obj)
 			new_membership_obj.save()
+
 		elif decision_identifier == 'dec':
 			pass
-		queryset = Invite.objects.filter(recipient=user_identifier)
-		return queryset
+
+		queryset = Invite.objects.get(recipient=user_identifier)
+		serializer = InviteSerializer(queryset)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
+	elif request.method == 'DELETE':
+
+		invite.delete()
+		invite_count = Notification.objects.get(notification_type=8, receiver=user_identifier)
+		invite_count.update_invite_requests_count()
+		return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+
 
 @api_view(['POST'])
 def AcceptJoinRequest(request):
