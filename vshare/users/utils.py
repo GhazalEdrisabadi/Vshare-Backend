@@ -24,7 +24,7 @@ class Util:
         #email = EmailMessage(subject=data['email_subject'], body=data['email_body'], to=[data['to_email']])
         #email.send()
 
-def create_presigned_url(bucket_name, object_name, expiration=3600):
+def create_presigned_url(bucket_name, object_name, expiration=604800):
 
     s3_client = boto3.client(
       's3',
@@ -46,7 +46,7 @@ def create_presigned_url(bucket_name, object_name, expiration=3600):
 
 
 def create_presigned_post(bucket_name, object_name,
-                          fields=None, conditions=None, expiration=3600):
+                          fields=None, conditions=None, expiration=604800):
    
     s3_client = boto3.client(
       's3',
