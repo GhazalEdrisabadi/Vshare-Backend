@@ -138,18 +138,22 @@ class AddMembershipList(generics.ListCreateAPIView):
 	permission_classes = [AllowAny]
 
 class GroupsOfSearchedUser(generics.ListAPIView):
-	serializer_class = MembershipSerializer
+	serializer_class = GroupSerializer
 	permission_classes = [AllowAny]
 	def get_queryset(self):
+
 		user = self.request.user
 		requested_user_param = self.request.query_params.get('user_id')
-		if Membership.objects.filter(the_member = requested_user_param).exists():
-			requested_user = Account.objects.filter(username = requested_user_param)
+		requested_user = Account.objects.filter(username = requested_user_param)
+		memberships = Group.objects.filter(
+			Q(created_by__in = requested_user) | Q(members__in=requested_user)
+		)		
+
 		if Friendship.objects.filter(
 			who_is_followed__in = requested_user,
 			who_follows = user
 			).exists() or requested_user.filter(is_private = False):
-			return Membership.objects.filter(the_member = requested_user_param)
+			return memberships
 		else:
 			return
 
