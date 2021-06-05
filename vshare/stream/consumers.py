@@ -1,12 +1,14 @@
 from rest_framework.authtoken.models import Token
 from django.conf import settings
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
+from channels.consumer import AsyncConsumer
 from django.contrib.auth.models import AnonymousUser
 from .exceptions import ClientError
 from channels.exceptions import DenyConnection
 from stream.utils import *
 import asyncio
 import json
+
 class VideoConsumer(AsyncJsonWebsocketConsumer):
 
 	# Connect websocket
@@ -617,3 +619,33 @@ class TextChat(AsyncJsonWebsocketConsumer):
 			}
 		)
 
+""" class EchoUser(AsyncConsumer):
+	async def websocket_connect(self, event):
+		await self.send(
+			{
+				"type": "websocket.accept"
+			}
+		)
+	
+	async def websocket_recieve(self, event):
+		#Echo the recieved payload
+		await self.send(
+			{
+				"type": "websocket.send",
+				"text": event["text"]
+			}
+		) """
+class NoseyConsumer(AsyncJsonWebsocketConsumer):
+	async def connect(self):
+		await self.accept()
+		await self.channel_layer.group_add("gossip", self.channel_name)
+		print(f"added {self.channel_layer} channel to gossip")
+
+	async def disconnect(self):
+		await self.accept()
+		await self.channel_layer.group_discard("gossip", self.channel_name)
+		print(f"remove {self.channel_layer} channel to gossip")
+
+	async def dm_gossip(self, event):
+		await self.send_json(event)
+		print(f"got message {event} at {self.channel_name}")
