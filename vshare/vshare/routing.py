@@ -34,7 +34,7 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 from stream.middlewares import JWTAuthMiddlewareStack
 
-from stream.consumers import VideoConsumer , TextChat
+from stream.consumers import VideoConsumer, TextChat, NoseyConsumer
 
 from groups.models import *
 
@@ -43,7 +43,8 @@ application = ProtocolTypeRouter({
         URLRouter(
             [
                 url(r'^stream/groups/(?P<groupid>[\w.@+-]+)/$', VideoConsumer.as_asgi()),
-                url(r'^chat/groups/(?P<groupid>[\w.@+-]+)/$', TextChat.as_asgi()),
+                url(r'^chat/groups/(?P<group>\w.@+-]+)/$', TextChat.as_asgi()),
+                url(r'^notify/$', NoseyConsumer.as_asgi()),
             ]
         )
     )
