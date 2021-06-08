@@ -178,6 +178,23 @@ class DeleteMembership(generics.RetrieveUpdateDestroyAPIView):
 		queryset = Membership.objects.filter(the_member=user)
 		return queryset
 
+@api_view(['Delete'])
+def RemoveMembership(request):
+	user = request.user
+	group_id = request.query_params.get('group')
+	group_obj = Group.objects.get(groupid=group_id)
+	member_id = request.query_params.get('member')
+	member_obj = Account.objects.get(username=member_id)
+	if group_obj.created_by == user:
+		membership_obj = Membership.objects.get(the_member=member_obj, the_group=group_obj)
+		membership_obj.delete()
+		response_data = {'message':'User removed successfuly.'}
+		return Response(response_data, status=status.HTTP_200_OK)
+	else:
+		response_data = {'error':'Only owner can remove a user.'}
+		return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+
+
 class GroupList(generics.ListCreateAPIView):
 	search_fields = ['groupid', 'title']
 	filter_backends = (filters.SearchFilter,)
