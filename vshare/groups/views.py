@@ -381,6 +381,7 @@ def GroupsOfUser(request):
 def TopGroups(request):
 	info = []
 	groups_sorted = []
+	groups_accepted_privacies= [0,1]
 	groups = Group.objects.all()
 	if groups.count() == 0:
 		response_data = {'info':'There are no groups to choose.'}
@@ -398,7 +399,7 @@ def TopGroups(request):
 	for i in top_15_id:
 		obj = Group.objects.filter(groupid=i)
 		obj[0].update_aux_count()
-	top_15_group = Group.objects.filter(groupid__in=top_15_id).order_by('-aux_count')
+	top_15_group = Group.objects.filter(groupid__in=top_15_id, privacy__in=groups_accepted_privacies).order_by('-aux_count')
 	serializer = GroupSerializer(top_15_group, many=True)
 	return Response(serializer.data, status=status.HTTP_200_OK)
 
