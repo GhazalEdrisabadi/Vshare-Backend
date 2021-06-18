@@ -246,41 +246,34 @@ def AddInviteList(request):
 				invite_count = Notification(notification_type=8, receiver=receiver)
 				invite_count.update_invite_requests_count()
 
-			return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+		return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
-def DeleteInvite(request, group):
+def DeleteInvite(request):
 
 	user_identifier = request.user
 
 	decision_identifier = request.query_params.get('decision')
 	group_identifier = request.query_params.get('group')
+	group_obj = Group.objects.get(groupid=group_identifier)
 
-	try:
-		invite = Invite.objects.get(group=group, recipient=user_identifier)
+	invite = Invite.objects.get(group=group_obj, recipient=user_identifier)
 
-		if decision_identifier == 'acc':
-			group_obj = Group.objects.get(groupid=group_identifier)
-			new_membership_obj = Membership(the_member=user_identifier, the_group=group_obj)
-			new_membership_obj.save()
-
-		elif decision_identifier == 'dec':
-			pass
-
+	if decision_identifier == 'acc':
+		new_membership_obj = Membership(the_member=user_identifier, the_group=group_obj)
+		new_membership_obj.save()
 		invite.delete()
 
-		invite_count = Notification.objects.get(notification_type=8, receiver=user_identifier)
-		invite_count.update_invite_requests_count()
+	elif decision_identifier == 'dec':
+		invite.delete()
 
-		queryset = Invite.objects.get(recipient=user_identifier)
-		serializer = InviteSerializer(queryset)
+	invite_count = Notification.objects.get(notification_type=8, receiver=user_identifier)
+	invite_count.update_invite_requests_count()
 
-		return Response(serializer.data, status=status.HTTP_200_OK)
+	queryset = Invite.objects.get(recipient=user_identifier)
+	serializer = InviteSerializer(queryset)
 
-	except Invite.DoesNotExist:
-		raise
+	return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
