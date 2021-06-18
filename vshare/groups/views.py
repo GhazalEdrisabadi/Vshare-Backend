@@ -262,18 +262,18 @@ def DeleteInvite(request):
 	if decision_identifier == 'acc':
 		new_membership_obj = Membership(the_member=user_identifier, the_group=group_obj)
 		new_membership_obj.save()
-		invite.delete()
+		response_data = {'Success':'You joined the group successfuly!'}
 
 	elif decision_identifier == 'dec':
-		invite.delete()
+		response_data = {'Success':'You declined the invite successfuly!'}
+		pass
+	
+	invite.delete()
 
 	invite_count = Notification.objects.get(notification_type=8, receiver=user_identifier)
 	invite_count.update_invite_requests_count()
 
-	queryset = Invite.objects.get(recipient=user_identifier)
-	serializer = InviteSerializer(queryset)
-
-	return Response(serializer.data, status=status.HTTP_200_OK)
+	return Response(response_data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
