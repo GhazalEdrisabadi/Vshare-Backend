@@ -250,20 +250,16 @@ def AddInviteList(request):
 
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET','DELETE'])
+@api_view(['POST'])
 def DeleteInvite(request, group):
 
 	user_identifier = request.user
 
+	decision_identifier = request.query_params.get('decision')
+	group_identifier = request.query_params.get('group')
+
 	try:
 		invite = Invite.objects.get(group=group, recipient=user_identifier)
-	except Invite.DoesNotExist:
-		return Response(status=status.HTTP_404_NOT_FOUND)
-
-	if request.method == 'GET':
-
-		decision_identifier = request.query_params.get('decision')
-		group_identifier = request.query_params.get('group')
 
 		if decision_identifier == 'acc':
 			group_obj = Group.objects.get(groupid=group_identifier)
@@ -273,19 +269,18 @@ def DeleteInvite(request, group):
 		elif decision_identifier == 'dec':
 			pass
 
-		queryset = Invite.objects.get(recipient=user_identifier)
-		serializer = InviteSerializer(queryset)
-		return Response(serializer.data, status=status.HTTP_200_OK)
-
-	elif request.method == 'DELETE':
-
 		invite.delete()
+
 		invite_count = Notification.objects.get(notification_type=8, receiver=user_identifier)
 		invite_count.update_invite_requests_count()
-		return Response(status=status.HTTP_204_NO_CONTENT)
 
+		queryset = Invite.objects.get(recipient=user_identifier)
+		serializer = InviteSerializer(queryset)
 
+		return Response(serializer.data, status=status.HTTP_200_OK)
 
+	except Invite.DoesNotExist:
+		raise
 
 
 @api_view(['POST'])
