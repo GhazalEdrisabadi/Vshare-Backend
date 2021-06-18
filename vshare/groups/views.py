@@ -246,46 +246,34 @@ def AddInviteList(request):
 				invite_count = Notification(notification_type=8, receiver=receiver)
 				invite_count.update_invite_requests_count()
 
-			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['GET','DELETE'])
-def DeleteInvite(request, group):
+@api_view(['POST'])
+def DeleteInvite(request):
 
 	user_identifier = request.user
 
-	try:
-		invite = Invite.objects.get(group=group, recipient=user_identifier)
-	except Invite.DoesNotExist:
-		return Response(status=status.HTTP_404_NOT_FOUND)
+	decision_identifier = request.query_params.get('decision')
+	group_identifier = request.query_params.get('group')
+	group_obj = Group.objects.get(groupid=group_identifier)
 
-	if request.method == 'GET':
+	invite = Invite.objects.get(group=group_obj, recipient=user_identifier)
 
-		decision_identifier = request.query_params.get('decision')
-		group_identifier = request.query_params.get('group')
+	if decision_identifier == 'acc':
+		new_membership_obj = Membership(the_member=user_identifier, the_group=group_obj)
+		new_membership_obj.save()
+		response_data = {'Success':'You joined the group successfuly!'}
 
-		if decision_identifier == 'acc':
-			group_obj = Group.objects.get(groupid=group_identifier)
-			new_membership_obj = Membership(the_member=user_identifier, the_group=group_obj)
-			new_membership_obj.save()
+	elif decision_identifier == 'dec':
+		response_data = {'Success':'You declined the invite successfuly!'}
+		pass
+	
+	invite.delete()
 
-		elif decision_identifier == 'dec':
-			pass
+	invite_count = Notification.objects.get(notification_type=8, receiver=user_identifier)
+	invite_count.update_invite_requests_count()
 
-		queryset = Invite.objects.get(recipient=user_identifier)
-		serializer = InviteSerializer(queryset)
-		return Response(serializer.data, status=status.HTTP_200_OK)
-
-	elif request.method == 'DELETE':
-
-		invite.delete()
-		invite_count = Notification.objects.get(notification_type=8, receiver=user_identifier)
-		invite_count.update_invite_requests_count()
-		return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
+	return Response(response_data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
