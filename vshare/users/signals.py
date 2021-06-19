@@ -9,7 +9,7 @@ def announce_new_dm(sender, instance, created, **kwargs):
     if created:
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
-            "gossip", {
+            instance.reciever.username, {
                 "type": "dm_gossip",
                 "event": "new_dm",
                 "dm_sender": instance.sender.username,
