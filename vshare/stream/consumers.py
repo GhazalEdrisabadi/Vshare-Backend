@@ -637,13 +637,15 @@ class TextChat(AsyncJsonWebsocketConsumer):
 		) """
 class NoseyConsumer(AsyncJsonWebsocketConsumer):
 	async def connect(self):
+		user = self.scope["user"]
 		await self.accept()
-		await self.channel_layer.group_add("gossip", self.channel_name)
+		await self.channel_layer.group_add(user.username, self.channel_name)
 		print(f"added {self.channel_layer} channel to gossip")
 
 	async def disconnect(self):
+		user = self.scope["user"]
 		await self.accept()
-		await self.channel_layer.group_discard("gossip", self.channel_name)
+		await self.channel_layer.group_discard(user.username, self.channel_name)
 		print(f"remove {self.channel_layer} channel to gossip")
 
 	async def dm_gossip(self, event):
