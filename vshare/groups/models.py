@@ -38,7 +38,9 @@ class Group(models.Model):
 			created_group = Group.objects.get(groupid=self.groupid)
 			owner_to_members=Membership(the_group=created_group , the_member=created_group.created_by)
 			owner_to_members.save()
-			default_permit=Permission(group=created_group , member=created_group.created_by , chat_permission=True , playback_permission=True , choose_video_permission=True)
+			default_permit=Permission.objects.get(group=created_group , member=created_group.created_by)
+			default_permit.choose_video_permission = True
+			default_permit.playback_permission = True
 			default_permit.save()
 
 	state0 = 0
@@ -104,6 +106,11 @@ class Membership(models.Model):
 	class Meta:
 		ordering = ['date_joined']
 		unique_together = ("the_group", "the_member")
+
+	def save(self,*args,**kwargs):
+		super(Membership, self).save(*args, **kwargs)
+		default_permit = Permission(member=self.the_member, group=self.the_group, chat_permission=True, choose_video_permission=False, playback_permission=False)
+		default_permit.save()
 
 class AcceptedClient(models.Model):
 	entered_group = models.ForeignKey(Group, to_field="groupid" , on_delete=models.CASCADE)

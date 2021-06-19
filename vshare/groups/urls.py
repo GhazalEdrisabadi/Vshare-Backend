@@ -22,14 +22,15 @@ urlpatterns = [
     path('<str:group>/permissions/', views.DeletePermission.as_view(), name='Permission_detail_delete'),
     path('user-groups/',views.GroupsOfSearchedUser.as_view(), name='owned_by_a_user'),
     path('invite/',views.AddInviteList, name='invite_user_to_group'),
-    path('invitation/<str:group>/',views.DeleteInvite, name='acc_dec_invite'),
+    path('invitation/',views.DeleteInvite, name='acc_dec_invite'),
     path('join/', views.JoinGroup, name="join"),
     path('accept-join/', views.AcceptJoinRequest, name="accept_join_request"),
     path('invite-list/', views.UserInvitesList, name="user_invite_list"),
     path('join-requests/', views.GroupJoinRequestsList, name="group_join_requests_list"),
     path('top-groups/', views.TopGroups, name="top_15_groups"),
     path('preview/', GroupUsersPermissions, name="Group_users_permissions"),
-    path('set-notice/', GroupNotice, name="set_group_notice")
+    path('set-notice/', GroupNotice, name="set_group_notice"),
+    path('remove-member/', RemoveMembership, name="remove-user-from-group")
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
